@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import {
-	Autocomplete,
-	Button,
-	Card,
-	InputLabel,
-	MenuItem,
-	Select,
-	TextField,
-} from "@mui/material";
+import react from "react";
+import Nav from "./Components/Nav.js";
+import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
+import Color from "./Components/Color.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -24,84 +18,68 @@ const themes = [
 	"80s",
 	"90s",
 ];
+//Comment For Git
+function SwitchBoard() {
+	return (
+		<Routes>
+			<Route path="/">
+				<Route index element={<Home />} />
+				<Route path="register" element={<Registration />} />
+				<Route path="login" element={<Login />} />
+				<Route path="user">
+					<Route index element={<Users />} />
+					<Route path=":userID" element={<User />} />
+					<Route path="profile" element={<UserProfile />} />
+				</Route>
+				<Route path="group">
+					<Route index element={<Groups />} />
+					<Route path=":userID" element={<Group />} />
+					<Route path="profile" element={<GroupProfile />} />
+				</Route>
+			</Route>
+		</Routes>
+	);
+}
 
-function Color(cid, theme) {
-	return "var( --" + cid + "-" + themes[theme] + ")";
+function Home() {
+	return <p>HOME</p>;
+}
+function Login() {
+	return <p>Login</p>;
+}
+function Registration() {
+	return <p>Registration</p>;
+}
+
+function Users() {
+	return <p>Users</p>;
+}
+
+function User() {
+	return <p>User</p>;
+}
+
+function UserProfile() {
+	return <p>UserProfile</p>;
+}
+
+function Groups() {
+	return <p>Groups</p>;
+}
+
+function Group() {
+	return <p>Group</p>;
+}
+
+function GroupProfile() {
+	return <p>GroupProfile</p>;
 }
 
 function App() {
-	const [theme, updateTheme] = useState(0);
-
 	return (
 		<>
-			<div className="App">
-				<InputLabel id="demo-simple-select-label">Age</InputLabel>
-				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
-					label="Theme"
-					defaultValue={0}
-					onChange={(x) => {
-						updateTheme(x.target.value);
-					}}
-				>
-					{themes.map((x) => {
-						return (
-							<MenuItem key={themes.indexOf(x)} value={themes.indexOf(x)}>
-								{x}
-							</MenuItem>
-						);
-					})}
-				</Select>
-				<Button>hello</Button>
-			</div>
-			<div>
-				<Card
-					sx={{ minWidth: "20%", maxWidth: 300, minHeight: 500 }}
-					style={{
-						backgroundColor: Color(1, theme),
-						display: "inline-block",
-					}}
-				>
-					1
-				</Card>
-				<Card
-					sx={{ minWidth: "20%", maxWidth: 300, minHeight: 500 }}
-					style={{
-						backgroundColor: Color(2, theme),
-						display: "inline-block",
-					}}
-				>
-					2
-				</Card>
-				<Card
-					sx={{ minWidth: "20%", maxWidth: 300, minHeight: 500 }}
-					style={{
-						backgroundColor: Color(3, theme),
-						display: "inline-block",
-					}}
-				>
-					3
-				</Card>
-				<Card
-					sx={{ minWidth: "20%", maxWidth: 300, minHeight: 500 }}
-					style={{
-						backgroundColor: Color(4, theme),
-						display: "inline-block",
-					}}
-				>
-					4
-				</Card>
-				<Card
-					sx={{ minWidth: "20%", maxWidth: 300, minHeight: 500 }}
-					style={{
-						backgroundColor: Color(5, theme),
-						display: "inline-block",
-					}}
-				>
-					5
-				</Card>
-			</div>
+			<Nav themes={themes} />
+			<SwitchBoard />
 		</>
 	);
 }
