@@ -18,12 +18,21 @@ console.log(`User Connected: ${socket.id}`);
 socket.on("join_room", (data) =>{
     socket.join(data);
     console.log(`User ID: ${socket.id} Join room: ${data}`)
-});
+    });
+
+    socket.on("message_sent", (data) =>{
+console.log(`message from ${socket.id} ${data}`)
+
+    });
+
+
+
 socket.on("disconected", () =>{
     console.log("User Disconnected", socket.id);
 });
 });
 
 server.listen(3001, () =>{
-    console.log("SERVER Running now");
+    console.log("SERVER Running");
 });
+
