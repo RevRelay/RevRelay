@@ -25,6 +25,9 @@ function validInputRegister(user){
     if( !(user.password && user.password.length >= passLen )){
         message += `Minimum password length ${passLen} \n`;
     }
+    if(!user.email){
+        message += "A valid email is required"
+    }
     if( !(user.displayName && user.displayName.length >= displayNameLen )){
         message += `Minimum display name length ${displayNameLen} \n`;
     }
@@ -48,7 +51,6 @@ export default function Register({ setToken }) {
     //Submission of the user's information and returning of a jwt
     const submitButton = async e => {
         e.preventDefault();
-        console.log()
         if(validInputRegister({
             username,
             password,
@@ -63,7 +65,6 @@ export default function Register({ setToken }) {
                     email,
                     displayName
                 });
-                console.log(response.data.jwt)
                 setToken(response.data.jwt);
                 navigate("/");
             } catch (Error) {
@@ -76,7 +77,7 @@ export default function Register({ setToken }) {
     return (
             <div className="register">
                 <div className="form">
-                <h1>Use the dialog boxes below to register:</h1>
+                <h1>Welcome to the Future of Social Media</h1>
                     <form onSubmit={submitButton}>
                         <label>
                             <p>Username</p>
@@ -95,7 +96,7 @@ export default function Register({ setToken }) {
                             <input type="displayName" onChange={e => setDisplayName(e.target.value)} />
                         </label>
                         <div className="button">
-                            <Button type="submit">Submit</Button>
+                            <Button color="inherit" type="submit">Submit</Button>
                         </div>
                     </form>
                     <Button color="inherit" onClick={(x) => navigate("/login")}>Already have an account? Click here.</Button>

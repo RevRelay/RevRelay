@@ -28,7 +28,6 @@ export default function Login({setToken}) {
             password
         });
         setToken(jwt);
-        console.log(jwt);
         jwt ? navigate("/") : alert("Unable to log in.");
     }
 
@@ -46,11 +45,12 @@ export default function Login({setToken}) {
                         <input type="text" id="password" onChange={e => setPassword(e.target.value)} />
                     </label>
                     <div className="button" >
-                        <Button color="inherit" type="submit" variant="h6">Login</Button>
+                        <Button color="inherit" type="submit" variant="h5">Login</Button>
                     </div>
                 </form>
                 <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
              </div>
+             <LoginSplash />
         </div>
     )
     //<LoginSplash /> Used for background for login page

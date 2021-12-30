@@ -53,7 +53,7 @@ function GenerateColor(left,right,edge){
 
 function Pretty(props) {
 	for (let node = 0; node < document.childNodes[1].childNodes[2].childNodes.length;node++){
-		if(document.childNodes[1].childNodes[2].childNodes[node].nodeName=="CANVAS"){
+		if(document.childNodes[1].childNodes[2].childNodes[node].nodeName==="CANVAS"){
 			document.childNodes[1].childNodes[2].childNodes[node].remove();  
 		}
 	}
