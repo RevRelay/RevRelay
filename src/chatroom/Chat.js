@@ -19,17 +19,28 @@ function Chat () {
 
 	const socket = useContext(SocketContext);
 
-	const joinRoom = () => {
-		if(userName !== "" && room !== ""){
+	const joinRoom = (r) => {
+		if (userName !== "") {
 			socket.emit("join room", {
 				user: userName,
-				room: room
+				room: r
+			});
+		}
+	}
+
+	const leaveRoom = (r) => {
+		if (userName !== "") {
+			setMessageList([]);
+			setUsersTyping([]);
+			socket.emit("leave room", {
+				user: userName,
+				room: r
 			});
 		}
 	}
 
 	const sendMessage = () => {
-		if(message !== null && room !== ""){
+		if (message !== null && room !== ""){
 			socket.emit("message room", {
 				user: userName,
 				room: room,
@@ -138,29 +149,44 @@ function Chat () {
 	useEffect(() => {
 		socket.on("message sent", receiveMessage);
 		socket.on("user joined", systemMessage);
+		socket.on("user left", systemMessage);
 		socket.on("typing countdown", setCountdown);
 		socket.on("voice", playAudio);
 
 		return () => {
 			socket.off("message sent", receiveMessage);
 			socket.off("user joined", systemMessage);
+			socket.off("user left", systemMessage);
 			socket.off("typing countdown", setCountdown);
 			socket.off("voice", playAudio);
+
+			window.addEventListener("beforeunload", function (e) {
+				if (room !== "") {
+					leaveRoom(room);
+				}
+			});
 		};
 	}, [socket, receiveMessage, systemMessage, playAudio, setCountdown]);
 
 	return (
 		<div className="App">
 			<h1>Join a room</h1>
-			<input type="text" placeholder="Type room ID" onChange={(event) => {
-				setRoom(event.target.value);
-			}}
-			/><br></br><br></br>
+			<input type="text" id="roomInput" placeholder="Type room ID" />
+			<br></br><br></br>
 			<input type="text" placeholder="Enter your user name" onChange={(event) => {
 				setUserName(event.target.value);
 			}}
 			/>
-			<button onClick={joinRoom}>Join Now </button>
+			<button onClick={() => {
+				let inputValue = document.getElementById('roomInput').value;
+				if (inputValue !== room && inputValue !== "") {
+					if (room !== "") {
+						leaveRoom(room);
+					}
+					setRoom(inputValue);
+				}
+				joinRoom(inputValue);
+			}}>Join Now </button>
 			<br></br><br></br><br></br>
 			<input type="text" id="messageInput" placeholder="message" onChange={(event) =>{
 				setMessage(event.target.value);

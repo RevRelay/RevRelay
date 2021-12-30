@@ -17,14 +17,27 @@ const io = new Server(server, {
 
 io.on("connection", (socket) =>{
 	console.log(`Socket connected: ${socket.id}`);
+	let myRoom;
+	let myUsername;
 
 	socket.on("join room", (data) => {
 		console.log(`User [${data["user"]}] joined room [${data["room"]}]`);
 		socket.join(data["room"]);
+		myRoom = data["room"];
+		myUsername = data["user"];
 		var messageData = {
 			message: `${data["user"]} has connected`
 		};
 		io.to(data["room"]).emit("user joined", messageData);
+	});
+
+	socket.on("leave room", (data) => {
+		console.log(`User [${data["user"]}] left room [${data["room"]}]`);
+		socket.leave(data["room"]);
+		var messageData = {
+			message: `${data["user"]} has disconnected`
+		};
+		io.to(data["room"]).emit("user left", messageData);
 	});
 
 	socket.on("message room", (data) => {
@@ -38,7 +51,6 @@ io.on("connection", (socket) =>{
 	});
 
 	socket.on("active countdown", (data) => {
-//		console.log('began countdown');
 		let counter = 4;
 		io.to(data["room"]).emit("typing countdown", {
 			user: data["user"],
@@ -46,7 +58,6 @@ io.on("connection", (socket) =>{
 		});
 		let counterCountdown = setInterval(() => {
 			counter--;
-//			console.log('counting down: ' + counter);
 			let messageData = {
 				user: data["user"],
 				countdown: counter
@@ -63,12 +74,16 @@ io.on("connection", (socket) =>{
 		io.to(room).emit("voice", audio);
 	});
 
-	socket.on("disconected", () =>{
-		console.log(`Socket disconnected: ${socket.id}`);
+	socket.on("disconnecting", () => {
+		var messageData = {
+			message: `${myUsername} has disconnected`
+		};
+		io.to(myRoom).emit("user left", messageData);
 	});
 });
+
+
 
 server.listen(config["SOCKET_PORT"], () =>{
 	console.log(`Listening to sockets on port ${config["SOCKET_PORT"]}`);
 });
-
