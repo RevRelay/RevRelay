@@ -8,7 +8,7 @@ import {
 	Select,
 	TextField,
 } from "@mui/material";
-import "./Styles/themes.css";
+import "./styles/themes.css";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 

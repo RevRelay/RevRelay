@@ -16,23 +16,29 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) =>{
-	console.log(`User Connected: ${socket.id}`);
+	console.log(`Socket connected: ${socket.id}`);
 
-	socket.on("join_room", (data) =>{
-		socket.join(data);
-		console.log(`User ID: ${socket.id} Join room: ${data}`)
+	socket.on("join room", (data) => {
+		console.log(`User [${data["user"]}] joined room [${data["room"]}]`);
+		socket.join(data["room"]);
 	});
 
-	socket.on("message_sent", (data) =>{
-		console.log(`message from ${socket.id} ${data}`)
+	socket.on("message room", (data) => {
+		console.log(`User [${data["user"]}] sent message [${data["message"]}] to room [${data["room"]}]`);
+		var messageData = {
+			message: data["message"],
+			user: data["user"],
+			timestamp: Date.now()
+		};
+		io.to(data["room"]).emit(messageData);
 	});
 
 	socket.on("disconected", () =>{
-		console.log("User Disconnected", socket.id);
+		console.log(`Socket disconnected: ${socket.id}`);
 	});
 });
 
 server.listen(config["SOCKET_PORT"], () =>{
-	console.log("SERVER Running");
+	console.log(`Listening to sockets on port ${config["SOCKET_PORT"]}`);
 });
 

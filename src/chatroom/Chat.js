@@ -1,29 +1,50 @@
-import '../App.css';
+import '../styles/styles.css';
 import io from 'socket.io-client';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import ReactDOM from 'react-dom';
 import TextField from "@material-ui/core/TextField";
 
 import config from '../config.json';
-
-const socket = io.connect(`${config["URL"]}:${config["SOCKET_PORT"]}`);
+import Message from './Message.jsx';
+import {SocketContext} from '../context/socket.js';
 
 function Chat () {
 	const [userName, setUserName] = useState("");
-	const[room,setRoom] = useState("");
+	const [room, setRoom] = useState("");
 	const [message, setMessage] = useState("");
 
-	const joinRoom = () =>{
+	const joinRoom = () => {
 		if(userName !== "" && room !== ""){
-			socket.emit("join_room", room)
+			socket.emit("join room", {
+				user: userName,
+				room: room
+			});
 		}
 	}
-	const sendMessage = () =>{
-		if(message !== null){
-			socket.emit("message_sent", message)
-		} else {
-			console.log('must enter a message')
+	const sendMessage = () => {
+		if(message !== null && room !== ""){
+			socket.emit("message room", {
+				user: userName,
+				room: room,
+				message: message
+			});
 		}
 	}
+
+	const receiveMessage = useCallback((data) => {
+		ReactDOM.render(
+			<Message text={data["message"]} time={new Date(data["timestamp"]).toLocaleString()} user={data["user"]}/>,
+			document.getElementById('messages')
+		);
+	}, []);
+
+	useEffect(() => {
+		socket.on("message sent", receiveMessage);
+
+		return () => {
+			socket.off("message sent", receiveMessage);
+		};
+	}, [socket, receiveMessage]);
 
 	return (
 		<div className="App">
@@ -45,6 +66,8 @@ function Chat () {
 			<button onClick={sendMessage}>Send message...</button>
 			<br></br><br></br>
 			<TextField name="name"  value={message} onChange={(e) => sendMessage(e)} label="Name" />
+			<div id="messages"></div>
+//			<Message text="abc" time={new Date(Date.now()).toLocaleString()} />
 		</div>
 	);
 }
