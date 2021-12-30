@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Button, Container} from "@mui/material";
-import APIQuery from "./APIQuery";
+import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
 import LoginSplash from "./LoginSplash";

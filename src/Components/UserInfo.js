@@ -35,6 +35,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 } from "react-router-dom";
 import parseJWT from "../parseJWT";
 import axios from "axios";
+import APIQuery from "../API/APIQuery";
 
 function UserInfo({JWT}){
 	const [userInput, setUserInput] = useState({
@@ -50,7 +51,9 @@ function UserInfo({JWT}){
 
 	const Submit = async (e) => {		
 		var uID = parseJWT(JWT).ID;
-		const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
+		const response = await APIQuery.get("/users/"+uID, {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
+		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
+		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		console.log(response);
 		setUserInput({username:response.data.username, 
 			firstName:response.data.firstName, 
@@ -188,6 +191,7 @@ function UserInfo({JWT}){
 					</Box>
 				</Grid>
 			</Grid>
+			<Button onClick={(x)=>Submit}>Test Refresh</Button>
 		</>
 	)
 }
