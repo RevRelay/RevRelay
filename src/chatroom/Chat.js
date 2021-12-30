@@ -10,9 +10,9 @@ import ReactDOM from 'react-dom';
 import TextField from "@material-ui/core/TextField";
 
 import config from '../config.json';
-import Message from './Message.jsx';
-import SystemMessage from './SystemMessage.jsx';
-import Active from './Active.jsx';
+import Message from './Message.js';
+import SystemMessage from './SystemMessage.js';
+import Active from './Active.js';
 import {SocketContext} from '../context/socket.js';
 
 function Chat () {
