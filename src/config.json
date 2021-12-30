@@ -1,5 +1,5 @@
 {
-	"URL": "http://krakenmeister.com",
-	"APP_PORT": 5000,
+	"URL": "http://localhost",
+	"APP_PORT": 3000,
 	"SOCKET_PORT": 3001
 }
