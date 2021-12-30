@@ -69,6 +69,14 @@ io.on("connection", (socket) =>{
 		}, 1000);
 	});
 
+	socket.on("not active", (data) => {
+		let messageData = {
+			user: data["user"],
+			countdown: -1
+		};
+		io.to(data["room"]).emit("typing countdown", messageData);
+	});
+
 	socket.on("radio", (audio, room) => {
 		console.log('received audio');
 		io.to(room).emit("voice", audio);

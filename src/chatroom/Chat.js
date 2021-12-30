@@ -30,8 +30,6 @@ function Chat () {
 
 	const leaveRoom = (r) => {
 		if (userName !== "") {
-			setMessageList([]);
-			setUsersTyping([]);
 			socket.emit("leave room", {
 				user: userName,
 				room: r
@@ -84,20 +82,31 @@ function Chat () {
 		}
 	}
 
+	const setNotActive = () => {
+		for (var i=0; i<usersTyping.length; i++) {
+			if (usersTyping[i]["username"] == userName) {
+				socket.emit("not active", {
+					user: userName,
+					room: room
+				});
+			}
+		}
+	}
+
 	const setCountdown = useCallback((data) => {
 		let userActive = false;
 		let newList = usersTyping;
 		for (var i=0; i<usersTyping.length; i++) {
 			if (usersTyping[i]["username"] == data["user"]) {
 				userActive = true;
-				if (data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) {
+				if ((data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) || (data["countdown"] == -1)) {
 					newList.splice(i, 1);
 				} else {
 					newList[i]["countdown"] = data["countdown"];
 				}
 			}
 		}
-		if (!userActive && data["countdown"] > 0) {
+		if (!userActive && data["countdown"] === 4) {
 			newList.push({
 				username: data["user"],
 				countdown: data["countdown"]
@@ -182,6 +191,8 @@ function Chat () {
 				if (inputValue !== room && inputValue !== "") {
 					if (room !== "") {
 						leaveRoom(room);
+						setUsersTyping([]);
+						setMessageList([]);
 					}
 					setRoom(inputValue);
 				}
@@ -193,7 +204,13 @@ function Chat () {
 				setActive();
 			}}
 			/>
-			<button onClick={sendMessage}>Send message...</button>
+			<button onClick={() => {
+				sendMessage();
+				let messageInput = document.getElementById('messageInput');
+				messageInput.value = "";
+				setMessage("");
+				setNotActive();
+			}}>Send message...</button>
 			<br></br><br></br>
 			<button onClick={sendAudio}>Send audio to room</button>
 			<br></br><br></br>
