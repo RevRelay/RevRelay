@@ -16,8 +16,8 @@ ReactDOM.render(
 					<router.Route path="chatroom" element={<Chat />}/>
 				</router.Routes>
 			</router.BrowserRouter>
-		</React.StrictMode>,
-	</SocketContext.Provider>
+		</React.StrictMode>
+	</SocketContext.Provider>,
  	document.getElementById('root')
 );
 

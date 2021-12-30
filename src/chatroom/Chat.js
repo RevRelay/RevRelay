@@ -1,17 +1,21 @@
 import '../styles/styles.css';
 import io from 'socket.io-client';
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import ReactDOM from 'react-dom';
 import TextField from "@material-ui/core/TextField";
 
 import config from '../config.json';
 import Message from './Message.jsx';
+import SystemMessage from './SystemMessage.jsx';
 import {SocketContext} from '../context/socket.js';
 
 function Chat () {
 	const [userName, setUserName] = useState("");
 	const [room, setRoom] = useState("");
 	const [message, setMessage] = useState("");
+	const [messageList, setMessageList] = useState([]);
+
+	const socket = useContext(SocketContext);
 
 	const joinRoom = () => {
 		if(userName !== "" && room !== ""){
@@ -21,6 +25,7 @@ function Chat () {
 			});
 		}
 	}
+
 	const sendMessage = () => {
 		if(message !== null && room !== ""){
 			socket.emit("message room", {
@@ -32,19 +37,28 @@ function Chat () {
 	}
 
 	const receiveMessage = useCallback((data) => {
-		ReactDOM.render(
-			<Message text={data["message"]} time={new Date(data["timestamp"]).toLocaleString()} user={data["user"]}/>,
-			document.getElementById('messages')
-		);
+		console.log('received message');
+		let newList = messageList;
+		newList.push(<Message text={data["message"]} time={new Date(data["timestamp"]).toLocaleString()} author={data["user"]}/>);
+		setMessageList([...newList]);
+	}, []);
+
+	const systemMessage = useCallback((data) => {
+		console.log('system message');
+		let newList = messageList;
+		newList.push(<SystemMessage text={data["message"]}/>);
+		setMessageList([...newList]);
 	}, []);
 
 	useEffect(() => {
 		socket.on("message sent", receiveMessage);
+		socket.on("user joined", systemMessage);
 
 		return () => {
 			socket.off("message sent", receiveMessage);
+			socket.off("user joined", systemMessage);
 		};
-	}, [socket, receiveMessage]);
+	}, [socket, receiveMessage, systemMessage]);
 
 	return (
 		<div className="App">
@@ -65,9 +79,9 @@ function Chat () {
 			/>
 			<button onClick={sendMessage}>Send message...</button>
 			<br></br><br></br>
-			<TextField name="name"  value={message} onChange={(e) => sendMessage(e)} label="Name" />
-			<div id="messages"></div>
-//			<Message text="abc" time={new Date(Date.now()).toLocaleString()} />
+			<div id="messages">
+				{messageList}
+			</div>
 		</div>
 	);
 }

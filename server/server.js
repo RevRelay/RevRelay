@@ -21,6 +21,10 @@ io.on("connection", (socket) =>{
 	socket.on("join room", (data) => {
 		console.log(`User [${data["user"]}] joined room [${data["room"]}]`);
 		socket.join(data["room"]);
+		var messageData = {
+			message: `${data["user"]} has connected`
+		};
+		io.to(data["room"]).emit("user joined", messageData);
 	});
 
 	socket.on("message room", (data) => {
@@ -30,7 +34,7 @@ io.on("connection", (socket) =>{
 			user: data["user"],
 			timestamp: Date.now()
 		};
-		io.to(data["room"]).emit(messageData);
+		io.to(data["room"]).emit("message sent", messageData);
 	});
 
 	socket.on("disconected", () =>{
