@@ -23,8 +23,10 @@ import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Logout } from "@mui/icons-material";
 
-export default function Nav({ themes, theme, updateTheme }) {
+export default function Nav({ themes, theme, updateTheme, setToken }) {
+	const [theme, updateTheme] = useState(0);
 	const [sidebar, updateSidebar] = useState(false);
 
 	const toggleDrawer = (open) => (event) => {
@@ -110,12 +112,16 @@ export default function Nav({ themes, theme, updateTheme }) {
 							<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 								RevRelay
 							</Typography>
-							<Button color="inherit" onClick={(x) => navigate("/register")}>
-								Register
-							</Button>
-							<Button color="inherit" onClick={(x) => navigate("/login")}>
-								Login
-							</Button>
+							{token?
+							<Button color="inherit" onClick={() => {setToken(""); navigate("/login")}} >Logout</Button>:
+							<React.Fragment>
+								<Button color="inherit" onClick={(x) => navigate("/register")}>
+									Register
+								</Button>
+								<Button color="inherit" onClick={(x) => navigate("/login")}>
+									Login
+								</Button> 
+							</React.Fragment> }
 						</Toolbar>
 					</AppBar>
 				</Box>
