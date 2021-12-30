@@ -24,7 +24,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
-import { sidebarList1, sidebarList2 } from "./SidebarLists.js";
+import SidebarList from "./SidebarList.js";
 
 export default function Nav({ themes, activeTheme, updateActiveTheme, token, setToken }) {
 	const [sidebar, updateSidebar] = useState(false);
@@ -51,9 +51,7 @@ export default function Nav({ themes, activeTheme, updateActiveTheme, token, set
 						onKeyDown={toggleDrawer(false)}
 						style={{ backgroundColor: Color(2, activeTheme, themes) }}
 					>
-						{sidebarList1()}	
-						<Divider />
-						{sidebarList2()}
+						{SidebarList()}
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
@@ -93,7 +91,11 @@ export default function Nav({ themes, activeTheme, updateActiveTheme, token, set
 								RevRelay
 							</Typography>
 							{token?
-							<Button color="inherit" onClick={() => {setToken(""); navigate("/login")}} >Logout</Button>:
+							<React.Fragment>
+								<Button color="inherit" onClick={() => {setToken(""); navigate("/login")}} >
+									Logout
+								</Button>
+							</React.Fragment>:
 							<React.Fragment>
 								<Button color="inherit" onClick={(x) => navigate("/register")}>
 									Register
