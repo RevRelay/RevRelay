@@ -4,6 +4,7 @@ import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
 import Page from "./Components/Page.js";
+import UserInfo from "./Components/UserInfo.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -19,6 +20,7 @@ const themes = [
 	"80s",
 	"90s",
 ];
+
 //Comment For Git
 function SwitchBoard({ theme }) {
 	return (
@@ -30,10 +32,10 @@ function SwitchBoard({ theme }) {
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
-					<Route
-						path="profile"
-						element={<Page theme={theme} themes={themes} />}
-					/>
+					<Route path="profile">
+						<Route index element={<Page theme={theme} themes={themes} />} />
+						<Route path="userInfo" element={<UserInfo />} />
+					</Route>
 				</Route>
 				<Route path="group">
 					<Route index element={<Groups />} />
