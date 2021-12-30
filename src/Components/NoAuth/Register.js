@@ -90,7 +90,9 @@ export default function Register({ setToken }) {
         }
     }
 
-    //Returning React HTML information to render a register page
+    /**
+     * The register page returned with react
+     */
     return (
             <Container className="register">
                 <Container className="form">

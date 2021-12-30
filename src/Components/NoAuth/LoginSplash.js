@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom'
 import React, {useEffect } from 'react'
 import { BufferGeometry, DoubleSide } from 'three';
 import { BufferAttribute } from 'three';
