@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Button} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import APIQuery from "./APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
@@ -32,8 +32,8 @@ export default function Login({setToken}) {
     }
 
     return (
-        <div className="login">
-            <div className="form">
+        <Container className="login">
+            <Container className="form">
                 <form onSubmit={submitButton}>
                     <h2>Login here</h2>
                     <label>
@@ -44,14 +44,13 @@ export default function Login({setToken}) {
                         <p>Password</p>
                         <input type="text" id="password" onChange={e => setPassword(e.target.value)} />
                     </label>
-                    <div className="button" >
+                    <Container className="button" >
                         <Button color="inherit" type="submit" variant="h5">Login</Button>
-                    </div>
+                    </Container>
                 </form>
                 <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
-             </div>
-             <LoginSplash />
-        </div>
+             </Container>
+        </Container>
     )
     //<LoginSplash /> Used for background for login page
 }
