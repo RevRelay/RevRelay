@@ -3,6 +3,11 @@ import Nav from "./Components/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
+import { useState } from "react";
+import Login from "./Components/NoAuth/Login.js";
+import LoginSplash from "./Components/NoAuth/LoginSplash.js";
+
+
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -20,12 +25,14 @@ const themes = [
 ];
 //Comment For Git
 function SwitchBoard() {
+	const [token, setToken] = useState();
+	console.log(token);
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route path="register" element={<Registration />} />
-				<Route path="login" element={<Login />} />
+				<Route path="login" element={<Login setToken={setToken} />} />
+				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
@@ -44,9 +51,9 @@ function SwitchBoard() {
 function Home() {
 	return <p>HOME</p>;
 }
-function Login() {
-	return <p>Login</p>;
-}
+// function Login() {
+// 	return <p>Login</p>;
+// }
 function Registration() {
 	return <p>Registration</p>;
 }
