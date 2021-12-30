@@ -4,8 +4,8 @@ import APIQuery from "./APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
 import LoginSplash from "./LoginSplash";
-import PropTypes from 'prop-types'
-import './Auth.css'
+import PropTypes from 'prop-types';
+import './Auth.css';
 
 
 const apiLoginUrl = '/public/users/login'
@@ -27,11 +27,9 @@ export default function Login({setToken}) {
             username,
             password
         });
-        console.log(jwt);
-        console.log(setToken);
         setToken(jwt);
-        //console.log(setToken);
-        console.log(setToken)
+        console.log(jwt);
+        jwt ? navigate("/") : alert("Unable to log in.");
     }
 
     return (
@@ -53,10 +51,9 @@ export default function Login({setToken}) {
                 </form>
                 <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
              </div>
-            <LoginSplash />
         </div>
     )
-
+    //<LoginSplash /> Used for background for login page
 }
 
 Login.propTypes = {

@@ -5,6 +5,7 @@ import "./Styles/themes.css";
 import Color from "./Components/Color.js";
 import { useState } from "react";
 import Login from "./Components/NoAuth/Login.js";
+import {default as Registration} from "./Components/NoAuth/Register.js";
 import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 
 
@@ -24,9 +25,13 @@ const themes = [
 	"90s",
 ];
 //Comment For Git
-function SwitchBoard() {
-	const [token, setToken] = useState();
-	console.log(token);
+function SwitchBoard({token, setToken}) {
+	/**
+	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
+	 * and will hold a JWT if there is currently a user logged in.
+	 * 
+	 * Use the token object passed above if you need to find any
+	 */
 	return (
 		<Routes>
 			<Route path="/">
@@ -53,10 +58,10 @@ function Home() {
 }
 // function Login() {
 // 	return <p>Login</p>;
+// // }
+// function Registration() {
+// 	return <p>Registration</p>;
 // }
-function Registration() {
-	return <p>Registration</p>;
-}
 
 function Users() {
 	return <p>Users</p>;
@@ -83,10 +88,11 @@ function GroupProfile() {
 }
 
 function App() {
+	const [token, setToken] = useState();
 	return (
 		<>
-			<Nav themes={themes} />
-			<SwitchBoard />
+			<Nav themes={themes} token={token} setToken={setToken}/>
+			<SwitchBoard token={token} setToken={setToken}/>
 		</>
 	);
 }

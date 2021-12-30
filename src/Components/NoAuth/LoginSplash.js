@@ -95,7 +95,7 @@ function Pretty(props) {
 	var materialMesh = new MeshPhongMaterial( {
 		color: 0xff0000,
 		polygonOffset: true,
-		polygonOffsetFactor: 1, // positive value pushes polygon further away
+		polygonOffsetFactor: 0, // positive value pushes polygon further away
 		polygonOffsetUnits: 1,
 		fog:false
 	} );
@@ -108,7 +108,7 @@ function Pretty(props) {
 	mesh.rotateX(30)
 	scene.add(line)
 	mesh.renderOrder = 1
-	line.renderOrder=0;
+	line.renderOrder = 0;
 	let yOffset = -100;
 	function animate() {
 		requestAnimationFrame(animate)
