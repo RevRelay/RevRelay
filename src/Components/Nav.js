@@ -25,8 +25,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 
-export default function Nav({ themes, theme, updateTheme, setToken }) {
-	const [theme, updateTheme] = useState(0);
+export default function Nav({ themes, activeTheme, updateActiveTheme, token, setToken }) {
 	const [sidebar, updateSidebar] = useState(false);
 
 	const toggleDrawer = (open) => (event) => {
@@ -41,7 +40,7 @@ export default function Nav({ themes, theme, updateTheme, setToken }) {
 	};
 	let navigate = useNavigate();
 	return (
-		<div style={{ color: Color(3, theme, themes) }}>
+		<div style={{ color: Color(3, activeTheme, themes) }}>
 			<div className="App">
 				<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 					<Box
@@ -49,7 +48,7 @@ export default function Nav({ themes, theme, updateTheme, setToken }) {
 						role="presentation"
 						onClick={toggleDrawer(false)}
 						onKeyDown={toggleDrawer(false)}
-						style={{ backgroundColor: Color(2, theme, themes) }}
+						style={{ backgroundColor: Color(2, activeTheme, themes) }}
 					>
 						<List>
 							{["Inbox", "Starred", "Send email", "Drafts"].map(
@@ -79,7 +78,7 @@ export default function Nav({ themes, theme, updateTheme, setToken }) {
 							id="demo-simple-select"
 							defaultValue={0}
 							onChange={(x) => {
-								updateTheme(x.target.value);
+								updateActiveTheme(x.target.value);
 							}}
 							style={{ marginLeft: "5%", width: "90%" }}
 						>
@@ -96,7 +95,7 @@ export default function Nav({ themes, theme, updateTheme, setToken }) {
 				<Box sx={{ flexGrow: 1 }}>
 					<AppBar
 						position="static"
-						style={{ backgroundColor: Color(1, theme, themes) }}
+						style={{ backgroundColor: Color(1, activeTheme, themes) }}
 					>
 						<Toolbar>
 							<IconButton

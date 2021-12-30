@@ -25,7 +25,7 @@ const themes = [
 ];
 
 //Comment For Git
-function SwitchBoard({token, setToken, theme }) {
+function SwitchBoard({token, setToken, activeTheme, updateActiveTheme }) {
 	/**
 	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
 	 * and will hold a JWT if there is currently a user logged in.
@@ -42,7 +42,7 @@ function SwitchBoard({token, setToken, theme }) {
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
 					<Route path="profile">
-						<Route index element={<Page theme={theme} themes={themes} />} />
+						<Route index element={<Page theme={activeTheme} themes={updateActiveTheme} />} />
 						<Route path="userInfo" element={<UserInfo />} />
 					</Route>
 				</Route>
@@ -92,10 +92,11 @@ function GroupProfile() {
 
 function App() {
 	const [token, setToken] = useState();
+	const [activeTheme, updateActiveTheme] = useState(0);
 	return (
 		<>
-			<Nav themes={themes} token={token} setToken={setToken}/>
-			<SwitchBoard token={token} setToken={setToken} theme={theme}/>
+			<Nav themes={themes} activeTheme={activeTheme} updateActiveTheme={updateActiveTheme} token={token} setToken={setToken}/>
+			<SwitchBoard token={token} setToken={setToken} activeTheme={activeTheme} updateActiveTheme = {updateActiveTheme}/>
 		</>
 	);
 }
