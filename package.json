@@ -12,7 +12,11 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+<<<<<<< HEAD
     "cors": "^2.8.5",
+=======
+    "axios": "^0.24.0",
+>>>>>>> bb5c92e86c1691cc8930cf28cb31f6e74aebf415
     "enzyme": "^3.11.0",
     "express": "^4.17.2",
     "jest": "^27.4.5",
@@ -23,7 +27,11 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "sass": "^1.45.1",
+<<<<<<< HEAD
     "socket.io": "^4.4.0",
+=======
+    "three": "^0.136.0",
+>>>>>>> bb5c92e86c1691cc8930cf28cb31f6e74aebf415
     "web-vitals": "^2.1.2"
   },
   "scripts": {
