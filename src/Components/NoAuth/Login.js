@@ -71,6 +71,7 @@ export default function Login({ setToken }) {
                     </Container>
                 </form>
                 <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+             <LoginSplash />
              </Container>
         </Container>
     )
