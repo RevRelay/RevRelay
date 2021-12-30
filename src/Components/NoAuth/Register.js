@@ -6,17 +6,29 @@ import {Button, Container} from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import './Auth.css';
 
-//Constants to query the API
+/**
+ * The url of the appended register url
+ */
 const apiRegisterUrl = '/public/users/register'
 
-//Axios query to create a user
+/**
+ * Axios query to create a user
+ * 
+ * @param {*} user The user to be created
+ * @returns The JWT of the created user in the form data{jwt{*KEY*}}
+ */
 async function registerUser(user) {
     return await APIQuery.post(apiRegisterUrl,
         JSON.stringify(user))
         .then(data => data)
-        //.catch(error => error.response)
 }
 
+/**
+ * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message
+ * 
+ * @param {} user The object to check for validity
+ * @returns returns negation of truthy or falsy of the image
+ */
 function validInputRegister(user){
     let message = "";
     if( !(user.username && user.username.length >= userLen )){
@@ -37,11 +49,16 @@ function validInputRegister(user){
     return(!message);
 }
 
-//Registers a user
+/**
+ * Registering a user
+ * 
+ * @param {*} param0 The token to return the JWT to the parent function
+ * @returns returns the React webpage for registering
+ */
 export default function Register({ setToken }) {
-    //Defining useNavigate for use later
-    // const navigate = useNavigate();
-    //React useState to watch for userName and password
+    /**
+     * React useState to watch for userName and password
+     */
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
@@ -73,7 +90,9 @@ export default function Register({ setToken }) {
         }
     }
 
-    //Returning React HTML information to render a register page
+    /**
+     * The register page returned with react
+     */
     return (
             <Container className="register">
                 <Container className="form">
