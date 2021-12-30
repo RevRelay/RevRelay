@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {useNavigate} from 'react-router-dom'
 import APIQuery from "./APIQuery";
-import {Button} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import './Auth.css';
 
@@ -75,8 +75,8 @@ export default function Register({ setToken }) {
 
     //Returning React HTML information to render a register page
     return (
-            <div className="register">
-                <div className="form">
+            <Container className="register">
+                <Container className="form">
                 <h1>Welcome to the Future of Social Media</h1>
                     <form onSubmit={submitButton}>
                         <label>
@@ -95,13 +95,13 @@ export default function Register({ setToken }) {
                             <p>Display Name</p>
                             <input type="displayName" onChange={e => setDisplayName(e.target.value)} />
                         </label>
-                        <div className="button">
+                        <Container className="button">
                             <Button color="inherit" type="submit">Submit</Button>
-                        </div>
+                        </Container>
                     </form>
                     <Button color="inherit" onClick={(x) => navigate("/login")}>Already have an account? Click here.</Button>
-                </div>
-            </div>
+                </Container>
+            </Container>
     )
 }
 //<LoginSplash /> Used for background for register page
