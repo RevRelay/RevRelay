@@ -37,6 +37,11 @@ io.on("connection", (socket) =>{
 		io.to(data["room"]).emit("message sent", messageData);
 	});
 
+	socket.on("radio", (audio, room) => {
+		console.log('received audio');
+		io.to(room).emit("voice", audio);
+	});
+
 	socket.on("disconected", () =>{
 		console.log(`Socket disconnected: ${socket.id}`);
 	});

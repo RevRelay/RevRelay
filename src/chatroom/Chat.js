@@ -50,15 +50,58 @@ function Chat () {
 		setMessageList([...newList]);
 	}, []);
 
+	const sendAudio = () => {
+		const constraints = { audio: true };
+		console.log('audio button pressed');
+		navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
+			console.log('received access to microphone');
+			let mediaRecorder = new MediaRecorder(mediaStream);
+			mediaRecorder.onstart = function (e) {
+				this.chunks = [];
+			};
+			mediaRecorder.ondataavailable = function (e) {
+				this.chunks.push(e.data);
+			};
+			mediaRecorder.onstop = function (e) {
+				var blob = new Blob(this.chunks, {
+					'type': 'audio/ogg; codecs=opus'
+				});
+				console.log('sending audio');
+				socket.emit('radio', blob, room);
+			};
+
+			//Start recording
+			mediaRecorder.start();
+
+			//Stop recording after 5 seconds and broadcast it to server
+			setTimeout(function() {
+				mediaRecorder.stop()
+			}, 5000);
+		});
+	}
+
+	const playAudio = useCallback((arrayBuffer) => {
+		console.log('playing audio!');
+		let blob = new Blob([arrayBuffer], {
+			'type': 'audio/ogg; codecs=opus'
+		});
+		let audio = document.createElement('audio');
+		audio.src = window.URL.createObjectURL(blob);
+		audio.play();
+	});
+
 	useEffect(() => {
 		socket.on("message sent", receiveMessage);
 		socket.on("user joined", systemMessage);
 
+		socket.on("voice", playAudio);
+
 		return () => {
 			socket.off("message sent", receiveMessage);
 			socket.off("user joined", systemMessage);
+			socket.off("voice", playAudio);
 		};
-	}, [socket, receiveMessage, systemMessage]);
+	}, [socket, receiveMessage, systemMessage, playAudio]);
 
 	return (
 		<div className="App">
@@ -78,6 +121,8 @@ function Chat () {
 			}}
 			/>
 			<button onClick={sendMessage}>Send message...</button>
+			<br></br><br></br>
+			<button onClick={sendAudio}>Send audio to room</button>
 			<br></br><br></br>
 			<div id="messages">
 				{messageList}
