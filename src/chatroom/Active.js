@@ -2,7 +2,6 @@
 import React from 'react'
 
 function Active({typing}) {
-
 		if (!{typing} || typing.length === 0) {
 			return <p className="active-typing"></p>;
 		}
