@@ -1,8 +1,8 @@
 import react from "react";
-import Nav from "./Components/Nav.js";
+import Nav from "./components/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./styles/themes.css";
-import Color from "./Components/Color.js";
+import Color from "./components/Color.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
