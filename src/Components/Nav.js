@@ -24,8 +24,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function Nav({ themes }) {
-	const [theme, updateTheme] = useState(0);
+export default function Nav({ themes, theme, updateTheme }) {
 	const [sidebar, updateSidebar] = useState(false);
 
 	const toggleDrawer = (open) => (event) => {
@@ -40,7 +39,7 @@ export default function Nav({ themes }) {
 	};
 	let navigate = useNavigate();
 	return (
-		<React.Fragment style={{ color: Color(3, theme, themes) }}>
+		<div style={{ color: Color(3, theme, themes) }}>
 			<div className="App">
 				<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 					<Box
@@ -95,7 +94,7 @@ export default function Nav({ themes }) {
 				<Box sx={{ flexGrow: 1 }}>
 					<AppBar
 						position="static"
-						style={{ backgroundColor: Color(2, theme, themes) }}
+						style={{ backgroundColor: Color(1, theme, themes) }}
 					>
 						<Toolbar>
 							<IconButton
@@ -121,6 +120,6 @@ export default function Nav({ themes }) {
 					</AppBar>
 				</Box>
 			</div>
-		</React.Fragment>
+		</div>
 	);
 }

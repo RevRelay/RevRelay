@@ -1,8 +1,9 @@
-import react from "react";
+import react, { useState } from "react";
 import Nav from "./Components/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
+import Page from "./Components/Page.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -19,7 +20,7 @@ const themes = [
 	"90s",
 ];
 //Comment For Git
-function SwitchBoard() {
+function SwitchBoard({ theme }) {
 	return (
 		<Routes>
 			<Route path="/">
@@ -29,7 +30,10 @@ function SwitchBoard() {
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
-					<Route path="profile" element={<UserProfile />} />
+					<Route
+						path="profile"
+						element={<Page theme={theme} themes={themes} />}
+					/>
 				</Route>
 				<Route path="group">
 					<Route index element={<Groups />} />
@@ -76,10 +80,11 @@ function GroupProfile() {
 }
 
 function App() {
+	const [theme, updateTheme] = useState(0);
 	return (
 		<>
-			<Nav themes={themes} />
-			<SwitchBoard />
+			<Nav themes={themes} theme={theme} updateTheme={updateTheme} />
+			<SwitchBoard theme={theme} />
 		</>
 	);
 }
