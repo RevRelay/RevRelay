@@ -50,6 +50,9 @@ export default function Login({ setToken }) {
         jwt ? navigate("/") : alert("Unable to log in.");
     }
 
+    /**
+     * The login page returned with React
+     */
     return (
         <Container className="login">
             <Container className="form">
