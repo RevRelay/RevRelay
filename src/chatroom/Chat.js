@@ -48,18 +48,18 @@ function Chat () {
 	}
 
 	const receiveMessage = useCallback((data) => {
-		console.log('received message');
-		let newList = messageList;
-		newList.push(<Message text={data["message"]} time={new Date(data["timestamp"]).toLocaleString()} author={data["user"]}/>);
-		setMessageList([...newList]);
+		let m = <Message text={data["message"]} time={new Date().toLocaleString()} author={data["user"]} />;
+		setMessageList((list) => [...list, m]);
 	}, []);
 
 	const systemMessage = useCallback((data) => {
-		console.log('system message');
-		let newList = messageList;
-		newList.push(<SystemMessage text={data["message"]}/>);
-		setMessageList([...newList]);
+		let m = <SystemMessage text={data["message"]}/>;
+		setMessageList((list) => [...list, m]);
 	}, []);
+
+	const clearMessages = () => {
+		setMessageList((list) => []);
+	};
 
 	const setActive = () => {
 		let userActive = false;
@@ -168,12 +168,6 @@ function Chat () {
 			socket.off("user left", systemMessage);
 			socket.off("typing countdown", setCountdown);
 			socket.off("voice", playAudio);
-
-			window.addEventListener("beforeunload", function (e) {
-				if (room !== "") {
-					leaveRoom(room);
-				}
-			});
 		};
 	}, [socket, receiveMessage, systemMessage, playAudio, setCountdown]);
 
@@ -191,8 +185,7 @@ function Chat () {
 				if (inputValue !== room && inputValue !== "") {
 					if (room !== "") {
 						leaveRoom(room);
-						setUsersTyping([]);
-						setMessageList([]);
+						setMessageList((t) => []);
 					}
 					setRoom(inputValue);
 				}
@@ -213,6 +206,8 @@ function Chat () {
 			}}>Send message...</button>
 			<br></br><br></br>
 			<button onClick={sendAudio}>Send audio to room</button>
+			<br></br>
+			<button onClick={clearMessages}>Clear message</button>
 			<br></br><br></br>
 			<Active typing={usersTyping} />
 			<br></br>
