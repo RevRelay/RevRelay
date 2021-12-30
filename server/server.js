@@ -37,6 +37,27 @@ io.on("connection", (socket) =>{
 		io.to(data["room"]).emit("message sent", messageData);
 	});
 
+	socket.on("active countdown", (data) => {
+//		console.log('began countdown');
+		let counter = 4;
+		io.to(data["room"]).emit("typing countdown", {
+			user: data["user"],
+			countdown: counter
+		});
+		let counterCountdown = setInterval(() => {
+			counter--;
+//			console.log('counting down: ' + counter);
+			let messageData = {
+				user: data["user"],
+				countdown: counter
+			};
+			io.to(data["room"]).emit("typing countdown", messageData);
+			if (counter == 0) {
+				clearInterval(counterCountdown);
+			}
+		}, 1000);
+	});
+
 	socket.on("radio", (audio, room) => {
 		console.log('received audio');
 		io.to(room).emit("voice", audio);

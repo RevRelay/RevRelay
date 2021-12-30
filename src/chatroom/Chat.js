@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import config from '../config.json';
 import Message from './Message.jsx';
 import SystemMessage from './SystemMessage.jsx';
+import Active from './Active.jsx';
 import {SocketContext} from '../context/socket.js';
 
 function Chat () {
@@ -14,6 +15,7 @@ function Chat () {
 	const [room, setRoom] = useState("");
 	const [message, setMessage] = useState("");
 	const [messageList, setMessageList] = useState([]);
+	const [usersTyping, setUsersTyping] = useState([]);
 
 	const socket = useContext(SocketContext);
 
@@ -49,6 +51,49 @@ function Chat () {
 		newList.push(<SystemMessage text={data["message"]}/>);
 		setMessageList([...newList]);
 	}, []);
+
+	const setActive = () => {
+		let userActive = false;
+		for (var i=0; i<usersTyping.length; i++) {
+			if (usersTyping[i]["username"] == userName) {
+				userActive = true;
+				if (usersTyping[i]["countdown"] < 4) {
+					socket.emit("active countdown", {
+						user: userName,
+						room: room
+					});
+				}
+			}
+		}
+		if (!userActive) {
+			socket.emit("active countdown", {
+				user: userName,
+				room: room
+			});
+		}
+	}
+
+	const setCountdown = useCallback((data) => {
+		let userActive = false;
+		let newList = usersTyping;
+		for (var i=0; i<usersTyping.length; i++) {
+			if (usersTyping[i]["username"] == data["user"]) {
+				userActive = true;
+				if (data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) {
+					newList.splice(i, 1);
+				} else {
+					newList[i]["countdown"] = data["countdown"];
+				}
+			}
+		}
+		if (!userActive && data["countdown"] > 0) {
+			newList.push({
+				username: data["user"],
+				countdown: data["countdown"]
+			});
+		}
+		setUsersTyping([...newList]);
+	});
 
 	const sendAudio = () => {
 		const constraints = { audio: true };
@@ -93,15 +138,16 @@ function Chat () {
 	useEffect(() => {
 		socket.on("message sent", receiveMessage);
 		socket.on("user joined", systemMessage);
-
+		socket.on("typing countdown", setCountdown);
 		socket.on("voice", playAudio);
 
 		return () => {
 			socket.off("message sent", receiveMessage);
 			socket.off("user joined", systemMessage);
+			socket.off("typing countdown", setCountdown);
 			socket.off("voice", playAudio);
 		};
-	}, [socket, receiveMessage, systemMessage, playAudio]);
+	}, [socket, receiveMessage, systemMessage, playAudio, setCountdown]);
 
 	return (
 		<div className="App">
@@ -118,12 +164,15 @@ function Chat () {
 			<br></br><br></br><br></br>
 			<input type="text" id="messageInput" placeholder="message" onChange={(event) =>{
 				setMessage(event.target.value);
+				setActive();
 			}}
 			/>
 			<button onClick={sendMessage}>Send message...</button>
 			<br></br><br></br>
 			<button onClick={sendAudio}>Send audio to room</button>
 			<br></br><br></br>
+			<Active typing={usersTyping} />
+			<br></br>
 			<div id="messages">
 				{messageList}
 			</div>
