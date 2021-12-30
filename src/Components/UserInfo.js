@@ -70,10 +70,11 @@ function UserInfo({JWT}){
 				direction="row"
   				justifyContent="center"
   				alignItems="center"
+				align="center"
 			>
 				<Grid
 					item
-					xs={2}
+					xs={3}
 					justifyContent="center"
 					align="center"
 				>
@@ -82,21 +83,23 @@ function UserInfo({JWT}){
 						<AddAPhotoIcon />
 					</IconButton>
 					<br/>
-					<Typography variant="h5">
-						{userInput.displayName}
-						<IconButton>
-							<EditIcon />
-						</IconButton>
-					</Typography>
-					<Typography variant="subtitle1">
-						{userInput.email}
-						<IconButton>
-							<EditIcon />
-						</IconButton>
-					</Typography>
+					<Box width="50%">
+						<Typography variant="h5" align="right">
+							{userInput.displayName}
+							<IconButton size="small">
+								<EditIcon  fontSize="inherit"/>
+							</IconButton>
+						</Typography>
+						<Typography variant="subtitle1" align="right">
+							{userInput.email}
+							<IconButton size="small">
+								<EditIcon  fontSize="inherit"/>
+							</IconButton>
+						</Typography>
+					</Box>
 				</Grid>
 				<Divider orientation="vertical" flexItem></Divider>
-				<Grid item xs={8}>
+				<Grid item xs={7} align="left">
 					<Box>
 						<Typography variant="h4">
 						Profile Settings
@@ -106,7 +109,7 @@ function UserInfo({JWT}){
 							container
 							direction="row"
 						>
-							<Grid item xs={2}>
+							<Grid item xs={3}>
 								<Typography style={{ fontWeight: 600 }}>
 									Username
 								</Typography>
@@ -116,12 +119,12 @@ function UserInfo({JWT}){
 									{userInput.username}
 								</Typography>
 							</Grid>
-							<Grid item xs={8}>
-								<IconButton>
-									<EditIcon />
+							<Grid item xs={7}>
+								<IconButton size="small">
+									<EditIcon  fontSize="inherit"/>
 								</IconButton>
 							</Grid>
-							<Grid item xs={2}>
+							<Grid item xs={3}>
 								<Typography style={{ fontWeight: 600 }}>
 									Password
 								</Typography>
@@ -131,12 +134,12 @@ function UserInfo({JWT}){
 									{'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}
 								</Typography>
 							</Grid>
-							<Grid item xs={8}>
-								<IconButton>
-									<EditIcon />
+							<Grid item xs={7}>
+								<IconButton size="small">
+									<EditIcon  fontSize="inherit"/>
 								</IconButton>
 							</Grid>
-							<Grid item xs={2}>
+							<Grid item xs={3}>
 								<Typography style={{ fontWeight: 600 }}>
 									First Name
 								</Typography>
@@ -146,12 +149,12 @@ function UserInfo({JWT}){
 									{userInput.firstName}
 								</Typography>
 							</Grid>
-							<Grid item xs={8}>
-								<IconButton>
-									<EditIcon />
+							<Grid item xs={7}>
+								<IconButton size="small">
+									<EditIcon  fontSize="inherit"/>
 								</IconButton>
 							</Grid>
-							<Grid item xs={2}>
+							<Grid item xs={3}>
 								<Typography style={{ fontWeight: 600 }}>
 									Last Name
 								</Typography>
@@ -161,12 +164,12 @@ function UserInfo({JWT}){
 									{userInput.lastName}
 								</Typography>
 							</Grid>
-							<Grid item xs={8}>
-								<IconButton>
-									<EditIcon />
+							<Grid item xs={7}>
+								<IconButton size="small">
+									<EditIcon  fontSize="inherit"/>
 								</IconButton>
 							</Grid>
-							<Grid item xs={2}>
+							<Grid item xs={3}>
 								<Typography style={{ fontWeight: 600 }}>
 									Birth Date
 								</Typography>
@@ -176,17 +179,13 @@ function UserInfo({JWT}){
 									{userInput.birthDate}
 								</Typography>
 							</Grid>
-							<Grid item xs={8}>
-								<IconButton>
-									<EditIcon />
+							<Grid item xs={7}>
+								<IconButton size="small">
+									<EditIcon  fontSize="inherit"/>
 								</IconButton>
 							</Grid>
 						</Grid>
 					</Box>
-					<br/>
-					<Button variant="contained">
-						Save Profile
-					</Button>
 				</Grid>
 			</Grid>
 		</>
