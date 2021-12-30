@@ -25,7 +25,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 
-export default function Nav({ themes, token, setToken }) {
+export default function Nav({ themes, theme, updateTheme, setToken }) {
 	const [theme, updateTheme] = useState(0);
 	const [sidebar, updateSidebar] = useState(false);
 
@@ -41,7 +41,7 @@ export default function Nav({ themes, token, setToken }) {
 	};
 	let navigate = useNavigate();
 	return (
-		<React.Fragment style={{ color: Color(3, theme, themes) }}>
+		<div style={{ color: Color(3, theme, themes) }}>
 			<div className="App">
 				<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 					<Box
@@ -96,7 +96,7 @@ export default function Nav({ themes, token, setToken }) {
 				<Box sx={{ flexGrow: 1 }}>
 					<AppBar
 						position="static"
-						style={{ backgroundColor: Color(2, theme, themes) }}
+						style={{ backgroundColor: Color(1, theme, themes) }}
 					>
 						<Toolbar>
 							<IconButton
@@ -126,6 +126,6 @@ export default function Nav({ themes, token, setToken }) {
 					</AppBar>
 				</Box>
 			</div>
-		</React.Fragment>
+		</div>
 	);
 }

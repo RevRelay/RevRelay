@@ -1,14 +1,13 @@
-import react from "react";
+import react, { useState } from "react";
 import Nav from "./Components/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
-import { useState } from "react";
+import Page from "./Components/Page.js";
+import UserInfo from "./Components/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import {default as Registration} from "./Components/NoAuth/Register.js";
 import LoginSplash from "./Components/NoAuth/LoginSplash.js";
-
-
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -24,8 +23,9 @@ const themes = [
 	"80s",
 	"90s",
 ];
+
 //Comment For Git
-function SwitchBoard({token, setToken}) {
+function SwitchBoard({token, setToken, theme }) {
 	/**
 	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
 	 * and will hold a JWT if there is currently a user logged in.
@@ -41,7 +41,10 @@ function SwitchBoard({token, setToken}) {
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
-					<Route path="profile" element={<UserProfile />} />
+					<Route path="profile">
+						<Route index element={<Page theme={theme} themes={themes} />} />
+						<Route path="userInfo" element={<UserInfo />} />
+					</Route>
 				</Route>
 				<Route path="group">
 					<Route index element={<Groups />} />
@@ -92,7 +95,7 @@ function App() {
 	return (
 		<>
 			<Nav themes={themes} token={token} setToken={setToken}/>
-			<SwitchBoard token={token} setToken={setToken}/>
+			<SwitchBoard token={token} setToken={setToken} theme={theme}/>
 		</>
 	);
 }
