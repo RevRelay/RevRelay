@@ -2,12 +2,12 @@
  * Node JS backend that listens on SERVER_PORT (specified in config.json)
  * Only provides connections to sockets with socket.io
  * Custom socket messages include:
- * "join room" --> specify a username and room
- * "leave room" --> specify a username and room
- * "message room" --> specify a username, room, and message
- * "active countdown" --> specify a username and room
- * "not active" --> specify a username and room
- * "radio" --> specify audio data and room
+ * "join room" --> specify data.user and data.room
+ * "leave room" --> specify data.user and data.room
+ * "message room" --> specify data.user, data.room, and data.message
+ * "active countdown" --> specify data.user and data.room
+ * "not active" --> specify data.user and data.room
+ * "radio" --> specify audio, room
  */
 
 const express = require("express");
@@ -68,55 +68,6 @@ io.on("connection", (socket) =>{
 		io.to(data["room"]).emit("message sent", messageData);
 	});
 
-	/*Begin activity countdown on a user
-
-	  Status:
-	  yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyn
-
-	  Frontend receives:
-	  4	3  4    2  3    1  2    0  1	   0
-
-
-	  ^	^  ^    ^  ^    ^  ^    ^  ^       ^
-	  4	3	2	1	0
-	   	   4	   3	   2	   1	   0
-
-	----------------------------------------------
-
-	  Status:
-	  yyyyyyyyyyyyyyyyyyyyyyyyyyyyyynnnnnnnnnnnn
-
-	  Frontend receives:
-	  4    43  4   32  3   21  2   10  1      00
-
-
-	  ^    ^^  ^   ^^  ^   ^^  ^   ^^  ^      ^^
-	  4	3	2	1	0
-	  	   4	   3	   2	   1	   0
-	       4       3       2       1          0    <--THIS SOCKET CALL SHOULD NEVER START
-
-	---------------------------------------------
-
-	  Status:
-	  yyyyyyyyyyyyynnnnnnnnnnnnnnyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyn
-
-	  Frontend receives:
-	  4       3   -1  2       1  4    0  3       2       1       0
-
-
-	  ^       ^    ^  ^       ^  ^    ^  ^       ^       ^       ^
-	  4	  3	  2	  1	  0
-		      -1
-	                             4	     3	     2	     1	     0
-
-	  How to check if not typing:
-	  Sequence: ... 1 FOLLOWED BY 0
-		OR:	-1 ANYWHERE
-
-	  How to check if typing:
-	  If not typing and receive a 4: set to typing
-
-	 */
 	//Start an activity timer
 	//Every second broadcast room with a countdown counter that starts at 4 and ends at 0
 	//This countdown is never interrupted by any other process

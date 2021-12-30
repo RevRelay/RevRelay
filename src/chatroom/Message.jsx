@@ -1,3 +1,6 @@
+/*
+  Message Component to display who sent the message, what they sent, and when they sent it
+*/
 import React, {Component} from 'react';
 
 class Message extends Component {

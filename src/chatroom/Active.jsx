@@ -1,3 +1,8 @@
+/*
+  Display the list of all users typing
+  Returns an empty paragraph element if no one is typing
+*/
+
 import React, {Component} from 'react';
 
 class Active extends Component {
