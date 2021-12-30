@@ -19,9 +19,9 @@
    $ git checkout -b <new_branch_name> <branching_off_of_name>
    ```
 3. Create new Branch in GitHub
-4. Pull the current GitHub main branch locally:
+4. Pull the current GitHub branch you want locally:
    ```
-   $ git pull https://github.com/RevRelay/Backend.git <new_branch_name>
+   $ git pull https://github.com/RevRelay/RevRelay.git <new_branch_name>
    ```
 5. DO WHAT YOU NEED TO DO! (your current task) Committing as you go... I see you Ryan and John...
 6. Checkout the your local branch that you are pushing to (creating that branch if it doesn't exist):
@@ -49,7 +49,7 @@
 11. FIX ALL MERGING PROBLEMS!
 12. Push to your local new branch branch to your branch on the repo: (this is where you should be committing during 4)
    ```
-   $ git push --set-upstream https://github.com/RevRelay/Backend.git <new_branch name>
+   $ git push --set-upstream https://github.com/RevRelay/RevRelay.git <new_branch name>
    ```
 13. Submit a pull request on GitHub asking to merge the branch into your intendend branch.
 14. Three teammates reviews the code for quality and functionality.
