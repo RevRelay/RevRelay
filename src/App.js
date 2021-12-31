@@ -1,5 +1,5 @@
 import react, { useState } from "react";
-import Nav from "./Components/Nav.js";
+import Nav from "./Components/Nav/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
@@ -11,6 +11,10 @@ import {
 	Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import UserInfo from "./Components/UserInfo.js";
+import Login from "./Components/NoAuth/Login.js";
+import { default as Registration } from "./Components/NoAuth/Register.js";
+import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -198,13 +202,20 @@ const themes = [
 		}),
 	},
 ];
+
 //Comment For Git
 
 function App() {
 	const [theme, updateTheme] = useState(0);
 	return (
 		<ThemeProvider theme={themes[theme].theme}>
-			<Nav themes={themes} theme={theme} updateTheme={updateTheme} />
+			<Nav
+				themes={themes}
+				activeTheme={activeTheme}
+				updateActiveTheme={updateActiveTheme}
+				token={token}
+				setToken={setToken}
+			/>
 			<Box
 				sx={{
 					paddingTop: 8.5,
@@ -213,25 +224,39 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard theme={theme} />
+				<SwitchBoard
+					token={token}
+					setToken={setToken}
+					activeTheme={activeTheme}
+					updateActiveTheme={updateActiveTheme}
+				/>
 			</Box>
 		</ThemeProvider>
 	);
 }
-function SwitchBoard({ theme }) {
+function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
+	/**
+	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
+	 * and will hold a JWT if there is currently a user logged in.
+	 *
+	 * Use the token object passed above if you need to find any
+	 */
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route path="register" element={<Registration />} />
-				<Route path="login" element={<Login />} />
+				<Route path="login" element={<Login setToken={setToken} />} />
+				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
-					<Route
-						path="profile"
-						element={<Page theme={theme} themes={themes} />}
-					/>
+					<Route path="profile">
+						<Route
+							index
+							element={<Page theme={activeTheme} themes={updateActiveTheme} />}
+						/>
+						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+					</Route>
 				</Route>
 				<Route path="group">
 					<Route index element={<Groups />} />
@@ -252,6 +277,12 @@ function Login() {
 function Registration() {
 	return <Typography color="textPrimary">Registration</Typography>;
 }
+// function Login() {
+// 	return <p>Login</p>;
+// // }
+// function Registration() {
+// 	return <p>Registration</p>;
+// }
 
 function Users() {
 	return <Typography color="textPrimary">Users</Typography>;
@@ -274,7 +305,7 @@ function Group() {
 }
 
 function GroupProfile() {
-	return <Typography color="textPrimary">GroupProfile</Typography>;
+	return <p>GroupProfile</p>;
 }
 
 export default App;
