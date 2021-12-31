@@ -68,7 +68,7 @@ export default function Nav({
 						{themes.map((x) => {
 							return (
 								<MenuItem key={themes.indexOf(x)} value={themes.indexOf(x)}>
-									{x}
+									{x.name}
 								</MenuItem>
 							);
 						})}

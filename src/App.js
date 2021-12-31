@@ -206,9 +206,10 @@ const themes = [
 //Comment For Git
 
 function App() {
-	const [theme, updateTheme] = useState(0);
+	const [token, setToken] = useState();
+	const [activeTheme, updateActiveTheme] = useState(0);
 	return (
-		<ThemeProvider theme={themes[theme].theme}>
+		<ThemeProvider theme={themes[activeTheme].theme}>
 			<Nav
 				themes={themes}
 				activeTheme={activeTheme}
@@ -271,12 +272,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 function Home() {
 	return <Typography color="textPrimary">HOME</Typography>;
 }
-function Login() {
-	return <Typography color="textPrimary">Login</Typography>;
-}
-function Registration() {
-	return <Typography color="textPrimary">Registration</Typography>;
-}
+
 // function Login() {
 // 	return <p>Login</p>;
 // // }
