@@ -132,12 +132,28 @@ export default function Nav({
 						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 							RevRelay
 						</Typography>
-						<Button color="inherit" onClick={(x) => navigate("/register")}>
-							Register
-						</Button>
-						<Button color="inherit" onClick={(x) => navigate("/login")}>
-							Login
-						</Button>
+						{token ? (
+							<React.Fragment>
+								<Button
+									color="inherit"
+									onClick={() => {
+										setToken("");
+										navigate("/login");
+									}}
+								>
+									Logout
+								</Button>
+							</React.Fragment>
+						) : (
+							<React.Fragment>
+								<Button color="inherit" onClick={(x) => navigate("/register")}>
+									Register
+								</Button>
+								<Button color="inherit" onClick={(x) => navigate("/login")}>
+									Login
+								</Button>
+							</React.Fragment>
+						)}
 					</Toolbar>
 				</AppBar>
 			</Box>
