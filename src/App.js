@@ -11,7 +11,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import UserInfo from "./Components/UserInfo.js";
+import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import LoginSplash from "./Components/NoAuth/LoginSplash.js";
