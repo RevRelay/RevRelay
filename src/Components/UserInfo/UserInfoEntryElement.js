@@ -39,6 +39,16 @@ import parseJWT from "../../parseJWT";
 import axios from "axios";
 import APIQuery from "../../API/APIQuery";
 
+/**
+ * Function for defining user info elements on UserInfo that are listed in the main body of the page (currently username, password, firstName, lastName, and birthDate).
+ * @param {string} varname - the variable name associated with the list element (i.e. username).
+ * @param {string} fieldName - the display name of the list element (i.e. Username).
+ * @param {*} userInput - state variable holding user field information.
+ * @param {*} setUserInput - state variable setter for user field information.
+ * @param {*} toggleEdit - state variable for determining if a field is toggled to display (false) or edit (true). 
+ * @param {*} setToggleEdit - state variable setter for field toggle state. 
+ * @returns ReactFragment containing UserInfo data with toggles (and eventually editing ability) formatted for insertion into a grid. 
+ */
 export default function UserInfoEntryElement ({varname, fieldName, userInput, setUserInput, toggleEdit, setToggleEdit}) {
     return (
 		<React.Fragment>

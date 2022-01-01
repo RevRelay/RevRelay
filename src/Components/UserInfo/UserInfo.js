@@ -56,7 +56,9 @@ function UserInfo({JWT}){
 		birthDate: false,
 		displayName: false
 	})
-
+/**
+ * Const used for mapping to UserInfoEntryElement
+ */
 	const userInfoFields = [
 		{name: "Username", varname: "username"},
 		{name: "Password", varname: "password"},
