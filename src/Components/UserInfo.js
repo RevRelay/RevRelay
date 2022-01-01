@@ -47,11 +47,11 @@ function UserInfo({JWT}){
 		displayName:'userName'
 	});
 
-	useEffect(()=>{ Submit(); },[])
+	useEffect(()=>{ FetchUserInfo(); },[])
 
-	const Submit = async (e) => {		
-		var uID = parseJWT(JWT).ID;
-		const response = await APIQuery.get("/users/"+uID, {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
+	const FetchUserInfo = async (e) => {		
+		// var uID = parseJWT(JWT).ID;
+		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		console.log(response);
@@ -191,7 +191,6 @@ function UserInfo({JWT}){
 					</Box>
 				</Grid>
 			</Grid>
-			<Button onClick={(x)=>Submit}>Test Refresh</Button>
 		</>
 	)
 }
