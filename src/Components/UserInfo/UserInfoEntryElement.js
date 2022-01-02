@@ -21,7 +21,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
  * @returns ReactFragment containing UserInfo data with toggles (and eventually editing ability) formatted for insertion into a grid. 
  */
 export default function UserInfoEntryElement ({varname, fieldName, userInput, setUserInput, toggleEdit, setToggleEdit}) {
-    let userInfoFieldValue;
+    let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+	let userInfoFieldValue;
 		
 	return (
 		<React.Fragment>
@@ -57,7 +58,7 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 				<React.Fragment>
 					<Grid item xs={2}>
 						<Typography>
-						{(varname === 'password') ? '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' : userInput[varname]}
+						{(varname === 'password') ? bulletString : userInput[varname]}
 						</Typography>
 					</Grid>
 					<Grid item xs={7}>

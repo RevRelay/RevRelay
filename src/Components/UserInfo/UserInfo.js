@@ -34,7 +34,8 @@ import axios from "axios";
 import APIQuery from "../../API/APIQuery";
 import UserInfoEntryElement from "./UserInfoEntryElement";
 
-function UserInfo({JWT}){
+function UserInfo({JWT}) {
+	let navigate = useNavigate; 
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -83,14 +84,14 @@ function UserInfo({JWT}){
 	}
 
 	return(
-		<>
+		<React.Fragment>
 			<br/><br/>
 			<Grid 
 				container
 				spacing={2}
 				direction="row"
-  				justifyContent="center"
-  				alignItems="center"
+				justifyContent="center"
+				alignItems="center"
 				align="center"
 			>
 				<Grid
@@ -136,7 +137,7 @@ function UserInfo({JWT}){
 					</Box>
 				</Grid>
 			</Grid>
-		</>
+		</React.Fragment>
 	)
 }
 

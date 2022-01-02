@@ -51,7 +51,7 @@ export default function Login({ setToken }) {
             password
         });
         setToken(jwt);
-        jwt ? navigate("/") : alert("Unable to log in.");
+        jwt ? navigate("/user/profile") : alert("Unable to log in.");
     }
 
     /**

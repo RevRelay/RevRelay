@@ -1,6 +1,6 @@
 import react, { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
 import "./Styles/themes.css";
 import Color from "./Components/Color.js";
 import Page from "./Components/Page.js";
@@ -252,11 +252,8 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
 					<Route path="profile">
-						<Route
-							index
-							element={<Page theme={activeTheme} themes={updateActiveTheme} />}
-						/>
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+						<Route index element={token ? <Page theme={activeTheme} themes={updateActiveTheme} /> : <Navigate replace to="/login"/>}/>
+						<Route path="userInfo" element={token ? <UserInfo JWT={token}/> : <Navigate replace to="/login"/>}/>
 					</Route>
 				</Route>
 				<Route path="group">

@@ -87,7 +87,7 @@ export default function Register({ setToken }) {
                     displayName
                 });
                 setToken(response.data.jwt);
-                navigate("/");
+                navigate("/user/profile");
             } catch (Error) {
                 alert(`Error: ${(Error?.response?.data)}`);
             }
