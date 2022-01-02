@@ -35,6 +35,14 @@ import APIQuery from "../../API/APIQuery";
 import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
+	let mostRecentUserInfo = {
+		username:'',
+		firstName:'',
+		lastName:'',
+		email:'',
+		birthDate:'',
+		displayName:''
+	};
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -71,6 +79,14 @@ function UserInfo({JWT}) {
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// console.log(response);
+		{
+			mostRecentUserInfo.username = response.data.username; 
+			mostRecentUserInfo.firstName = response.data.firstName; 
+			mostRecentUserInfo.lastName = response.data.lastName; 
+			mostRecentUserInfo.email = response.data.email;
+			mostRecentUserInfo.birthDate = response.data.birthDate;
+			mostRecentUserInfo.displayName = response.data.displayName;
+		};
 		setUserInput({
 			username:response.data.username, 
 			firstName:response.data.firstName, 
@@ -111,7 +127,7 @@ function UserInfo({JWT}) {
 						Profile Settings
 						</Typography>
 						<br/>
-						<Grid columns={12} container direction="row">
+						<Grid columns={12} container>
 							{userInfoFields.map((x) => {
 								return (
 									<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
@@ -120,6 +136,14 @@ function UserInfo({JWT}) {
 						</Grid>
 					</Box>
 				</Grid>
+				{/* Attempts to make a save button that only apperas on change. Suspect it'll require an event listener. - NL */}
+				{/* {mostRecentUserInfo.lastName === userInput.lastName ? (
+					<React.Fragment/>
+				) : (
+				<Grid item xs={6}>
+					<Button >Save Changes</Button>
+				</Grid>
+				)} */}
 			</Grid>
 		</React.Fragment>
 	)
