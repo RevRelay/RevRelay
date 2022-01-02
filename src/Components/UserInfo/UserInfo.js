@@ -22,11 +22,7 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EditIcon from '@mui/icons-material/Edit';
-import EmailIcon from '@mui/icons-material/Email';
-import EventIcon from '@mui/icons-material/Event';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
  import {
 	Routes, 

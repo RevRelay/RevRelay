@@ -1,43 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, {  } from "react";
 import {
-	AppBar,
-	Autocomplete,
-	Button,
-	Box,
-	Card,
-	ContainerTypeMap,
-	Divider,
-	Drawer,
 	Grid,
 	IconButton,
-	InputLabel,
-	Link,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	MenuItem,
-	Select,
 	TextField,
-	Toolbar,
 	Typography,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import EmailIcon from '@mui/icons-material/Email';
-import EventIcon from '@mui/icons-material/Event';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
- import {
-	Routes, 
-	Route, 
-	useNavigate, 
-} from "react-router-dom";
-import parseJWT from "../../parseJWT";
-import axios from "axios";
-import APIQuery from "../../API/APIQuery";
 
 /**
  * Function for defining user info elements on UserInfo that are listed in the main body of the page (currently username, password, firstName, lastName, and birthDate).
@@ -51,7 +21,9 @@ import APIQuery from "../../API/APIQuery";
  * @returns ReactFragment containing UserInfo data with toggles (and eventually editing ability) formatted for insertion into a grid. 
  */
 export default function UserInfoEntryElement ({varname, fieldName, userInput, setUserInput, toggleEdit, setToggleEdit}) {
-    return (
+    let userInfoFieldValue;
+		
+	return (
 		<React.Fragment>
 			<Grid item xs={3}>
 				<Typography style={{ fontWeight: 600 }}>
@@ -61,16 +33,22 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 			{toggleEdit[varname] ? (
 				<React.Fragment>
 					<Grid item xs={2}>
-						<Typography>
-							{(varname === 'password') ? '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' : userInput[varname]}
-						</Typography>
+						<TextField label={fieldName} onChange={(x) => userInfoFieldValue = x.target.value}/>
 					</Grid>
 					<Grid item xs={1}>
 						<IconButton size="small">
 							<CancelIcon  fontSize="inherit" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : false})}/>
 						</IconButton>
 						<IconButton size="small">
-							<CheckCircleIcon  fontSize="inherit"/>
+							<CheckCircleIcon  fontSize="inherit" 
+								onClick={(x) => {
+									//this if statement is a very weak check for good input value, needs reinforcing - NL
+									if (userInfoFieldValue) {
+										setUserInput({...userInput, [varname] : userInfoFieldValue});
+									}
+									setToggleEdit({...toggleEdit, [varname] : false});
+									}}
+							/>
 						</IconButton>
 					</Grid>
 					<Grid item xs={6}/>
