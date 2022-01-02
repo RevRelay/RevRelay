@@ -22,7 +22,6 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
  import {
 	Routes, 
@@ -32,10 +31,10 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import parseJWT from "../../parseJWT";
 import axios from "axios";
 import APIQuery from "../../API/APIQuery";
-import UserInfoEntryElement from "./UserInfoEntryElement";
+// import  from "./UserInfoEntryElement";
+import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
-	let navigate = useNavigate; 
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -62,7 +61,6 @@ function UserInfo({JWT}) {
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
 		{name: "Birth Date", varname: "birthDate"}
-		// ,{name: "Display Name", varname: "displayName"}
 	]
 
 	useEffect(()=>{ FetchUserInfo(); },[])
@@ -72,7 +70,7 @@ function UserInfo({JWT}) {
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
-		console.log(response);
+		// console.log(response);
 		setUserInput({
 			username:response.data.username, 
 			firstName:response.data.firstName, 
@@ -93,31 +91,17 @@ function UserInfo({JWT}) {
 				justifyContent="center"
 				alignItems="center"
 				align="center"
+				columns={12}
 			>
-				<Grid
-					item
-					xs={3}
-					justifyContent="center"
-					align="center"
-				>
+				<Grid item xs={3} justifyContent="center" align="center">
 					<img className="rounded-circle mt-5" width="150px" alt='' src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
 					<IconButton>
 						<AddAPhotoIcon />
 					</IconButton>
 					<br/>
 					<Box width="50%">
-						<Typography variant="h5" align="right">
-							{userInput.displayName}
-							<IconButton size="small">
-								<EditIcon  fontSize="inherit"/>
-							</IconButton>
-						</Typography>
-						<Typography variant="subtitle1" align="right">
-							{userInput.email}
-							<IconButton size="small">
-								<EditIcon  fontSize="inherit"/>
-							</IconButton>
-						</Typography>
+						<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
+						<UserInfoEntryElementEmail key={"emailEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
 					</Box>
 				</Grid>
 				<Divider orientation="vertical" flexItem></Divider>
@@ -127,10 +111,10 @@ function UserInfo({JWT}) {
 						Profile Settings
 						</Typography>
 						<br/>
-						<Grid container direction="row">
+						<Grid columns={12} container direction="row">
 							{userInfoFields.map((x) => {
 								return (
-									<UserInfoEntryElement key = {x.varname} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
+									<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
 								)
 							})}
 						</Grid>

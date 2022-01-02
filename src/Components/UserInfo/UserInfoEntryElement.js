@@ -37,19 +37,18 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 						<TextField label={fieldName} onChange={(x) => userInfoFieldValue = x.target.value}/>
 					</Grid>
 					<Grid item xs={1}>
-						<IconButton size="small">
-							<CancelIcon  fontSize="inherit" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : false})}/>
+						<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : false})}>
+							<CancelIcon  fontSize="inherit"/>
 						</IconButton>
-						<IconButton size="small">
-							<CheckCircleIcon  fontSize="inherit" 
-								onClick={(x) => {
-									//this if statement is a very weak check for good input value, needs reinforcing - NL
-									if (userInfoFieldValue) {
-										setUserInput({...userInput, [varname] : userInfoFieldValue});
-									}
-									setToggleEdit({...toggleEdit, [varname] : false});
-									}}
-							/>
+						<IconButton size="small"
+							onClick={(x) => {
+								//this if statement is a very weak check for good input value, needs reinforcing - NL
+								if (userInfoFieldValue) {
+									setUserInput({...userInput, [varname] : userInfoFieldValue});
+								}
+								setToggleEdit({...toggleEdit, [varname] : false});
+								}}>
+							<CheckCircleIcon  fontSize="inherit"/>
 						</IconButton>
 					</Grid>
 					<Grid item xs={6}/>
@@ -62,8 +61,8 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 						</Typography>
 					</Grid>
 					<Grid item xs={7}>
-						<IconButton size="small">
-							<EditIcon  fontSize="inherit" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : true})}/>
+						<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : true})}>
+							<EditIcon  fontSize="inherit"/>
 						</IconButton>
 					</Grid>
 				</React.Fragment> 
@@ -72,3 +71,69 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 		</React.Fragment>
 	)
 };
+
+export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+	let userInfoFieldValue;
+	return(
+		<React.Fragment>
+		{toggleEdit.displayName ? (
+			<React.Fragment>
+				<TextField label={"Display Name"} onChange={(x) => userInfoFieldValue = x.target.value}/>
+				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : false})}>
+					<CancelIcon  fontSize="inherit"/>
+				</IconButton>
+				<IconButton size="small"
+					onClick={(x) => {
+						//this if statement is a very weak check for good input value, needs reinforcing - NL
+						if (userInfoFieldValue) {
+							setUserInput({...userInput, displayName : userInfoFieldValue});
+						}
+						setToggleEdit({...toggleEdit, displayName : false});
+						}}>
+					<CheckCircleIcon  fontSize="inherit"/>
+				</IconButton>
+			</React.Fragment>
+		):(
+			<Typography variant="h5" align="right">
+				{userInput.displayName}
+				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : true})}>
+					<EditIcon fontSize="inherit"/>
+				</IconButton>
+			</Typography>
+		)}
+		</React.Fragment>
+	)
+}
+
+export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+	let userInfoFieldValue;
+	return(
+		<React.Fragment>
+		{toggleEdit.email ? (
+			<React.Fragment>
+				<TextField label={"Email"} onChange={(x) => userInfoFieldValue = x.target.value}/>
+				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, email : false})}>
+					<CancelIcon  fontSize="inherit"/>
+				</IconButton>
+				<IconButton size="small"
+					onClick={(x) => {
+						//this if statement is a very weak check for good input value, needs reinforcing - NL
+						if (userInfoFieldValue) {
+							setUserInput({...userInput, email : userInfoFieldValue});
+						}
+						setToggleEdit({...toggleEdit, email : false});
+						}}>
+					<CheckCircleIcon  fontSize="inherit"/>
+				</IconButton>
+			</React.Fragment>
+			):(
+			<Typography variant="subtitle1" align="right">
+				{userInput.email}
+				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, email : true})}>
+					<EditIcon fontSize="inherit"/>
+				</IconButton>
+			</Typography>
+		)}
+		</React.Fragment>
+	)
+}
