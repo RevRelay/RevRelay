@@ -16,7 +16,7 @@ import {
 	Toolbar,
 	ListItemIcon,
 	Typography,
-    TextField
+	TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled, alpha } from '@mui/material/styles';
@@ -113,5 +113,4 @@ export default function NavSearchBar () {
             />
         </Search>
     )
-    
 }
