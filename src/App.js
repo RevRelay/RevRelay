@@ -1,8 +1,6 @@
 import react, { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
-import "./Styles/themes.css";
-import Color from "./Components/Color.js";
 import Page from "./Components/Page.js";
 import {
 	Container,
@@ -206,7 +204,9 @@ const themes = [
 //Comment For Git
 
 function App() {
-	const [token, setToken] = useState();
+	const [token, setToken] = useState(localStorage.getItem("token"));
+	localStorage.setItem("token", token);
+
 	const [activeTheme, updateActiveTheme] = useState(0);
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
@@ -250,12 +250,18 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route path=":userID" element={<User />} />
+					<Route
+						path=":userID"
+						element={
+							<Page
+								theme={activeTheme}
+								themes={updateActiveTheme}
+								JWT={token}
+							/>
+						}
+					/>
 					<Route path="profile">
-						<Route
-							index
-							element={<Page theme={activeTheme} themes={updateActiveTheme} />}
-						/>
+						<Route index element={<UserProfile />} />
 						<Route path="userInfo" element={<UserInfo JWT={token} />} />
 					</Route>
 				</Route>
