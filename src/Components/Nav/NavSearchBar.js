@@ -70,16 +70,14 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 // }));
 
 export default function NavSearchBar () {
-    const [searchInput, setSearchInput] = useState({
-        searchInputTerm: ''
-    })
+    const [searchInput, setSearchInput] = useState('')
     const handleChangeSearchBar = (event) => {
         setSearchInput({searchInputTerm: event.target.value});
     }
 
     const handleClearSearchBar = (event) => {
         event.target.value = '';
-        setSearchInput({searchInputTerm: event.target.value});
+        setSearchInput(event.target.value);
     }
 
     const handleSearchSubmit = (event) => {
@@ -99,6 +97,7 @@ export default function NavSearchBar () {
                         {...params}
                         id="searchbar-text-field"
                         sx={{display:'flex'}} onChange={handleChangeSearchBar}
+                        filterOptions={(x) => x}
                         InputProps={{
                             ...params.InputProps,
                             startAdornment:
