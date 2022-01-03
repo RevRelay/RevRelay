@@ -30,9 +30,7 @@ import SidebarList from "./SidebarList.js";
 export default function NavSearchBar () {
     return (
         <React.Fragment>
-            <TextField>
-
-            </TextField>
+            <TextField sx={{display:'flex'}}/>
         </React.Fragment>
     )
     
