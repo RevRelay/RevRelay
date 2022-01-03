@@ -21,8 +21,10 @@ import {
 import React, { useState } from "react";
 import { styled, alpha } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
+import APIQuery from '../../API/APIQuery.js';
 
 // From https://mui.com/components/app-bar/
 const Search = styled('div')(({ theme }) => ({
@@ -74,29 +76,43 @@ export default function NavSearchBar () {
     const handleChangeSearchBar = (event) => {
         setSearchInput({searchInputTerm: event.target.value});
     }
-    
+
+    const handleClearSearchBar = (event) => {
+        event.target.value = '';
+        setSearchInput({searchInputTerm: event.target.value});
+    }
+
     const handleSearchSubmit = (event) => {
         //do search submission, redirect to results page.
     };
+
+    let searchOptions = ['test'];
     
     return (
-        <React.Fragment>
-            <Search>
-                <TextField 
-                    id="searchbar-text-field"
-                    sx={{display:'flex'}} onChange={handleChangeSearchBar}
-                    InputProps={{
-                        startAdornment:
-                            <InputAdornment position="start">
-                                <IconButton onClick={handleSearchSubmit} edge="end" >
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
+        <Search>
+            <Autocomplete 
+                // freeSolo
+                id='search-bar-autocomplete'
+                options={searchOptions.map((option) => option)}
+                renderInput={(params) => 
+                    <TextField 
+                        {...params}
+                        id="searchbar-text-field"
+                        sx={{display:'flex'}} onChange={handleChangeSearchBar}
+                        InputProps={{
+                            ...params.InputProps,
+                            startAdornment:
+                                <InputAdornment position="start">
+                                    <IconButton onClick={handleSearchSubmit} edge="end" >
+                                        <SearchIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         }
-                    }
-                />
-            </Search>
-        </React.Fragment>
+                    />
+                }
+            />
+        </Search>
     )
     
 }
