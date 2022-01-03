@@ -16,9 +16,8 @@ import {
 	Toolbar,
 	ListItemIcon,
 	Typography,
-    TextField
+	TextField,
 } from "@mui/material";
-import Color from "../Color.js";
 import React, { useState } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -27,13 +26,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 import SidebarList from "./SidebarList.js";
 
-export default function NavSearchBar () {
-    return (
-        <React.Fragment>
-            <TextField>
-
-            </TextField>
-        </React.Fragment>
-    )
-    
+export default function NavSearchBar() {
+	return (
+		<React.Fragment>
+			<TextField></TextField>
+		</React.Fragment>
+	);
 }
