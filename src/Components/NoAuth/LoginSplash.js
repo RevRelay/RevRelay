@@ -10,6 +10,8 @@ import { PlaneGeometry } from 'three';
 import { FogExp2 } from 'three';
 import { LineBasicMaterial } from 'three';
 import { LineSegments } from 'three';
+import { ShaderMaterial } from 'three';
+import { Color } from 'three';
 import { EdgesGeometry } from 'three';
 import { PerspectiveCamera,  Scene, WebGLRenderer } from 'three';
 import LandscapeGen from './LandscapeGen';
@@ -20,7 +22,7 @@ import { SphereGeometry } from 'three';
 
 var colorTheme
 
-function LoginSplash() {
+function LoginSplash({sphereSize}) {
 	useEffect(Pretty,[])
 	colorTheme = useTheme();
   return (
@@ -55,7 +57,7 @@ function GenerateColor(left,right,edge){
 
 function Pretty(props) {
 	for (let node = 0; node < document.childNodes[1].childNodes[2].childNodes.length;node++){
-		if(document.childNodes[1].childNodes[2].childNodes[node].nodeName=="CANVAS"){
+		if(document.childNodes[1].childNodes[2].childNodes[node].nodeName==="CANVAS"){
 			document.childNodes[1].childNodes[2].childNodes[node].remove();  
 		}
 	}
@@ -134,12 +136,41 @@ function Pretty(props) {
 	line.geometry.attributes.position.needsUpdate = true;
 	line.geometry.computeBoundingBox();
 	line.geometry.computeBoundingSphere();
-	const sphereGeometry = new SphereGeometry(10);
-	const sphereMaterial = new MeshBasicMaterial({color: colorTheme.palette.secondary.light,
-													fog: false});
+	const sphereGeometry = new SphereGeometry(75);
+	const sphereMaterial = new ShaderMaterial({
+		uniforms: {
+			color1: {
+				value: new Color(colorTheme.palette.secondary.light)
+			},
+			color2: {
+				value: new Color(colorTheme.palette.primary.light)
+			}
+		},
+		vertexShader: `
+		  varying vec2 vUv;
+	  
+		  void main() {
+			vUv = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+		  }
+		`,
+		fragmentShader: `
+		  uniform vec3 color1;
+		  uniform vec3 color2;
+		
+		  varying vec2 vUv;
+		  
+		  void main() {
+			
+			gl_FragColor = vec4(mix(.9*color1, 1.3*color2, vUv.y), 1.0);
+		  }
+		`,
+		fog: false
+	});
 	const sphere = new Mesh(sphereGeometry, sphereMaterial);
 	scene.add( sphere );
 	sphere.translateY(30)
+	sphere.translateZ(-220)
 
 	function render() {
 		renderer.render(scene, camera)

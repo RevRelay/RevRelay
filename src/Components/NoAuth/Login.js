@@ -55,7 +55,7 @@ export default function Login({ setToken }) {
      */
     return (
         <Container className="login">
-            <Container className="form">
+            <Container className="loginform">
                 <form onSubmit={submitButton}>
                     <h2>Login here</h2>
                     <label>

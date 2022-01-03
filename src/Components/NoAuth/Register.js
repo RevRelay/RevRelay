@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import APIQuery from "./APIQuery";
 import {Button, Container} from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
+import LoginSplash from "./LoginSplash";
 import './Auth.css';
 
 /**
@@ -90,13 +91,16 @@ export default function Register({ setToken }) {
         }
     }
 
+    const registerSize = 19;
+
     /**
      * The register page returned with react
      */
     return (
             <Container className="register">
-                <Container className="form">
+                <Container className="registerform">
                 <h1>Welcome to the Future of Social Media</h1>
+                <br></br>
                     <form onSubmit={submitButton}>
                         <label>
                             <p>Username</p>
@@ -120,6 +124,7 @@ export default function Register({ setToken }) {
                     </form>
                     <Button color="inherit" onClick={(x) => navigate("/login")}>Already have an account? Click here.</Button>
                 </Container>
+                <LoginSplash sphereSize={registerSize} />
             </Container>
     )
 }
