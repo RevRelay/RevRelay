@@ -61,6 +61,7 @@ export default function Nav({
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
 						defaultValue={0}
+						value={activeTheme}
 						onChange={(x) => {
 							updateActiveTheme(x.target.value);
 						}}
@@ -92,7 +93,7 @@ export default function Nav({
 						<Typography variant="h6" component="div">
 							RevRelay
 						</Typography>
-						<NavSearchBar/>
+						<NavSearchBar />
 						{token ? (
 							<Box>
 								<Button

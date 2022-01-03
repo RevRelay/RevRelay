@@ -33,6 +33,7 @@ export default function Page({ theme, themes, JWT }) {
 	console.log("param: ", userID);
 	let path = useLocation();
 	console.log("Path: ", path);
+	console.log(JWT);
 	const [page, updatePage] = useState({
 		pageID: 0,
 		pageTitle: "Test",
@@ -62,19 +63,24 @@ export default function Page({ theme, themes, JWT }) {
 	};
 
 	useEffect(() => GetPage, []);
+
 	async function GetPage() {
-		const apiRegisterUrl = "";
-		if (path.pathname.includes("user")) apiRegisterUrl = "/user/";
+		var apiRegisterUrl = "";
+		if (path.pathname.includes("user")) apiRegisterUrl = "/user/" + userID;
+		else apiRegisterUrl = "/groups/" + userID;
 
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + JWT,
 			},
+			validateStatus: () => true,
 		};
-		var data = APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
-			return data;
-		});
-		console.log(data);
+		var data = await APIQuery.get(apiRegisterUrl, axiosConfig).then(
+			(data) => {
+				return data;
+			},
+			(data) => console.log(data)
+		);
 	}
 
 	return (
