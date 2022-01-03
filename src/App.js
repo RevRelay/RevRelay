@@ -1,6 +1,8 @@
 import react, { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
+import "./Styles/themes.css";
+import Color from "./Components/Color.js";
 import Page from "./Components/Page.js";
 import {
 	Container,
@@ -9,7 +11,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import UserInfo from "./Components/UserInfo.js";
+import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import LoginSplash from "./Components/NoAuth/LoginSplash.js";
@@ -242,12 +244,18 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	 *
 	 * Use the token object passed above if you need to find any
 	 */
+	if(token){
+		var element = document.querySelector('canvas');
+		if(element){
+			element.parentNode.removeChild(element);
+		}
+	}
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route path="login" element={<Login setToken={setToken} />} />
-				<Route path="register" element={<Registration setToken={setToken} />} />
+				<Route path="login" element={<Login setToken={setToken} token={token}/>} />
+				<Route path="register" element={<Registration setToken={setToken} token={token}/>} />
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route
@@ -261,8 +269,11 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 						}
 					/>
 					<Route path="profile">
+            //not sure which user info should be removed tbh but i went with the shorter one
 						<Route index element={<UserProfile />} />
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+						//<Route path="userInfo" element={<UserInfo JWT={token} />} />
+						<Route index element={token ? <Page theme={activeTheme} themes={updateActiveTheme} /> : <Navigate replace to="/login"/>}/>
+						<Route path="userInfo" element={token ? <UserInfo JWT={token}/> : <Navigate replace to="/login"/>}/>
 					</Route>
 				</Route>
 				<Route path="group">

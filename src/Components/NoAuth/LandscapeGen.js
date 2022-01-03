@@ -1,3 +1,7 @@
+
+/**
+ * Generates random field for LoginSplash
+ */
 let perlin = {
 	rand_vect: function(){
 		let theta = Math.random() * 2 * Math.PI;

@@ -25,6 +25,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 import SidebarList from "./SidebarList.js";
+import NavSearchBar from "./NavSearchBar.js";
 
 export default function Nav({
 	themes,
@@ -88,11 +89,12 @@ export default function Nav({
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+						<Typography variant="h6" component="div">
 							RevRelay
 						</Typography>
+						<NavSearchBar/>
 						{token ? (
-							<React.Fragment>
+							<Box>
 								<Button
 									color="inherit"
 									onClick={() => {
@@ -102,42 +104,17 @@ export default function Nav({
 								>
 									Logout
 								</Button>
-							</React.Fragment>
+							</Box>
 						) : (
-							<React.Fragment>
+							<Box>
 								<Button color="inherit" onClick={(x) => navigate("/register")}>
 									Register
 								</Button>
 								<Button color="inherit" onClick={(x) => navigate("/login")}>
 									Login
 								</Button>
-							</React.Fragment>
+							</Box>
 						)}
-					</Toolbar>
-				</AppBar>
-			</Box>
-			<Box sx={{ flexGrow: 1 }}>
-				<AppBar position="fixed" sx={{ position: "fixed", top: 0 }}>
-					<Toolbar>
-						<IconButton
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-label="menu"
-							sx={{ mr: 2 }}
-							onClick={toggleDrawer(true)}
-						>
-							<MenuIcon />
-						</IconButton>
-						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-							RevRelay
-						</Typography>
-						<Button color="inherit" onClick={(x) => navigate("/register")}>
-							Register
-						</Button>
-						<Button color="inherit" onClick={(x) => navigate("/login")}>
-							Login
-						</Button>
 					</Toolbar>
 				</AppBar>
 			</Box>

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import {Button, Container} from "@mui/material";
+import {
+	Button,
+	Grid,
+	TextField
+} from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
@@ -30,7 +34,7 @@ async function loginUser(user) {
  * @param {*} param0 The setToken parameter is passed from App to change the state
  * @returns Returns the login page with React
  */
-export default function Login({ setToken }) {
+export default function Login({ setToken, token }) {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 	let navigate = useNavigate();
@@ -47,32 +51,38 @@ export default function Login({ setToken }) {
             password
         });
         setToken(jwt);
-        jwt ? navigate("/") : alert("Unable to log in.");
+        jwt ? navigate("/user/profile") : alert("Unable to log in.");
     }
 
     /**
      * The login page returned with React
      */
     return (
-        <Container className="login">
-            <Container className="form">
-                <form onSubmit={submitButton}>
+        <Grid className="form" spacing={2} columns={1} container direction="row" justifyContent="center" alignItems="center" align="flex-start">
+            <form onSubmit={submitButton}>
+                <Grid item xs={1}>
                     <h2>Login here</h2>
-                    <label>
-                        <p>Username</p>
-                        <input type="text" id="username" onChange={e => setUsername(e.target.value)} />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input type="text" id="password" onChange={e => setPassword(e.target.value)} />
-                    </label>
-                    <Container className="button" >
-                        <Button color="inherit" type="submit" variant="h5">Login</Button>
-                    </Container>
-                </form>
-                <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
-             </Container>
-        </Container>
+                </Grid>
+                <Grid item xs={1}>
+                    <TextField id="username" label="Username" variant="outlined" maxRows={1} onChange={e => setUsername(e.target.value)}/>
+                </Grid>
+                <br/>
+                <Grid item xs={1}>
+                    <TextField id="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)}/>
+                </Grid>
+                <Grid item xs={1}>
+                    <Button color="inherit" type="submit" variant="h5">Login</Button>
+                </Grid>
+                <Grid item xs={1}>
+                    <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+                </Grid>
+            </form>
+                {
+                    token ?
+                    <></> :
+                    <LoginSplash />
+                }
+        </Grid>
     )
     //<LoginSplash /> Used for background for login page
 }
