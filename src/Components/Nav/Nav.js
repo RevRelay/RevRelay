@@ -17,16 +17,16 @@ import {
 	ListItemIcon,
 	Typography,
 } from "@mui/material";
-import Color from "./Color.js";
+import Color from "../Color.js";
 import React, { useState } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
+import SidebarList from "./SidebarList.js";
 
-export default function Nav({ themes, token, setToken }) {
-	const [theme, updateTheme] = useState(0);
+export default function Nav({ themes, activeTheme, updateActiveTheme, token, setToken }) {
 	const [sidebar, updateSidebar] = useState(false);
 
 	const toggleDrawer = (open) => (event) => {
@@ -41,7 +41,7 @@ export default function Nav({ themes, token, setToken }) {
 	};
 	let navigate = useNavigate();
 	return (
-		<React.Fragment style={{ color: Color(3, theme, themes) }}>
+		<div style={{ color: Color(3, activeTheme, themes) }}>
 			<div className="App">
 				<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 					<Box
@@ -49,37 +49,15 @@ export default function Nav({ themes, token, setToken }) {
 						role="presentation"
 						onClick={toggleDrawer(false)}
 						onKeyDown={toggleDrawer(false)}
-						style={{ backgroundColor: Color(2, theme, themes) }}
+						style={{ backgroundColor: Color(2, activeTheme, themes) }}
 					>
-						<List>
-							{["Inbox", "Starred", "Send email", "Drafts"].map(
-								(text, index) => (
-									<ListItem button key={text}>
-										<ListItemIcon>
-											{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-										</ListItemIcon>
-										<ListItemText primary={text} />
-									</ListItem>
-								)
-							)}
-						</List>
-						<Divider />
-						<List>
-							{["All mail", "Trash", "Spam"].map((text, index) => (
-								<ListItem button key={text}>
-									<ListItemIcon>
-										{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-									</ListItemIcon>
-									<ListItemText primary={text} />
-								</ListItem>
-							))}
-						</List>
+						{SidebarList()}
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
 							defaultValue={0}
 							onChange={(x) => {
-								updateTheme(x.target.value);
+								updateActiveTheme(x.target.value);
 							}}
 							style={{ marginLeft: "5%", width: "90%" }}
 						>
@@ -96,7 +74,7 @@ export default function Nav({ themes, token, setToken }) {
 				<Box sx={{ flexGrow: 1 }}>
 					<AppBar
 						position="static"
-						style={{ backgroundColor: Color(2, theme, themes) }}
+						style={{ backgroundColor: Color(1, activeTheme, themes) }}
 					>
 						<Toolbar>
 							<IconButton
@@ -113,7 +91,11 @@ export default function Nav({ themes, token, setToken }) {
 								RevRelay
 							</Typography>
 							{token?
-							<Button color="inherit" onClick={() => {setToken(""); navigate("/login")}} >Logout</Button>:
+							<React.Fragment>
+								<Button color="inherit" onClick={() => {setToken(""); navigate("/login")}} >
+									Logout
+								</Button>
+							</React.Fragment>:
 							<React.Fragment>
 								<Button color="inherit" onClick={(x) => navigate("/register")}>
 									Register
@@ -126,6 +108,6 @@ export default function Nav({ themes, token, setToken }) {
 					</AppBar>
 				</Box>
 			</div>
-		</React.Fragment>
+		</div>
 	);
 }

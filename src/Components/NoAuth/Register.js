@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {useNavigate} from 'react-router-dom'
-import APIQuery from "./APIQuery";
+import APIQuery from "../../API/APIQuery";
 import {Button, Container} from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import LoginSplash from "./LoginSplash";
