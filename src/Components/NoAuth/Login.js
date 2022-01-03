@@ -34,7 +34,7 @@ async function loginUser(user) {
  * @param {*} param0 The setToken parameter is passed from App to change the state
  * @returns Returns the login page with React
  */
-export default function Login({ setToken }) {
+export default function Login({ setToken, token }) {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 	let navigate = useNavigate();
@@ -77,6 +77,11 @@ export default function Login({ setToken }) {
                     <Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
                 </Grid>
             </form>
+                {
+                    token ?
+                    <></> :
+                    <LoginSplash />
+                }
         </Grid>
     )
     //<LoginSplash /> Used for background for login page

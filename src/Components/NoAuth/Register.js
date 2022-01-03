@@ -8,6 +8,7 @@ import {
     TextField
 } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
+import LoginSplash from "./LoginSplash";
 import './Auth.css';
 
 /**
@@ -59,7 +60,7 @@ function validInputRegister(user){
  * @param {*} param0 The token to return the JWT to the parent function
  * @returns returns the React webpage for registering
  */
-export default function Register({ setToken }) {
+export default function Register({ setToken, token }) {
     /**
      * React useState to watch for userName and password
      */
@@ -94,6 +95,8 @@ export default function Register({ setToken }) {
         }
     }
 
+    const registerSize = 19;
+
     /**
      * The register page returned with react
      */
@@ -125,6 +128,11 @@ export default function Register({ setToken }) {
                     <Button color="inherit" onClick={(x) => navigate("/login")}>Already have an account? Click here.</Button>
                 </Grid>
             </form>
+                {
+                    token ?
+                    <></> :
+                    <LoginSplash />
+                }
         </Grid>
     )
 }
