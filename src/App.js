@@ -269,9 +269,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 						}
 					/>
 					<Route path="profile">
-            //not sure which user info should be removed tbh but i went with the shorter one
 						<Route index element={<UserProfile />} />
-						//<Route path="userInfo" element={<UserInfo JWT={token} />} />
 						<Route index element={token ? <Page theme={activeTheme} themes={updateActiveTheme} /> : <Navigate replace to="/login"/>}/>
 						<Route path="userInfo" element={token ? <UserInfo JWT={token}/> : <Navigate replace to="/login"/>}/>
 					</Route>
