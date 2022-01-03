@@ -56,7 +56,7 @@ function validInputRegister(user){
  * @param {*} param0 The token to return the JWT to the parent function
  * @returns returns the React webpage for registering
  */
-export default function Register({ setToken }) {
+export default function Register({ setToken, token }) {
     /**
      * React useState to watch for userName and password
      */
@@ -124,7 +124,11 @@ export default function Register({ setToken }) {
                     </form>
                     <Button color="inherit" onClick={(x) => navigate("/login")}>Already have an account? Click here.</Button>
                 </Container>
-                <LoginSplash sphereSize={registerSize} />
+                {
+                    token ? 
+                    <></> :
+                    <LoginSplash />
+                }
             </Container>
     )
 }

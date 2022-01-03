@@ -32,12 +32,18 @@ function SwitchBoard({token, setToken, activeTheme, updateActiveTheme }) {
 	 * 
 	 * Use the token object passed above if you need to find any
 	 */
+	if(token){
+		var element = document.querySelector('canvas');
+		if(element){
+			element.parentNode.removeChild(element);
+		}
+	}
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route path="login" element={<Login setToken={setToken} />} />
-				<Route path="register" element={<Registration setToken={setToken} />} />
+				<Route path="login" element={<Login setToken={setToken} token={token}/>} />
+				<Route path="register" element={<Registration setToken={setToken} token={token}/>} />
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={<User />} />
