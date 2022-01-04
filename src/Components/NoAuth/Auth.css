@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-body {
-    overflow: hidden;
-}
-
-canvas {
-    z-index: +1;
-}
-
-=======
 .loginform {
 	display: block;
 	position: absolute;
@@ -47,4 +37,3 @@ canvas {
 	left: 0;
 	position: fixed;
 }
->>>>>>> ad6d992ed5b8a59afe57e675bbf749f65d769202

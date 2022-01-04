@@ -30,16 +30,10 @@ async function loginUser(user) {
  * @returns Returns the login page with React
  */
 export default function Login({ setToken, token }) {
-<<<<<<< HEAD
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-	let navigate = useNavigate(); 
-=======
 	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
 	let navigate = useNavigate();
 	console.log(!!token);
->>>>>>> ad6d992ed5b8a59afe57e675bbf749f65d769202
 
 	/**
 	 * Submit button is pressed login request is sent
