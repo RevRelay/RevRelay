@@ -17,10 +17,8 @@ import {
 	Paper,
 	Tab,
 	Tabs,
-	TextField,
-	Tooltip,
 } from "@mui/material";
-
+import Posts from "./Posts";
 import { height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
@@ -28,12 +26,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export default function Page({ theme, themes, JWT }) {
+export default function Page({ JWT }) {
 	let { userID } = useParams();
-	console.log("param: ", userID);
 	let path = useLocation();
-	console.log("Path: ", path);
-	console.log(JWT);
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
@@ -45,21 +40,7 @@ export default function Page({ theme, themes, JWT }) {
 
 		pageTitle: "Test",
 	});
-	const [posts, updatePosts] = useState({
-		content: [],
-		pageable: "INSTANCE",
-		totalPages: 1,
-		totalElements: 0,
-		last: true,
-		size: 0,
-		number: 0,
-		sort: { empty: true, sorted: false, unsorted: true },
-		numberOfElements: 0,
-		first: true,
-		empty: true,
-	});
 
-	console.log("loading page: ", page);
 	const [tab, updateTab] = useState(0);
 	const currnetUser = {
 		page: { userOwnerID: 0 },
@@ -70,7 +51,6 @@ export default function Page({ theme, themes, JWT }) {
 	}, []);
 
 	async function GetPage() {
-		console.log("starting get");
 		var apiRegisterUrl = "";
 		if (path.pathname.includes("user/profile"))
 			apiRegisterUrl = "/users/current";
@@ -83,16 +63,12 @@ export default function Page({ theme, themes, JWT }) {
 				Authorization: "Bearer " + JWT,
 			},
 		};
-		console.log(apiRegisterUrl);
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
-			console.log(data.data);
 			if (path.pathname.includes("user")) {
-				data.data.userPage.pageTitle = data.data.displayName;
-				console.log(data.data.userPage);
+				data.data.userPage.pageTitle = data.data.displayName + "'s Page";
 				updatePage(data.data.userPage);
 			}
 		});
-		console.log("done get");
 	}
 
 	return (
@@ -106,7 +82,7 @@ export default function Page({ theme, themes, JWT }) {
 					marginLeft: "15%",
 					marginRight: "15%",
 					display: "flex",
-					height: "100%",
+					minHeight: "80vh",
 
 					maxWidth: "100%",
 					minWidth: 500,
@@ -114,7 +90,7 @@ export default function Page({ theme, themes, JWT }) {
 			>
 				<div
 					style={{
-						maxHeight: "100%",
+						minHeight: "100%",
 						flexGrow: 1,
 						display: "flex",
 						flexFlow: "column",
@@ -179,7 +155,7 @@ export default function Page({ theme, themes, JWT }) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts />;
+				return <Posts page={page} currnetUser={currnetUser} JWT={JWT} />;
 				break;
 			case 1:
 				return <About />;
@@ -197,116 +173,7 @@ export default function Page({ theme, themes, JWT }) {
 				break;
 		}
 	}
-	function Posts() {
-		const [open, setOpen] = useState(false);
-		const [newpost, updateNewPost] = useState({
-			postType: null,
-			postTitle: null,
-			postContent: null,
-			postLikes: 0,
-			postTime: null,
-			postOwnerID: 0,
-			children: null,
-		});
-		const handleClickOpen = () => {
-			setOpen(true);
-		};
 
-		const handleClose = () => {
-			console.log(temppost);
-			setOpen(false);
-		};
-		var temppost = {
-			postType: null,
-			postTitle: "New Post",
-			postContent: "Hello World!",
-			postLikes: 0,
-			postTime: null,
-			postOwnerID: 0,
-			children: null,
-		};
-
-		return (
-			<div>
-				<Dialog open={open} onClose={handleClose}>
-					<DialogTitle>New Post</DialogTitle>
-					<DialogContent>
-						<DialogContentText>Create A New Post</DialogContentText>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="title"
-							label="Title"
-							type="test"
-							fullWidth
-							variant="standard"
-							defaultValue={temppost.postTitle}
-							onChange={(x) => (temppost.postTitle = x.target.value)}
-						/>
-						<TextField
-							sx={{ marginTop: 2 }}
-							id="content"
-							label="Content"
-							multiline
-							fullWidth
-							rows={4}
-							defaultValue={temppost.postContent}
-							onChange={(x) => (temppost.postContent = x.target.value)}
-						/>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
-						<Button onClick={handleClose}>Post!</Button>
-					</DialogActions>
-				</Dialog>
-				<Grid
-					container
-					spacing={0}
-					direction="column"
-					alignItems="center"
-					justifyContent="center"
-					height={"100%"}
-				>
-					<Grid
-						item
-						xs={4}
-						sx={{
-							left: "5%",
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
-						}}
-					>
-						{page.userOwnerID === currnetUser.userID ? (
-							<Tooltip
-								title="Add new post"
-								placement="top"
-								TransitionComponent={Fade}
-								TransitionProps={{ timeout: 600 }}
-							>
-								<IconButton onClick={handleClickOpen}>
-									<AddCircleIcon color="primary" fontSize="large" />
-								</IconButton>
-							</Tooltip>
-						) : (
-							<></>
-						)}
-					</Grid>
-					<Grid
-						item
-						xs={4}
-						sx={{
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
-						}}
-					>
-						<Pagination count={posts.totalPages} color="primary" size="large" />
-					</Grid>
-				</Grid>
-			</div>
-		);
-	}
 	function About() {
 		return <div>{page.description}</div>;
 	}

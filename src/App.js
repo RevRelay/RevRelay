@@ -221,7 +221,7 @@ function App() {
 				sx={{
 					paddingTop: 8.5,
 					width: "99.1vw",
-					height: "90vh",
+					minHeight: "80vh",
 					backgroundColor: "background.default",
 				}}
 			>
@@ -272,35 +272,22 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 							/>
 						}
 					/>
-					<Route path="profile">
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
-						<Route
-							index
-							element={
-								token ? (
-									<Page theme={activeTheme} themes={updateActiveTheme} />
-								) : (
-									<Navigate replace to="/login" />
-								)
-							}
-						/>
-						<Route
-							path="userInfo"
-							element={
-								token ? (
-									<UserInfo JWT={token} />
-								) : (
-									<Navigate replace to="/login" />
-								)
-							}
-						/>
-					</Route>
+					<Route
+						path="profile"
+						element={
+							<Page
+								JWT={token}
+								theme={activeTheme}
+								themes={updateActiveTheme}
+							/>
+						}
+					/>
 				</Route>
-				<Route path="group">
-					<Route index element={<Groups />} />
-					<Route path=":userID" element={<Group />} />
-					<Route path="profile" element={<GroupProfile />} />
-				</Route>
+			</Route>
+			<Route path="group">
+				<Route index element={<Groups />} />
+				<Route path=":userID" element={<Group />} />
+				<Route path="profile" element={<GroupProfile />} />
 			</Route>
 		</Routes>
 	);
