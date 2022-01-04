@@ -29,12 +29,12 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 	useNavigate, 
 } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import UserAPI, { updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
+import UserAPI, { updateEmail, updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
 // import  from "./UserInfoEntryElement";
 import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
-	let mostRecentUserInfo = {
+	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
 		username:'',
 		firstName:'',
 		lastName:'',
@@ -42,7 +42,7 @@ function UserInfo({JWT}) {
 		birthDate:'',
 		displayName:'',
 		userID:''
-	};
+	});
 
 	const [userInput, setUserInput] = useState({
 		username:'',
@@ -81,15 +81,15 @@ function UserInfo({JWT}) {
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// console.log(response);
 		// eslint-disable-next-line no-lone-blocks
-		{
-			mostRecentUserInfo.username = response.data.username; 
-			mostRecentUserInfo.firstName = response.data.firstName; 
-			mostRecentUserInfo.lastName = response.data.lastName; 
-			mostRecentUserInfo.email = response.data.email;
-			mostRecentUserInfo.birthDate = response.data.birthDate;
-			mostRecentUserInfo.displayName = response.data.displayName;
-			mostRecentUserInfo.userID = response.data.userID;
-		};
+		setMostRecentUserInfo({
+			username:response.data.username,
+			firstName:response.data.firstName, 
+			lastName:response.data.lastName,
+			email:response.data.email,
+			birthDate:response.data.birthDate,
+			displayName:response.data.displayName,
+			userID:response.data.userID
+		});
 		setUserInput({
 			username:response.data.username, 
 			firstName:response.data.firstName, 
@@ -101,10 +101,12 @@ function UserInfo({JWT}) {
 	}
 
 	function saveChanges() {
-		updateFirstName(userInput.firstName, userInput.userID, JWT)
-		updateLastName(userInput.lastName, userInput.userID, JWT)
-		updateBirthdate(userInput.firstName, userInput.userID, JWT)
-		updateDisplayName(userInput.firstName, userInput.userID, JWT)
+		console.log(userInput.email);
+		updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT);
+		updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT);
+		updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT);
+		updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT);
+		updateEmail(userInput.email, mostRecentUserInfo.userID, JWT);
 	}
 
 	return(
@@ -146,7 +148,6 @@ function UserInfo({JWT}) {
 						</Grid>
 					</Box>
 					<Button onClick={saveChanges()}>Save Changes</Button>
-
 				</Grid>
 				{/* {mostRecentUserInfo.lastName === userInput.lastName ? (
 					<React.Fragment/>

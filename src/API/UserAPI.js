@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const urlConnection = "http://localhost:3000/"
+const urlConnection = "http://localhost:5000/"
 
 function axiosConfig(JWT) {
-    return {headers: {"Authorization":"Bearer " + JWT}};
+    return {headers: {"Authorization":"Bearer " + JWT, "Content-Type": "application/json"}};
 }
 
 // update first name
@@ -30,11 +30,17 @@ function updateDisplayName(name, userId, JWT) {
         axiosConfig(JWT));
 }
 
+// update email
+function updateEmail(email, userId, JWT) {
+    return axios.put(urlConnection + "users/email/" + userId, email, 
+        axiosConfig(JWT));
+}
+
 // update birthdate
-function updateBirthdate(date, userId, JWT) {
+function updateBirthday(date, userId, JWT) {
     return axios.put(urlConnection + "users/birthDate/" + userId, date, 
         axiosConfig(JWT));
 }
 
 
-export { updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthdate};
+export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthday as updateBirthdate};
