@@ -245,6 +245,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	if(token){
 		var element = document.querySelector('canvas');
 		if(element){
+			console.log("Canvas deleted");
 			element.parentNode.removeChild(element);
 		}
 	}

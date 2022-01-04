@@ -21,9 +21,12 @@ import { useTheme } from "@mui/material";
 import { SphereGeometry } from 'three';
 
 var colorTheme
+var canvas
 
-function LoginSplash({sphereSize}) {
+function LoginSplash({currentCanvas}) {
+	console.log("Wiring background")
 	useEffect(Pretty,[])
+	canvas = currentCanvas;
 	colorTheme = useTheme();
   return (
 	<div className="LoginSplash">
@@ -62,8 +65,8 @@ function Pretty(props) {
 		}
 	}
 	//.palette.primary.{dark,light,main}
+	const renderer = canvas ? new WebGLRenderer(canvas) : new WebGLRenderer();
 	LandscapeGen.seed()
-	const renderer = new WebGLRenderer();
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
@@ -173,6 +176,7 @@ function Pretty(props) {
 	sphere.translateZ(-220)
 
 	function render() {
+		console.log("Calling render")
 		renderer.render(scene, camera)
 	}
 	render();

@@ -131,7 +131,7 @@ export default function Register({ setToken, token }) {
                 {
                     token ?
                     <></> :
-                    <LoginSplash />
+                    <LoginSplash currentCanvas={document.querySelector('canvas')} />
                 }
         </Grid>
     )
