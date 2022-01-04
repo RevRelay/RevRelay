@@ -21,14 +21,8 @@ import { useTheme } from "@mui/material";
 import { SphereGeometry } from 'three';
 
 var colorTheme
-// var canvas
 
-// function LoginSplash({currentCanvas}) {
-// 	console.log("Wiring background")
-// 	useEffect(Pretty,[])
-// 	canvas = currentCanvas;
-
-function LoginSplash({canvas}) {
+function LoginSplash() {
 	useEffect(Pretty,[])
 	colorTheme = useTheme();
   return (
@@ -67,9 +61,10 @@ function Pretty(props) {
 			document.childNodes[1].childNodes[2].childNodes[node].remove();  
 		}
 	}
+	console.log(colorTheme);
 	//.palette.primary.{dark,light,main}
-	const renderer = canvas ? new WebGLRenderer(canvas) : new WebGLRenderer();
 	LandscapeGen.seed()
+	const renderer = new WebGLRenderer();
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
@@ -179,8 +174,9 @@ function Pretty(props) {
 	sphere.translateZ(-220)
 
 	function render() {
-		console.log("Calling render")
+		console.log("Help")
 		renderer.render(scene, camera)
+		console.log("please")
 	}
 	render();
 	return <></>

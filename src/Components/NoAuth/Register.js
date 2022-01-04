@@ -129,8 +129,6 @@ export default function Register({ setToken, token }) {
                 </Grid>
             </form>
                 {
-                    token ?
-                    <></> :
                     <LoginSplash />
                 }
         </Grid>
