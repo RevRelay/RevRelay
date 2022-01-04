@@ -57,24 +57,33 @@ export default function PageSetting({page}) {
 
     return (
         <>
-            <Grid container spacing = {4}>
-                <Grid item>
-                    <FormGroup>
-                        <FormControlLabel control={<Switch onChange={(e) => togglePrivacy(e)} checked={isPrivate}/>} label="Private Page" />
-                    </FormGroup>
+            <Box
+                sx={{
+                    marginTop: "5%",
+                    marginLeft: "5%",
+                    marginRight: "5%",
+                    maxWidth: "100%"
+                }}      
+            >
+                <Grid container spacing = {2}>
+                    <Grid item xs={4}>
+                        <FormGroup>
+                            <FormControlLabel control={<Switch onChange={(e) => togglePrivacy(e)} checked={isPrivate}/>} label="Private Page" />
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField value={description} label="Description" onChange={(e) => changeDescription(e)} />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextField value={bannerURL} label="URL of Banner" onChange={(e) => changeURL(e)} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained" onClick={() => {saveChanges()}}>
+                            Save Page Settings
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <TextField value={description} label="Description" onChange={(e) => changeDescription(e)} />
-                </Grid>
-                <Grid item>
-                    <TextField value={bannerURL} label="URL of Banner" onChange={(e) => changeURL(e)} />
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" onClick={() => {saveChanges()}}>
-                        Save Page Settings
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
         </>
     );
 }
