@@ -28,9 +28,8 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 	Route, 
 	useNavigate, 
 } from "react-router-dom";
-import parseJWT from "../../parseJWT";
-import axios from "axios";
 import APIQuery from "../../API/APIQuery";
+import UserAPI, { updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
 // import  from "./UserInfoEntryElement";
 import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
@@ -41,8 +40,10 @@ function UserInfo({JWT}) {
 		lastName:'',
 		email:'',
 		birthDate:'',
-		displayName:''
+		displayName:'',
+		userID:''
 	};
+
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -60,6 +61,7 @@ function UserInfo({JWT}) {
 		birthDate: false,
 		displayName: false
 	})
+
 /**
  * Const used for mapping to UserInfoEntryElement
  */
@@ -74,11 +76,11 @@ function UserInfo({JWT}) {
 	useEffect(()=>{ FetchUserInfo(); },[])
 
 	const FetchUserInfo = async (e) => {		
-		// var uID = parseJWT(JWT).ID;
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// console.log(response);
+		// eslint-disable-next-line no-lone-blocks
 		{
 			mostRecentUserInfo.username = response.data.username; 
 			mostRecentUserInfo.firstName = response.data.firstName; 
@@ -86,6 +88,7 @@ function UserInfo({JWT}) {
 			mostRecentUserInfo.email = response.data.email;
 			mostRecentUserInfo.birthDate = response.data.birthDate;
 			mostRecentUserInfo.displayName = response.data.displayName;
+			mostRecentUserInfo.userID = response.data.userID;
 		};
 		setUserInput({
 			username:response.data.username, 
@@ -95,6 +98,13 @@ function UserInfo({JWT}) {
 			birthDate:response.data.birthDate,
 			displayName:response.data.displayName
 		});
+	}
+
+	function saveChanges() {
+		updateFirstName(userInput.firstName, userInput.userID, JWT)
+		updateLastName(userInput.lastName, userInput.userID, JWT)
+		updateBirthdate(userInput.firstName, userInput.userID, JWT)
+		updateDisplayName(userInput.firstName, userInput.userID, JWT)
 	}
 
 	return(
@@ -135,8 +145,9 @@ function UserInfo({JWT}) {
 							})}
 						</Grid>
 					</Box>
+					<Button onClick={saveChanges()}>Save Changes</Button>
+
 				</Grid>
-				{/* Attempts to make a save button that only apperas on change. Suspect it'll require an event listener. - NL */}
 				{/* {mostRecentUserInfo.lastName === userInput.lastName ? (
 					<React.Fragment/>
 				) : (
