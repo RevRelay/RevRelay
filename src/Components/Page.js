@@ -35,14 +35,15 @@ export default function Page({ theme, themes, JWT }) {
 	console.log("Path: ", path);
 	console.log(JWT);
 	const [page, updatePage] = useState({
-		pageID: 0,
-		pageTitle: "Test",
-		description: "",
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
-		private: false,
+		description: "You description here",
 		groupPage: false,
-		userOwnerID: 0,
-		groupID: 0,
+		pageID: 1,
+		pageTitle: "test",
+		posts: [],
+		private: true,
+
+		pageTitle: "Test",
 	});
 	const [posts, updatePosts] = useState({
 		content: [],
@@ -57,17 +58,24 @@ export default function Page({ theme, themes, JWT }) {
 		first: true,
 		empty: true,
 	});
+
+	console.log("loading page: ", page);
 	const [tab, updateTab] = useState(0);
 	const currnetUser = {
-		userID: 0,
+		page: { userOwnerID: 0 },
 	};
 
-	useEffect(() => GetPage, []);
+	useEffect(() => {
+		GetPage();
+	}, []);
 
 	async function GetPage() {
-		console.log("test");
+		console.log("starting get");
 		var apiRegisterUrl = "";
-		if (path.pathname.includes("user")) apiRegisterUrl = "/users/" + userID;
+		if (path.pathname.includes("user/profile"))
+			apiRegisterUrl = "/users/current";
+		else if (path.pathname.includes("user"))
+			apiRegisterUrl = "/users/" + userID;
 		else apiRegisterUrl = "/groups/" + userID;
 
 		let axiosConfig = {
@@ -75,16 +83,16 @@ export default function Page({ theme, themes, JWT }) {
 				Authorization: "Bearer " + JWT,
 			},
 		};
-		var data = APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
+		console.log(apiRegisterUrl);
+		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			console.log(data.data);
-			return data;
-		});
-		if (data.status === 200) {
 			if (path.pathname.includes("user")) {
-				updatePage(data.data);
+				data.data.userPage.pageTitle = data.data.displayName;
+				console.log(data.data.userPage);
+				updatePage(data.data.userPage);
 			}
-		}
-		console.log(page);
+		});
+		console.log("done get");
 	}
 
 	return (
@@ -155,11 +163,9 @@ export default function Page({ theme, themes, JWT }) {
 							) : (
 								<Tab label="Friends" />
 							)}
-							{page.groupPage ? <></> : <Tab label="Groups" />}
-							{currnetUser.userID === page.userOwnerID ? (
+							{!page.groupPage && <Tab label="Groups" />}
+							{currnetUser.page.userOwnerID === page.userOwnerID || (
 								<Tab label="Settings" />
-							) : (
-								<></>
 							)}
 						</Tabs>
 						<Divider sx={{ width: "100%" }} />
@@ -182,10 +188,10 @@ export default function Page({ theme, themes, JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <SettingsGroup /> : <Groups />} </>;
+				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <SettingsUser />} </>;
+				return <>{page.groupPage ? <></> : <Settings />} </>;
 				break;
 			default:
 				break;
@@ -221,7 +227,7 @@ export default function Page({ theme, themes, JWT }) {
 		};
 
 		return (
-			<>
+			<div>
 				<Dialog open={open} onClose={handleClose}>
 					<DialogTitle>New Post</DialogTitle>
 					<DialogContent>
@@ -298,25 +304,22 @@ export default function Page({ theme, themes, JWT }) {
 						<Pagination count={posts.totalPages} color="primary" size="large" />
 					</Grid>
 				</Grid>
-			</>
+			</div>
 		);
 	}
 	function About() {
-		return <></>;
+		return <div>{page.description}</div>;
 	}
 	function Members() {
-		return <></>;
+		return <div></div>;
 	}
 	function Friends() {
-		return <></>;
+		return <div></div>;
 	}
-	function SettingsUser() {
-		return <></>;
+	function Settings() {
+		return <div></div>;
 	}
 	function Groups() {
-		return <></>;
-	}
-	function SettingsGroup() {
-		return <></>;
+		return <div></div>;
 	}
 }
