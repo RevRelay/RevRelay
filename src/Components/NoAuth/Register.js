@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
 
@@ -109,60 +109,71 @@ export default function Register({ setToken, token }) {
 			alignItems="center"
 			align="flex-start"
 		>
-			<form onSubmit={submitButton}>
-				<Grid item xs={1}>
-					<h2>Welcome to the Future of Social Media</h2>
-				</Grid>
-				<Grid item xs={1}>
-					<TextField
-						id="username"
-						label="Username"
-						variant="outlined"
-						maxRows={1}
-						onChange={(e) => setUsername(e.target.value)}
-					/>
-				</Grid>
-				<br />
-				<Grid item xs={1}>
-					<TextField
-						id="password"
-						label="Password"
-						variant="outlined"
-						maxRows={1}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-				</Grid>
-				<br />
-				<Grid item xs={1}>
-					<TextField
-						id="email"
-						label="Email"
-						variant="outlined"
-						maxRows={1}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</Grid>
-				<br />
-				<Grid item xs={1}>
-					<TextField
-						id="displayName"
-						label="Display Name"
-						variant="outlined"
-						maxRows={1}
-						onChange={(e) => setDisplayName(e.target.value)}
-					/>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" type="submit">
-						Submit
-					</Button>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" onClick={(x) => navigate("/login")}>
-						Already have an account? Click here.
-					</Button>
-				</Grid>
-			</form>
+            <Paper
+					elevation={10}
+					sx={{
+						paddingLeft: 7,
+						paddingRight: 7,
+						paddingTop: 5,
+						paddingBottom: 5,
+						borderRadius: 10,
+					}}
+				>
+                <form onSubmit={submitButton}>
+                    <Grid item xs={1}>
+                        <h2>Welcome to the Future of Social Media</h2>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <TextField
+                            id="username"
+                            label="Username"
+                            variant="outlined"
+                            maxRows={1}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </Grid>
+                    <br />
+                    <Grid item xs={1}>
+                        <TextField
+                            id="password"
+                            label="Password"
+                            variant="outlined"
+                            maxRows={1}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Grid>
+                    <br />
+                    <Grid item xs={1}>
+                        <TextField
+                            id="email"
+                            label="Email"
+                            variant="outlined"
+                            maxRows={1}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Grid>
+                    <br />
+                    <Grid item xs={1}>
+                        <TextField
+                            id="displayName"
+                            label="Display Name"
+                            variant="outlined"
+                            maxRows={1}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Button color="inherit" type="submit">
+                            Submit
+                        </Button>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Button color="inherit" onClick={(x) => navigate("/login")}>
+                            Already have an account? Click here.
+                        </Button>
+                    </Grid>
+			    </form>
+            </Paper>
 		</Grid>
 	);
 }
