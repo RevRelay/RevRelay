@@ -12,7 +12,6 @@ import { Box } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
-import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -220,8 +219,8 @@ function App() {
 			<Box
 				sx={{
 					paddingTop: 8.5,
-					width: "99.1vw",
-					height: "90vh",
+					width: "100vw",
+					height: "100vh",
 					backgroundColor: "background.default",
 				}}
 			>
