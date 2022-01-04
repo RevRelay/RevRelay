@@ -37,12 +37,18 @@ export default function PageSetting(props) {
         updateForm(tempForm);
     }
 
+    const saveChanges = () => {
+        props.updatePage(form);
+
+        //TODO axios
+    }
+
     return (
         <>
             <Switch {...label} defaultChecked onChange={(e) => togglePrivacy(e)} />
             <TextField label="Description" variant="primary" onChange={(e) => changeDescription(e)} />
             <TextField label="URL of Banner" variant="primary" onChange={(e) => changeURL(e)} />
-            <Button variant="contained" onClick={ }>
+            <Button variant="contained" onClick={saveChanges}>
                 Save Page Settings
             </Button>
         </>
