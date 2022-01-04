@@ -47,17 +47,17 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 									setUserInput({...userInput, [varname] : userInfoFieldValue});
 								}
 								setToggleEdit({...toggleEdit, [varname] : false});
-								}}>
+							}}>
 							<CheckCircleIcon  fontSize="inherit"/>
 						</IconButton>
 					</Grid>
 					<Grid item xs={6}/>
 				</React.Fragment>
-				) : (
+			) : (
 				<React.Fragment>
 					<Grid item xs={2}>
 						<Typography>
-						{(varname === 'password') ? bulletString : userInput[varname]}
+							{(varname === 'password') ? bulletString : userInput[varname]}
 						</Typography>
 					</Grid>
 					<Grid item xs={7}>
@@ -66,8 +66,7 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 						</IconButton>
 					</Grid>
 				</React.Fragment> 
-					)
-			}
+			)}
 		</React.Fragment>
 	)
 };
@@ -76,31 +75,31 @@ export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggl
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
-		{toggleEdit.displayName ? (
-			<React.Fragment>
-				<TextField label={"Display Name"} onChange={(x) => userInfoFieldValue = x.target.value}/>
-				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : false})}>
-					<CancelIcon  fontSize="inherit"/>
-				</IconButton>
-				<IconButton size="small"
-					onClick={(x) => {
-						//this if statement is a very weak check for good input value, needs reinforcing - NL
-						if (userInfoFieldValue) {
-							setUserInput({...userInput, displayName : userInfoFieldValue});
-						}
-						setToggleEdit({...toggleEdit, displayName : false});
+			{toggleEdit.displayName ? (
+				<React.Fragment>
+					<TextField label={"Display Name"} onChange={(x) => userInfoFieldValue = x.target.value}/>
+					<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : false})}>
+						<CancelIcon  fontSize="inherit"/>
+					</IconButton>
+					<IconButton size="small"
+						onClick={(x) => {
+							//this if statement is a very weak check for good input value, needs reinforcing - NL
+							if (userInfoFieldValue) {
+								setUserInput({...userInput, displayName : userInfoFieldValue});
+							}
+							setToggleEdit({...toggleEdit, displayName : false});
 						}}>
-					<CheckCircleIcon  fontSize="inherit"/>
-				</IconButton>
-			</React.Fragment>
-		):(
-			<Typography variant="h5" align="right">
-				{userInput.displayName}
-				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : true})}>
-					<EditIcon fontSize="inherit"/>
-				</IconButton>
-			</Typography>
-		)}
+						<CheckCircleIcon  fontSize="inherit"/>
+					</IconButton>
+				</React.Fragment>
+			):(
+				<Typography variant="h5" align="right">
+					{userInput.displayName}
+					<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : true})}>
+						<EditIcon fontSize="inherit"/>
+					</IconButton>
+				</Typography>
+			)}
 		</React.Fragment>
 	)
 }
@@ -122,11 +121,11 @@ export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit,
 							setUserInput({...userInput, email : userInfoFieldValue});
 						}
 						setToggleEdit({...toggleEdit, email : false});
-						}}>
+					}}>
 					<CheckCircleIcon  fontSize="inherit"/>
 				</IconButton>
 			</React.Fragment>
-			):(
+		):(
 			<Typography variant="subtitle1" align="right">
 				{userInput.email}
 				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, email : true})}>

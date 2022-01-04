@@ -66,7 +66,6 @@ function UserInfo({JWT}) {
  * Const used for mapping to UserInfoEntryElement
  */
 	const userInfoFields = [
-		{name: "Username", varname: "username"},
 		{name: "Password", varname: "password"},
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
@@ -136,10 +135,24 @@ function UserInfo({JWT}) {
 				<Grid item xs={7} align="left">
 					<Box>
 						<Typography variant="h4">
-						Profile Settings
+							Profile Settings
 						</Typography>
 						<br/>
 						<Grid columns={12} container>
+							<Grid item xs={3}>
+								<Typography style={{ fontWeight: 600 }}>
+									Username
+								</Typography>
+							</Grid>
+							<React.Fragment>
+								<Grid item xs={2}>
+									<Typography>
+										{userInput.username}
+									</Typography>
+								</Grid>
+								<Grid item xs={7}>
+								</Grid>
+							</React.Fragment>
 							{userInfoFields.map((x) => {
 								return (
 									<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
