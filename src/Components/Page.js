@@ -21,6 +21,8 @@ import {
 	Tooltip,
 } from "@mui/material";
 
+import PageSetting from "./Page/PageSetting";
+
 import { height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
@@ -188,10 +190,10 @@ export default function Page({ theme, themes, JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
+				return <>{page.groupPage ? <PageSetting page={page}/> : <Groups />} </>;
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <Settings />} </>;
+				return <>{page.groupPage ? <></> : <PageSetting page={page}/>} </>;
 				break;
 			default:
 				break;
@@ -314,9 +316,6 @@ export default function Page({ theme, themes, JWT }) {
 		return <div></div>;
 	}
 	function Friends() {
-		return <div></div>;
-	}
-	function Settings() {
 		return <div></div>;
 	}
 	function Groups() {
