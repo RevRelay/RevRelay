@@ -90,32 +90,34 @@ export default function Nav({
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div">
+						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block'}}}> 
 							RevRelay
 						</Typography>
-						<NavSearchBar />
+						<Box sx={{ flexGrow: 1 }}>
+						<NavSearchBar/>
+						</Box>
+						<Box>
 						{token ? (
-							<Box>
-								<Button
-									color="inherit"
-									onClick={() => {
-										setToken("");
-										navigate("/login");
-									}}
-								>
-									Logout
-								</Button>
-							</Box>
+							<Button
+								color="inherit"
+								onClick={() => {
+									setToken("");
+									navigate("/login");
+								}}
+							>
+								Logout
+							</Button>
 						) : (
-							<Box>
+							<React.Fragment>
 								<Button color="inherit" onClick={(x) => navigate("/register")}>
 									Register
 								</Button>
 								<Button color="inherit" onClick={(x) => navigate("/login")}>
 									Login
 								</Button>
-							</Box>
+							</React.Fragment>
 						)}
+						</Box>
 					</Toolbar>
 				</AppBar>
 			</Box>
