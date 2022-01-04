@@ -242,16 +242,9 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	 *
 	 * Use the token object passed above if you need to find any
 	 */
-<<<<<<< HEAD
-	if(token){
-		var element = document.querySelector('canvas');
-		if(element){
-			console.log("Canvas deleted");
-=======
 	if (token) {
 		var element = document.querySelector("canvas");
 		if (element) {
->>>>>>> e0ad89591c8e974a7af070101bb4bd2f77299297
 			element.parentNode.removeChild(element);
 		}
 	}

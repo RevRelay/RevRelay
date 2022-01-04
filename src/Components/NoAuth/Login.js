@@ -78,7 +78,9 @@ export default function Login({ setToken, token }) {
                 </Grid>
             </form>
                 {
-                    <LoginSplash currentCanvas={document.querySelector('canvas')} />
+                    token ?
+                    <></> :
+                    <LoginSplash canvas={document.querySelector('canvas')} />
                 }
         </Grid>
     )

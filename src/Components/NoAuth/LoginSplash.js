@@ -21,12 +21,15 @@ import { useTheme } from "@mui/material";
 import { SphereGeometry } from 'three';
 
 var colorTheme
-var canvas
+// var canvas
 
-function LoginSplash({currentCanvas}) {
-	console.log("Wiring background")
+// function LoginSplash({currentCanvas}) {
+// 	console.log("Wiring background")
+// 	useEffect(Pretty,[])
+// 	canvas = currentCanvas;
+
+function LoginSplash({canvas}) {
 	useEffect(Pretty,[])
-	canvas = currentCanvas;
 	colorTheme = useTheme();
   return (
 	<div className="LoginSplash">
