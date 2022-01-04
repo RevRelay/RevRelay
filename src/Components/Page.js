@@ -65,22 +65,26 @@ export default function Page({ theme, themes, JWT }) {
 	useEffect(() => GetPage, []);
 
 	async function GetPage() {
+		console.log("test");
 		var apiRegisterUrl = "";
-		if (path.pathname.includes("user")) apiRegisterUrl = "/user/" + userID;
+		if (path.pathname.includes("user")) apiRegisterUrl = "/users/" + userID;
 		else apiRegisterUrl = "/groups/" + userID;
 
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + JWT,
 			},
-			validateStatus: () => true,
 		};
-		var data = await APIQuery.get(apiRegisterUrl, axiosConfig).then(
-			(data) => {
-				return data;
-			},
-			(data) => console.log(data)
-		);
+		var data = APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
+			console.log(data.data);
+			return data;
+		});
+		if (data.status === 200) {
+			if (path.pathname.includes("user")) {
+				updatePage(data.data);
+			}
+		}
+		console.log(page);
 	}
 
 	return (
@@ -151,6 +155,7 @@ export default function Page({ theme, themes, JWT }) {
 							) : (
 								<Tab label="Friends" />
 							)}
+							{page.groupPage ? <></> : <Tab label="Groups" />}
 							{currnetUser.userID === page.userOwnerID ? (
 								<Tab label="Settings" />
 							) : (
@@ -177,9 +182,11 @@ export default function Page({ theme, themes, JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <Settings />;
+				return <>{page.groupPage ? <SettingsGroup /> : <Groups />} </>;
 				break;
-
+			case 4:
+				return <>{page.groupPage ? <></> : <SettingsUser />} </>;
+				break;
 			default:
 				break;
 		}
@@ -303,7 +310,13 @@ export default function Page({ theme, themes, JWT }) {
 	function Friends() {
 		return <></>;
 	}
-	function Settings() {
+	function SettingsUser() {
+		return <></>;
+	}
+	function Groups() {
+		return <></>;
+	}
+	function SettingsGroup() {
 		return <></>;
 	}
 }
