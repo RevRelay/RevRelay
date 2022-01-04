@@ -20,11 +20,13 @@ import { MeshPhongMaterial } from 'three';
 import { useTheme } from "@mui/material";
 import { SphereGeometry } from 'three';
 
-var colorTheme
+var colorTheme;
+var canvas;
 
-function LoginSplash() {
-	useEffect(Pretty,[])
+function LoginSplash({currentCanvas}) {
 	colorTheme = useTheme();
+	canvas = currentCanvas;
+	useEffect(Pretty,[])
   return (
 	<div className="LoginSplash">
 	</div>
@@ -64,7 +66,7 @@ function Pretty(props) {
 	console.log(colorTheme);
 	//.palette.primary.{dark,light,main}
 	LandscapeGen.seed()
-	const renderer = new WebGLRenderer();
+	const renderer = canvas ? new WebGLRenderer(canvas) : new WebGLRenderer();
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
@@ -170,13 +172,13 @@ function Pretty(props) {
 	});
 	const sphere = new Mesh(sphereGeometry, sphereMaterial);
 	scene.add( sphere );
-	sphere.translateY(30)
-	sphere.translateZ(-220)
+	sphere.translateY(30);
+	sphere.translateZ(-220);
 
 	function render() {
-		console.log("Help")
-		renderer.render(scene, camera)
-		console.log("please")
+		console.log("Help");
+		renderer.render(scene, camera);
+		console.log("please");
 	}
 	render();
 	return <></>
