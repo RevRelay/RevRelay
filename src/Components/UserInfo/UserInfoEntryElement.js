@@ -8,6 +8,9 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 /**
  * Function for defining user info elements on UserInfo that are listed in the main body of the page (currently username, password, firstName, lastName, and birthDate).
@@ -70,6 +73,75 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 		</React.Fragment>
 	)
 };
+
+export function UserInfoElementUsername ({userInput}) {
+	return(
+		<React.Fragment>
+			<Grid item xs={3}>
+				<Typography style={{ fontWeight: 600 }}>
+					Username
+				</Typography>
+			</Grid>
+			<React.Fragment>
+				<Grid item xs={2}>
+					<Typography>
+						{userInput.username}
+					</Typography>
+				</Grid>
+				<Grid item xs={7}>
+				</Grid>
+			</React.Fragment>
+		</React.Fragment>
+	)
+}
+
+export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
+	var date = new Date();
+	return(
+		<React.Fragment>
+			<LocalizationProvider dateAdapter={AdapterDateFns}>
+				<DesktopDatePicker
+					label="For desktop"
+					minDate={new Date('2017-01-01')}
+					value={date}
+					views={['year', 'month', 'day']}
+					onChange={(newValue) => {
+						setUserInput({...userInput, birthDate : newValue});
+					}}
+					renderInput={(params) => <TextField {...params} />}
+				/>
+			</LocalizationProvider>
+
+			{/*{userInput.birthDate ? (
+				<React.Fragment>
+				<KeyboardDatePicker
+					autoOk
+					variant="inline"
+					inputVariant="outlined"
+					label="Birth Date"
+					format="yyyy/MM/dd"
+					value={userInput.birthDate}
+					InputAdornmentProps={{ position: "start" }}
+					onChange={date => setUserInput({...userInput, birthDate : date})}
+				/>
+			</React.Fragment>
+			):(
+				<React.Fragment>
+					<KeyboardDatePicker
+						autoOk
+						variant="inline"
+						inputVariant="outlined"
+						label="Birth Date"
+						format="yyyy/MM/dd"
+						value={"10/10/2018"}
+						InputAdornmentProps={{ position: "start" }}
+						onChange={date => setUserInput({...userInput, birthDate : date})}
+					/>
+				</React.Fragment>
+			)}*/}
+		</React.Fragment>
+	)
+}
 
 export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
 	let userInfoFieldValue;

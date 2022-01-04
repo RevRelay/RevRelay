@@ -31,7 +31,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import APIQuery from "../../API/APIQuery";
 import UserAPI, { updateEmail, updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
 // import  from "./UserInfoEntryElement";
-import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
+import UserInfoEntryElement, { UserInfoElementUsername, UserInfoEntryElementBirthDate, UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
 	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
@@ -69,7 +69,6 @@ function UserInfo({JWT}) {
 		{name: "Password", varname: "password"},
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
-		{name: "Birth Date", varname: "birthDate"}
 	]
 
 	useEffect(()=>{ FetchUserInfo(); },[])
@@ -100,7 +99,8 @@ function UserInfo({JWT}) {
 	}
 
 	function saveChanges() {
-		console.log(userInput.email);
+		console.log("Birthdate");
+		console.log(userInput.birthDate);
 		updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT);
 		updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT);
 		updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT);
@@ -139,25 +139,13 @@ function UserInfo({JWT}) {
 						</Typography>
 						<br/>
 						<Grid columns={12} container>
-							<Grid item xs={3}>
-								<Typography style={{ fontWeight: 600 }}>
-									Username
-								</Typography>
-							</Grid>
-							<React.Fragment>
-								<Grid item xs={2}>
-									<Typography>
-										{userInput.username}
-									</Typography>
-								</Grid>
-								<Grid item xs={7}>
-								</Grid>
-							</React.Fragment>
+							<UserInfoElementUsername key={"usernameElement"} userInput={userInput}/>
 							{userInfoFields.map((x) => {
 								return (
 									<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
 								)
 							})}
+							<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} userInput={userInput} setUserInput={setUserInput}/>
 						</Grid>
 					</Box>
 					<Button onClick={saveChanges()}>Save Changes</Button>
