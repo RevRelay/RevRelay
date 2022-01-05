@@ -25,10 +25,6 @@
 	top: 7%;
 }
 
-body {
-	overflow: hidden;
-}
-
 canvas {
 	z-index: 1;
 	top: 0;

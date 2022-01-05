@@ -310,8 +310,25 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route path=":userID"
-						element={<Page theme={activeTheme} themes={updateActiveTheme} JWT={token} />}
+					<Route
+						path=":userID"
+						element={
+							<Page
+								theme={activeTheme}
+								themes={updateActiveTheme}
+								JWT={token}
+							/>
+						}
+					/>
+					<Route
+						path="profile"
+						element={
+							<Page
+								JWT={token}
+								theme={activeTheme}
+								themes={updateActiveTheme}
+							/>
+						}
 					/>
 					<Route path="profile">
 						<Route path="userInfo" element={<UserInfo JWT={token} />} />
@@ -337,9 +354,14 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					<Route index element={<Groups />} />
 					<Route path=":userID" element={<Group />} />
 					<Route path="profile" element={<GroupProfile />} />
-					<Route path="chat" element={<Chat />} /> 
+					<Route path="chat" element={<Chat />} />
 				</Route>
 			</Route>
+			{/*<Route path="group"> pretty sure this is redundant - NL
+				<Route index element={<Groups />} />
+				<Route path=":userID" element={<Group />} />
+				<Route path="profile" element={<GroupProfile />} />
+			</Route>*/}
 		</Routes>
 	);
 }
