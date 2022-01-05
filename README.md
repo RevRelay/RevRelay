@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# RevRelay
+Our Front End to the project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Currently untested is what you should be pulling
 
-## Available Scripts
+## User Story Goals
+- [x] **Register Account**
+  - As a User, I should be able to register a new account.
+- [x] **Login**
+  - As a User, I should be able to log in to the application.
+- [ ] **User Profile**
+  - As a User, I should be able to create and maintain a profile page that is visible to other users.
+- [ ] **Create/Join a Group/Team**
+  - As a User, I should be able to create or join a group/team where there can be collaborative posts only for the group/team to view.
+- [x] **Chatroom**
+  - As a User, I should be able to join a live chatroom with others and only see messages when I am in the room.
+    - Only see the messages sent after you join a chat
+- [ ] **Search for Other People**
+  - As a User, I should be able to search for other people and go to their profiles.
+- [x] **Create a Post**
+  - As a User, I should be able to create a post with text and images.
+- [ ] **Like a Post**
+  - As a User, I should be able to like another user's post.
+- [x] **Comment**
+  - As a User, I should be able to comment on posts or reply to comments on posts.
+- [ ] **Host/Join Events**
+  - As a User, I should be able to host or join events on the social media platform. 
+- [ ] **Follows/Friends**
+  - As a User, I should be able to follow another user to see their posts on my feed. My feed should only displays posts from user that I follow.
+- [ ] **Reset Password**
+  - As a User, I should be able to reset my password.
+- [ ] **Upload Profile Picture**
+  - As a User, I should be able to upload an image as a profile picture.
+- [ ] **Post Feed**
+  - As a User, I should have a post feed that displays other user's posts.
+- [ ] **Bookmark Posts**
+  - As a User, I should be able to bookmark or save specific posts in order to reference them later.
+- [ ] **Notifications**
+  - As a User, I should receive notifications when another user interacts with my post or follows me.
+- [ ] **Youtube Links**
+  - As a User, I should be able to add YouTube links to my posts.
+- [ ] **Auto-remove Posts Option**
+  - As a User, I should be able to select an option for my account that will remove my posts automatically after a given time frame.
+- [ ] **Profanity Filter**
+  - Integrate a profanity filter api to ensure that no posts can be submitted with profanity in them to ensure a professional social media environment.
+- [ ] **"See First" Option for Other Users**
+  - As a User, I should be able to choose other users that I want to see first in my feed. Their posts should show before others.
+- [x] **Dark Mode**
+  - As a User, I should be able to change the color scheme from the normal mode to a dark mode option.
+- [x] **Session Management**
+  - As a User, my session should be maintained until I log out.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Back End
+https://github.com/RevRelay/Backend.git
