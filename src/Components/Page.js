@@ -17,10 +17,8 @@ import {
 	Paper,
 	Tab,
 	Tabs,
-	TextField,
-	Tooltip,
 } from "@mui/material";
-
+import Posts from "./Posts";
 import { height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
@@ -28,61 +26,58 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export default function Page({ theme, themes, JWT }) {
+/**
+ * Renders a generic page with condintional rendering
+ * @param {*} param0 JWT
+ * @returns HTML for default page
+ */
+export default function Page({ JWT }) {
 	let { userID } = useParams();
-	console.log("param: ", userID);
 	let path = useLocation();
-	console.log("Path: ", path);
-	console.log(JWT);
+
 	const [page, updatePage] = useState({
-		pageID: 0,
-		pageTitle: "Test",
-		description: "",
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
-		private: false,
+		description: "You description here",
 		groupPage: false,
-		userOwnerID: 0,
-		groupID: 0,
+		pageID: 1,
+		pageTitle: "test",
+		posts: [],
+		private: true,
+
+		pageTitle: "Test",
 	});
-	const [posts, updatePosts] = useState({
-		content: [],
-		pageable: "INSTANCE",
-		totalPages: 1,
-		totalElements: 0,
-		last: true,
-		size: 0,
-		number: 0,
-		sort: { empty: true, sorted: false, unsorted: true },
-		numberOfElements: 0,
-		first: true,
-		empty: true,
-	});
+
 	const [tab, updateTab] = useState(0);
 	const currnetUser = {
-		userID: 0,
+		page: { userOwnerID: 0 },
 	};
 
-	useEffect(() => GetPage, []);
-
+	useEffect(() => {
+		GetPage();
+	}, []);
+	/**
+	 * Gets Page from back server
+	 */
 	async function GetPage() {
 		var apiRegisterUrl = "";
-		if (path.pathname.includes("user")) apiRegisterUrl = "/user/" + userID;
+		if (path.pathname.includes("user/profile"))
+			apiRegisterUrl = "/users/current";
+		else if (path.pathname.includes("user"))
+			apiRegisterUrl = "/users/" + userID;
 		else apiRegisterUrl = "/groups/" + userID;
 
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + JWT,
 			},
-			validateStatus: () => true,
 		};
-		var data = await APIQuery.get(apiRegisterUrl, axiosConfig).then(
-			(data) => {
-				return data;
-			},
-			(data) => console.log(data)
-		);
+		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
+			if (path.pathname.includes("user")) {
+				data.data.userPage.pageTitle = data.data.displayName + "'s Page";
+				updatePage(data.data.userPage);
+			}
+		});
 	}
-
 	return (
 		<Box sx={{ height: "80%" }}>
 			<Box
@@ -94,7 +89,7 @@ export default function Page({ theme, themes, JWT }) {
 					marginLeft: "15%",
 					marginRight: "15%",
 					display: "flex",
-					height: "100%",
+					minHeight: "80vh",
 
 					maxWidth: "100%",
 					minWidth: 500,
@@ -102,7 +97,7 @@ export default function Page({ theme, themes, JWT }) {
 			>
 				<div
 					style={{
-						maxHeight: "100%",
+						minHeight: "100%",
 						flexGrow: 1,
 						display: "flex",
 						flexFlow: "column",
@@ -151,10 +146,9 @@ export default function Page({ theme, themes, JWT }) {
 							) : (
 								<Tab label="Friends" />
 							)}
-							{currnetUser.userID === page.userOwnerID ? (
+							{!page.groupPage && <Tab label="Groups" />}
+							{currnetUser.page.userOwnerID === page.userOwnerID || (
 								<Tab label="Settings" />
-							) : (
-								<></>
 							)}
 						</Tabs>
 						<Divider sx={{ width: "100%" }} />
@@ -164,11 +158,14 @@ export default function Page({ theme, themes, JWT }) {
 			</Box>
 		</Box>
 	);
-
+	/**
+	 * Gets tab from state and renders current tab
+	 * @returns Current Tab
+	 */
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts />;
+				return <Posts page={page} currnetUser={currnetUser} JWT={JWT} />;
 				break;
 			case 1:
 				return <About />;
@@ -177,133 +174,48 @@ export default function Page({ theme, themes, JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <Settings />;
+				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
 				break;
-
+			case 4:
+				return <>{page.groupPage ? <></> : <Settings />} </>;
+				break;
 			default:
 				break;
 		}
 	}
-	function Posts() {
-		const [open, setOpen] = useState(false);
-		const [newpost, updateNewPost] = useState({
-			postType: null,
-			postTitle: null,
-			postContent: null,
-			postLikes: 0,
-			postTime: null,
-			postOwnerID: 0,
-			children: null,
-		});
-		const handleClickOpen = () => {
-			setOpen(true);
-		};
-
-		const handleClose = () => {
-			console.log(temppost);
-			setOpen(false);
-		};
-		var temppost = {
-			postType: null,
-			postTitle: "New Post",
-			postContent: "Hello World!",
-			postLikes: 0,
-			postTime: null,
-			postOwnerID: 0,
-			children: null,
-		};
-
-		return (
-			<>
-				<Dialog open={open} onClose={handleClose}>
-					<DialogTitle>New Post</DialogTitle>
-					<DialogContent>
-						<DialogContentText>Create A New Post</DialogContentText>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="title"
-							label="Title"
-							type="test"
-							fullWidth
-							variant="standard"
-							defaultValue={temppost.postTitle}
-							onChange={(x) => (temppost.postTitle = x.target.value)}
-						/>
-						<TextField
-							sx={{ marginTop: 2 }}
-							id="content"
-							label="Content"
-							multiline
-							fullWidth
-							rows={4}
-							defaultValue={temppost.postContent}
-							onChange={(x) => (temppost.postContent = x.target.value)}
-						/>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
-						<Button onClick={handleClose}>Post!</Button>
-					</DialogActions>
-				</Dialog>
-				<Grid
-					container
-					spacing={0}
-					direction="column"
-					alignItems="center"
-					justifyContent="center"
-					height={"100%"}
-				>
-					<Grid
-						item
-						xs={4}
-						sx={{
-							left: "5%",
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
-						}}
-					>
-						{page.userOwnerID === currnetUser.userID ? (
-							<Tooltip
-								title="Add new post"
-								placement="top"
-								TransitionComponent={Fade}
-								TransitionProps={{ timeout: 600 }}
-							>
-								<IconButton onClick={handleClickOpen}>
-									<AddCircleIcon color="primary" fontSize="large" />
-								</IconButton>
-							</Tooltip>
-						) : (
-							<></>
-						)}
-					</Grid>
-					<Grid
-						item
-						xs={4}
-						sx={{
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
-						}}
-					>
-						<Pagination count={posts.totalPages} color="primary" size="large" />
-					</Grid>
-				</Grid>
-			</>
-		);
-	}
+	/**
+	 * Placeholder for About
+	 * @returns
+	 */
 	function About() {
-		return <></>;
+		return <div>{page.description}</div>;
 	}
+	/**
+	 * Placeholder for Members
+	 * @returns
+	 */
 	function Members() {
-		return <></>;
+		return <div></div>;
 	}
+	/**
+	 * Placeholder for Friends
+	 * @returns
+	 */
 	function Friends() {
-		return <></>;
+		return <div></div>;
 	}
+	/**
+	 * Placeholder for Settings
+	 * @returns
+	 */
 	function Settings() {
-		return <></>;
+		return <div></div>;
+	}
+	/**
+	 * Placeholder for Groups
+	 * @returns
+	 */
+	function Groups() {
+		return <div></div>;
 	}
 }
