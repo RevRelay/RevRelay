@@ -167,10 +167,10 @@ export default function Page({ JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <PageSetting page={page}/> : <Groups />} </>;
+				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage}/> : <Groups />} </>;
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <PageSetting page={page}/>} </>;
+				return <>{page.groupPage ? <></> : <PageSetting page={page} updatePage={updatePage}/>} </>;
 				break;
 			default:
 				break;
