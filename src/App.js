@@ -11,6 +11,7 @@ import {
 import { Box } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
+import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 //https://gridfiti.com/aesthetic-color-palettes/
@@ -260,6 +261,11 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
 				/>
+				<Route path="search">
+					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
+					<Route index element={<Navigate to={-1} />} />
+					<Route path=":searchTerm" element={<Search token={token} />} />
+				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route
