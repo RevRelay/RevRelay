@@ -26,9 +26,15 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+/**
+ * Renders a generic page with condintional rendering
+ * @param {*} param0 JWT
+ * @returns HTML for default page
+ */
 export default function Page({ JWT }) {
 	let { userID } = useParams();
 	let path = useLocation();
+
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
@@ -49,7 +55,9 @@ export default function Page({ JWT }) {
 	useEffect(() => {
 		GetPage();
 	}, []);
-
+	/**
+	 * Gets Page from back server
+	 */
 	async function GetPage() {
 		var apiRegisterUrl = "";
 		if (path.pathname.includes("user/profile"))
@@ -70,7 +78,6 @@ export default function Page({ JWT }) {
 			}
 		});
 	}
-
 	return (
 		<Box sx={{ height: "80%" }}>
 			<Box
@@ -151,7 +158,10 @@ export default function Page({ JWT }) {
 			</Box>
 		</Box>
 	);
-
+	/**
+	 * Gets tab from state and renders current tab
+	 * @returns Current Tab
+	 */
 	function RenderTab() {
 		switch (tab) {
 			case 0:
@@ -173,19 +183,38 @@ export default function Page({ JWT }) {
 				break;
 		}
 	}
-
+	/**
+	 * Placeholder for About
+	 * @returns
+	 */
 	function About() {
 		return <div>{page.description}</div>;
 	}
+	/**
+	 * Placeholder for Members
+	 * @returns
+	 */
 	function Members() {
 		return <div></div>;
 	}
+	/**
+	 * Placeholder for Friends
+	 * @returns
+	 */
 	function Friends() {
 		return <div></div>;
 	}
+	/**
+	 * Placeholder for Settings
+	 * @returns
+	 */
 	function Settings() {
 		return <div></div>;
 	}
+	/**
+	 * Placeholder for Groups
+	 * @returns
+	 */
 	function Groups() {
 		return <div></div>;
 	}

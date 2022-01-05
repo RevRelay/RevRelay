@@ -30,6 +30,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
+/**
+ * Render Posts Tab
+ * @param {*} param0 PAGE,CurrenUser, JWT
+ * @returns
+ */
 export default function Posts({ page, currnetUser, JWT }) {
 	const [posts, updatePosts] = useState({
 		content: [],
@@ -82,7 +87,9 @@ export default function Posts({ page, currnetUser, JWT }) {
 		PostPosts();
 		setOpen(false);
 	};
-
+	/**
+	 * Gets posts from Server
+	 */
 	async function GetPosts() {
 		var apiRegisterUrl = "posts/page/" + page.pageID;
 		let axiosConfig = {
@@ -95,7 +102,9 @@ export default function Posts({ page, currnetUser, JWT }) {
 		});
 		console.log(posts);
 	}
-
+	/**
+	 * Save Posts
+	 */
 	async function PostPosts() {
 		var apiRegisterUrl = "posts";
 		let axiosConfig = {
@@ -112,7 +121,11 @@ export default function Posts({ page, currnetUser, JWT }) {
 		GetPosts();
 	}, []);
 	console.log("POSTS:", posts);
-
+	/**
+	 * Generate Posts html
+	 * @param {*} param0 post
+	 * @returns posts html
+	 */
 	function PostElement({ post }) {
 		return (
 			<Box
