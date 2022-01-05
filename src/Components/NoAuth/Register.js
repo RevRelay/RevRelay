@@ -38,10 +38,13 @@ function validInputRegister(user) {
 		message += `Minimum password length ${passLen} \n`;
 	}
 	if (!user.email) {
-		message += "A valid email is required";
+		message += `A valid email is required \n`;
 	}
 	if (!(user.displayName && user.displayName.length >= displayNameLen)) {
 		message += `Minimum display name length ${displayNameLen} \n`;
+	}
+	if(password == confirmPassword){
+		message += `Your passwords do not match \n`;
 	}
 	if (message) {
 		alert(message);
@@ -61,6 +64,7 @@ export default function Register({ setToken, token }) {
 	 */
 	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
+	const [confirmPassword, setConfirmPassword] = useState();
 	const [email, setEmail] = useState();
 	const [displayName, setDisplayName] = useState();
 	let navigate = useNavigate();
@@ -72,6 +76,7 @@ export default function Register({ setToken, token }) {
 			validInputRegister({
 				username,
 				password,
+				confirmPassword,
 				email,
 				displayName,
 			})
@@ -143,6 +148,18 @@ export default function Register({ setToken, token }) {
                             variant="outlined"
                             maxRows={1}
                             onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Grid>
+                    <br />
+                    <Grid item xs={1}>
+                        <TextField
+                            id="passwordConfirm"
+                            label="PasswordConfirm"
+							type="password"
+							required="true"
+                            variant="outlined"
+                            maxRows={1}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </Grid>
                     <br />
