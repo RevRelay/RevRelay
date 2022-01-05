@@ -11,12 +11,16 @@ import {
 import { Box } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
+import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
-import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
+//Primary Main - Navbar
+//Background Default - Background
+//Background Paper - Nav pop-out bar
+
 const themes = [
 	{
 		name: "Default",
@@ -51,17 +55,23 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#fa92fb",
-					main: "#a653f5",
-					dark: "#f96cff",
+					light: "#4cc9f0",
+					main: "#E93479",
+					dark: "#560bad",
 				},
 				secondary: {
-					light: "#8f8cf2",
-					main: "#65b8bf",
+					light: "#4895ef",
+					main: "#b5179e",
 				},
 				background: {
-					paper: "#8f8cf2",
-					default: "#65b8bf",
+					paper: "#7a04eb",
+					default: "#300350",
+				},
+				text: {
+					primary: "#FFFFFF",
+					secondary: "#F9ac53",
+					disabled: "#FFFFFF",
+					hint: "#FFFFFF",
 				},
 			},
 		}),
@@ -72,81 +82,17 @@ const themes = [
 			palette: {
 				primary: {
 					light: "#ff68a8",
-					main: "#ca7cd8",
+					main: "#A6206A",
 					dark: "#3968cb",
 				},
 				secondary: {
 					light: "#64cff7",
-					main: "#f7e752",
+					main: "#EC1C4B",
 					dark: "#3968cb",
 				},
 				background: {
-					paper: "#f7e752",
-					default: "#64cff7",
-				},
-			},
-		}),
-	},
-	{
-		name: "Cloud",
-		theme: createTheme({
-			palette: {
-				primary: {
-					light: "#f08d7e",
-					main: "#efa18a",
-					dark: "#f08d7e",
-				},
-				secondary: {
-					light: "#f08d7e",
-					main: "#efa18a",
-					dark: "#f08d7e",
-				},
-				background: {
-					paper: "#dda6b9",
-					default: "#acaec5",
-				},
-			},
-		}),
-	},
-
-	{
-		name: "Kawaii",
-		theme: createTheme({
-			palette: {
-				primary: {
-					light: "#defffa",
-					main: "#befcff",
-					dark: "#b0e1ff",
-				},
-				secondary: {
-					light: "#b0e1ff",
-					main: "#befcff",
-					dark: "#defffa",
-				},
-				background: {
-					paper: "#ffdaf5",
-					default: "#e6c6ff",
-				},
-			},
-		}),
-	},
-	{
-		name: "Cyberpunk",
-		theme: createTheme({
-			palette: {
-				primary: {
-					light: "#e68e36",
-					main: "#7998ee",
-					dark: "#556dc8",
-				},
-				secondary: {
-					light: "#556dc8",
-					main: "#7998ee",
-					dark: "#e68e36",
-				},
-				background: {
-					paper: "#dd517f",
-					default: "#461e52",
+					paper: "#F16A43",
+					default: "#2F9395",
 				},
 				text: {
 					primary: "#FFFFFF",
@@ -158,22 +104,113 @@ const themes = [
 		}),
 	},
 	{
+		name: "Cloud",
+		theme: createTheme({
+			palette: {
+				primary: {
+					light: "#f08d7e",
+					main: "#FD5E53",
+					dark: "#f08d7e",
+				},
+				secondary: {
+					light: "#f08d7e",
+					main: "#efa18a",
+					dark: "#f08d7e",
+				},
+				background: {
+					paper: "#FC9C54",
+					default: "#4B3D60",
+				},
+				text: {
+					primary: "#FFFFFF",
+					secondary: "#FFFFFF",
+					disabled: "#FFFFFF",
+					hint: "#FFFFFF",
+				},
+			},
+		}),
+	},
+
+	{
+		name: "Kawaii",
+		theme: createTheme({
+			palette: {
+				primary: {
+					light: "#defffa",
+					main: "#9FE4AD",
+					dark: "#b0e1ff",
+				},
+				secondary: {
+					light: "#b0e1ff",
+					main: "#befcff",
+					dark: "#defffa",
+				},
+				background: {
+					paper: "#ffc1cc",
+					default: "#F9A8F5",
+				},
+				text: {
+					primary: "#000000",
+					secondary: "#000000",
+					disabled: "#000000",
+					hint: "#000000",
+				},
+			},
+		}),
+	},
+	{
+		name: "Cyberpunk",
+		theme: createTheme({
+			palette: {
+				primary: {
+					light: "#e68e36",
+					main: "#defe47",
+					dark: "#556dc8",
+				},
+				secondary: {
+					light: "#556dc8",
+					main: "#0016ee",
+					dark: "#e68e36",
+				},
+				background: {
+					paper: "#dd517f",
+					default: "#461e52",
+				},
+				text: {
+					primary: "#D3D3D3",
+					secondary: "#D3D3D3",
+					disabled: "#ffffff",
+					hint: "#ffffff",
+				},
+			},
+		}),
+	},
+	//Hex Codes: #674AB3 | #A348A6 | #9F63C4 | #9075D8 | #CEA2D7.
+	{
 		name: "Lofi",
 		theme: createTheme({
 			palette: {
 				primary: {
 					light: "#cea2d7",
-					main: "#9075d8",
+					main: "#9075D8",
 					dark: "#674ab3",
+					contrastText: "#000000",
 				},
 				secondary: {
 					light: "#674ab3",
 					main: "#9075d8",
 					dark: "#cea2d7",
+					contrastText: "#000000",
 				},
 				background: {
-					paper: "#9f63c4",
-					default: "#a348a6",
+					paper: "#A348A6",
+					default: "#674AB3",
+				},
+				text: {
+					primary: "#FFFFFF",
+					secondary: "#FFFFFF",
+					disabled: "#FFFFFF",
+					hint: "#FFFFFF",
 				},
 			},
 		}),
@@ -184,7 +221,7 @@ const themes = [
 			palette: {
 				primary: {
 					light: "#7998ee",
-					main: "#362fbb",
+					main: "#ff0052",
 					dark: "#712275",
 				},
 				secondary: {
@@ -193,8 +230,14 @@ const themes = [
 					dark: "#7998ee",
 				},
 				background: {
-					paper: "#f97698",
-					default: "#ffb845",
+					paper: "#ffef00",
+					default: "#00f3ff",
+				},
+				text: {
+					primary: "#000000",
+					secondary: "#000000",
+					disabled: "#000000",
+					hint: "#000000",
 				},
 			},
 		}),
@@ -220,8 +263,8 @@ function App() {
 			<Box
 				sx={{
 					paddingTop: 8.5,
-					width: "99.1vw",
-					minHeight: "80vh",
+					width: "100vw",
+					height: "100vh",
 					backgroundColor: "background.default",
 				}}
 			>
@@ -242,12 +285,6 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	 *
 	 * Use the token object passed above if you need to find any
 	 */
-	if (token) {
-		var element = document.querySelector("canvas");
-		if (element) {
-			element.parentNode.removeChild(element);
-		}
-	}
 	return (
 		<Routes>
 			<Route path="/">
@@ -260,28 +297,23 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
 				/>
+				<Route path="search">
+					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
+					<Route index element={<Navigate to={-1} />} />
+					<Route path=":searchTerm" element={<Search token={token} />} />
+				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route
-						path=":userID"
-						element={
-							<Page
-								theme={activeTheme}
-								themes={updateActiveTheme}
-								JWT={token}
-							/>
-						}
+					<Route path=":userID" element={
+						<Page theme={activeTheme} themes={updateActiveTheme} JWT={token} />
+					}
 					/>
-					<Route
-						path="profile"
-						element={
-							<Page
-								JWT={token}
-								theme={activeTheme}
-								themes={updateActiveTheme}
-							/>
-						}
-					/>
+					<Route path="profile">
+						<Route index element={
+							<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />
+						} />
+						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+					</Route>
 				</Route>
 			</Route>
 			<Route path="group">

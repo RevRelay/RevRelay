@@ -21,7 +21,7 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import { height, maxHeight, width } from "@mui/system";
+import { borderLeft, height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -30,6 +30,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
+/**
+ * Render Posts Tab
+ * @param {*} param0 PAGE,CurrenUser, JWT
+ * @returns
+ */
 export default function Posts({ page, currnetUser, JWT }) {
 	const [posts, updatePosts] = useState({
 		content: [],
@@ -56,13 +61,22 @@ export default function Posts({ page, currnetUser, JWT }) {
 		postOwnerID: 0,
 		children: null,
 	});
-	const handleClickOpen = (isOp) => {
+	const handleClickOpen = (isOp, post) => {
 		if (!isOp) {
 			let np = { ...newpost };
-
+			np.parent = { postID: post };
+			np.postType = "REPLY";
 			updateNewPost(np);
+			console.log(post);
+			setOpen(true);
+		} else {
+			let np = { ...newpost };
+			np.parent = null;
+			np.postType = "ORIGINAL";
+			updateNewPost(np);
+			console.log(post);
+			setOpen(true);
 		}
-		setOpen(true);
 	};
 
 	const handleClose = () => {
@@ -73,7 +87,9 @@ export default function Posts({ page, currnetUser, JWT }) {
 		PostPosts();
 		setOpen(false);
 	};
-
+	/**
+	 * Gets posts from Server
+	 */
 	async function GetPosts() {
 		var apiRegisterUrl = "posts/page/" + page.pageID;
 		let axiosConfig = {
@@ -86,7 +102,9 @@ export default function Posts({ page, currnetUser, JWT }) {
 		});
 		console.log(posts);
 	}
-
+	/**
+	 * Save Posts
+	 */
 	async function PostPosts() {
 		var apiRegisterUrl = "posts";
 		let axiosConfig = {
@@ -103,25 +121,47 @@ export default function Posts({ page, currnetUser, JWT }) {
 		GetPosts();
 	}, []);
 	console.log("POSTS:", posts);
+	/**
+	 * Generate Posts html
+	 * @param {*} param0 post
+	 * @returns posts html
+	 */
+	function PostElement({ post }) {
+		return (
+			<Box
+				sx={{
+					paddingTop: "1%",
+					marginLeft: "1%",
+				}}
+			>
+				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
+					<Typography>{post.postTitle}</Typography>
+					<Typography>{post.postContent}</Typography>
+					<IconButton>
+						<KeyboardArrowUpIcon color="primary" />
+					</IconButton>
+					{post.postLikes}
+					<IconButton>
+						<KeyboardArrowDownIcon color="primary" />
+					</IconButton>
+					<Button onClick={() => handleClickOpen(false, post.postID)}>
+						Reply
+					</Button>
+				</Paper>
+				{post.children.map((post) => {
+					return <PostElement post={post} key={post.postID} />;
+				})}
+			</Box>
+		);
+	}
+
 	return (
 		<div>
 			{posts.content.map((post) => {
-				return (
-					<>
-						<Paper elevation={5} key={post.postID}>
-							<Typography>{post.postTitle}</Typography>
-							<Typography>{post.postContent}</Typography>
-							<IconButton>
-								<KeyboardArrowUpIcon color="primary" />
-							</IconButton>
-							{post.postLikes}
-							<IconButton>
-								<KeyboardArrowDownIcon color="primary" />
-							</IconButton>
-							<Button onClick={() => handleClickOpen(false)}>Reply</Button>
-						</Paper>
-						<br />
-					</>
+				return post.postType !== "ORIGINAL" ? (
+					<></>
+				) : (
+					<PostElement post={post} key={post.postID} />
 				);
 			})}
 			<br />

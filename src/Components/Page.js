@@ -26,12 +26,19 @@ import { height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from "../API/APIQuery";
+import APIQuery from '../API/APIQuery';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import FriendsTab from "./Page/FriendsTab";
 
+/**
+ * Renders a generic page with condintional rendering
+ * @param {*} param0 JWT
+ * @returns HTML for default page
+ */
 export default function Page({ JWT }) {
 	let { userID } = useParams();
 	let path = useLocation();
+
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
@@ -40,7 +47,6 @@ export default function Page({ JWT }) {
 		pageTitle: "test",
 		posts: [],
 		private: true,
-
 		pageTitle: "Test",
 	});
 
@@ -48,11 +54,31 @@ export default function Page({ JWT }) {
 	const currnetUser = {
 		page: { userOwnerID: 0 },
 	};
-
+	console.log(currnetUser.page.userOwnerID)
 	useEffect(() => {
 		GetPage();
+		getCurrentUser();
 	}, []);
 
+	const [currentUsername, setCurrentUsername] = useState("");
+
+  /**
+   * Gets Page from back server
+   */
+  const getCurrentUser = async () => {
+    let axiosConfig = {
+      headers: {
+        Authorization: "Bearer " + JWT,
+      },
+    };
+    const userNow = await APIQuery.get("users/current", axiosConfig).then((response)=> response.data);
+
+	setCurrentUsername(userNow.username)
+  };
+  	console.log(currentUsername);
+	/**
+	 * Gets Page from back server
+	 */
 	async function GetPage() {
 		var apiRegisterUrl = "";
 		if (path.pathname.includes("user/profile"))
@@ -73,7 +99,6 @@ export default function Page({ JWT }) {
 			}
 		});
 	}
-
 	return (
 		<Box sx={{ height: "80%" }}>
 			<Box
@@ -154,7 +179,10 @@ export default function Page({ JWT }) {
 			</Box>
 		</Box>
 	);
-
+	/**
+	 * Gets tab from state and renders current tab
+	 * @returns Current Tab
+	 */
 	function RenderTab() {
 		switch (tab) {
 			case 0:
@@ -164,7 +192,7 @@ export default function Page({ JWT }) {
 				return <About />;
 				break;
 			case 2:
-				return <>{page.groupPage ? <Members /> : <Friends />} </>;
+				return <>{page.groupPage ? <Members /> : <FriendsTab currentUsername={currentUsername} />} </>;
 				break;
 			case 3:
 				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage}/> : <Groups />} </>;
@@ -176,16 +204,31 @@ export default function Page({ JWT }) {
 				break;
 		}
 	}
-
+	/**
+	 * Placeholder for About
+	 * @returns
+	 */
 	function About() {
 		return <div>{page.description}</div>;
 	}
+	/**
+	 * Placeholder for Members
+	 * @returns
+	 */
 	function Members() {
 		return <div></div>;
-	}
-	function Friends() {
+	}	
+	/**
+	 * Placeholder for Settings
+	 * @returns
+	 */
+	function Settings() {
 		return <div></div>;
 	}
+	/**
+	 * Placeholder for Groups
+	 * @returns
+	 */
 	function Groups() {
 		return <div></div>;
 	}
