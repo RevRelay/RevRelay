@@ -6,6 +6,7 @@ import {
 	Stack,
 	Box
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -77,6 +78,33 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 						</Box>
 					</React.Fragment> 
 				)}
+			</Stack>
+		</React.Fragment>
+	)
+};
+
+export function UserInfoEntryElementPassword ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+    let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+	let navigate = useNavigate();
+
+	return (
+		<React.Fragment>
+			<Stack direction="row" spacing={3}>
+				<Box sx={{width:"20%"}}>
+					<Typography style={{ fontWeight: 600 }}>
+						Password
+					</Typography>
+				</Box>
+				<Box sx={{width:"40%"}}>
+					<Typography>
+						{bulletString}
+					</Typography>
+				</Box>
+				<Box sx={{width:"40%", height:"2em"}}>
+					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/password/")}>
+						<EditIcon  fontSize="inherit"/>
+					</IconButton>
+				</Box>
 			</Stack>
 		</React.Fragment>
 	)

@@ -1,41 +1,30 @@
 import React, { useState, useEffect } from "react";
 import {
 	Avatar,
-	AppBar,
-	Autocomplete,
 	Button,
 	Box,
 	Card,
-	ContainerTypeMap,
-	Divider,
-	Drawer,
-	Grid,
 	IconButton,
-	InputLabel,
-	Link,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	MenuItem,
-	Select,
-	TextField,
-	Toolbar,
 	Typography,
 	CardContent,
 	CardActions,
 	Stack
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
- import {
-	Routes, 
-	Route, 
-	useNavigate, 
-} from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import UserAPI, { updateEmail, updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
+import UserAPI, { updateEmail, 
+	updateBirthdate, 
+	updateDisplayName, 
+	updateFirstName, 
+	updateLastName 
+} from "../../API/UserAPI";
 // import	from "./UserInfoEntryElement";
-import UserInfoEntryElement, { UserInfoElementUsername, UserInfoEntryElementBirthDate, UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
+import UserInfoEntryElement, { UserInfoElementUsername, 
+	UserInfoEntryElementPassword,
+	UserInfoEntryElementBirthDate, 
+	UserInfoEntryElementDisplayName, 
+	UserInfoEntryElementEmail 
+} from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
 	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
@@ -70,7 +59,6 @@ function UserInfo({JWT}) {
  * Const used for mapping to UserInfoEntryElement
  */
 	const userInfoFields = [
-		{name: "Password", varname: "password"},
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
 	]
@@ -102,15 +90,13 @@ function UserInfo({JWT}) {
 		});
 	}
 
-	function saveChanges() {
-		console.log("Birthdate");
-		console.log(userInput.birthDate);
+	const submitButton = async (e) => {
 		updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT);
 		updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT);
 		updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT);
 		updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT);
 		updateEmail(userInput.email, mostRecentUserInfo.userID, JWT);
-	}
+	};
 
 	return(
 		<React.Fragment>
@@ -160,6 +146,7 @@ function UserInfo({JWT}) {
 							<br/>
 							<Box>
 								<UserInfoElementUsername key={"usernameElement"} userInput={userInput}/>
+								<UserInfoEntryElementPassword key={"passwordElemetn"} userInput={userInput} setUserInput={setUserInput} />
 								{userInfoFields.map((x) => {
 									return (
 										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
@@ -169,7 +156,7 @@ function UserInfo({JWT}) {
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>
-							<Button onClick={(userInput) => {saveChanges(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
+							<Button type="submit" onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
 						</CardActions>
 					</Card>
 				</Box>

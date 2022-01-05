@@ -17,7 +17,6 @@ import {
 	ListItemIcon,
 	Typography,
 } from "@mui/material";
-
 import React, { useState } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";

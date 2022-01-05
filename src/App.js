@@ -17,6 +17,7 @@ import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import Home from "./Components/HomeSplash/Home.js";
+import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -317,7 +318,10 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 						<Route index element={
 							<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />
 						} />
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+						<Route path="userInfo" >
+							<Route index element={<UserInfo JWT={token} />} />
+							<Route path="changePassword" element={<ChangePassword JWT={token}/>} />
+						</Route>
 					</Route>
 				</Route>
 			</Route>
