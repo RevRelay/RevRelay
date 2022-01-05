@@ -72,7 +72,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 //	 },
 // }));
 
-
+/**
+ * Component for rendering the search bar portion of the NavBar. 
+ * @returns Search Bar with text entry, startAdornment, and endAdornment.
+ */
 export default function NavSearchBar() {
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 	const handleChangeSearchBar = (event) => {
