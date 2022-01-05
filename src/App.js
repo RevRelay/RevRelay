@@ -11,6 +11,7 @@ import {
 import { Box } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
+import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
@@ -296,39 +297,33 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
 				/>
+				<Route path="search">
+					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
+					<Route index element={<Navigate to={-1} />} />
+					<Route path=":searchTerm" element={<Search token={token} />} />
+				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route
-						path=":userID"
-						element={
-							<Page
-								theme={activeTheme}
-								themes={updateActiveTheme}
-								JWT={token}
-							/>
-						}
+					<Route path=":userID"
+						element={<Page theme={activeTheme} themes={updateActiveTheme} JWT={token} />}
 					/>
 					<Route path="profile">
 						<Route path="userInfo" element={<UserInfo JWT={token} />} />
-						<Route
-							index
+						<Route index
 							element={
 								token ? (
 									<Page theme={activeTheme} themes={updateActiveTheme} />
 								) : (
 									<Navigate replace to="/login" />
-								)
-							}
+								)}
 						/>
-						<Route
-							path="userInfo"
+						<Route path="userInfo"
 							element={
 								token ? (
 									<UserInfo JWT={token} />
 								) : (
 									<Navigate replace to="/login" />
-								)
-							}
+								)}
 						/>
 					</Route>
 				</Route>
