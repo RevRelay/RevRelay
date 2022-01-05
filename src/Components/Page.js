@@ -17,10 +17,10 @@ import {
 	Paper,
 	Tab,
 	Tabs,
+	Typography
 } from "@mui/material";
 import Posts from "./Posts";
-import { height, maxHeight, width } from "@mui/system";
-import { current } from "@reduxjs/toolkit";
+import CreateGroup from "./Group/CreateGroup";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
@@ -34,6 +34,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 export default function Page({ JWT }) {
 	let { userID } = useParams();
 	let path = useLocation();
+	const [tab, updateTab] = useState(0);
 
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
@@ -43,120 +44,152 @@ export default function Page({ JWT }) {
 		pageTitle: "test",
 		posts: [],
 		private: true,
-
 		pageTitle: "Test",
 	});
-
-	const [tab, updateTab] = useState(0);
-	const currnetUser = {
-		page: { userOwnerID: 0 },
-	};
+	const [currentUser, setCurrentUser] = useState(null);
+	const [isBusy, setIsBusy] = useState(true);
+	const [groups, setGroups] = useState(true);
 
 	useEffect(() => {
 		GetPage();
 	}, []);
+
 	/**
 	 * Gets Page from back server
 	 */
-	async function GetPage() {
-		var apiRegisterUrl = "";
-		if (path.pathname.includes("user/profile"))
-			apiRegisterUrl = "/users/current";
-		else if (path.pathname.includes("user"))
-			apiRegisterUrl = "/users/" + userID;
-		else apiRegisterUrl = "/groups/" + userID;
-
+	const getCurrentUser = async () => {
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + JWT,
 			},
 		};
-		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
-			if (path.pathname.includes("user")) {
+		return await APIQuery.get("users/current", axiosConfig)
+	};
+
+
+	/**
+	 * Gets Page from back server
+	 */
+	async function GetPage() {
+
+		getCurrentUser().then(async (data) => {
+			let user = data.data
+			setCurrentUser(user);
+
+			let apiRegisterUrl = "";
+			if (path.pathname.includes("user/profile"))
+				apiRegisterUrl = "/users/current";
+			else if (path.pathname.includes("user"))
+				apiRegisterUrl = "/users/" + userID;
+			else apiRegisterUrl = "/groups/" + userID;
+
+			let axiosConfig = {
+				headers: {
+					Authorization: "Bearer " + JWT,
+				},
+			};
+			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
 				data.data.userPage.pageTitle = data.data.displayName + "'s Page";
 				updatePage(data.data.userPage);
-			}
-		});
-	}
-	return (
-		<Box sx={{ height: "80%" }}>
-			<Box
-				sx={{
-					border: 1,
-					borderColor: "primary.main",
-					borderRadius: 2,
-					borderWidth: 2,
-					marginLeft: "15%",
-					marginRight: "15%",
-					display: "flex",
-					minHeight: "80vh",
 
-					maxWidth: "100%",
-					minWidth: 500,
-				}}
-			>
-				<div
-					style={{
-						minHeight: "100%",
-						flexGrow: 1,
-						display: "flex",
-						flexFlow: "column",
-					}}
-				>
-					<Card sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}>
-						<div
-							style={{
-								position: "absolute",
-								marginLeft: 10,
-								marginTop: 10,
-								minWidth: 100,
-								borderRadius: 25,
+				await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
+					setGroups(data.data);
+					setIsBusy(false);
+
+				});
+
+			});
+		});
+
+	}
+
+	return (
+		<>
+			{
+				isBusy ? (
+					<>test</>
+				) : (
+					<Box sx={{ height: "80%" }}>
+						<Box
+							sx={{
+								border: 1,
+								borderColor: "primary.main",
+								borderRadius: 2,
+								borderWidth: 2,
+								marginLeft: "15%",
+								marginRight: "15%",
+								display: "flex",
+								minHeight: "80vh",
+
+								maxWidth: "100%",
+								minWidth: 500,
 							}}
 						>
-							<CardHeader title={page.pageTitle} />
-						</div>
-						<CardMedia
-							style={{ objectPosition: "0 0", zIndex: 0 }}
-							component="img"
-							image={page.bannerURL}
-							alt="green iguana"
-						/>
-					</Card>
-					<div
-						style={{
-							flexGrow: 1,
-							position: "relative",
-							width: "100%",
-							alignItems: "center",
-							justifyContent: "center",
-						}}
-					>
-						<Tabs
-							aria-label="basic tabs example"
-							centered
-							value={tab}
-							onChange={(x, n) => {
-								updateTab(n);
-							}}
-						>
-							<Tab label="Posts" />
-							<Tab label="About" />
-							{page.groupPage ? (
-								<Tab label="Members" />
-							) : (
-								<Tab label="Friends" />
-							)}
-							{!page.groupPage && <Tab label="Groups" />}
-							{currnetUser.page.userOwnerID === page.userOwnerID || (
-								<Tab label="Settings" />
-							)}
-						</Tabs>
-						<Divider sx={{ width: "100%" }} />
-						<RenderTab />
-					</div>
-				</div>
-			</Box>
-		</Box>
+							<div
+								style={{
+									minHeight: "100%",
+									flexGrow: 1,
+									display: "flex",
+									flexFlow: "column",
+								}}
+							>
+								<Card sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}>
+									<div
+										style={{
+											position: "absolute",
+											marginLeft: 10,
+											marginTop: 10,
+											minWidth: 100,
+											borderRadius: 25,
+										}}
+									>
+										<CardHeader title={page.pageTitle} />
+									</div>
+									<CardMedia
+										style={{ objectPosition: "0 0", zIndex: 0 }}
+										component="img"
+										image={page.bannerURL}
+										alt="green iguana"
+									/>
+								</Card>
+								<div
+									style={{
+										flexGrow: 1,
+										position: "relative",
+										width: "100%",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Tabs
+										aria-label="basic tabs example"
+										centered
+										value={tab}
+										onChange={(x, n) => {
+											updateTab(n);
+										}}
+									>
+										<Tab label="Posts" />
+										<Tab label="About" />
+										{page.groupPage ? (
+											<Tab label="Members" />
+										) : (
+											<Tab label="Friends" />
+										)}
+										{!page.groupPage && <Tab label="Groups" />}
+										{currentUser.userID === page.userOwnerID || (
+											<Tab label="Settings" />
+										)}
+									</Tabs>
+									<Divider sx={{ width: "100%" }} />
+									<RenderTab />
+								</div>
+							</div>
+						</Box>
+					</Box>
+				)
+			}
+		</>
 	);
 	/**
 	 * Gets tab from state and renders current tab
@@ -165,7 +198,7 @@ export default function Page({ JWT }) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currnetUser={currnetUser} JWT={JWT} />;
+				return <Posts page={page} currentUser={currentUser} JWT={JWT} />;
 				break;
 			case 1:
 				return <About />;
@@ -216,6 +249,41 @@ export default function Page({ JWT }) {
 	 * @returns
 	 */
 	function Groups() {
-		return <div></div>;
+		let navigate = useNavigate();
+
+		const goToGroup = (pageID) => {
+			navigate("/group/" + pageID);
+		}
+
+		const getPageIDByGroupID = async (groupID) => {
+			let axiosConfig = {
+				headers: {
+					Authorization: "Bearer " + JWT,
+				},
+			};
+			await APIQuery.get("/pages/groups/" + groupID, axiosConfig).then(async (data) => {
+				goToGroup(data.data.pageID)
+			});
+		}
+
+
+		console.log(groups);
+		return (
+			<>
+				{groups.content.map((group) => {
+					return (
+						<>
+							<Typography>{group.groupName}</Typography>
+							<Typography>{group.groupID}</Typography>
+							<Button onClick={() => getPageIDByGroupID(group.groupID)}>Go to Group</Button>
+						</>
+					);
+				})
+				}
+				<br />
+				<br />
+				<CreateGroup JWT={JWT} currentUser={currentUser} />
+			</>
+		);
 	}
 }
