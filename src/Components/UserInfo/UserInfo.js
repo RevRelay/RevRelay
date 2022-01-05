@@ -144,7 +144,7 @@ function UserInfo({JWT}) {
 									</Box>
 									<br/>
 									<Box width="95%" sx={{textAlign:"right"}}>
-										<IconButton >
+										<IconButton color="primary" variant="contained">
 											<AddAPhotoIcon />
 										</IconButton>
 									</Box>
