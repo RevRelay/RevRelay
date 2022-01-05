@@ -23,8 +23,9 @@ import { height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from "../API/APIQuery";
+import APIQuery from '../API/APIQuery';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import FriendsTab from "./Page/FriendsTab";
 
 /**
  * Renders a generic page with condintional rendering
@@ -43,7 +44,6 @@ export default function Page({ JWT }) {
 		pageTitle: "test",
 		posts: [],
 		private: true,
-
 		pageTitle: "Test",
 	});
 
@@ -51,10 +51,28 @@ export default function Page({ JWT }) {
 	const currnetUser = {
 		page: { userOwnerID: 0 },
 	};
-
+	console.log(currnetUser.page.userOwnerID)
 	useEffect(() => {
 		GetPage();
+		getCurrentUser();
 	}, []);
+
+	const [currentUsername, setCurrentUsername] = useState("");
+
+  /**
+   * Gets Page from back server
+   */
+  const getCurrentUser = async () => {
+    let axiosConfig = {
+      headers: {
+        Authorization: "Bearer " + JWT,
+      },
+    };
+    const userNow = await APIQuery.get("users/current", axiosConfig).then((response)=> response.data);
+
+	setCurrentUsername(userNow.username)
+  };
+  	console.log(currentUsername);
 	/**
 	 * Gets Page from back server
 	 */
@@ -171,7 +189,7 @@ export default function Page({ JWT }) {
 				return <About />;
 				break;
 			case 2:
-				return <>{page.groupPage ? <Members /> : <Friends />} </>;
+				return <>{page.groupPage ? <Members /> : <FriendsTab currentUsername={currentUsername} />} </>;
 				break;
 			case 3:
 				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
@@ -197,13 +215,13 @@ export default function Page({ JWT }) {
 	function Members() {
 		return <div></div>;
 	}
-	/**
-	 * Placeholder for Friends
-	 * @returns
-	 */
-	function Friends() {
-		return <div></div>;
-	}
+		/**
+		 * Placeholder for Friends
+		 * @returns
+		 */
+		
+		
+		
 	/**
 	 * Placeholder for Settings
 	 * @returns
