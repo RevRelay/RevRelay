@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+	Avatar,
 	AppBar,
 	Autocomplete,
 	Button,
@@ -21,6 +22,9 @@ import {
 	TextField,
 	Toolbar,
 	Typography,
+	CardContent,
+	CardActions,
+	Stack
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
  import {
@@ -28,21 +32,22 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 	Route, 
 	useNavigate, 
 } from "react-router-dom";
-import parseJWT from "../../parseJWT";
-import axios from "axios";
 import APIQuery from "../../API/APIQuery";
-// import  from "./UserInfoEntryElement";
-import UserInfoEntryElement, { UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
+import UserAPI, { updateEmail, updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
+// import	from "./UserInfoEntryElement";
+import UserInfoEntryElement, { UserInfoElementUsername, UserInfoEntryElementBirthDate, UserInfoEntryElementDisplayName, UserInfoEntryElementEmail } from "./UserInfoEntryElement";
 
 function UserInfo({JWT}) {
-	let mostRecentUserInfo = {
+	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
 		username:'',
 		firstName:'',
 		lastName:'',
 		email:'',
 		birthDate:'',
-		displayName:''
-	};
+		displayName:'',
+		userID:''
+	});
+
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -60,33 +65,33 @@ function UserInfo({JWT}) {
 		birthDate: false,
 		displayName: false
 	})
+
 /**
  * Const used for mapping to UserInfoEntryElement
  */
 	const userInfoFields = [
-		{name: "Username", varname: "username"},
 		{name: "Password", varname: "password"},
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
-		{name: "Birth Date", varname: "birthDate"}
 	]
 
 	useEffect(()=>{ FetchUserInfo(); },[])
 
 	const FetchUserInfo = async (e) => {		
-		// var uID = parseJWT(JWT).ID;
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// console.log(response);
-		{
-			mostRecentUserInfo.username = response.data.username; 
-			mostRecentUserInfo.firstName = response.data.firstName; 
-			mostRecentUserInfo.lastName = response.data.lastName; 
-			mostRecentUserInfo.email = response.data.email;
-			mostRecentUserInfo.birthDate = response.data.birthDate;
-			mostRecentUserInfo.displayName = response.data.displayName;
-		};
+		// eslint-disable-next-line no-lone-blocks
+		setMostRecentUserInfo({
+			username:response.data.username,
+			firstName:response.data.firstName, 
+			lastName:response.data.lastName,
+			email:response.data.email,
+			birthDate:response.data.birthDate,
+			displayName:response.data.displayName,
+			userID:response.data.userID
+		});
 		setUserInput({
 			username:response.data.username, 
 			firstName:response.data.firstName, 
@@ -97,54 +102,82 @@ function UserInfo({JWT}) {
 		});
 	}
 
+	function saveChanges() {
+		console.log("Birthdate");
+		console.log(userInput.birthDate);
+		updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT);
+		updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT);
+		updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT);
+		updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT);
+		updateEmail(userInput.email, mostRecentUserInfo.userID, JWT);
+	}
+
 	return(
 		<React.Fragment>
-			<br/><br/>
-			<Grid 
-				container
-				spacing={2}
-				direction="row"
-				justifyContent="center"
-				alignItems="center"
-				align="center"
-				columns={12}
-			>
-				<Grid item xs={3} justifyContent="center" align="center">
-					<img className="rounded-circle mt-5" width="150px" alt='' src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" />
-					<IconButton>
-						<AddAPhotoIcon />
-					</IconButton>
-					<br/>
-					<Box width="50%">
-						<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
-						<UserInfoEntryElementEmail key={"emailEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
-					</Box>
-				</Grid>
-				<Divider orientation="vertical" flexItem></Divider>
-				<Grid item xs={7} align="left">
-					<Box>
-						<Typography variant="h4">
-						Profile Settings
-						</Typography>
-						<br/>
-						<Grid columns={12} container>
-							{userInfoFields.map((x) => {
-								return (
-									<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
-								)
-							})}
-						</Grid>
-					</Box>
-				</Grid>
-				{/* Attempts to make a save button that only apperas on change. Suspect it'll require an event listener. - NL */}
-				{/* {mostRecentUserInfo.lastName === userInput.lastName ? (
-					<React.Fragment/>
-				) : (
-				<Grid item xs={6}>
-					<Button >Save Changes</Button>
-				</Grid>
-				)} */}
-			</Grid>
+			<Box sx={{ height: "80%" }}>
+				<Box
+					sx={{
+						border: 1,
+						borderColor: "primary.main",
+						borderRadius: 2,
+						borderWidth: 2,
+						marginLeft: "15%",
+						marginRight: "15%",
+						display: "flex",
+						height: "100%",
+
+						maxWidth: "100%",
+						minWidth: 500,
+					}}
+				>
+					<br/><br/>
+					<Card sx={{ width: "35%"}} style={{ borderColor: "none", boxShadow: "none" }}>
+						<CardContent sx={{ marginLeft: "1%", marginRight: "1%"}}>
+							<Stack>
+								<Stack direction="column" sx={{textAlign:"center"}}>
+									<Box  width="95%" sx={{textAlign:"center"}}>
+										<Avatar
+											alt="Remy Sharp"
+											src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+											sx={{ width: 150, height: 150 }}
+										/>
+									</Box>
+									<br/>
+									<Box width="95%" sx={{textAlign:"right"}}>
+										<IconButton color="primary" variant="contained">
+											<AddAPhotoIcon />
+										</IconButton>
+									</Box>
+								</Stack>
+								<Box width="95%">
+									<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
+									<UserInfoEntryElementEmail key={"emailEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
+								</Box>
+							</Stack>
+						</CardContent>
+					</Card>
+					<Card sx={{ width: "65%"}} style={{ borderColor: "none", boxShadow: "none" }}>
+						<CardContent sx={{ marginLeft: "2%", marginRight: "2%"}}>
+							<Typography variant="h4">
+								Profile Settings
+							</Typography>
+							<br/>
+							<Box>
+								<UserInfoElementUsername key={"usernameElement"} userInput={userInput}/>
+								{userInfoFields.map((x) => {
+									return (
+										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
+									)
+								})}
+								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} userInput={userInput} setUserInput={setUserInput} />
+							</Box>
+						</CardContent>
+						<CardActions >
+							<Button onClick={(userInput) => {saveChanges(userInput)}} sx={{bgcolor:"primary"}} variant="contained" >Save Changes</Button>
+						</CardActions>
+					</Card>
+				</Box>
+			</Box>
 		</React.Fragment>
 	)
 }
