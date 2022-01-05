@@ -1,9 +1,9 @@
-import react from "react";
-import Nav from "./Components/Nav.js";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
-import "./Styles/themes.css";
+import React, { useState } from "react";
+import Nav from "./Components/Nav/Nav.js";
+import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
+//import "./Styles/themes.css";
 import Chat from "./Components/Chat.js";
-import Color from "./Components/Color.js";
+//import Color from "./Components/Color.js";
 import './index.css';
 import Page from "./Components/Page.js";
 import {
@@ -17,7 +17,7 @@ import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
-import LoginSplash from "./Components/NoAuth/LoginSplash.js";
+//import LoginSplash from "./Components/NoAuth/LoginSplash.js";
 
 //https://gridfiti.com/aesthetic-color-palettes/
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
@@ -310,8 +310,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route
-						path=":userID"
+					<Route path=":userID"
 						element={
 							<Page
 								theme={activeTheme}
@@ -320,18 +319,10 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 							/>
 						}
 					/>
-					<Route
-						path="profile"
-						element={
-							<Page
-								JWT={token}
-								theme={activeTheme}
-								themes={updateActiveTheme}
-							/>
-						}
-					/>
+					{/*<Route path="profile" */ /*extra profile path?*/ /*
+						element={<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />}
+					/>*/}
 					<Route path="profile">
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
 						<Route index
 							element={
 								token ? (
