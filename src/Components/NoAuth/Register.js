@@ -127,6 +127,7 @@ export default function Register({ setToken, token }) {
                         <TextField
                             id="username"
                             label="Username"
+							required="true"
                             variant="outlined"
                             maxRows={1}
                             onChange={(e) => setUsername(e.target.value)}
@@ -137,6 +138,8 @@ export default function Register({ setToken, token }) {
                         <TextField
                             id="password"
                             label="Password"
+							type="password"
+							required="true"
                             variant="outlined"
                             maxRows={1}
                             onChange={(e) => setPassword(e.target.value)}
@@ -147,6 +150,7 @@ export default function Register({ setToken, token }) {
                         <TextField
                             id="email"
                             label="Email"
+							required="true"
                             variant="outlined"
                             maxRows={1}
                             onChange={(e) => setEmail(e.target.value)}
@@ -157,6 +161,7 @@ export default function Register({ setToken, token }) {
                         <TextField
                             id="displayName"
                             label="Display Name"
+							required="true"
                             variant="outlined"
                             maxRows={1}
                             onChange={(e) => setDisplayName(e.target.value)}
