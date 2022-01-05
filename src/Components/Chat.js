@@ -1,7 +1,28 @@
 import React, { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
+import {
+	Box,
+	Button,
+	Card,
+	CardHeader,
+	CardMedia,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Divider,
+	Fade,
+	Grid,
+	IconButton,
+	Pagination,
+	Paper,
+	Tab,
+	Tabs,
+	TextField,
+	Tooltip,
+	Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import TextField from "@mui/material/TextField";
 
 //https://gridfiti.com/aesthetic-color-palettes/
 function Chat({ socket, username, room }) {
@@ -25,10 +46,10 @@ function Chat({ socket, username, room }) {
 		});
 	}, [socket]);
 	return (
-		<div>
+		<React.Fragment>
 			<h2 className="joinAlert">You are in room {room}</h2>
 
-			<div>
+			<Box>
 				{messageList.map((content) => {
 					return (
 						<h4 className="msgbody">
@@ -37,9 +58,9 @@ function Chat({ socket, username, room }) {
 						</h4>
 					);
 				})}
-			</div>
+			</Box>
 
-			<div>
+			<React.Fragment>
 				<TextField
 					id="standard-basic"
 					label="Message here..."
@@ -48,7 +69,6 @@ function Chat({ socket, username, room }) {
 						setMessage(event.target.value);
 					}}
 				/>
-				<div></div>
 				<Button
 					variant="contained"
 					endIcon={<SendIcon />}
@@ -56,8 +76,8 @@ function Chat({ socket, username, room }) {
 				>
 					Send
 				</Button>
-			</div>
-		</div>
+			</React.Fragment>
+		</React.Fragment>
 	);
 }
 
