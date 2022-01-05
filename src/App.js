@@ -13,16 +13,19 @@ import {
 import { Box } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
-import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
+import Home from "./Components/HomeSplash/Home.js"
 import Client from "./Components/Client";
 
-//#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
-
-//https://mui.com/components/autocomplete/
-//Primary Main - Navbar
-//Background Default - Background
-//Background Paper - Nav pop-out bar
+/**
+ * Navbar Themes
+ * 
+ * Primary Main - Navbar
+ * Background Default - Background
+ * Background Paper - Nav pop-out bar
+ * Text Primary - Nav bar text
+ * Text Secondary - Text elsewhere
+ */
 
 const themes = [
 	{
@@ -188,7 +191,6 @@ const themes = [
 			},
 		}),
 	},
-	//Hex Codes: #674AB3 | #A348A6 | #9F63C4 | #9075D8 | #CEA2D7.
 	{
 		name: "Lofi",
 		theme: createTheme({
@@ -291,7 +293,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home />} />
+				<Route index element={<Home JWT={token} theme={activeTheme} />} />
 				<Route
 					path="login"
 					element={<Login setToken={setToken} token={token} />}
@@ -301,11 +303,6 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
 				/>
-				<Route path="search">
-					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
-					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} />} />
-				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={
@@ -320,18 +317,13 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					</Route>
 				</Route>
 			</Route>
-			<Route path="group">
-				<Route index element={<Groups />} />
-				<Route path=":userID" element={<Group />} />
-				<Route path="profile" element={<GroupProfile />} />
-			</Route>
 		</Routes>
 	);
 }
 
-function Home() {
-	return <Typography color="textPrimary">HOME</Typography>;
-}
+// function Home() {
+// 	return <Typography color="textPrimary">HOME</Typography>;
+// }
 
 // function Login() {
 // 	return <p>Login</p>;

@@ -27,6 +27,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 
+/**
+ * 
+ * @returns returns Sidebar with userprofile in menu
+ */
 export default function SidebarList() {
 	let navigate = useNavigate();
 	return (
