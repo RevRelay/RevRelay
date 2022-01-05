@@ -133,22 +133,18 @@ function UserInfo({JWT}) {
 					<br/><br/>
 					<Card sx={{ width: "35%"}} style={{ borderColor: "none", boxShadow: "none" }}>
 						<CardContent sx={{ marginLeft: "1%", marginRight: "1%"}}>
-							<Stack>
-								<Stack direction="column" sx={{textAlign:"center"}}>
-									<Box  width="95%" sx={{textAlign:"center"}}>
-										<Avatar
-											alt="Remy Sharp"
-											src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-											sx={{ width: 150, height: 150 }}
-										/>
-									</Box>
-									<br/>
-									<Box width="95%" sx={{textAlign:"right"}}>
-										<IconButton color="primary" variant="contained">
-											<AddAPhotoIcon />
-										</IconButton>
-									</Box>
-								</Stack>
+							<Stack direction="column" sx={{textAlign:"center", justifyContent:"center"}}>
+								<Box  width="95%" sx={{paddingLeft:"30%"}}>
+									<Avatar
+										alt="Remy Sharp"
+										src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+										sx={{ width: 150, height: 150 }}
+									/>
+									<IconButton color="primary" variant="contained">
+										<AddAPhotoIcon />
+									</IconButton>
+								</Box>
+								<br/>
 								<Box width="95%">
 									<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
 									<UserInfoEntryElementEmail key={"emailEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
@@ -172,8 +168,8 @@ function UserInfo({JWT}) {
 								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} userInput={userInput} setUserInput={setUserInput} />
 							</Box>
 						</CardContent>
-						<CardActions >
-							<Button onClick={(userInput) => {saveChanges(userInput)}} sx={{bgcolor:"primary"}} variant="contained" >Save Changes</Button>
+						<CardActions sx={{paddingLeft:"30%"}}>
+							<Button onClick={(userInput) => {saveChanges(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
 						</CardActions>
 					</Card>
 				</Box>

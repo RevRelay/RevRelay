@@ -16,6 +16,7 @@ import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
+import Home from "./Components/HomeSplash/Home.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -329,9 +330,9 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 	);
 }
 
-function Home() {
-	return <Typography color="textPrimary">HOME</Typography>;
-}
+// function Home() {
+// 	return <Typography color="textPrimary">HOME</Typography>;
+// }
 
 // function Login() {
 // 	return <p>Login</p>;
