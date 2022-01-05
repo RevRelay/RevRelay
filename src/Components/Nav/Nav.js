@@ -22,10 +22,7 @@ import React, { useState } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from '@mui/icons-material/Logout';
 import { Logout } from "@mui/icons-material";
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
@@ -117,17 +114,16 @@ export default function Nav({
 									setToken("");
 									navigate("/login");
 								}}
-								startIcon={<LogoutIcon />}
 							>
 								Logout
 							</Button>
 						) : (
 							<React.Fragment>
-								<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<LoginIcon />} >
-									Login
-								</Button>
-								<Button color="inherit" onClick={(x) => navigate("/register")}  startIcon={<HowToRegIcon />}>
+								<Button color="inherit" onClick={(x) => navigate("/register")}>
 									Register
+								</Button>
+								<Button color="inherit" onClick={(x) => navigate("/login")}>
+									Login
 								</Button>
 							</React.Fragment>
 						)}
