@@ -17,35 +17,41 @@ import {
 	ListItemIcon,
 	Typography,
     Grid,
-    LoginIcon,
-    HowToRegIcon,
+    Stack,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Logout } from "@mui/icons-material";
-import SidebarList from "./SidebarList.js";
-import NavSearchBar from "./NavSearchBar.js";
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import LoginIcon from '@mui/icons-material/Login';
+import React from "react";
 
-export default function Home({JWT}){
+const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
   
-    const handleChange = (event) => {
-      setSpacing(Number(event.target.value));
-    };
+export default function Home({JWT}){
+    console.log("Home");
     //navigate("/user/profile")
     return (
-        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <Grid item xs={12}>
-            <Grid container justifyContent="center" spacing={8}>
-                <Grid key="Login" item>
-                    <Button to="/login" primary="login" icon={<LoginIcon />} />
-                </Grid>
-                <Grid key="Register" item>
-                    <Button to="/register" primary="register" icon={<HowToRegIcon />} />
-                </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+        <>
+            <Stack direction="row" spacing={15} justifyContent="center" >
+            </Stack>
+            <br></br>
+            <Stack direction="row" spacing={15} justifyContent="center" >
+                <Item key="Login" >
+                    <Typography  > Returning User</Typography>
+                    <br></br>
+                    <Button href="/login" to="/login" primary="login" startIcon={<LoginIcon />} > Login </Button>
+                </Item>
+                <Item key="Register" item>
+                    <Typography  > New User </Typography>
+                    <br></br>
+                    <Button to="/register" primary="register" startIcon={<HowToRegIcon />} > Register </Button>
+                </Item>
+            </Stack>
+        </>
+    )
 }
