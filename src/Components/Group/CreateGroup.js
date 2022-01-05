@@ -30,7 +30,6 @@ export default function CreateGroup({ currentUser, JWT }) {
     const [open, setOpen] = useState(false);
     const [newGroup, updateNewGroup] = useState({
         groupName: "New Group",
-        userOwnerID: currentUser.userID,
         isPrivate: false,
         members: null
 
@@ -45,7 +44,7 @@ export default function CreateGroup({ currentUser, JWT }) {
         let axiosConfig = {
             headers: {
                 Authorization: "Bearer " + JWT,
-            },
+            }
         };
         console.log(newGroup)
         await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {

@@ -331,7 +331,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				<Route
 					path=":pageParam"
 					element={
-						<Group
+						<Page
 							JWT={token}
 							theme={activeTheme}
 							themes={updateActiveTheme}
@@ -370,13 +370,6 @@ function Groups() {
 	return <Typography color="textPrimary">Groups</Typography>;
 }
 
-function Group({ JWT, theme, themes }) {
-	return <Page
-		JWT={JWT}
-		theme={theme}
-		themes={themes}
-	/>;
-}
 
 function GroupProfile() {
 	return <p>GroupProfile</p>;

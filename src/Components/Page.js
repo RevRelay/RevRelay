@@ -4,6 +4,7 @@ import {
 	Card,
 	CardHeader,
 	CardMedia,
+	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -32,7 +33,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
-	let { userID } = useParams();
+	let { pageParam } = useParams();
 	let path = useLocation();
 	const [tab, updateTab] = useState(0);
 
@@ -41,10 +42,9 @@ export default function Page({ JWT }) {
 		description: "You description here",
 		groupPage: false,
 		pageID: 1,
-		pageTitle: "test",
 		posts: [],
 		private: true,
-		pageTitle: "Test",
+		pageTitle: "Title Not Found"
 	});
 	const [currentUser, setCurrentUser] = useState(null);
 	const [isBusy, setIsBusy] = useState(true);
@@ -80,17 +80,25 @@ export default function Page({ JWT }) {
 			if (path.pathname.includes("user/profile"))
 				apiRegisterUrl = "/users/current";
 			else if (path.pathname.includes("user"))
-				apiRegisterUrl = "/users/" + userID;
-			else apiRegisterUrl = "/groups/" + userID;
+				apiRegisterUrl = "/users/" + pageParam;
+			else apiRegisterUrl = "/groups/" + pageParam;
 
 			let axiosConfig = {
 				headers: {
 					Authorization: "Bearer " + JWT,
 				},
 			};
+
+
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
-				data.data.userPage.pageTitle = data.data.displayName + "'s Page";
-				updatePage(data.data.userPage);
+
+				if (path.pathname.includes("user")) {
+					data.data.userPage.pageTitle = data.data.username + "'s Page!";
+					updatePage(data.data.userPage);
+				} else {
+					data.data.groupPage.pageTitle = data.data.groupName + " is almost certianly a group page!";
+					updatePage(data.data.groupPage);
+				}
 
 				await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
 					setGroups(data.data);
@@ -107,7 +115,7 @@ export default function Page({ JWT }) {
 		<>
 			{
 				isBusy ? (
-					<>test</>
+					<LoadingPage />
 				) : (
 					<Box sx={{ height: "80%" }}>
 						<Box
@@ -144,6 +152,7 @@ export default function Page({ JWT }) {
 										}}
 									>
 										<CardHeader title={page.pageTitle} />
+
 									</div>
 									<CardMedia
 										style={{ objectPosition: "0 0", zIndex: 0 }}
@@ -216,6 +225,29 @@ export default function Page({ JWT }) {
 				break;
 		}
 	}
+	function LoadingPage() {
+		return (
+			<>
+				<Grid
+					container
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					justifyContent="center"
+					style={{ minHeight: '80vh' }}
+				>
+
+					<Grid item xs={3}>
+						<Typography>Loading...</Typography>
+					</Grid>
+					<Grid item xs={3}>
+						<CircularProgress />
+
+					</Grid>
+				</Grid>
+			</>
+		)
+	}
 	/**
 	 * Placeholder for About
 	 * @returns
@@ -255,18 +287,6 @@ export default function Page({ JWT }) {
 			navigate("/group/" + pageID);
 		}
 
-		const getPageIDByGroupID = async (groupID) => {
-			let axiosConfig = {
-				headers: {
-					Authorization: "Bearer " + JWT,
-				},
-			};
-			await APIQuery.get("/pages/groups/" + groupID, axiosConfig).then(async (data) => {
-				goToGroup(data.data.pageID)
-			});
-		}
-
-
 		console.log(groups);
 		return (
 			<>
@@ -275,7 +295,7 @@ export default function Page({ JWT }) {
 						<>
 							<Typography>{group.groupName}</Typography>
 							<Typography>{group.groupID}</Typography>
-							<Button onClick={() => getPageIDByGroupID(group.groupID)}>Go to Group</Button>
+							<Button onClick={() => goToGroup(group.groupID)}>Go to Group</Button>
 						</>
 					);
 				})
