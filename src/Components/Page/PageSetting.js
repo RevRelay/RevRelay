@@ -37,7 +37,7 @@ export default function PageSetting({page,updatePage}) {
 
     const togglePrivacy = (e) => {
         let tempForm = { ...form };
-        tempForm.private = e.target.value;
+        tempForm.private = e.target.checked;
         updateForm(tempForm);
     }
 
@@ -72,7 +72,7 @@ export default function PageSetting({page,updatePage}) {
                 <Grid container spacing = {2}>
                     <Grid item xs={4}>
                         <FormGroup>
-                            <FormControlLabel control={<Switch onChange={(e) => togglePrivacy(e)} checked={isPrivate}/>} label="Private Page" />
+                            <FormControlLabel control={<Switch onChange={togglePrivacy} checked={form.private}/>} label="Private Page" />
                         </FormGroup>
                     </Grid>
                     <Grid item xs={4}>
