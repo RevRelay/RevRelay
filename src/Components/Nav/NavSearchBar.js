@@ -91,6 +91,7 @@ export default function NavSearchBar() {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
 			handleClearSearchBar();
+			window.location.reload(false);
 		}
 	};
 

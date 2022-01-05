@@ -26,7 +26,6 @@ export default function Search({ token }) {
 	 */
 	const [searchComplete, setSearchComplete] = useState('');
 	const [searchResults, setSearchResults] = useState();
-	useEffect(() => { FetchSearchResults(); }, []);
 	/**
 	 * Submits an API call searching user and group names for the search term. 
 	 */
@@ -39,11 +38,12 @@ export default function Search({ token }) {
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
+	useEffect(() => { FetchSearchResults(); }, []);
 	return (
 		<Box>
 			{(searchResults && searchResults[0]) ? (
-				searchResults.map((x) => {
-					return (SearchResultCard(x, navigate))
+				searchResults.map((x, index) => {
+					return (SearchResultCard(x, index, navigate))
 				})
 			) : (
 				searchComplete ? (
@@ -67,20 +67,20 @@ export default function Search({ token }) {
  * @returns A Card element labeled with the SearchResultItem name that redirects the user to 
  * 			the appropriate Page on click. 
  */
-function SearchResultCard(x, navigate) {
+function SearchResultCard(result, index, navigate) {
 	function handleClickSearchResult() {
-		if (x.type == "USER") {
-			navigate(`/user/${x.id}`);
+		if (result.type == "USER") {
+			navigate(`/user/${result.id}`);
 		}
-		if (x.type == "GROUP") {
-			navigate(`/group/${x.id}`);
+		if (result.type == "GROUP") {
+			navigate(`/group/${result.id}`);
 		}
 	}
 	return (
-		<Card sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
+		<Card key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<CardContent>
 				<Typography variant="h5">
-					{x.name}
+					{result.name}
 				</Typography>
 			</CardContent>
 		</Card>
