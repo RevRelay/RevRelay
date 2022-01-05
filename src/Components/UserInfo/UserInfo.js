@@ -90,12 +90,22 @@ function UserInfo({JWT}) {
 		});
 	}
 
-	const submitButton = async (e) => {
-		updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT);
-		updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT);
-		updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT);
-		updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT);
-		updateEmail(userInput.email, mostRecentUserInfo.userID, JWT);
+	function submitButton() {
+		if (mostRecentUserInfo.firstName !== userInput.firstName) {
+			updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT)
+		}
+		if (mostRecentUserInfo.lastName !== userInput.lastName) {
+			updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT)
+		}
+		if (mostRecentUserInfo.birthDate !== userInput.birthDate) {
+			updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT)
+		}
+		if (mostRecentUserInfo.displayName !== userInput.displayName) {
+			updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT)
+		}
+		if (mostRecentUserInfo.email !== userInput.email) {
+			updateEmail(userInput.email, mostRecentUserInfo.userID, JWT)
+		}
 	};
 
 	return(
@@ -121,6 +131,7 @@ function UserInfo({JWT}) {
 						<CardContent sx={{ marginLeft: "1%", marginRight: "1%"}}>
 							<Stack direction="column" sx={{textAlign:"center", justifyContent:"center"}}>
 								<Box  width="95%" sx={{paddingLeft:"30%"}}>
+									<br/><br/>
 									<Avatar
 										alt="Remy Sharp"
 										src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
@@ -140,6 +151,7 @@ function UserInfo({JWT}) {
 					</Card>
 					<Card sx={{ width: "65%"}} style={{ borderColor: "none", boxShadow: "none" }}>
 						<CardContent sx={{ marginLeft: "2%", marginRight: "2%"}}>
+							<br/><br/><br/><br/>
 							<Typography variant="h4">
 								Profile Settings
 							</Typography>
@@ -156,7 +168,7 @@ function UserInfo({JWT}) {
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>
-							<Button type="submit" onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
+							<Button onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
 						</CardActions>
 					</Card>
 				</Box>
