@@ -5,6 +5,8 @@ import Page from "./Components/Page.js";
 import {
 	Container,
 	createTheme,
+	SpeedDial,
+	SpeedDialIcon,
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
@@ -13,7 +15,8 @@ import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
-//https://gridfiti.com/aesthetic-color-palettes/
+import Client from "./Components/Client";
+
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
@@ -293,6 +296,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="login"
 					element={<Login setToken={setToken} token={token} />}
 				/>
+				<Route path="chat" element={<Client />} />
 				<Route
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
