@@ -47,7 +47,7 @@ export default function Page({ JWT }) {
 		pageTitle: "Title Not Found"
 	});
 	const [currentUser, setCurrentUser] = useState(null);
-	const [isBusy, setIsBusy] = useState(true);
+	const [isBusy, setIsBusy] = useState();
 	const [groups, setGroups] = useState(true);
 
 	useEffect(() => {
@@ -89,22 +89,21 @@ export default function Page({ JWT }) {
 				},
 			};
 
-
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
 
 				if (path.pathname.includes("user")) {
 					data.data.userPage.pageTitle = data.data.username + "'s Page!";
 					updatePage(data.data.userPage);
+
+					await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
+						setGroups(data.data);
+						setIsBusy(false);
+
+					});
 				} else {
 					data.data.groupPage.pageTitle = data.data.groupName + " is almost certianly a group page!";
 					updatePage(data.data.groupPage);
 				}
-
-				await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
-					setGroups(data.data);
-					setIsBusy(false);
-
-				});
 
 			});
 		});
@@ -242,7 +241,6 @@ export default function Page({ JWT }) {
 					</Grid>
 					<Grid item xs={3}>
 						<CircularProgress />
-
 					</Grid>
 				</Grid>
 			</>
