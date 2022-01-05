@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
 	IconButton,
+	Button,
 	TextField,
 	Typography,
 	Stack,
@@ -120,6 +121,7 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 				<Box sx={{width:"40%", textAlign:"left"}}>
 					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<DesktopDatePicker
+							color="secondary"
 							label="Birth Date"
 							value={value}
 							views={['year', 'month', 'day']}
