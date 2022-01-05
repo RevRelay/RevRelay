@@ -27,6 +27,16 @@ import { Logout } from "@mui/icons-material";
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
 
+/**
+ * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
+ * 
+ * Token themes change login/register to logout, and also logout the user
+ * 
+ * Themes import load all of the themes
+ * 
+ * @param {*} param0 Takes an array of inputs such as the active theme, themes, token, setToken, and updateActiveTheme
+ * @returns Returns a react page for the navbar
+ */
 export default function Nav({
 	themes,
 	activeTheme,
