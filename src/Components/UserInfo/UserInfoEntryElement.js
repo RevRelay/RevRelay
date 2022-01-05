@@ -1,9 +1,10 @@
-import React, {  } from "react";
+import React, { useState } from "react";
 import {
-	Grid,
 	IconButton,
 	TextField,
 	Typography,
+	Stack,
+	Box
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -29,47 +30,54 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 		
 	return (
 		<React.Fragment>
-			<Grid item xs={3}>
-				<Typography style={{ fontWeight: 600 }}>
-					{fieldName}
-				</Typography>
-			</Grid>
-			{toggleEdit[varname] ? (
-				<React.Fragment>
-					<Grid item xs={2}>
-						<TextField label={fieldName} onChange={(x) => userInfoFieldValue = x.target.value}/>
-					</Grid>
-					<Grid item xs={1}>
-						<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : false})}>
-							<CancelIcon  fontSize="inherit"/>
-						</IconButton>
-						<IconButton size="small"
-							onClick={(x) => {
-								//this if statement is a very weak check for good input value, needs reinforcing - NL
-								if (userInfoFieldValue) {
-									setUserInput({...userInput, [varname] : userInfoFieldValue});
-								}
-								setToggleEdit({...toggleEdit, [varname] : false});
-							}}>
-							<CheckCircleIcon  fontSize="inherit"/>
-						</IconButton>
-					</Grid>
-					<Grid item xs={6}/>
-				</React.Fragment>
-			) : (
-				<React.Fragment>
-					<Grid item xs={2}>
-						<Typography>
-							{(varname === 'password') ? bulletString : userInput[varname]}
-						</Typography>
-					</Grid>
-					<Grid item xs={7}>
-						<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : true})}>
-							<EditIcon  fontSize="inherit"/>
-						</IconButton>
-					</Grid>
-				</React.Fragment> 
-			)}
+			<Stack direction="row" spacing={3}>
+				<Box sx={{width:"20%"}}>
+					<Typography style={{ fontWeight: 600 }}>
+						{fieldName}
+					</Typography>
+				</Box>
+				{toggleEdit[varname] ? (
+					<React.Fragment>
+						<Box sx={{width:"40%"}}>
+							<TextField label={fieldName} sx={{width:"100%"}} onChange={(x) => userInfoFieldValue = x.target.value}/>
+						</Box>
+						<Box sx={{width:"40%"}}>
+							<Stack>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : false})}>
+										<CancelIcon  fontSize="inherit"/>
+									</IconButton>
+								</Box>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained"
+										onClick={(x) => {
+											//this if statement is a very weak check for good input value, needs reinforcing - NL
+											if (userInfoFieldValue) {
+												setUserInput({...userInput, [varname] : userInfoFieldValue});
+											}
+											setToggleEdit({...toggleEdit, [varname] : false});
+										}}>
+										<CheckCircleIcon  fontSize="inherit"/>
+									</IconButton>
+								</Box>
+							</Stack>
+						</Box>
+					</React.Fragment>
+				) : (
+					<React.Fragment>
+						<Box sx={{width:"40%"}}>
+							<Typography>
+								{(varname === 'password') ? bulletString : userInput[varname]}
+							</Typography>
+						</Box>
+						<Box sx={{width:"40%", height:"2em"}}>
+							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, [varname] : true})}>
+								<EditIcon  fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment> 
+				)}
+			</Stack>
 		</React.Fragment>
 	)
 };
@@ -77,68 +85,123 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 export function UserInfoElementUsername ({userInput}) {
 	return(
 		<React.Fragment>
-			<Grid item xs={3}>
-				<Typography style={{ fontWeight: 600 }}>
-					Username
-				</Typography>
-			</Grid>
-			<React.Fragment>
-				<Grid item xs={2}>
+			<Stack direction="row" spacing={3}>
+				<Box sx={{width:"20%"}} >
+					<Typography style={{ fontWeight: 600 }}>
+						Username
+					</Typography>
+				</Box>
+				<Box sx={{width:"40%"}}>
 					<Typography>
 						{userInput.username}
 					</Typography>
-				</Grid>
-				<Grid item xs={7}>
-				</Grid>
-			</React.Fragment>
+				</Box>
+				<Box sx={{width:"40%", height:"2em"}}/>
+			</Stack>
 		</React.Fragment>
 	)
 }
 
 export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
-	var date = new Date();
+	const [value, setValue] = useState(new Date());
+
+	if(userInput.birthDate){
+		setValue(userInput.birthDate)
+	}
+
 	return(
 		<React.Fragment>
-			<LocalizationProvider dateAdapter={AdapterDateFns}>
-				<DesktopDatePicker
-					label="For desktop"
-					minDate={new Date('2017-01-01')}
-					value={date}
-					views={['year', 'month', 'day']}
-					onChange={(newValue) => {
-						setUserInput({...userInput, birthDate : newValue});
-					}}
-					renderInput={(params) => <TextField {...params} />}
-				/>
-			</LocalizationProvider>
-
-			{/*{userInput.birthDate ? (
-				<React.Fragment>
-				<KeyboardDatePicker
-					autoOk
-					variant="inline"
-					inputVariant="outlined"
-					label="Birth Date"
-					format="yyyy/MM/dd"
-					value={userInput.birthDate}
-					InputAdornmentProps={{ position: "start" }}
-					onChange={date => setUserInput({...userInput, birthDate : date})}
-				/>
-			</React.Fragment>
-			):(
-				<React.Fragment>
-					<KeyboardDatePicker
-						autoOk
-						variant="inline"
-						inputVariant="outlined"
-						label="Birth Date"
-						format="yyyy/MM/dd"
-						value={"10/10/2018"}
-						InputAdornmentProps={{ position: "start" }}
-						onChange={date => setUserInput({...userInput, birthDate : date})}
-					/>
-				</React.Fragment>
-			)}*/}
+			<Stack direction="row" spacing={3}>
+				<Box sx={{width:"20%"}}>
+					<Typography style={{ fontWeight: 600 }}>
+						Birth Date
+					</Typography>
+				</Box>
+				<Box sx={{width:"40%", textAlign:"left"}}>
+					<LocalizationProvider dateAdapter={AdapterDateFns}>
+						<DesktopDatePicker
+							label="Birth Date"
+							value={value}
+							views={['year', 'month', 'day']}
+							onChange={(newValue) => setValue(newValue)}
+							renderInput={(params) => <TextField {...params} />}
+						/>
+					</LocalizationProvider>
+				</Box>
+				<Box sx={{width:"40%", height:"2em"}}>
+					<IconButton size="small" color="primary" variant="contained"
+						onClick={(x) => {
+							//this if statement is a very weak check for good input value, needs reinforcing - NL
+							if (value) {
+								setUserInput({...userInput, birthDate : value});
+							}
+						}}>
+						<CheckCircleIcon  fontSize="inherit"/>
+					</IconButton>
+				</Box>
+				{/*{toggleEdit.birthDate ? (
+					<React.Fragment>
+						<Box sx={{width:"40%", textAlign:"left"}}>
+									<LocalizationProvider dateAdapter={AdapterDateFns}>
+										<DesktopDatePicker
+											label="Birth Date"
+											value={date}
+											views={['year', 'month', 'day']}
+											onChange={(newValue) => {
+												setDate({...date, birthDate : newValue});
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</LocalizationProvider>
+						</Box>
+						<Box sx={{width:"40%"}}>
+							<Stack>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
+										<CancelIcon  fontSize="inherit"/>
+									</IconButton>
+								</Box>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained"
+										onClick={(x) => {
+											//this if statement is a very weak check for good input value, needs reinforcing - NL
+											if (date) {
+												setUserInput({...userInput, birthDate : date.birthDate});
+											}
+											setToggleEdit({...toggleEdit, birthDate : false});
+										}}>
+										<CheckCircleIcon  fontSize="inherit"/>
+									</IconButton>
+								</Box>
+							</Stack>
+						</Box>
+					</React.Fragment>
+				):(
+					<React.Fragment>
+						<Box sx={{width:"40%", textAlign:"left"}}>
+								<React.Fragment>
+									<LocalizationProvider dateAdapter={AdapterDateFns}>
+										<DesktopDatePicker
+											label="Birth Date"
+											readOnly
+											value={(userInput.birthDate) ? userInput.birthDate : date}
+											views={['year', 'month', 'day']}
+											onChange={(newValue) => {
+												setDate({...date, birthDate : newValue});
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</LocalizationProvider>
+								</React.Fragment>
+						</Box>
+						<Box sx={{width:"40%", height:"2em"}}>
+							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : true})}>
+								<EditIcon  fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment>
+				)}*/}
+			</Stack>
 		</React.Fragment>
 	)
 }
@@ -147,31 +210,49 @@ export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggl
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
-			{toggleEdit.displayName ? (
-				<React.Fragment>
-					<TextField label={"Display Name"} onChange={(x) => userInfoFieldValue = x.target.value}/>
-					<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : false})}>
-						<CancelIcon  fontSize="inherit"/>
-					</IconButton>
-					<IconButton size="small"
-						onClick={(x) => {
-							//this if statement is a very weak check for good input value, needs reinforcing - NL
-							if (userInfoFieldValue) {
-								setUserInput({...userInput, displayName : userInfoFieldValue});
-							}
-							setToggleEdit({...toggleEdit, displayName : false});
-						}}>
-						<CheckCircleIcon  fontSize="inherit"/>
-					</IconButton>
-				</React.Fragment>
-			):(
-				<Typography variant="h5" align="right">
-					{userInput.displayName}
-					<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, displayName : true})}>
-						<EditIcon fontSize="inherit"/>
-					</IconButton>
-				</Typography>
-			)}
+			<Stack direction="row" spacing={1}>
+				{toggleEdit.displayName ? (
+					<React.Fragment>
+						<Box sx={{width:"95%", textAlign:"right"}}>
+							<TextField label={"Display Name"} sx={{width:"100%"}} onChange={(x) => userInfoFieldValue = x.target.value}/>
+						</Box>
+						<Box sx={{width:"5%"}}>
+							<Stack>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, displayName : false})}>
+										<CancelIcon  fontSize="inherit"/>
+									</IconButton>
+								</Box>
+								<Box>
+									<IconButton size="small" color="primary" variant="contained"
+										onClick={(x) => {
+											//this if statement is a very weak check for good input value, needs reinforcing - NL
+											if (userInfoFieldValue) {
+												setUserInput({...userInput, displayName : userInfoFieldValue});
+											}
+											setToggleEdit({...toggleEdit, displayName : false});
+										}}>
+										<CheckCircleIcon fontSize="inherit"/>
+									</IconButton>
+								</Box>
+							</Stack>
+						</Box>
+					</React.Fragment>
+				):(
+					<React.Fragment>
+						<Box sx={{width:"95%", textAlign:"right"}}>
+							<Typography variant="h5" sx={{textAlign:"right"}}>
+								{userInput.displayName}
+							</Typography>
+						</Box>
+						<Box sx={{width:"5%"}}>
+							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, displayName : true})}>
+								<EditIcon fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment>
+				)}
+			</Stack>
 		</React.Fragment>
 	)
 }
@@ -180,31 +261,43 @@ export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit,
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
-		{toggleEdit.email ? (
-			<React.Fragment>
-				<TextField label={"Email"} onChange={(x) => userInfoFieldValue = x.target.value}/>
-				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, email : false})}>
-					<CancelIcon  fontSize="inherit"/>
-				</IconButton>
-				<IconButton size="small"
-					onClick={(x) => {
-						//this if statement is a very weak check for good input value, needs reinforcing - NL
-						if (userInfoFieldValue) {
-							setUserInput({...userInput, email : userInfoFieldValue});
-						}
-						setToggleEdit({...toggleEdit, email : false});
-					}}>
-					<CheckCircleIcon  fontSize="inherit"/>
-				</IconButton>
-			</React.Fragment>
-		):(
-			<Typography variant="subtitle1" align="right">
-				{userInput.email}
-				<IconButton size="small" onClick={(x) => setToggleEdit({...toggleEdit, email : true})}>
-					<EditIcon fontSize="inherit"/>
-				</IconButton>
-			</Typography>
-		)}
+			<Stack direction="row" spacing={1}>
+				{toggleEdit.email ? (
+					<React.Fragment>
+						<Box sx={{width:"95%", textAlign:"right"}}>
+							<TextField label={"Email"} sx={{width:"100%"}} onChange={(x) => userInfoFieldValue = x.target.value}/>
+						</Box>
+						<Box sx={{width:"5%"}}>
+							<IconButton size="small"  color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, email : false})}>
+								<CancelIcon fontSize="inherit"/>
+							</IconButton>
+							<IconButton size="small" color="primary" variant="contained"
+								onClick={(x) => {
+									//this if statement is a very weak check for good input value, needs reinforcing - NL
+									if (userInfoFieldValue) {
+										setUserInput({...userInput, email : userInfoFieldValue});
+									}
+									setToggleEdit({...toggleEdit, email : false});
+								}}>
+								<CheckCircleIcon fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment>
+				):(
+					<React.Fragment>
+						<Box sx={{width:"95%", textAlign:"right"}}>
+							<Typography variant="subtitle1" align="right">
+								{userInput.email}
+							</Typography>
+						</Box>
+						<Box sx={{width:"5%"}}>
+							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, email : true})}>
+								<EditIcon fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment>
+				)}
+			</Stack>
 		</React.Fragment>
 	)
 }
