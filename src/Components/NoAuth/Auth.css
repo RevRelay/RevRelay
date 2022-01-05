@@ -8,6 +8,11 @@
 	height: 10%;
 	top: 20%;
 }
+.form {
+	text-align: center;
+	z-index: 2;
+	top: 20%;
+}
 
 .registerform {
 	display: block;
@@ -20,5 +25,11 @@
 	top: 7%;
 }
 
-body {
+canvas {
+	z-index: 1;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
 }
