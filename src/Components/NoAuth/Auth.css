@@ -33,3 +33,7 @@ canvas {
 	left: 0;
 	position: fixed;
 }
+
+body {
+	overflow: hidden;
+}

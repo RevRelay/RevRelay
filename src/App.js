@@ -5,6 +5,8 @@ import Page from "./Components/Page.js";
 import {
 	Container,
 	createTheme,
+	SpeedDial,
+	SpeedDialIcon,
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
@@ -13,6 +15,7 @@ import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Home from "./Components/HomeSplash/Home.js"
+import Client from "./Components/Client";
 
 /**
  * Navbar Themes
@@ -295,6 +298,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="login"
 					element={<Login setToken={setToken} token={token} />}
 				/>
+				<Route path="chat" element={<Client />} />
 				<Route
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
