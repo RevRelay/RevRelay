@@ -24,6 +24,7 @@ import Paper from '@mui/material/Paper';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -33,9 +34,9 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
   
 export default function Home({JWT}){
-    console.log("Home");
+	let navigate = useNavigate();
     //navigate("/user/profile")
-    return (
+    return ( JWT? navigate("/user/profile") :
         <>
             <Stack direction="row" spacing={15} justifyContent="center" >
             </Stack>
@@ -44,12 +45,12 @@ export default function Home({JWT}){
                 <Item key="Login" >
                     <Typography  > Returning User</Typography>
                     <br></br>
-                    <Button href="/login" to="/login" primary="login" startIcon={<LoginIcon />} > Login </Button>
+                    <Button onClick={(x) => navigate("/login")} primary="login" startIcon={<LoginIcon />} > Login </Button>
                 </Item>
                 <Item key="Register" item>
                     <Typography  > New User </Typography>
                     <br></br>
-                    <Button to="/register" primary="register" startIcon={<HowToRegIcon />} > Register </Button>
+                    <Button onClick={(x) => navigate("/register")} primary="register" startIcon={<HowToRegIcon />} > Register </Button>
                 </Item>
             </Stack>
         </>
