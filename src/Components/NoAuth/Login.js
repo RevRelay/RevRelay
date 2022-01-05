@@ -33,6 +33,7 @@ export default function Login({ setToken, token }) {
 	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
 	let navigate = useNavigate();
+	console.log(!!token);
 
 	/**
 	 * Submit button is pressed login request is sent
