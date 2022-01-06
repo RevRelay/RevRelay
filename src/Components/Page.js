@@ -20,12 +20,16 @@ import {
 	Tabs,
 	Typography
 } from "@mui/material";
+
+import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
 import CreateGroup from "./Group/CreateGroup";
+import { height, maxHeight, width } from "@mui/system";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from "../API/APIQuery";
+import APIQuery from '../API/APIQuery';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import FriendsTab from "./Page/FriendsTab";
 
 /**
  * Renders a generic page with condintional rendering
@@ -49,12 +53,16 @@ export default function Page({ JWT }) {
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
-
-
+	const [tab, updateTab] = useState(0);
+	
+  const currnetUser = {
+		page: { userOwnerID: 0 },
+	};
+  
 	useEffect(() => {
 		GetPage();
 	}, []);
-
+  
 	/**
 	 * Gets Page from back server
 	 */
@@ -215,13 +223,13 @@ export default function Page({ JWT }) {
 				return <About />;
 				break;
 			case 2:
-				return <>{page.groupPage ? <Members /> : <Friends />} </>;
+				return <>{page.groupPage ? <Members /> : <FriendsTab currentUsername={currentUser.username} />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
+				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage}/> : <Groups />} </>;
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <Settings />} </>;
+				return <>{page.groupPage ? <></> : <PageSetting page={page} updatePage={updatePage}/>} </>;
 				break;
 			default:
 				break;
@@ -262,14 +270,7 @@ export default function Page({ JWT }) {
 	 */
 	function Members() {
 		return <div></div>;
-	}
-	/**
-	 * Placeholder for Friends
-	 * @returns
-	 */
-	function Friends() {
-		return <div></div>;
-	}
+	}	
 	/**
 	 * Placeholder for Settings
 	 * @returns

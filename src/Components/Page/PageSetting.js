@@ -11,7 +11,8 @@ import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";
 
-export default function PageSetting({ page }) {
+
+export default function PageSetting({page,updatePage}) {
 
     const [form, updateForm] = useState({
         ...page,
@@ -20,8 +21,8 @@ export default function PageSetting({ page }) {
         // isPrivate: page.private,
     });
 
-    const { description, bannerURL, isPrivate } = form;
 
+    const {description,bannerURL,isPrivate} = form;    
     // stretch goal: page title (custom name of page)
 
     // privacy 
@@ -37,7 +38,8 @@ export default function PageSetting({ page }) {
 
     const togglePrivacy = (e) => {
         let tempForm = { ...form };
-        tempForm.isPrivate = e.target.value;
+
+        tempForm.private = e.target.checked;
         updateForm(tempForm);
     }
 
@@ -52,6 +54,12 @@ export default function PageSetting({ page }) {
         const response = await APIQuery.put("/pages", form, {
             Headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
         }).then((data) => { console.log(data.data) });
+        const response = await APIQuery.put("/pages",form,{
+            headers:{Authorization:"Bearer "+ localStorage.getItem("token")}
+        }).then((data) => {
+            updatePage(data.data);
+            return data;
+        });
         console.log(response);
     }
 
@@ -63,12 +71,12 @@ export default function PageSetting({ page }) {
                     marginLeft: "5%",
                     marginRight: "5%",
                     maxWidth: "100%"
-                }}
+                }}      
             >
-                <Grid container spacing={2}>
+                <Grid container spacing = {2}>
                     <Grid item xs={4}>
                         <FormGroup>
-                            <FormControlLabel control={<Switch onChange={(e) => togglePrivacy(e)} checked={isPrivate} />} label="Private Page" />
+                            <FormControlLabel control={<Switch onChange={togglePrivacy} checked={form.private}/>} label="Private Page" />
                         </FormGroup>
                     </Grid>
                     <Grid item xs={4}>
@@ -78,7 +86,7 @@ export default function PageSetting({ page }) {
                         <TextField value={bannerURL} label="URL of Banner" onChange={(e) => changeURL(e)} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button variant="contained" onClick={() => { saveChanges() }}>
+                        <Button variant="contained" onClick={() => {saveChanges()}}>
                             Save Page Settings
                         </Button>
                     </Grid>

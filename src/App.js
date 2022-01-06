@@ -306,13 +306,7 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					<Route index element={<Users />} />
 					<Route
 						path=":pageParam"
-						element={
-							<Page
-								theme={activeTheme}
-								themes={updateActiveTheme}
-								JWT={token}
-							/>
-						}
+						element={ <Page theme={activeTheme}	themes={updateActiveTheme} JWT={token} />}
 					/>
 					<Route
 						path="profile"
@@ -324,6 +318,12 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 							/>
 						}
 					/>
+					<Route path="profile">
+						<Route index element={
+							<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />
+						} />
+						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+					</Route>
 				</Route>
 			</Route>
 			<Route path="group">

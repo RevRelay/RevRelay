@@ -82,6 +82,7 @@ export default function Login({ setToken, token }) {
 						<TextField
 							id="username"
 							label="Username"
+							required="true"
 							variant="outlined"
 							maxRows={1}
 							onChange={(e) => setUsername(e.target.value)}
@@ -92,6 +93,8 @@ export default function Login({ setToken, token }) {
 						<TextField
 							id="password"
 							label="Password"
+							type="password"
+							required="true"
 							variant="outlined"
 							maxRows={1}
 							onChange={(e) => setPassword(e.target.value)}
