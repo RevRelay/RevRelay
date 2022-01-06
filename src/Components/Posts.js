@@ -84,7 +84,6 @@ export default function Posts({ page, currentUser, JWT }) {
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			updatePosts(data.data);
 		});
-		console.log(posts);
 	}
 
 	async function PostPosts() {

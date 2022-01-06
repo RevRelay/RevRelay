@@ -102,7 +102,7 @@ export default function Page({ JWT }) {
 					updatePage(data.data.groupPage);
 				}
 
-				await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
+				await APIQuery.get("groups/getgroups/" + user.userID, axiosConfig).then((data) => {
 					setGroups(data.data);
 					setIsBusy(false);
 
@@ -218,7 +218,7 @@ export default function Page({ JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <Settings /> : <Groups/>} </>;
+				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
 				break;
 			case 4:
 				return <>{page.groupPage ? <></> : <Settings />} </>;
@@ -285,44 +285,42 @@ export default function Page({ JWT }) {
 		let navigate = useNavigate();
 
 		let axiosConfig = {
-            headers: {
-                Authorization: "Bearer " + JWT,
-            }
-        };
+			headers: {
+				Authorization: "Bearer " + JWT,
+			}
+		};
 
 		const goToGroup = (groupID) => {
 			navigate("/group/" + groupID);
 		}
 
 		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/"+groupID,axiosConfig)
-			.catch((e) => {console.log(e)});//since this is attached to a group component, we're guaranteed that it exists to delete it
+			await APIQuery.delete("/groups/" + groupID, axiosConfig)
+				.catch((e) => { console.log(e) });//since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
-			// console.log(groups.content)
 			let tempGroups = groups;
 			tempGroups.content = groups.content.filter(
-				e => {return e.groupID !== groupID;}
+				e => { return e.groupID !== groupID; }
 			);
-			setGroups({...tempGroups});
+			setGroups({ ...tempGroups });
 		}
 
-		// console.log(groups);
 		return (
 			<>
 				{groups.content.map((group) => {
 					return (
-						<>
+						<div key={group.groupID}>
 							<Typography>{group.groupName}</Typography>
 							<Typography>{group.groupID}</Typography>
 							<Button onClick={() => goToGroup(group.groupID)}>Go to Group</Button>
 							<Button onClick={() => deleteGroup(group.groupID)}>Delete Group</Button>
-						</>
+						</div>
 					);
 				})
 				}
 				<br />
 				<br />
-				<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups}/>
+				<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
 			</>
 		);
 	}
