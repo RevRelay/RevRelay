@@ -83,7 +83,7 @@ function Client() {
 				})}
 				<br />
 				<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">Age</InputLabel>
+					<InputLabel id="demo-simple-select-label">chatroom</InputLabel>
 					<Select
 						labelId="chats-select-label"
 						id="chats-select"
