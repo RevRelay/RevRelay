@@ -46,7 +46,6 @@ export default function CreateGroup({ currentUser, JWT }) {
                 Authorization: "Bearer " + JWT,
             }
         };
-        console.log(newGroup)
         await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
             console.log(data.data);
         });

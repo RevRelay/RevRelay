@@ -46,9 +46,10 @@ export default function Page({ JWT }) {
 		private: true,
 		pageTitle: "Title Not Found"
 	});
-	const [currentUser, setCurrentUser] = useState(null);
 	const [isBusy, setIsBusy] = useState();
 	const [groups, setGroups] = useState(true);
+	const [currentUser, setCurrentUser] = useState(null);
+
 
 	useEffect(() => {
 		GetPage();
@@ -95,15 +96,17 @@ export default function Page({ JWT }) {
 					data.data.userPage.pageTitle = data.data.username + "'s Page!";
 					updatePage(data.data.userPage);
 
-					await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
-						setGroups(data.data);
-						setIsBusy(false);
 
-					});
 				} else {
 					data.data.groupPage.pageTitle = data.data.groupName + " is almost certianly a group page!";
 					updatePage(data.data.groupPage);
 				}
+
+				await APIQuery.get("groups/all/" + user.userID, axiosConfig).then((data) => {
+					setGroups(data.data);
+					setIsBusy(false);
+
+				});
 
 			});
 		});
