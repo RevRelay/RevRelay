@@ -25,7 +25,7 @@ import {
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 
-export default function CreateGroup({ currentUser, JWT }) {
+export default function CreateGroup({ JWT , groups , setGroups}) {
 
     const [open, setOpen] = useState(false);
     const [newGroup, updateNewGroup] = useState({
@@ -37,7 +37,6 @@ export default function CreateGroup({ currentUser, JWT }) {
     const toggleOpen = () => {
         setOpen(!open);
     };
-    console.log(currentUser);
 
     const createGroup = async () => {
 
@@ -47,7 +46,14 @@ export default function CreateGroup({ currentUser, JWT }) {
             }
         };
         await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
-            console.log(data.data);
+            let tempGroups = groups;
+            tempGroups.content.push(data.data);
+            setGroups({...tempGroups});
+            toggleOpen(); //close dialog
+        }
+        ).catch((e) => {
+            console.log("Group name collision!");
+            //TODO: notify front end.
         });
 
     }

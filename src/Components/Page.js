@@ -46,7 +46,7 @@ export default function Page({ JWT }) {
 		private: true,
 		pageTitle: "Title Not Found"
 	});
-	const [isBusy, setIsBusy] = useState();
+	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
 
@@ -218,7 +218,7 @@ export default function Page({ JWT }) {
 				return <>{page.groupPage ? <Members /> : <Friends />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
+				return <>{page.groupPage ? <Settings /> : <Groups/>} </>;
 				break;
 			case 4:
 				return <>{page.groupPage ? <></> : <Settings />} </>;
@@ -284,11 +284,29 @@ export default function Page({ JWT }) {
 	function Groups() {
 		let navigate = useNavigate();
 
-		const goToGroup = (pageID) => {
-			navigate("/group/" + pageID);
+		let axiosConfig = {
+            headers: {
+                Authorization: "Bearer " + JWT,
+            }
+        };
+
+		const goToGroup = (groupID) => {
+			navigate("/group/" + groupID);
 		}
 
-		console.log(groups);
+		const deleteGroup = async (groupID) => {
+			await APIQuery.delete("/groups/"+groupID,axiosConfig)
+			.catch((e) => {console.log(e)});//since this is attached to a group component, we're guaranteed that it exists to delete it
+			//update front end
+			// console.log(groups.content)
+			let tempGroups = groups;
+			tempGroups.content = groups.content.filter(
+				e => {return e.groupID !== groupID;}
+			);
+			setGroups({...tempGroups});
+		}
+
+		// console.log(groups);
 		return (
 			<>
 				{groups.content.map((group) => {
@@ -297,13 +315,14 @@ export default function Page({ JWT }) {
 							<Typography>{group.groupName}</Typography>
 							<Typography>{group.groupID}</Typography>
 							<Button onClick={() => goToGroup(group.groupID)}>Go to Group</Button>
+							<Button onClick={() => deleteGroup(group.groupID)}>Delete Group</Button>
 						</>
 					);
 				})
 				}
 				<br />
 				<br />
-				<CreateGroup JWT={JWT} currentUser={currentUser} />
+				<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups}/>
 			</>
 		);
 	}
