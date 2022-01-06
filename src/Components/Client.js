@@ -85,9 +85,9 @@ function Client() {
 				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">Age</InputLabel>
 					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						label="Age"
+						labelId="chats-select-label"
+						id="chats-select"
+						label="Chats"
 						value={currentChat}
 						onChange={handleChange}
 					>
