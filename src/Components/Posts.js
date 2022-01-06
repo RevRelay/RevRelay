@@ -67,14 +67,14 @@ export default function Posts({ page, currnetUser, JWT }) {
 			np.parent = { postID: post };
 			np.postType = "REPLY";
 			updateNewPost(np);
-			console.log(post);
+			//console.log(post);
 			setOpen(true);
 		} else {
 			let np = { ...newpost };
 			np.parent = null;
 			np.postType = "ORIGINAL";
 			updateNewPost(np);
-			console.log(post);
+			//console.log(post);
 			setOpen(true);
 		}
 	};
@@ -83,7 +83,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 		setOpen(false);
 	};
 	const handlePost = () => {
-		console.log("Sending Post", newpost);
+		//console.log("Sending Post", newpost);
 		PostPosts();
 		setOpen(false);
 	};
@@ -100,7 +100,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			updatePosts(data.data);
 		});
-		console.log(posts);
+		//console.log(posts);
 	}
 	/**
 	 * Save Posts
@@ -120,7 +120,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 	useEffect((x) => {
 		GetPosts();
 	}, []);
-	console.log("POSTS:", posts);
+	//console.log("POSTS:", posts);
 	/**
 	 * Generate Posts html
 	 * @param {*} param0 post

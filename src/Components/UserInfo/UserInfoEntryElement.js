@@ -19,14 +19,13 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
  * @param {Object} props
  * @param {string} props.varname - the variable name associated with the list element (i.e. username).
  * @param {string} props.fieldName - the display name of the list element (i.e. Username).
- * @param {Object} props.userInput - state variable holding user field information.
+ * @param {Object} props.mostRecentUserInput - state variable holding user field information.
  * @param {Function} props.setUserInput - state variable setter for user field information.
  * @param {Object} props.toggleEdit - state variable for determining if a field is toggled to display (false) or edit (true). 
  * @param {Function} props.setToggleEdit - state variable setter for field toggle state. 
  * @returns ReactFragment containing UserInfo data with toggles (and eventually editing ability) formatted for insertion into a grid. 
  */
-export default function UserInfoEntryElement ({varname, fieldName, userInput, setUserInput, toggleEdit, setToggleEdit}) {
-    let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 		
 	return (
@@ -54,7 +53,8 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												setUserInput({...userInput, [varname] : userInfoFieldValue});
+												setUserInput({...mostRecentUserInput, [varname] : userInfoFieldValue});
+												setMostRecentUserInfo({...mostRecentUserInput, [varname]: userInfoFieldValue});
 											}
 											setToggleEdit({...toggleEdit, [varname] : false});
 										}}>
@@ -68,7 +68,7 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{(varname === 'password') ? bulletString : userInput[varname]}
+								{mostRecentUserInput[varname]}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
@@ -83,7 +83,7 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 	)
 };
 
-export function UserInfoEntryElementPassword ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+export function UserInfoEntryElementPassword ({}) {
     let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
 	let navigate = useNavigate();
 
@@ -110,7 +110,7 @@ export function UserInfoEntryElementPassword ({userInput, setUserInput, toggleEd
 	)
 };
 
-export function UserInfoElementUsername ({userInput}) {
+export function UserInfoElementUsername ({mostRecentUserInput}) {
 	return(
 		<React.Fragment>
 			<Stack direction="row" spacing={3}>
@@ -121,7 +121,7 @@ export function UserInfoElementUsername ({userInput}) {
 				</Box>
 				<Box sx={{width:"40%"}}>
 					<Typography>
-						{userInput.username}
+						{mostRecentUserInput.username}
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}/>
@@ -130,9 +130,8 @@ export function UserInfoElementUsername ({userInput}) {
 	)
 }
 
-export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
+export function UserInfoEntryElementBirthDate ({mostRecentUserInput, setUserInput,  setMostRecentUserInfo}) {
 	{/*const [value, setValue] = useState(userInput.birthDate);*/}
-
 
 	return(
 		<React.Fragment>
@@ -146,9 +145,12 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<DesktopDatePicker
 							label="Birth Date"
-							value={userInput.birthDate}
-							views={['day', 'month', 'year']}
-							onChange={(newValue) => setUserInput({...userInput, birthDate : newValue})}
+							value={mostRecentUserInput.birthDate}
+							views={['year', 'month', 'day']}
+							onChange={(newValue) => {
+								setUserInput({...mostRecentUserInput, birthDate : newValue})
+								setMostRecentUserInfo({...mostRecentUserInput, birthDate: newValue})
+							}}
 							renderInput={(params) => <TextField {...params} />}
 						/>
 					</LocalizationProvider>
@@ -231,7 +233,7 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 	)
 }
 
-export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+export function UserInfoEntryElementDisplayName ({mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
@@ -253,7 +255,8 @@ export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggl
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												setUserInput({...userInput, displayName : userInfoFieldValue});
+												setUserInput({...mostRecentUserInput, displayName : userInfoFieldValue});
+												setMostRecentUserInfo({...mostRecentUserInput, displayName: userInfoFieldValue});
 											}
 											setToggleEdit({...toggleEdit, displayName : false});
 										}}>
@@ -267,7 +270,7 @@ export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggl
 					<React.Fragment>
 						<Box sx={{width:"95%", textAlign:"right"}}>
 							<Typography variant="h5" sx={{textAlign:"right"}}>
-								{userInput.displayName}
+								{mostRecentUserInput.displayName}
 							</Typography>
 						</Box>
 						<Box sx={{width:"5%"}}>
@@ -282,7 +285,7 @@ export function UserInfoEntryElementDisplayName ({userInput, setUserInput, toggl
 	)
 }
 
-export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
+export function UserInfoEntryElementEmail ({mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
@@ -300,7 +303,8 @@ export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit,
 								onClick={(x) => {
 									//this if statement is a very weak check for good input value, needs reinforcing - NL
 									if (userInfoFieldValue) {
-										setUserInput({...userInput, email : userInfoFieldValue});
+										setUserInput({...mostRecentUserInput, email : userInfoFieldValue});
+										setMostRecentUserInfo({...mostRecentUserInput, email: userInfoFieldValue});
 									}
 									setToggleEdit({...toggleEdit, email : false});
 								}}>
@@ -312,7 +316,7 @@ export function UserInfoEntryElementEmail ({userInput, setUserInput, toggleEdit,
 					<React.Fragment>
 						<Box sx={{width:"95%", textAlign:"right"}}>
 							<Typography variant="subtitle1" align="right">
-								{userInput.email}
+								{mostRecentUserInput.email}
 							</Typography>
 						</Box>
 						<Box sx={{width:"5%"}}>
