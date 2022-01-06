@@ -11,6 +11,7 @@ import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";
 
+
 export default function PageSetting({page,updatePage}) {
 
     const [form, updateForm] = useState({
@@ -20,8 +21,8 @@ export default function PageSetting({page,updatePage}) {
         // isPrivate: page.private,
     });
 
-    const {description,bannerURL,isPrivate} = form;    
 
+    const {description,bannerURL,isPrivate} = form;    
     // stretch goal: page title (custom name of page)
 
     // privacy 
@@ -37,6 +38,7 @@ export default function PageSetting({page,updatePage}) {
 
     const togglePrivacy = (e) => {
         let tempForm = { ...form };
+
         tempForm.private = e.target.checked;
         updateForm(tempForm);
     }
@@ -49,10 +51,12 @@ export default function PageSetting({page,updatePage}) {
 
     const saveChanges = async () => {
         //Axios:
+        const response = await APIQuery.put("/pages", form, {
+            Headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+        }).then((data) => { console.log(data.data) });
         const response = await APIQuery.put("/pages",form,{
-            headers:{Authorization:"Bearer "+localStorage.getItem("token")}
+            headers:{Authorization:"Bearer "+ localStorage.getItem("token")}
         }).then((data) => {
-            console.log(data.data);
             updatePage(data.data);
             return data;
         });
