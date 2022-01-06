@@ -37,10 +37,14 @@ function updateEmail(email, userId, JWT) {
 }
 
 // update birthdate
-function updateBirthday(date, userId, JWT) {
+function updateBirthdate(date, userId, JWT) {
     return axios.put(urlConnection + "users/birthDate/" + userId, date, 
         axiosConfig(JWT));
 }
 
+function updateUser(user,JWT){
+    return axios.put(urlConnection + "users/update", user, 
+        axiosConfig(JWT));
+}
 
-export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthday as updateBirthdate};
+export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthdate, updateUser};

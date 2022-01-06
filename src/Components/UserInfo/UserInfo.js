@@ -16,7 +16,8 @@ import UserAPI, { updateEmail,
 	updateBirthdate, 
 	updateDisplayName, 
 	updateFirstName, 
-	updateLastName 
+	updateLastName,
+	updateUser,
 } from "../../API/UserAPI";
 // import	from "./UserInfoEntryElement";
 import UserInfoEntryElement, { UserInfoElementUsername, 
@@ -67,6 +68,7 @@ function UserInfo({JWT}) {
 
 	const FetchUserInfo = async (e) => {		
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
+		
 		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
 		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		// console.log(response);
@@ -80,32 +82,58 @@ function UserInfo({JWT}) {
 			displayName:response.data.displayName,
 			userID:response.data.userID
 		});
-		setUserInput({
-			username:response.data.username, 
-			firstName:response.data.firstName, 
-			lastName:response.data.lastName, 
-			email:response.data.email,
-			birthDate:response.data.birthDate,
-			displayName:response.data.displayName
-		});
 	}
 
 	function submitButton() {
-		if (mostRecentUserInfo.firstName !== userInput.firstName) {
-			updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT)
-		}
-		if (mostRecentUserInfo.lastName !== userInput.lastName) {
-			updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT)
-		}
-		if (mostRecentUserInfo.birthDate !== userInput.birthDate) {
-			updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT)
-		}
-		if (mostRecentUserInfo.displayName !== userInput.displayName) {
-			updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT)
-		}
-		if (mostRecentUserInfo.email !== userInput.email) {
-			updateEmail(userInput.email, mostRecentUserInfo.userID, JWT)
-		}
+		let count = 0;
+		/**
+		 * 
+			private String username;
+			private String email;
+			private String firstName;
+			private String lastName;
+			private Date birthDate;
+			private String displayName;
+			private Page userPage;
+			private int userID;
+		 */
+		let user = {"email":userInput.email,
+					"firstName":userInput.firstName,
+					"lastName":userInput.lastName,
+					"birthDate":userInput.birthDate,
+					"displayName":userInput.displayName,
+		};
+		updateUser(user, JWT);
+		// if (mostRecentUserInfo.firstName !== userInput.firstName) {
+		// 	count++
+		// 	updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT)
+		// 	setMostRecentUserInfo({firstName:userInput.firstName})
+		// 	//setMostRecentUserInfo.firstName = null
+		// }
+		// if (mostRecentUserInfo.lastName !== userInput.lastName) {
+		// 	count++
+		// 	updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT)
+		// 	setMostRecentUserInfo({lastName:userInput.lastName})
+		// 	//setMostRecentUserInfo.lastName = null
+		// }
+		// if (mostRecentUserInfo.birthDate !== userInput.birthDate) {
+		// 	count++
+		// 	updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT)
+		// 	setMostRecentUserInfo({birthDate:userInput.birthDate})
+		// 	//setMostRecentUserInfo.birthDate = null
+		// }
+		// if (mostRecentUserInfo.displayName !== userInput.displayName) {
+		// 	count++
+		// 	updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT)
+		// 	setMostRecentUserInfo({displayName:userInput.displayName})
+		// 	//setMostRecentUserInfo.displayName = null
+		// }
+		// if (mostRecentUserInfo.email !== userInput.email) {
+		// 	count++
+		// 	updateEmail(userInput.email, mostRecentUserInfo.userID, JWT)
+		// 	setMostRecentUserInfo({email:userInput.email})
+		// 	//setMostRecentUserInfo.email = null
+		// }
 	};
 
 	return(
@@ -143,8 +171,8 @@ function UserInfo({JWT}) {
 								</Box>
 								<br/>
 								<Box width="95%">
-									<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
-									<UserInfoEntryElementEmail key={"emailEntryElement"} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
+									<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} mostRecentUserInput = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
+									<UserInfoEntryElementEmail key={"emailEntryElement"} mostRecentUserInput = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
 								</Box>
 							</Stack>
 						</CardContent>
@@ -157,14 +185,14 @@ function UserInfo({JWT}) {
 							</Typography>
 							<br/>
 							<Box>
-								<UserInfoElementUsername key={"usernameElement"} userInput={userInput}/>
-								<UserInfoEntryElementPassword key={"passwordElemetn"} userInput={userInput} setUserInput={setUserInput} />
+								<UserInfoElementUsername key={"usernameElement"} mostRecentUserInput={mostRecentUserInfo}/>
+								<UserInfoEntryElementPassword key={"passwordElemetn"} />
 								{userInfoFields.map((x) => {
 									return (
-										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} userInput = {userInput} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit}/>
+										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} mostRecentUserInput = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
 									)
 								})}
-								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} userInput={userInput} setUserInput={setUserInput} />
+								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} mostRecentUserInput={mostRecentUserInfo} setUserInput={setUserInput} setMostRecentUserInfo={setMostRecentUserInfo} />
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>
