@@ -5,6 +5,12 @@ import TextField from "@mui/material/TextField";
 import { Box, IconButton, Stack } from "@mui/material";
 
 //https://gridfiti.com/aesthetic-color-palettes/
+
+/**
+ * Creates a Chat box.
+ * @param {*} param0 {Socket,username,room}
+ * @returns HTML for Chatbox
+ */
 function Chat({ socket, username, room }) {
 	const [message, setMessage] = useState("");
 	const [messageList, setMesssagList] = useState([]);

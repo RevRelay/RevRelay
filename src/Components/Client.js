@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Chat from "./Chat";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -23,8 +23,17 @@ import {
 	Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-const socket = io.connect("http://localhost:3001");
+var socket;
+
+/**
+ * Allows for Creation of Chats and Chat box
+ * @returns html for chat box in bottom left
+ */
 function Client() {
+	useEffect(() => {
+		socket = io.connect("http://localhost:3001");
+		return;
+	}, []);
 	const actions = [
 		{ icon: <AddBoxIcon />, name: "Join/Create Chat Room" },
 		{ icon: <IndeterminateCheckBoxIcon />, name: "Leave Chat Room" },
@@ -41,6 +50,7 @@ function Client() {
 				...chatrooms,
 				{ socket: socket, username: username, room: room },
 			]);
+			setCurrentChat(room);
 		}
 	};
 	const handleChange = (event) => {
@@ -52,11 +62,48 @@ function Client() {
 			<Box
 				sx={{
 					position: "absolute",
-					right: 16,
-					bottom: 16,
+					right: 10,
+					bottom: 10,
 					minWidth: 275,
 				}}
 			>
+				<Box
+					sx={{
+						position: "absolute",
+						bottom: 70,
+						right: 1,
+						visibility: currentChat === "add" ? "visible" : "hidden",
+						minWidth: "16vw",
+						minHeight: "25vh",
+						backgroundColor: "background.paper",
+						border: 1,
+						borderColor: "primary",
+						borderRadius: 5,
+					}}
+				>
+					<h2 style={{ textAlign: "center", width: "100%" }}>Join A Room</h2>
+					<Box sx={{ textAlign: "center", width: "100%" }}>
+						<TextField
+							id="outlined-basic"
+							label="Enter Room ID"
+							variant="outlined"
+							onChange={(event) => {
+								setRoom(event.target.value);
+							}}
+						/>
+						<TextField
+							id="outlined-basic"
+							label="Enter User Name"
+							variant="outlined"
+							onChange={(event) => {
+								setUserName(event.target.value);
+							}}
+						/>
+						<Button onClick={joinRoom} variant="outlined" size="large">
+							Join Room
+						</Button>
+					</Box>
+				</Box>
 				{chatrooms.map((chat) => {
 					return (
 						<Box
@@ -83,49 +130,22 @@ function Client() {
 				})}
 				<br />
 				<FormControl fullWidth>
-					<InputLabel id="demo-simple-select-label">Age</InputLabel>
+					<InputLabel id="demo-simple-select-label">My Chats</InputLabel>
 					<Select
 						labelId="chats-select-label"
 						id="chats-select"
-						label="Chats"
+						label="My Chats"
 						value={currentChat}
 						onChange={handleChange}
 					>
 						<MenuItem value="none">none</MenuItem>
+						<MenuItem value="add">New Chat</MenuItem>
 						{chatrooms.map((chat) => {
 							return <MenuItem value={chat.room}>{chat.room}</MenuItem>;
 						})}
 					</Select>
 				</FormControl>
 			</Box>
-
-			<div className="joinChatContainer">
-				<h2 className="clientHeader">Join A Room</h2>
-				<Box>
-					<TextField
-						id="outlined-basic"
-						label="Enter Room ID"
-						variant="outlined"
-						onChange={(event) => {
-							setRoom(event.target.value);
-						}}
-					/>
-				</Box>
-				<Box>
-					<TextField
-						id="outlined-basic"
-						label="Enter User Name"
-						variant="outlined"
-						onChange={(event) => {
-							setUserName(event.target.value);
-						}}
-					/>
-				</Box>
-
-				<Button onClick={joinRoom} variant="outlined" size="large">
-					Join Room
-				</Button>
-			</div>
 		</div>
 	);
 }
