@@ -131,11 +131,10 @@ export function UserInfoElementUsername ({userInput}) {
 }
 
 export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
-	const [value, setValue] = useState(new Date());
+	console.log(userInput.birthDate)
+	const [value, setValue] = useState(userInput.birthDate);
+	console.log(userInput.birthDate)
 
-	if(userInput.birthDate){
-		setValue(userInput.birthDate)
-	}
 
 	return(
 		<React.Fragment>
@@ -150,7 +149,7 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 						<DesktopDatePicker
 							label="Birth Date"
 							value={value}
-							views={['year', 'month', 'day']}
+							views={['month', 'day', 'year']}
 							onChange={(newValue) => setValue(newValue)}
 							renderInput={(params) => <TextField {...params} />}
 						/>
