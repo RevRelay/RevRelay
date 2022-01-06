@@ -6,13 +6,14 @@ import {
 	Stack,
 	Box
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
+import ChangePassword from "./ChangePassword";
 
 /**
  * Function for defining user info elements on UserInfo that are listed in the main body of the page (currently username, password, firstName, lastName, and birthDate).
@@ -85,7 +86,6 @@ export default function UserInfoEntryElement ({varname, fieldName, userInput, se
 
 export function UserInfoEntryElementPassword ({userInput, setUserInput, toggleEdit, setToggleEdit}) {
     let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
-	let navigate = useNavigate();
 
 	return (
 		<React.Fragment>
