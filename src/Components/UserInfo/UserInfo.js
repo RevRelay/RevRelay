@@ -93,19 +93,25 @@ function UserInfo({JWT}) {
 	function submitButton() {
 		if (mostRecentUserInfo.firstName !== userInput.firstName) {
 			updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT)
+			//setMostRecentUserInfo.firstName = null
 		}
 		if (mostRecentUserInfo.lastName !== userInput.lastName) {
 			updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT)
+			//setMostRecentUserInfo.lastName = null
 		}
 		if (mostRecentUserInfo.birthDate !== userInput.birthDate) {
 			updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT)
+			//setMostRecentUserInfo.birthDate = null
 		}
 		if (mostRecentUserInfo.displayName !== userInput.displayName) {
 			updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT)
+			//setMostRecentUserInfo.displayName = null
 		}
 		if (mostRecentUserInfo.email !== userInput.email) {
 			updateEmail(userInput.email, mostRecentUserInfo.userID, JWT)
+			//setMostRecentUserInfo.email = null
 		}
+		FetchUserInfo()
 	};
 
 	return(

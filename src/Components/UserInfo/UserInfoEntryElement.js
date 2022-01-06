@@ -131,9 +131,7 @@ export function UserInfoElementUsername ({userInput}) {
 }
 
 export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
-	console.log(userInput.birthDate)
-	const [value, setValue] = useState(userInput.birthDate);
-	console.log(userInput.birthDate)
+	{/*const [value, setValue] = useState(userInput.birthDate);*/}
 
 
 	return(
@@ -148,14 +146,14 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<DesktopDatePicker
 							label="Birth Date"
-							value={value}
-							views={['month', 'day', 'year']}
-							onChange={(newValue) => setValue(newValue)}
+							value={userInput.birthDate}
+							views={['day', 'month', 'year']}
+							onChange={(newValue) => setUserInput({...userInput, birthDate : newValue})}
 							renderInput={(params) => <TextField {...params} />}
 						/>
 					</LocalizationProvider>
 				</Box>
-				<Box sx={{width:"40%", height:"2em"}}>
+			{/*	<Box sx={{width:"40%", height:"2em"}}>
 					<IconButton size="small" color="primary" variant="contained"
 						onClick={(x) => {
 							//this if statement is a very weak check for good input value, needs reinforcing - NL
@@ -166,7 +164,7 @@ export function UserInfoEntryElementBirthDate ({userInput, setUserInput}) {
 						<CheckCircleIcon  fontSize="inherit"/>
 					</IconButton>
 				</Box>
-				{/*{toggleEdit.birthDate ? (
+				   {toggleEdit.birthDate ? (
 					<React.Fragment>
 						<Box sx={{width:"40%", textAlign:"left"}}>
 									<LocalizationProvider dateAdapter={AdapterDateFns}>
