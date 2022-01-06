@@ -53,16 +53,15 @@ export default function Page({ JWT }) {
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
-	const [tab, updateTab] = useState(0);
-	
-  const currnetUser = {
+
+	const currnetUser = {
 		page: { userOwnerID: 0 },
 	};
-  
+
 	useEffect(() => {
 		GetPage();
 	}, []);
-  
+
 	/**
 	 * Gets Page from back server
 	 */
@@ -226,10 +225,10 @@ export default function Page({ JWT }) {
 				return <>{page.groupPage ? <Members /> : <FriendsTab currentUsername={currentUser.username} />} </>;
 				break;
 			case 3:
-				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage}/> : <Groups />} </>;
+				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage} /> : <Groups />} </>;
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <PageSetting page={page} updatePage={updatePage}/>} </>;
+				return <>{page.groupPage ? <></> : <PageSetting page={page} updatePage={updatePage} />} </>;
 				break;
 			default:
 				break;
@@ -270,7 +269,7 @@ export default function Page({ JWT }) {
 	 */
 	function Members() {
 		return <div></div>;
-	}	
+	}
 	/**
 	 * Placeholder for Settings
 	 * @returns
