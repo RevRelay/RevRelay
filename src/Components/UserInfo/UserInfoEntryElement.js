@@ -16,15 +16,18 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import ChangePassword from "./ChangePassword";
 
 /**
- * Function for defining user info elements on UserInfo that are listed in the main body of the page (currently username, password, firstName, lastName, and birthDate).
- * @param {Object} props
- * @param {string} props.varname - the variable name associated with the list element (i.e. username).
- * @param {string} props.fieldName - the display name of the list element (i.e. Username).
- * @param {Object} props.mostRecentUserInput - state variable holding user field information.
- * @param {Function} props.setUserInput - state variable setter for user field information.
- * @param {Object} props.toggleEdit - state variable for determining if a field is toggled to display (false) or edit (true). 
- * @param {Function} props.setToggleEdit - state variable setter for field toggle state. 
- * @returns ReactFragment containing UserInfo data with toggles (and eventually editing ability) formatted for insertion into a grid. 
+ * Function for defining user info elements on UserInfo that are listed in the main body of the page 
+ * (currently username, password, firstName, lastName, and birthDate).
+ * 
+ * @param {string} props.varname 				the variable name associated with the list element (i.e. username).
+ * @param {string} props.fieldName 				the display name of the list element (i.e. Username).
+ * @param {Object} props.mostRecentUserInput 	state variable holding user field information.
+ * @param {Function} props.setUserInput 		state variable setter for user field information.
+ * @param {Object} props.toggleEdit 			state variable for determining if a field is toggled to display 
+ * 												(false) or edit (true). 
+ * @param {Function} props.setToggleEdit 		state variable setter for field toggle state. 
+ * @returns ReactFragment	containing UserInfo data with toggles (and eventually editing ability) formatted for 
+ * 							insertion into a grid. 
  */
 export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
@@ -155,79 +158,6 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInput, setUserInpu
 						/>
 					</LocalizationProvider>
 				</Box>
-			{/*	<Box sx={{width:"40%", height:"2em"}}>
-					<IconButton size="small" color="primary" variant="contained"
-						onClick={(x) => {
-							//this if statement is a very weak check for good input value, needs reinforcing - NL
-							if (value) {
-								setUserInput({...userInput, birthDate : value});
-							}
-						}}>
-						<CheckCircleIcon  fontSize="inherit"/>
-					</IconButton>
-				</Box>
-				   {toggleEdit.birthDate ? (
-					<React.Fragment>
-						<Box sx={{width:"40%", textAlign:"left"}}>
-									<LocalizationProvider dateAdapter={AdapterDateFns}>
-										<DesktopDatePicker
-											label="Birth Date"
-											value={date}
-											views={['year', 'month', 'day']}
-											onChange={(newValue) => {
-												setDate({...date, birthDate : newValue});
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</LocalizationProvider>
-						</Box>
-						<Box sx={{width:"40%"}}>
-							<Stack>
-								<Box>
-									<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
-										<CancelIcon  fontSize="inherit"/>
-									</IconButton>
-								</Box>
-								<Box>
-									<IconButton size="small" color="primary" variant="contained"
-										onClick={(x) => {
-											//this if statement is a very weak check for good input value, needs reinforcing - NL
-											if (date) {
-												setUserInput({...userInput, birthDate : date.birthDate});
-											}
-											setToggleEdit({...toggleEdit, birthDate : false});
-										}}>
-										<CheckCircleIcon  fontSize="inherit"/>
-									</IconButton>
-								</Box>
-							</Stack>
-						</Box>
-					</React.Fragment>
-				):(
-					<React.Fragment>
-						<Box sx={{width:"40%", textAlign:"left"}}>
-								<React.Fragment>
-									<LocalizationProvider dateAdapter={AdapterDateFns}>
-										<DesktopDatePicker
-											label="Birth Date"
-											readOnly
-											value={(userInput.birthDate) ? userInput.birthDate : date}
-											views={['year', 'month', 'day']}
-											onChange={(newValue) => {
-												setDate({...date, birthDate : newValue});
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</LocalizationProvider>
-								</React.Fragment>
-						</Box>
-						<Box sx={{width:"40%", height:"2em"}}>
-							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : true})}>
-								<EditIcon  fontSize="inherit"/>
-							</IconButton>
-						</Box>
-					</React.Fragment>
-				)}*/}
 			</Stack>
 		</React.Fragment>
 	)

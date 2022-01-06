@@ -12,14 +12,7 @@ import {
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import APIQuery from "../../API/APIQuery";
-import UserAPI, { updateEmail, 
-	updateBirthdate, 
-	updateDisplayName, 
-	updateFirstName, 
-	updateLastName,
-	updateUser,
-} from "../../API/UserAPI";
-// import	from "./UserInfoEntryElement";
+import { updateUser } from "../../API/UserAPI";
 import UserInfoEntryElement, { UserInfoElementUsername, 
 	UserInfoEntryElementPassword,
 	UserInfoEntryElementBirthDate, 
@@ -56,9 +49,7 @@ function UserInfo({JWT}) {
 		displayName: false
 	})
 
-/**
- * Const used for mapping to UserInfoEntryElement
- */
+	// Const used for mapping to UserInfoEntryElement
 	const userInfoFields = [
 		{name: "First Name", varname: "firstName"},
 		{name: "Last Name", varname: "lastName"},
@@ -69,10 +60,6 @@ function UserInfo({JWT}) {
 	const FetchUserInfo = async (e) => {		
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		
-		// const response = await APIQueryAuth.get("/users/" + uID).then(resp => resp);
-		// const response = await axios.get("localhost:5000/users/" + uID, {headers:{"Authorization":"Bearer " + JWT}}).then(resp => resp);
-		// console.log(response);
-		// eslint-disable-next-line no-lone-blocks
 		setMostRecentUserInfo({
 			username:response.data.username,
 			firstName:response.data.firstName, 
@@ -85,18 +72,6 @@ function UserInfo({JWT}) {
 	}
 
 	function submitButton() {
-		let count = 0;
-		/**
-		 * 
-			private String username;
-			private String email;
-			private String firstName;
-			private String lastName;
-			private Date birthDate;
-			private String displayName;
-			private Page userPage;
-			private int userID;
-		 */
 		let user = {"email":userInput.email,
 					"firstName":userInput.firstName,
 					"lastName":userInput.lastName,
@@ -104,36 +79,6 @@ function UserInfo({JWT}) {
 					"displayName":userInput.displayName,
 		};
 		updateUser(user, JWT);
-		// if (mostRecentUserInfo.firstName !== userInput.firstName) {
-		// 	count++
-		// 	updateFirstName(userInput.firstName, mostRecentUserInfo.userID, JWT)
-		// 	setMostRecentUserInfo({firstName:userInput.firstName})
-		// 	//setMostRecentUserInfo.firstName = null
-		// }
-		// if (mostRecentUserInfo.lastName !== userInput.lastName) {
-		// 	count++
-		// 	updateLastName(userInput.lastName, mostRecentUserInfo.userID, JWT)
-		// 	setMostRecentUserInfo({lastName:userInput.lastName})
-		// 	//setMostRecentUserInfo.lastName = null
-		// }
-		// if (mostRecentUserInfo.birthDate !== userInput.birthDate) {
-		// 	count++
-		// 	updateBirthdate(userInput.birthDate, mostRecentUserInfo.userID, JWT)
-		// 	setMostRecentUserInfo({birthDate:userInput.birthDate})
-		// 	//setMostRecentUserInfo.birthDate = null
-		// }
-		// if (mostRecentUserInfo.displayName !== userInput.displayName) {
-		// 	count++
-		// 	updateDisplayName(userInput.displayName, mostRecentUserInfo.userID, JWT)
-		// 	setMostRecentUserInfo({displayName:userInput.displayName})
-		// 	//setMostRecentUserInfo.displayName = null
-		// }
-		// if (mostRecentUserInfo.email !== userInput.email) {
-		// 	count++
-		// 	updateEmail(userInput.email, mostRecentUserInfo.userID, JWT)
-		// 	setMostRecentUserInfo({email:userInput.email})
-		// 	//setMostRecentUserInfo.email = null
-		// }
 	};
 
 	return(

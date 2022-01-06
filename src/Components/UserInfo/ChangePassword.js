@@ -33,7 +33,6 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 	useNavigate, 
 } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import UserAPI, { updateEmail, updateBirthdate, updateDisplayName, updateFirstName, updateLastName } from "../../API/UserAPI";
 
 function ChangePassword({JWT}) {
 
