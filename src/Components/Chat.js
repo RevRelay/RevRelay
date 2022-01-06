@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
+import { Box, IconButton, Stack } from "@mui/material";
 
 //https://gridfiti.com/aesthetic-color-palettes/
 function Chat({ socket, username, room }) {
 	const [message, setMessage] = useState("");
 	const [messageList, setMesssagList] = useState([]);
-
+	const scrollRef = useRef(null);
+	useEffect(() => {
+		if (scrollRef.current) {
+			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+		}
+	}, [messageList]);
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
@@ -16,6 +22,8 @@ function Chat({ socket, username, room }) {
 				message: message,
 			};
 			socket.emit("send_message", messageBody);
+			setMesssagList((list) => [...list, messageBody]);
+			setMessage("");
 		}
 	};
 
@@ -25,39 +33,65 @@ function Chat({ socket, username, room }) {
 		});
 	}, [socket]);
 	return (
-		<div>
-			<h2 className="joinAlert">You are in room {room}</h2>
-
-			<div>
-				{messageList.map((content) => {
-					return (
-						<h4 className="msgbody">
-							{content.message}:{" "}
-							<span className="msgFrom">from {content.user}</span>
-						</h4>
-					);
-				})}
-			</div>
-
-			<div>
-				<TextField
-					id="standard-basic"
-					label="Message here..."
-					variant="standard"
-					onChange={(event) => {
-						setMessage(event.target.value);
-					}}
-				/>
-				<div></div>
-				<Button
-					variant="contained"
-					endIcon={<SendIcon />}
-					onClick={sendMessage}
+		<Box>
+			<h2
+				style={{
+					textAlign: "center",
+					width: "100%",
+				}}
+			>
+				You are in room {room}
+			</h2>
+			<Box
+				ref={scrollRef}
+				sx={{
+					maxHeight: "50vh",
+					minHeight: "25vh",
+					marginLeft: 1,
+					marginRight: 1,
+					overflowY: "auto",
+					overflowX: "hidden",
+					border: 1,
+					borderColor: "primary",
+				}}
+			>
+				<Box>
+					{messageList.map((content) => {
+						return (
+							<Box
+								sx={{
+									width: "100%",
+									textAlign: content.user !== username ? "left" : "right",
+								}}
+							>
+								{content.message}{" "}
+								{content.user !== username ? ": from " + content.user : ""}
+							</Box>
+						);
+					})}
+				</Box>
+			</Box>
+			<Box>
+				<Stack
+					direction="row"
+					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
-					Send
-				</Button>
-			</div>
-		</div>
+					<TextField
+						sx={{ width: "90%" }}
+						id="standard-basic"
+						label="Message here..."
+						variant="standard"
+						value={message}
+						onChange={(event) => {
+							setMessage(event.target.value);
+						}}
+					/>
+					<IconButton onClick={sendMessage} aria-label="Example">
+						<SendIcon />
+					</IconButton>
+				</Stack>
+			</Box>
+		</Box>
 	);
 }
 
