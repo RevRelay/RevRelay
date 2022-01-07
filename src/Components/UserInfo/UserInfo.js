@@ -11,6 +11,7 @@ import {
 	Stack
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import SaveIcon from '@mui/icons-material/Save';
 import APIQuery from "../../API/APIQuery";
 import { updateUser } from "../../API/UserAPI";
 import UserInfoEntryElement, { UserInfoElementUsername, 
@@ -19,6 +20,12 @@ import UserInfoEntryElement, { UserInfoElementUsername,
 	UserInfoEntryElementDisplayName, 
 	UserInfoEntryElementEmail 
 } from "./UserInfoEntryElement";
+import {
+	User,
+	Toggle,
+	SetStateActionUser,
+	SetStateActionTog, 
+} from "../../typeDef"
 
 /**
  * 
@@ -27,8 +34,9 @@ import UserInfoEntryElement, { UserInfoElementUsername,
  * @returns 
  */
 function UserInfo({JWT}) {
+
 	/**
-	 * @constructor
+	 * @type {[User, SetStateActionUser]}
 	 */
 	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
 		username:'',
@@ -40,6 +48,9 @@ function UserInfo({JWT}) {
 		userID:''
 	});
 
+	/**
+	 * @type {[User, SetStateActionUser]}
+	 */
 	const [userInput, setUserInput] = useState({
 		username:'',
 		firstName:'',
@@ -49,6 +60,9 @@ function UserInfo({JWT}) {
 		displayName:''
 	});
 
+	/**
+	 * @type {[Toggle, SetStateActionTog]}
+	 */
 	const [toggleEdit, setToggleEdit] = useState({
 		username: false,
 		firstName: false,
@@ -160,7 +174,9 @@ function UserInfo({JWT}) {
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>
-							<Button onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} variant="contained" >Save Changes</Button>
+							<Button  variant="contained" endIcon={<SaveIcon />} onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} >
+								Save
+							</Button>
 						</CardActions>
 					</Card>
 				</Box>

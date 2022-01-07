@@ -9,7 +9,7 @@ import {
 	TextField
 } from "@mui/material";
 import APIQuery from "../API/APIQuery";
-import { useNavigate, useParams } from 'react-router-dom'
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom'
 
 /**
  * Component for rendering search results. 
@@ -67,8 +67,9 @@ export default function Search({ token }) {
  * Card element that redirects the user to the appropriate Page on click. 
  * Future development - include profile/wall picture; include marker of User vs Group. 
  * 
- * @param {Object} 		x 			Object corresponding to a SearchResultItem returned from the backend. 
- * @param {Function} 	navigate 	useNavigate hook from exported function (React didn't like it
+ * @param {Object} 				result 		Object corresponding to a SearchResultItem returned from the backend. 
+ * @param {number}				index
+ * @param {NavigateFunction} 	navigate 	useNavigate hook from exported function (React didn't like it
 * 							  		when I made a separate one inside this method).
  * @returns A Card element labeled with the SearchResultItem name that redirects the user to 
  * 			the appropriate Page on click. 

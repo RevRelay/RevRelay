@@ -29,12 +29,13 @@ import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { User, Page, Post } from "../typeDef";
 
 /**
  * Render Posts Tab
  * @param {object} 	param
- * @param {}		param.page 
- * @param {USER}	param.currentUser
+ * @param {Page}	param.page 
+ * @param {User}	param.currentUser
  * @param {string}	param.JWT			token determinig user and log in information.
  * @returns
  */
@@ -130,8 +131,8 @@ export default function Posts({ page, currentUser, JWT }) {
 	
 	/**
 	 * Generate Posts html
-	 * @param {*} 	param
-	 * @param {}	param.post 
+	 * @param {object} 	param
+	 * @param {Post}	param.post 
 	 * @returns posts html
 	 */
 	function PostElement({ post }) {
@@ -148,7 +149,7 @@ export default function Posts({ page, currentUser, JWT }) {
 					<IconButton>
 						<KeyboardArrowUpIcon color="primary" />
 					</IconButton>
-					{post.postLikes}
+						{post.postLikes}
 					<IconButton>
 						<KeyboardArrowDownIcon color="primary" />
 					</IconButton>

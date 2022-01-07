@@ -1,4 +1,5 @@
 import axios from "axios";
+import { User } from "../typeDef";
 
 const urlConnection = "http://localhost:5000/"
 
@@ -26,7 +27,7 @@ function updatePassword(passwords, JWT) {
 /**
  * Updates the User's information including first name, last name, email, display name, and birth date using a put request.
  * 
- * @param {USER} 	user 	Array of the user information including first name, last name, email, display name, and birth date.
+ * @param {User} 	user 	Array of the user information including first name, last name, email, display name, and birth date.
  * @param {string}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */

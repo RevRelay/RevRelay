@@ -28,11 +28,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
-import { Dispatch, SetStateAction } from "react";
-
-/**
- * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
- */
+import { SetStateActionNumber, SetStateActionString, SetStateActionBool } from "../../typeDef";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
@@ -42,8 +38,8 @@ import { Dispatch, SetStateAction } from "react";
  * 
  * @param {object} 					param
  * @param {object}	 				param.themes 			load all of the themes
- * @param {string} 					param.activeTheme 		the current theme
- * @param {SetStateActionString}	param.updateActiveTheme	passed to change the state of activeTheme
+ * @param {number} 					param.activeTheme 		integer referencing the current theme
+ * @param {SetStateActionNumber}	param.updateActiveTheme	passed to change the state of activeTheme
  * @param {SetStateActionString} 	param.setToken			passed to change the state of token
  * @returns Returns a react page for the navbar
  */
@@ -55,8 +51,16 @@ export default function Nav({
 	setToken,
 }) {
 	
+	/**
+	 * @type {[boolean, SetStateActionBool]}
+	 */
 	const [sidebar, updateSidebar] = useState(false);
 
+	/**
+	 * 
+	 * @param {Event} open 
+	 * @returns 
+	 */
 	const toggleDrawer = (open) => (event) => {
 		if (
 			event.type === "keydown" &&

@@ -13,24 +13,34 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import {
+	User,
+	Toggle,
+	SetStateActionUser,
+	SetStateActionTog, 
+	SetStateActionDate
+} from "../../typeDef"
 
 /**
  * Function for defining user info elements on UserInfo that are listed in the main body of the page 
  * (currently firstName and lastName).
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {object} 		element 
- * @param {string} 		element.varname 				the variable name associated with the list element (i.e. username).
- * @param {string} 		element.fieldName 				the display name of the list element (i.e. Username).
- * @param {object} 		element.mostRecentUserInfo 		state variable holding user field information.
- * @param {Function} 	element.setUserInput 			state variable setter for userInput field information.
- * @param {object} 		element.toggleEdit 				state variable for determining if a field is toggled to display (false) 
- * 														or edit (true). 
- * @param {Function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
- * @param {Function} 	element.setMostRecentUserInfo 	state variable setter for mostRecentUserInfo field information.
+ * @param {object} 				element 
+ * @param {string} 				element.varname 				the variable name associated with the list element (i.e. username).
+ * @param {string} 				element.fieldName 				the display name of the list element (i.e. Username).
+ * @param {User} 				element.mostRecentUserInfo 		state variable holding user field information.
+ * @param {SetStateActionUser} 	element.setUserInput 			state variable setter for userInput field information.
+ * @param {Toggle} 				element.toggleEdit 				state variable for determining if a field is toggled to display 
+ * 																(false) or edit (true). 
+ * @param {SetStateActionTog}	element.setToggleEdit 			state variable setter for toggleEdit field information. 
+ * @param {SetStateActionUser} 	element.setMostRecentUserInfo 	state variable setter for mostRecentUserInfo field information.
  * @returns ReactFragment containing UserInfo data with toggles editing ability formatted for insertion into a grid. 
  */
 export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInfo, setUserInput, toggleEdit, setToggleEdit, setMostRecentUserInfo}) {
+	/**
+	 * @type {string}
+	 */
 	let userInfoFieldValue;
 		
 	return (
@@ -125,7 +135,7 @@ export function UserInfoEntryElementPassword () {
  * Function for defining user info elements on UserInfo pretaining to their username. This is not editable.
  * 
  * @param {object} 	element 
- * @param {USER} 	element.mostRecentUserInfo state variable holding user field information.
+ * @param {User} 	element.mostRecentUserInfo state variable holding user field information.
  * @returns ReactFragment containing UserInfo data about their username with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
@@ -153,20 +163,20 @@ export function UserInfoElementUsername ({mostRecentUserInfo}) {
  * Function for defining user info elements on UserInfo pretaining to their birth date
  * The calendar button allows the user to select a date from a calendar.
  * 
- * @param {object} 		element 
- * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
- * @param {Function} 	element.setUserInput			state variable setter for UserInfo field information.
- * @param {Function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
- * @param {object} 		element.toggleEdit 				state variable for determining if a field is toggled to display (false) 
- * 														or edit (true). 
- * @param {Function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
+ * @param {object} 				element 
+ * @param {User} 				element.mostRecentUserInfo		state variable holding user field information.
+ * @param {SetStateActionUser} 	element.setUserInput			state variable setter for UserInfo field information.
+ * @param {SetStateActionUser} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {Toggle} 				element.toggleEdit 				state variable for determining if a field is toggled to display
+ * 																(false) or edit (true). 
+ * @param {SetStateActionTog} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
  * @returns ReactFragment containing UserInfo data about their birth date with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
 export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo, toggleEdit, setToggleEdit}) {
-	//const [value, setValue] = useState({
-	//	birthDate: mostRecentUserInfo.birthDate
-	//});
+	/**
+	 * @type {[Date, SetStateActionDate]}
+	 */
 	const [userInfoFieldValue, setUserInfoFieldValue] = useState();
 
 	return(
@@ -221,7 +231,7 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
-							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : true})}>
+							<IconButton size="small" color="primary" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : true})}>
 								<EditIcon  fontSize="inherit"/>
 							</IconButton>
 						</Box>
@@ -236,13 +246,13 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
  * Function for defining user info elements on UserInfo pretaining to their display name.
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {object} 		element 
- * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
- * @param {Function} 	element.setUserInput			state variable setter for userInfo field information.
- * @param {TOGGLE} 		element.toggleEdit				state variable for determining if a field is toggled to display (false) 
- * 														or edit (true). 
- * @param {Funtion} 	element.setToggleEdit			state variable setter for toggelEdit field information.
- * @param {Funtion} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {object} 				element 
+ * @param {User} 				element.mostRecentUserInfo		state variable holding user field information.
+ * @param {SetStateActionUser} 	element.setUserInput			state variable setter for userInfo field information.
+ * @param {Toggle} 				element.toggleEdit				state variable for determining if a field is toggled to display 
+ * 																(false) or edit (true). 
+ * @param {SetStateActionTog} 	element.setToggleEdit			state variable setter for toggelEdit field information.
+ * @param {SetStateActionUser} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
  * @returns ReactFragment containing UserInfo data about their display name with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
@@ -302,13 +312,13 @@ export function UserInfoEntryElementDisplayName ({mostRecentUserInfo, setUserInp
  * Function for defining user info elements on UserInfo pretaining to their email
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {object} 		element 
- * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
- * @param {Function} 	element.setUserInput			state variable setter for userInput field information.
- * @param {TOGGLE} 		element.toggleEdit				state variable for determining if a field is toggled to display (false) 
- * 														or edit (true). 
- * @param {Function} 	element.setToggleEdit			state variable setter for toggleEdit field information.
- * @param {Function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {object} 				element 
+ * @param {User} 				element.mostRecentUserInfo		state variable holding user field information.
+ * @param {SetStateActionUser} 	element.setUserInput			state variable setter for userInput field information.
+ * @param {Toggle} 				element.toggleEdit				state variable for determining if a field is toggled to display 
+ * 																(false) or edit (true). 
+ * @param {SetStateActionTog} 	element.setToggleEdit			state variable setter for toggleEdit field information.
+ * @param {SetStateActionUser} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
  * @returns ReactFragment containing UserInfo about their email data with toggles editing ability formatted for insertion 
  * 			into a grid.
  */

@@ -5,11 +5,7 @@ import APIQuery from "../../API/APIQuery";
 import { Button, Grid, TextField, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
-import { Dispatch, SetStateAction } from "react";
-
-/**
- * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
- */
+import { User, SetStateActionString } from "../../typeDef";
 
 /**
  * The url of the appended register url
@@ -19,7 +15,7 @@ const apiRegisterUrl = "/public/users/register";
 /**
  * Axios query to create a user
  *
- * @param {USER} user The user to be created
+ * @param {User} user The user to be created
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
 async function registerUser(user) {
@@ -31,7 +27,7 @@ async function registerUser(user) {
 /**
  * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message
  *
- * @param {USER} user The object to check for validity
+ * @param {User} user The object to check for validity
  * @returns returns negation of truthy or falsy of the image
  */
 function validInputRegister(user) {
@@ -65,13 +61,26 @@ function validInputRegister(user) {
  * @returns returns the React webpage for registering
  */
 export default function Register({ setToken }) {
+
 	/**
-	 * React useState to watch for userName and password
+	 * @type {[string, SetStateActionString]}
 	 */
 	const [username, setUsername] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [password, setPassword] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [confirmPassword, setConfirmPassword] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [email, setEmail] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [displayName, setDisplayName] = useState();
 	let navigate = useNavigate();
 

@@ -23,10 +23,13 @@ import {
 	Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import {ChatRoom, SetStateActionChatRoom} from "../typeDef"
+
 var socket;
 
 /**
  * Allows for Creation of Chats and Chat box
+ * 
  * @returns html for chat box in bottom left
  */
 function Client() {
@@ -34,10 +37,15 @@ function Client() {
 		socket = io.connect("http://localhost:3001");
 		return;
 	}, []);
+
 	const actions = [
 		{ icon: <AddBoxIcon />, name: "Join/Create Chat Room" },
 		{ icon: <IndeterminateCheckBoxIcon />, name: "Leave Chat Room" },
 	];
+
+	/**
+	 * @type {[ChatRoom, SetStateActionChatRoom]}
+	 */
 	const [chatrooms, updateChatrooms] = useState([]);
 	const [currentChat, setCurrentChat] = useState(0);
 	const [username, setUserName] = useState("");
@@ -56,6 +64,7 @@ function Client() {
 			setCurrentChat(room);
 		}
 	};
+
 	const handleChange = (event) => {
 		setCurrentChat(event.target.value);
 	};

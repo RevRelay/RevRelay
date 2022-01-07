@@ -12,12 +12,16 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import APIQuery from "../../API/APIQuery";
 import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
+import {
+	PasswordCheck,
+	SetStateActionString 
+} from "../../typeDef"
 
 const apiChangePasswordUrl = "/users/password";
 /**
  * Helper function to take 2 passwords as a passwordCheck object and return an alert if they dont match or if they arent valid
  * 
- * @param {Object} PasswordCheck - An object with 2 Strings, Checks if strings are a valid length and then if they are matching
+ * @param {PasswordCheck} PasswordCheck - An object with 2 Strings, Checks if strings are a valid length and then if they are matching
  * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy
  */
 function validPasswordReset(passwordCheck) {
@@ -41,8 +45,17 @@ function validPasswordReset(passwordCheck) {
  * @param {string} param.JWT token determinig user and log in information.
  */
 function ChangePassword({JWT}) {
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [oldPassword, setOldPassword] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [newPassword, setNewPassword] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [confirmPassword, setConfirmPassword] = useState();
 	let navigate = useNavigate();
 

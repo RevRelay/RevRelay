@@ -44,7 +44,6 @@ export default function Page({ JWT }) {
 		pageTitle: "test",
 		posts: [],
 		private: true,
-
 		pageTitle: "Test",
 	});
 

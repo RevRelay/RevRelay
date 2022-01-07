@@ -9,11 +9,7 @@ import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
 import PropTypes from 'prop-types';
 import './Auth.css';
-import { Dispatch, SetStateAction } from "react";
-
-/**
- * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
- */
+import { User, SetStateActionString } from "../../typeDef";
 
 /**
  * The url of the appended login url
@@ -24,7 +20,7 @@ const apiLoginUrl = '/public/users/login'
  * Axios query to login a user
  * 
  * @async
- * @param {USER} user The user to be logged in
+ * @param {User} user The user to be logged in
  * @returns The JWT of the user in the form data{jwt{*KEY*}}
  */
 async function loginUser(user) {
@@ -41,7 +37,13 @@ async function loginUser(user) {
  * @returns Returns the login page with React
  */
 export default function Login({ setToken }) {
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [username, setUsername] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [password, setPassword] = useState();
 	let navigate = useNavigate();
 

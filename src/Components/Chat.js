@@ -49,6 +49,7 @@ function Chat({ socket, username, room }) {
 			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 		}
 	}, [messageList]);
+
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
@@ -67,6 +68,7 @@ function Chat({ socket, username, room }) {
 			setMessageList((list) => [...list, data]);
 		});
 	}, [socket]);
+	
 	// Clear the chatroom
 	const clearMessages = () => {
 		setMessageList((list) => []);

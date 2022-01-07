@@ -19,17 +19,7 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
-import { Dispatch, SetStateAction } from "react";
-
-/**
- * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
- */
-/**
- * @typedef {Dispatch<SetStateAction<number>>} SetStateActionNumber
- */
-/**
- * @typedef {Dispatch<SetStateAction<boolean>>} SetStateActionBool
- */
+import { SetStateActionString } from "./typeDef.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
