@@ -7,7 +7,6 @@ import {
 import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
-import LoginSplash from "./LoginSplash";
 import PropTypes from 'prop-types';
 import './Auth.css';
 

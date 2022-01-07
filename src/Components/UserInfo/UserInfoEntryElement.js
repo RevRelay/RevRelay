@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
 	IconButton,
 	TextField,
@@ -6,6 +6,7 @@ import {
 	Stack,
 	Box
 } from "@mui/material";
+import {useNavigate} from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -22,11 +23,11 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
  * @param {string} 		element.varname 				the variable name associated with the list element (i.e. username).
  * @param {string} 		element.fieldName 				the display name of the list element (i.e. Username).
  * @param {object} 		element.mostRecentUserInfo 		state variable holding user field information.
- * @param {function} 	element.setUserInput 			state variable setter for userInput field information.
+ * @param {Function} 	element.setUserInput 			state variable setter for userInput field information.
  * @param {object} 		element.toggleEdit 				state variable for determining if a field is toggled to display (false) 
  * 														or edit (true). 
- * @param {function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
- * @param {function} 	element.setMostRecentUserInfo 	state variable setter for mostRecentUserInfo field information.
+ * @param {Function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
+ * @param {Function} 	element.setMostRecentUserInfo 	state variable setter for mostRecentUserInfo field information.
  * @returns ReactFragment containing UserInfo data with toggles editing ability formatted for insertion into a grid. 
  */
 export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInfo, setUserInput, toggleEdit, setToggleEdit, setMostRecentUserInfo}) {
@@ -95,6 +96,7 @@ export default function UserInfoEntryElement ({varname, fieldName, mostRecentUse
  */
 export function UserInfoEntryElementPassword () {
     let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+	let navigate = useNavigate();
 
 	return (
 		<React.Fragment>
@@ -153,13 +155,20 @@ export function UserInfoElementUsername ({mostRecentUserInfo}) {
  * 
  * @param {object} 		element 
  * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
- * @param {function} 	element.setUserInput			state variable setter for UserInfo field information.
- * @param {function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {Function} 	element.setUserInput			state variable setter for UserInfo field information.
+ * @param {Function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {object} 		element.toggleEdit 				state variable for determining if a field is toggled to display (false) 
+ * 														or edit (true). 
+ * @param {Function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
  * @returns ReactFragment containing UserInfo data about their birth date with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
-export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo}) {
-	{/*const [value, setValue] = useState(userInput.birthDate);*/}
+export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo, toggleEdit, setToggleEdit}) {
+	const [value, setValue] = useState({
+		birthDate: mostRecentUserInfo.birthDate
+	});
+	console.log(value);
+	console.log(mostRecentUserInfo.birthDate);
 
 	return(
 		<React.Fragment>
@@ -169,20 +178,54 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 						Birth Date
 					</Typography>
 				</Box>
-				<Box sx={{width:"40%", textAlign:"left"}}>
-					<LocalizationProvider dateAdapter={AdapterDateFns}>
-						<DesktopDatePicker
-							label="Birth Date"
-							value={mostRecentUserInfo.birthDate}
-							views={['year', 'month', 'day']}
-							onChange={(newValue) => {
-								setUserInput({...mostRecentUserInfo, birthDate : newValue})
-								setMostRecentUserInfo({...mostRecentUserInfo, birthDate: newValue})
-							}}
-							renderInput={(params) => <TextField {...params} />}
-						/>
-					</LocalizationProvider>
-				</Box>
+				{toggleEdit.birthDate ? (
+					<React.Fragment>
+								<Box sx={{width:"40%"}}>
+									<LocalizationProvider dateAdapter={AdapterDateFns}>
+										<DesktopDatePicker
+											sx={{width:"100%"}}
+											label="Birth Date"
+											value={value.birthDate}
+											views={['year', 'month', 'day']}
+											onChange={(newValue) => {
+												setValue({...value, birthDate: newValue})
+											}}
+											renderInput={(params) => <TextField {...params} />}
+										/>
+									</LocalizationProvider>
+								</Box>
+								<Box sx={{width:"40%"}}>
+									<Box>
+										<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
+											<CancelIcon  fontSize="inherit"/>
+										</IconButton>
+									</Box>
+									<Box>
+										<IconButton size="small" color="primary" variant="contained"
+											onClick={(x) => {
+												setUserInput({...value, birthDate : value.birthDate});
+												setMostRecentUserInfo({...value, birthDate: value.birthDate});
+												setToggleEdit({...toggleEdit, birthDate : false});
+											}}>
+											<CheckCircleIcon  fontSize="inherit"/>
+										</IconButton>
+									</Box>
+								</Box>
+					</React.Fragment>
+				) : (
+					<React.Fragment>
+						<Box sx={{width:"40%"}}>
+							<Typography>
+								{value.birthDate}
+							</Typography>
+						</Box>
+						<Box sx={{width:"40%", height:"2em"}}>
+							<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : true})}>
+								<EditIcon  fontSize="inherit"/>
+							</IconButton>
+						</Box>
+					</React.Fragment> 
+				)}
 			</Stack>
 		</React.Fragment>
 	)
@@ -263,8 +306,8 @@ export function UserInfoEntryElementDisplayName ({mostRecentUserInfo, setUserInp
  * @param {Function} 	element.setUserInput			state variable setter for userInput field information.
  * @param {TOGGLE} 		element.toggleEdit				state variable for determining if a field is toggled to display (false) 
  * 														or edit (true). 
- * @param {Funtion} 	element.setToggleEdit			state variable setter for toggleEdit field information.
- * @param {Funtion} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @param {Function} 	element.setToggleEdit			state variable setter for toggleEdit field information.
+ * @param {Function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
  * @returns ReactFragment containing UserInfo about their email data with toggles editing ability formatted for insertion 
  * 			into a grid.
  */
