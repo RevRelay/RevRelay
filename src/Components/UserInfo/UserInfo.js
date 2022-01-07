@@ -72,13 +72,12 @@ function UserInfo({JWT}) {
 	 */
 	const FetchUserInfo = async (e) => {		
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
-		
 		setMostRecentUserInfo({
 			username:response.data.username,
 			firstName:response.data.firstName, 
 			lastName:response.data.lastName,
 			email:response.data.email,
-			birthDate:response.data.birthDate,
+			birthDate: new Date(response.data.birthDate),
 			displayName:response.data.displayName,
 			userID:response.data.userID
 		});

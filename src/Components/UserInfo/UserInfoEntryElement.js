@@ -164,11 +164,10 @@ export function UserInfoElementUsername ({mostRecentUserInfo}) {
  * 			insertion into a grid.
  */
 export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo, toggleEdit, setToggleEdit}) {
-	const [value, setValue] = useState({
-		birthDate: mostRecentUserInfo.birthDate
-	});
-	console.log(value);
-	console.log(mostRecentUserInfo.birthDate);
+	//const [value, setValue] = useState({
+	//	birthDate: mostRecentUserInfo.birthDate
+	//});
+	const [userInfoFieldValue, setUserInfoFieldValue] = useState();
 
 	return(
 		<React.Fragment>
@@ -185,10 +184,17 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 								<DesktopDatePicker
 									sx={{width:"100%"}}
 									label="Birth Date"
+<<<<<<< HEAD
 									value={value.birthDate}
 									views={['year', 'month', 'day']}
 									onChange={(newValue) => {
 										setValue({...value, birthDate: newValue})
+=======
+									value={(userInfoFieldValue) ? userInfoFieldValue : mostRecentUserInfo.birthDate}
+									views={['year', 'month', 'day']}
+									onChange={(newValue) => {
+										setUserInfoFieldValue(newValue);
+>>>>>>> origin/JennicaBirthday-N8
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
@@ -203,8 +209,15 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 							<Box>
 								<IconButton size="small" color="primary" variant="contained"
 									onClick={(x) => {
+<<<<<<< HEAD
 										setUserInput({...value, birthDate : value.birthDate});
 										setMostRecentUserInfo({...value, birthDate: value.birthDate});
+=======
+										if (userInfoFieldValue) {
+											setUserInput({...mostRecentUserInfo, birthDate : userInfoFieldValue});
+											setMostRecentUserInfo({...mostRecentUserInfo, birthDate : userInfoFieldValue});
+										}
+>>>>>>> origin/JennicaBirthday-N8
 										setToggleEdit({...toggleEdit, birthDate : false});
 									}}>
 									<CheckCircleIcon  fontSize="inherit"/>
@@ -216,7 +229,7 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{value.birthDate}
+								{ (mostRecentUserInfo.birthDate) ? (mostRecentUserInfo.birthDate.toDateString()) : ("")}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
