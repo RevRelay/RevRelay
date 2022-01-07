@@ -31,7 +31,7 @@ import { height, maxHeight, width } from "@mui/system";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,20 +53,35 @@ export default function Page({ JWT }) {
 	};
 	//ADD add friend logic here
 	const handleCloseAddFriend = async () => {
-		const response = await APIQuery.post("/users/addFriend/" + currentUser.userID,null, {
-      headers: {
-        Authorization: "Bearer " + JWT,
-      },
-	  params: {
-		  username: page.username
-	  }
-    }).then((response)=> response.data);
-	toast.success('Friend added!')
-	  console.log(response);
+		const response = await APIQuery.post(
+			"/users/addFriend/" + currentUser.userID,
+			null,
+			{
+				headers: {
+					Authorization: "Bearer " + JWT,
+				},
+				params: {
+					username: page.username,
+				},
+			}
+		).then((response) => response.data);
+		toast.success("Friend added!");
+		console.log(response);
 		setAnchorEl(null);
 	};
 	//ADD add join group logic here
-	const handleCloseJoinGroup = () => {
+	const handleCloseJoinGroup = async () => {
+		const response = await APIQuery.post("/groups/addmember", null, {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				GroupID: page.groupID,
+				UserID: currentUser.userID,
+			},
+		}).then((response) => response.data);
+		toast.success("Friend added!");
+		console.log(response);
 		setAnchorEl(null);
 	};
 	//ADD start Chat Logic Here
@@ -102,6 +117,7 @@ export default function Page({ JWT }) {
 	/**
 	 * Gets Page from back server
 	 */
+	const [group, setGroup] = useState(null);
 	const getCurrentUser = async () => {
 		let axiosConfig = {
 			headers: {
@@ -114,6 +130,8 @@ export default function Page({ JWT }) {
 	/**
 	 * Gets Page from back server
 	 */
+
+	async function getCurrentGroup() {}
 	async function GetPage() {
 		getCurrentUser().then(async (data) => {
 			let user = data.data;
@@ -136,32 +154,45 @@ export default function Page({ JWT }) {
 				let id = -1;
 				if (path.pathname.includes("user")) {
 					id = data.data.userID;
-					data.data.userPage.pageTitle = data.data.username + "'s Page!";
-					data.data.userPage.userID = data.data.userID
-					data.data.userPage.username = data.data.username
+					data.data.userPage.pageTitle = data.data.displayName + "'s Page!";
+					data.data.userPage.userID = data.data.userID;
+					data.data.userPage.username = data.data.username;
+					data.data.userPage.displayName = data.data.displayName;
 					updatePage(data.data.userPage);
+					await APIQuery.get("groups/getgroups/" + id, axiosConfig).then(
+						(data) => {
+							setGroups(data.data);
+							setIsBusy(false);
+						}
+					);
 				} else {
 					id = data.data.userOwnerID;
 					data.data.groupPage.pageTitle =
 						data.data.groupName + " is almost certianly a group page!";
-			     		data.data.groupPage.userID = data.data.userOwnerID;
+					data.data.groupPage.userID = data.data.userOwnerID;
+					data.data.groupPage.groupID = data.data.groupID;
 					updatePage(data.data.groupPage);
+
+					apiRegisterUrl = "/groups/" + pageParam;
+
+					axiosConfig = {
+						headers: {
+							Authorization: "Bearer " + JWT,
+						},
+					};
+					await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
+						setGroup(data.data);
+						console.log(data.data);
+					});
+					setIsBusy(false);
 				}
-				await APIQuery.get(
-          "groups/getgroups/" + id,
-          axiosConfig
-        ).then((data) => {
-          setGroups(data.data);
-          setIsBusy(false);
-        });
 			});
 		});
 	}
 
-
 	return (
 		<>
-		<ToastContainer />
+			<ToastContainer />
 			{isBusy ? (
 				<LoadingPage />
 			) : (
@@ -175,7 +206,8 @@ export default function Page({ JWT }) {
 							marginLeft: "15%",
 							marginRight: "15%",
 							display: "flex",
-							minHeight: "80vh",
+							minHeight: "75vh",
+							maxHeight: "80vh",
 
 							maxWidth: "100%",
 							minWidth: 500,
@@ -190,7 +222,11 @@ export default function Page({ JWT }) {
 							}}
 						>
 							<Card
-								sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}
+								sx={{
+									minHeight: "10vh",
+									maxHeight: "25vh",
+									maxWidth: "100%",
+								}}
 							>
 								<div
 									style={{
@@ -217,6 +253,7 @@ export default function Page({ JWT }) {
 									width: "100%",
 									alignItems: "center",
 									justifyContent: "center",
+									overflow: "hidden",
 								}}
 							>
 								<Stack
@@ -245,44 +282,50 @@ export default function Page({ JWT }) {
 											<Tab label="Friends" />
 										)}
 										{!page.groupPage && <Tab label="Groups" />}
-										{currentUser.userID === page.userID ? 
+										{currentUser.userID === page.userID ? (
 											<Tab label="Settings" />
-										: ''}
+										) : (
+											""
+										)}
 									</Tabs>
 
 									<div>
-										{currentUser.userID !== page.userID ? 
-										<>
-										
-										<Button
-											id="basic-button"
-											aria-controls={open ? "basic-menu" : undefined}
-											aria-haspopup="true"
-											aria-expanded={open ? "true" : undefined}
-											onClick={handleClick}
-										>
-											Options
-										</Button>
-										<Menu
-											id="basic-menu"
-											anchorEl={anchorEl}
-											open={open}
-											onClose={handleClose}
-											MenuListProps={{
-												"aria-labelledby": "basic-button",
-											}}
-										>
-											{page.groupPage ? (
-												<MenuItem onClick={handleClose}>Join Group</MenuItem>
-											) : (
-												<MenuItem onClick={handleCloseAddFriend}>Add Friend</MenuItem>
-											)}
+										{currentUser.userID !== page.userID ? (
+											<>
+												<Button
+													id="basic-button"
+													aria-controls={open ? "basic-menu" : undefined}
+													aria-haspopup="true"
+													aria-expanded={open ? "true" : undefined}
+													onClick={handleClick}
+												>
+													Options
+												</Button>
+												<Menu
+													id="basic-menu"
+													anchorEl={anchorEl}
+													open={open}
+													onClose={handleClose}
+													MenuListProps={{
+														"aria-labelledby": "basic-button",
+													}}
+												>
+													{page.groupPage ? (
+														<MenuItem onClick={handleCloseJoinGroup}>
+															Join Group
+														</MenuItem>
+													) : (
+														<MenuItem onClick={handleCloseAddFriend}>
+															Add Friend
+														</MenuItem>
+													)}
 
-											<MenuItem onClick={handleClose}>Chat</MenuItem>
-										</Menu>
-										</>
-										 : ''}
-										
+													<MenuItem onClick={handleClose}>Chat</MenuItem>
+												</Menu>
+											</>
+										) : (
+											""
+										)}
 									</div>
 								</Stack>
 								<Divider sx={{ width: "100%" }} />
@@ -377,7 +420,20 @@ export default function Page({ JWT }) {
 	 * @returns
 	 */
 	function Members() {
-		return <div></div>;
+		let nav = useNavigate();
+		return (
+			<>
+				{group.members.map((member) => (
+					<Button
+						onClick={() => {
+							nav("/user/" + member.userID);
+						}}
+					>
+						{member.displayName}
+					</Button>
+				))}
+			</>
+		);
 	}
 	/**
 	 * Placeholder for Settings
@@ -416,28 +472,32 @@ export default function Page({ JWT }) {
 		};
 
 		return (
-      <>
-        {groups.content.map((group) => {
-          return (
-            <div key={group.groupID}>
-              <Typography>{group.groupName}</Typography>
-              <Button onClick={() => goToGroup(group.groupID)}>
-                Go to Group
-              </Button>
-			          {page.userID === currentUser.userID ? 
-              <Button onClick={() => deleteGroup(group.groupID)}>
-                Delete Group
-              </Button>
-			  :''}
-            </div>
-          );
-        })}
-        <br />
-        <br />
-        {page.userID === currentUser.userID ? 
-        <CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
-		:''}
-      </>
-    );
+			<>
+				{groups.content.map((group) => {
+					return (
+						<div key={group.groupID}>
+							<Typography>{group.groupName}</Typography>
+							<Button onClick={() => goToGroup(group.groupID)}>
+								Go to Group
+							</Button>
+							{page.userID === currentUser.userID ? (
+								<Button onClick={() => deleteGroup(group.groupID)}>
+									Delete Group
+								</Button>
+							) : (
+								""
+							)}
+						</div>
+					);
+				})}
+				<br />
+				<br />
+				{page.userID === currentUser.userID ? (
+					<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
+				) : (
+					""
+				)}
+			</>
+		);
 	}
 }

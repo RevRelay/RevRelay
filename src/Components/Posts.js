@@ -21,7 +21,7 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import { height, maxHeight, width } from "@mui/system";
+import { borderLeft, height, maxHeight, width } from "@mui/system";
 import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -30,6 +30,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
+/**
+ * Render Posts Tab
+ * @param {*} param0 PAGE,CurrenUser, JWT
+ * @returns
+
+ */
 export default function Posts({ page, currentUser, JWT }) {
 	const [posts, updatePosts] = useState({
 		content: [],
@@ -56,13 +62,22 @@ export default function Posts({ page, currentUser, JWT }) {
 		postOwnerID: 0,
 		children: null,
 	});
-	const handleClickOpen = (isOp) => {
+	const handleClickOpen = (isOp, post) => {
 		if (!isOp) {
 			let np = { ...newpost };
-
+			np.parent = { postID: post };
+			np.postType = "REPLY";
 			updateNewPost(np);
+			console.log(post);
+			setOpen(true);
+		} else {
+			let np = { ...newpost };
+			np.parent = null;
+			np.postType = "ORIGINAL";
+			updateNewPost(np);
+			console.log(post);
+			setOpen(true);
 		}
-		setOpen(true);
 	};
 
 	const handleClose = () => {
@@ -73,7 +88,9 @@ export default function Posts({ page, currentUser, JWT }) {
 		PostPosts();
 		setOpen(false);
 	};
-
+	/**
+	 * Gets posts from Server
+	 */
 	async function GetPosts() {
 		var apiRegisterUrl = "posts/page/" + page.pageID;
 		let axiosConfig = {
@@ -84,8 +101,11 @@ export default function Posts({ page, currentUser, JWT }) {
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			updatePosts(data.data);
 		});
+		console.log(posts);
 	}
-
+	/**
+	 * Save Posts
+	 */
 	async function PostPosts() {
 		var apiRegisterUrl = "posts";
 		let axiosConfig = {
@@ -101,113 +121,141 @@ export default function Posts({ page, currentUser, JWT }) {
 	useEffect((x) => {
 		GetPosts();
 	}, []);
-	return (
-		<div>
-			{posts.content.map((post) => {
-				return (
-					<>
-						<Paper elevation={5} key={post.postID}>
-							<Typography>{post.postTitle}</Typography>
-							<Typography>{post.postContent}</Typography>
-							<IconButton>
-								<KeyboardArrowUpIcon color="primary" />
-							</IconButton>
-							{post.postLikes}
-							<IconButton>
-								<KeyboardArrowDownIcon color="primary" />
-							</IconButton>
-							<Button onClick={() => handleClickOpen(false)}>Reply</Button>
-						</Paper>
-						<br />
-					</>
-				);
-			})}
-			<br />
-			<br />
-			<Dialog open={open} onClose={handleClose}>
-				<DialogTitle>New Post</DialogTitle>
-				<DialogContent>
-					<DialogContentText>Create A New Post</DialogContentText>
-					<TextField
-						autoFocus
-						margin="dense"
-						id="title"
-						label="Title"
-						type="test"
-						fullWidth
-						variant="standard"
-						defaultValue={newpost.postTitle}
-						onChange={(x) => {
-							let np = { ...newpost };
-							np.postTitle = x.target.value;
-							updateNewPost(np);
-						}}
-					/>
-					<TextField
-						sx={{ marginTop: 2 }}
-						id="content"
-						label="Content"
-						multiline
-						fullWidth
-						rows={4}
-						defaultValue={newpost.postContent}
-						onChange={(x) => {
-							let np = { ...newpost };
-							np.postContent = x.target.value;
-							updateNewPost(np);
-						}}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handlePost}>Post!</Button>
-				</DialogActions>
-			</Dialog>
-			<Grid
-				container
-				spacing={0}
-				direction="column"
-				alignItems="center"
-				justifyContent="center"
-				height={"100%"}
+	console.log("POSTS:", posts);
+	/**
+	 * Generate Posts html
+	 * @param {*} param0 post
+	 * @returns posts html
+	 */
+	function PostElement({ post }) {
+		return (
+			<Box
+				sx={{
+					paddingTop: "1%",
+					marginLeft: "1%",
+				}}
 			>
-				<Grid
-					item
-					xs={4}
-					sx={{
-						left: "5%",
-						position: "absolute",
-						bottom: 5,
-						display: "inline-block",
-					}}
-				>
-					{page.userID === currentUser.userID ? (
-						<Tooltip
-							title="Add new post"
-							placement="top"
-							TransitionComponent={Fade}
-							TransitionProps={{ timeout: 600 }}
-						>
-							<IconButton onClick={() => handleClickOpen(true)}>
-								<AddCircleIcon color="primary" fontSize="large" />
-							</IconButton>
-						</Tooltip>
-					) : (
+				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
+					<Typography>{post.postTitle}</Typography>
+					<Typography>{post.postContent}</Typography>
+					<IconButton>
+						<KeyboardArrowUpIcon color="primary" />
+					</IconButton>
+					{post.postLikes}
+					<IconButton>
+						<KeyboardArrowDownIcon color="primary" />
+					</IconButton>
+					<Button onClick={() => handleClickOpen(false, post.postID)}>
+						Reply
+					</Button>
+				</Paper>
+				{post.children.map((post) => {
+					return <PostElement post={post} key={post.postID} />;
+				})}
+			</Box>
+		);
+	}
+
+	return (
+		<Box sx={{ overflowY: "auto", maxHeight: "100%" }}>
+			<Box sx={{ marginBottom: "5%" }}>
+				{posts.content.map((post) => {
+					return post.postType !== "ORIGINAL" ? (
 						<></>
-					)}
-				</Grid>
+					) : (
+						<PostElement post={post} key={post.postID} />
+					);
+				})}
+			</Box>
+
+			<br />
+			<br />
+			<Box>
+				<Dialog open={open} onClose={handleClose}>
+					<DialogTitle>New Post</DialogTitle>
+					<DialogContent>
+						<DialogContentText>Create A New Post</DialogContentText>
+						<TextField
+							autoFocus
+							margin="dense"
+							id="title"
+							label="Title"
+							type="test"
+							fullWidth
+							variant="standard"
+							defaultValue={newpost.postTitle}
+							onChange={(x) => {
+								let np = { ...newpost };
+								np.postTitle = x.target.value;
+								updateNewPost(np);
+							}}
+						/>
+						<TextField
+							sx={{ marginTop: 2 }}
+							id="content"
+							label="Content"
+							multiline
+							fullWidth
+							rows={4}
+							defaultValue={newpost.postContent}
+							onChange={(x) => {
+								let np = { ...newpost };
+								np.postContent = x.target.value;
+								updateNewPost(np);
+							}}
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleClose}>Cancel</Button>
+						<Button onClick={handlePost}>Post!</Button>
+					</DialogActions>
+				</Dialog>
 				<Grid
-					item
-					xs={4}
-					sx={{
-						position: "absolute",
-						bottom: 5,
-						display: "inline-block",
-					}}
+					container
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					justifyContent="center"
+					height={"100%"}
 				>
-					<Pagination count={posts.totalPages} color="primary" size="large" />
+					<Grid
+						item
+						xs={4}
+						sx={{
+							left: "5%",
+							position: "absolute",
+							bottom: 5,
+							display: "inline-block",
+						}}
+					>
+						{page.userID === currentUser.userID ? (
+							<Tooltip
+								title="Add new post"
+								placement="top"
+								TransitionComponent={Fade}
+								TransitionProps={{ timeout: 600 }}
+							>
+								<IconButton onClick={() => handleClickOpen(true)}>
+									<AddCircleIcon color="primary" fontSize="large" />
+								</IconButton>
+							</Tooltip>
+						) : (
+							<></>
+						)}
+					</Grid>
+					<Grid
+						item
+						xs={4}
+						sx={{
+							position: "absolute",
+							bottom: 5,
+							display: "inline-block",
+						}}
+					>
+						<Pagination count={posts.totalPages} color="primary" size="large" />
+					</Grid>
 				</Grid>
-			</Grid>
-		</div>
+			</Box>
+		</Box>
 	);
 }
