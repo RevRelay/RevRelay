@@ -47,4 +47,16 @@ function updateUser(user,JWT){
         axiosConfig(JWT));
 }
 
-export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthdate, updateUser};
+/**
+ * Helper function to send an API call to reset password endpoint
+ * 
+ * @param {Object} resetPass - An object with 3 String fields. 1 old password and 2 matching password fields 
+ * @returns 
+ */
+
+ function passwordReset(resetPass, JWT) {
+	return axios.put(urlConnection + 'users/password', JSON.stringify(resetPass),
+     axiosConfig(JWT))
+}
+
+export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthdate, updateUser, passwordReset};
