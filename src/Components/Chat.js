@@ -1,223 +1,287 @@
-import '../styles/styles.css';
-import io from 'socket.io-client';
-import React, { useEffect, useState, useContext, useCallback } from "react";
-import ReactDOM from 'react-dom';
-import TextField from "@material-ui/core/TextField";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
-import React, { useEffect, useState } from "react";
+import {
+	Box,
+	Button,
+	Card,
+	CardHeader,
+	CardMedia,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Divider,
+	Fade,
+	Grid,
+	IconButton,
+	Pagination,
+	Paper,
+	Tab,
+	Tabs,
+	TextField,
+	Tooltip,
+	Typography,
+	Stack,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import MicIcon from "@mui/icons-material/Mic";
 
-const socket = io.connect("http://localhost:3001");
+//https://gridfiti.com/aesthetic-color-palettes/
 
-function Chat () {
-	const [userName, setUserName] = useState("");
-	const [room, setRoom] = useState("");
+/**
+ * Creates a Chat box.
+ * @param {*} param0 {Socket,username,room}
+ * @returns HTML for Chatbox
+ */
+function Chat({ socket, username, room }) {
 	const [message, setMessage] = useState("");
 	const [messageList, setMessageList] = useState([]);
+	const scrollRef = useRef(null);
 	const [usersTyping, setUsersTyping] = useState([]);
 
-    const joinRoom = (r) => {
-		if (userName !== "") {
-			socket.emit("join room", {
-				user: userName,
-				room: r
-			});
+	useEffect(() => {
+		if (scrollRef.current) {
+			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 		}
-	}
-    const leaveRoom = (r) => {
-		if (userName !== "") {
-			socket.emit("leave room", {
-				user: userName,
-				room: r
-			});
-		}
-	}
-
-    const sendMessage = () => {
-		if (message !== null && room !== ""){
-			socket.emit("message room", {
-				user: userName,
+	}, [messageList]);
+	const sendMessage = () => {
+		if (message !== "") {
+			const messageBody = {
 				room: room,
-				message: message
-			});
+				user: username,
+				message: message,
+			};
+			socket.emit("send_message", messageBody);
+			setMessageList((list) => [...list, messageBody]);
+			setMessage("");
 		}
-	}
+	};
 
-    const receiveMessage = useCallback((data) => {
-		let m = <Message text={data["message"]} time={new Date().toLocaleString()} author={data["user"]} />;
-		setMessageList((list) => [...list, m]);
-	}, []);
-
-	const systemMessage = useCallback((data) => {
-		let m = <SystemMessage text={data["message"]}/>;
-		setMessageList((list) => [...list, m]);
-	}, []);
-
-    const systemMessage = useCallback((data) => {
-		let m = <SystemMessage text={data["message"]}/>;
-		setMessageList((list) => [...list, m]);
-	}, []);
-
-    const clearMessages = () => {
+	useEffect(() => {
+		socket.on("receive_message", (data) => {
+			setMessageList((list) => [...list, data]);
+		});
+	}, [socket]);
+	// Clear the chatroom
+	const clearMessages = () => {
 		setMessageList((list) => []);
 	};
 
+	// Setting active/non-active users
+	// Shows if someone is typing
 	const setActive = () => {
+		console.log(usersTyping);
 		let userActive = false;
-		for (var i=0; i<usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == userName) {
+		for (var i = 0; i < usersTyping.length; i++) {
+			if (usersTyping[i]["username"] == username) {
 				userActive = true;
+				//If current typing countdown is 4, don't start a new countdown timer
 				if (usersTyping[i]["countdown"] < 4) {
 					socket.emit("active countdown", {
-						user: userName,
-						room: room
+						user: username,
+						room: room,
 					});
 				}
 			}
 		}
-
-        if (!userActive) {
+		if (!userActive) {
 			socket.emit("active countdown", {
-				user: userName,
-				room: room
+				user: username,
+				room: room,
 			});
 		}
-	}
+	};
 
-    const setNotActive = () => {
-		for (var i=0; i<usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == userName) {
+	const setNotActive = () => {
+		for (var i = 0; i < usersTyping.length; i++) {
+			if (usersTyping[i]["username"] == username) {
 				socket.emit("not active", {
-					user: userName,
-					room: room
+					user: username,
+					room: room,
 				});
 			}
 		}
-	}
+	};
 
-    const setCountdown = useCallback((data) => {
+	//Actually manipulate the frontend state of the list of which users are typing
+	const setCountdown = (data) => {
+		console.log(data);
 		let userActive = false;
-		let newList = usersTyping;
-		for (var i=0; i<usersTyping.length; i++) {
+		let newList = [...usersTyping];
+		for (var i = 0; i < usersTyping.length; i++) {
 			if (usersTyping[i]["username"] == data["user"]) {
 				userActive = true;
-				if ((data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) || (data["countdown"] == -1)) {
+				if (
+					(data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) ||
+					data["countdown"] == -1
+				) {
 					newList.splice(i, 1);
 				} else {
 					newList[i]["countdown"] = data["countdown"];
 				}
 			}
 		}
-		if (!userActive && data["countdown"] === 4) {
+		if (!userActive && data["countdown"] == 4) {
 			newList.push({
 				username: data["user"],
-				countdown: data["countdown"]
+				countdown: data["countdown"],
 			});
+			console.log(newList);
 		}
+		//Manipulate state
+		console.log(newList);
 		setUsersTyping([...newList]);
-	});
+		console.log(usersTyping);
+	};
 
-    const sendAudio = () => {
+	// Send audio to server, records 5 seconds after button is pressed
+	const sendAudio = () => {
 		const constraints = { audio: true };
-		console.log('audio button pressed');
-		navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
-			console.log('received access to microphone');
-			let mediaRecorder = new MediaRecorder(mediaStream);
-			mediaRecorder.onstart = function (e) {
-				this.chunks = [];
-			};
-			mediaRecorder.ondataavailable = function (e) {
-				this.chunks.push(e.data);
-			};
-			mediaRecorder.onstop = function (e) {
-				var blob = new Blob(this.chunks, {
-					'type': 'audio/ogg; codecs=opus'
-				});
-				console.log('sending audio');
-				socket.emit('radio', blob, room);
-			};
+		console.log("audio button pressed");
 
-			//Start recording
-			mediaRecorder.start();
+		//Check if browser has audio device they are willing to use
+		navigator.mediaDevices
+			.getUserMedia(constraints)
+			.then(function (mediaStream) {
+				console.log("received access to microphone");
+				let mediaRecorder = new MediaRecorder(mediaStream);
 
-			//Stop recording after 5 seconds and broadcast it to server
-			setTimeout(function() {
-				mediaRecorder.stop()
-			}, 5000);
-		});
-	}
+				//Start audio data as empty
+				mediaRecorder.onstart = function (e) {
+					this.chunks = [];
+				};
 
+				//Every time new audio is received, add it to audio data
+				mediaRecorder.ondataavailable = function (e) {
+					this.chunks.push(e.data);
+				};
+				mediaRecorder.onstop = function (e) {
+					//Send the audio data in blob to server
+					var blob = new Blob(this.chunks, {
+						type: "audio/ogg; codecs=opus",
+					});
+					console.log("sending audio");
+					socket.emit("radio", blob, room);
+				};
+
+				//Start recording
+				mediaRecorder.start();
+
+				//Stop recording after 5 seconds and broadcast it to server
+				setTimeout(function () {
+					mediaRecorder.stop();
+				}, 5000);
+			});
+	};
+
+	//Playback audio received from server
 	const playAudio = useCallback((arrayBuffer) => {
-		console.log('playing audio!');
+		console.log("playing audio!");
 		let blob = new Blob([arrayBuffer], {
-			'type': 'audio/ogg; codecs=opus'
+			type: "audio/ogg; codecs=opus",
 		});
-		let audio = document.createElement('audio');
+		let audio = document.createElement("audio");
 		audio.src = window.URL.createObjectURL(blob);
 		audio.play();
 	});
 
 	useEffect(() => {
-		socket.on("message sent", receiveMessage);
-		socket.on("user joined", systemMessage);
-		socket.on("user left", systemMessage);
 		socket.on("typing countdown", setCountdown);
 		socket.on("voice", playAudio);
-
 		return () => {
-			socket.off("message sent", receiveMessage);
-			socket.off("user joined", systemMessage);
-			socket.off("user left", systemMessage);
 			socket.off("typing countdown", setCountdown);
 			socket.off("voice", playAudio);
 		};
-	}, [socket, receiveMessage, systemMessage, playAudio, setCountdown]);
+	}, [usersTyping, playAudio, setCountdown]);
 
 	return (
-		<div className="App">
-			<h1>Join a room</h1>
-			<input type="text" id="roomInput" placeholder="Type room ID" />
-			<br></br><br></br>
-			<input type="text" placeholder="Enter your user name" onChange={(event) => {
-				setUserName(event.target.value);
-			}}
-			/>
-			<button onClick={() => {
-				let inputValue = document.getElementById('roomInput').value;
-				if (inputValue !== room && inputValue !== "") {
-					if (room !== "") {
-						leaveRoom(room);
-						setMessageList((t) => []);
-					}
-					setRoom(inputValue);
-				}
-				joinRoom(inputValue);
-			}}>Join Now </button>
-			<br></br><br></br><br></br>
-			<input type="text" id="messageInput" placeholder="message" onChange={(event) =>{
-				setMessage(event.target.value);
-				setActive();
-			}}
-			/>
-			<button onClick={() => {
-				sendMessage();
-				let messageInput = document.getElementById('messageInput');
-				messageInput.value = "";
-				setMessage("");
-				setNotActive();
-			}}>Send message...</button>
-			<br></br><br></br>
-			<button onClick={sendAudio}>Send audio to room</button>
-			<br></br>
-			<button onClick={clearMessages}>Clear message</button>
-			<br></br><br></br>
-			<Active typing={usersTyping} />
-			<br></br>
-			<div id="messages">
-				{messageList}
-			</div>
-		</div>
+		<Box>
+			<h2
+				style={{
+					textAlign: "center",
+					width: "100%",
+				}}
+			>
+				You are in room {room}
+			</h2>
+			<Box
+				ref={scrollRef}
+				sx={{
+					maxHeight: "50vh",
+					minHeight: "25vh",
+					marginLeft: 1,
+					marginRight: 1,
+					overflowY: "auto",
+					overflowX: "hidden",
+					border: 1,
+					borderColor: "primary",
+				}}
+			>
+				<Box>
+					{messageList.map((content) => {
+						return (
+							<Box
+								sx={{
+									width: "100%",
+									textAlign: content.user !== username ? "left" : "right",
+								}}
+							>
+								{content.user !== username ? "from " + content.user + ": " : ""}
+								{content.message}
+							</Box>
+						);
+					})}
+				</Box>
+			</Box>
+			<Box>
+				<Stack
+					direction="row"
+					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
+				>
+					{usersTyping.map((typer) => {
+						return typer.username !== username ? (
+							<p>{typer.username} is typing</p>
+						) : (
+							<></>
+						);
+					})}
+				</Stack>
+				<Stack
+					direction="row"
+					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
+				>
+					<TextField
+						sx={{ width: "90%" }}
+						id="standard-basic"
+						label="Message here..."
+						variant="standard"
+						value={message}
+						onChange={(event) => {
+							setMessage(event.target.value);
+							setActive();
+							console.log("made it here");
+						}}
+					/>
+					<IconButton
+						onClick={() => {
+							sendMessage();
+							setNotActive();
+						}}
+						aria-label="Example"
+					>
+						<SendIcon />
+					</IconButton>
+					<button id="audiomessage" onClick={sendAudio}>
+						{<MicIcon />}
+					</button>
+					<button id="clearmessage" onClick={clearMessages}>
+						Clear message
+					</button>
+				</Stack>
+			</Box>
+		</Box>
 	);
 }
 
 export default Chat;
-
