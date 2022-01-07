@@ -1,122 +1,96 @@
 import { useState } from "react";
-import { Box, Button, Grid, Paper, TextField } from "@mui/material";
+import {
+	Button,
+	Grid,
+	TextField
+} from "@mui/material";
 import APIQuery from "../../API/APIQuery";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
-import PropTypes from "prop-types";
-import "./Auth.css";
+import PropTypes from 'prop-types';
+import './Auth.css';
+import { User, SetStateActionString } from "../../typeDef";
 
 /**
  * The url of the appended login url
  */
-const apiLoginUrl = "/public/users/login";
+const apiLoginUrl = '/public/users/login'
 
 /**
  * Axios query to login a user
- *
- * @param {*} user The user to be logged in
+ * 
+ * @async
+ * @param {User} user The user to be logged in
  * @returns The JWT of the user in the form data{jwt{*KEY*}}
  */
 async function loginUser(user) {
-	return await APIQuery.post(apiLoginUrl, JSON.stringify(user)).then(
-		(data) => data.data.jwt
-	);
+	return await APIQuery.post(apiLoginUrl,
+		JSON.stringify(user))
+		.then(data => data.data.jwt)
 }
 
 /**
  * Login a user
- *
- * @param {*} param0 The setToken parameter is passed from App to change the state
+ * 
+ * @param {object} 					param 
+ * @param {SetStateActionString} 	param.setToken state variable setter for token field information.
  * @returns Returns the login page with React
  */
-export default function Login({ setToken, token }) {
+export default function Login({ setToken }) {
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [username, setUsername] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [password, setPassword] = useState();
 	let navigate = useNavigate();
-	console.log(!!token);
 
 	/**
 	 * Submit button is pressed login request is sent
-	 *
-	 * @param {*} e The even of the login button being pressed, username and password are captured
+	 * 
+	 * @async
+	 * @param {event} e The event of the login button being pressed, username and password are captured
 	 */
-	const submitButton = async (e) => {
+	const submitButton = async e => {
 		e.preventDefault();
 		const jwt = await loginUser({
 			username,
-			password,
+			password
 		});
 		setToken(jwt);
 		jwt ? navigate("/user/profile") : alert("Unable to log in.");
-	};
+	}
 
 	/**
 	 * The login page returned with React
 	 */
 	return (
-		<Grid
-			className="form"
-			spacing={2}
-			columns={1}
-			container
-			direction="row"
-			justifyContent="center"
-			alignItems="center"
-			align="flex-start"
-		>
-			<form onSubmit={submitButton} className="form">
-				<Paper
-					elevation={10}
-					sx={{
-						paddingLeft: 10,
-						paddingRight: 10,
-						paddingTop: 5,
-						paddingBottom: 5,
-						borderRadius: 10,
-					}}
-				>
-					<Grid item xs={1}>
-						<h2>Login here</h2>
-					</Grid>
-					<Grid item xs={1}>
-						<TextField
-							id="username"
-							label="Username"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setUsername(e.target.value)}
-						/>
-					</Grid>
-					<br />
-					<Grid item xs={1}>
-						<TextField
-							id="password"
-							label="Password"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-					</Grid>
-					<Grid item xs={1}>
-						<Button color="inherit" type="submit" variant="h5">
-							Login
-						</Button>
-					</Grid>
-					<Grid item xs={1}>
-						<Button color="inherit" onClick={(x) => navigate("/register")}>
-							No account? Click here!
-						</Button>
-					</Grid>
-				</Paper>
+		<Grid className="form" spacing={2} columns={1} container direction="row" justifyContent="center" alignItems="center" align="flex-start">
+			<form onSubmit={submitButton}>
+				<Grid item xs={1}>
+					<h2>Login here</h2>
+				</Grid>
+				<Grid item xs={1}>
+					<TextField id="username" label="Username" variant="outlined" maxRows={1} onChange={e => setUsername(e.target.value)}/>
+				</Grid>
+				<br/>
+				<Grid item xs={1}>
+					<TextField id="password" type="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)}/>
+				</Grid>
+				<Grid item xs={1}>
+					<Button color="inherit" type="submit" variant="h5">Login</Button>
+				</Grid>
+				<Grid item xs={1}>
+					<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+				</Grid>
 			</form>
 		</Grid>
-	);
+	)
 	//<LoginSplash /> Used for background for login page
 }
 
 Login.propTypes = {
-	setToken: PropTypes.func.isRequired,
-};
+	setToken: PropTypes.func.isRequired
+}

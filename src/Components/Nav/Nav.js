@@ -23,21 +23,24 @@ import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Logout } from "@mui/icons-material";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
+import { SetStateActionNumber, SetStateActionString, SetStateActionBool } from "../../typeDef";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
  * 
- * Token themes change login/register to logout, and also logout the user
- * 
+ * Token change login/register to logout, and also logout the user
  * Themes import load all of the themes
  * 
- * @param {*} param0 Takes an array of inputs such as the active theme, themes, token, setToken, and updateActiveTheme
+ * @param {object} 					param
+ * @param {object}	 				param.themes 			load all of the themes
+ * @param {number} 					param.activeTheme 		integer referencing the current theme
+ * @param {SetStateActionNumber}	param.updateActiveTheme	passed to change the state of activeTheme
+ * @param {SetStateActionString} 	param.setToken			passed to change the state of token
  * @returns Returns a react page for the navbar
  */
 export default function Nav({
@@ -47,8 +50,17 @@ export default function Nav({
 	token,
 	setToken,
 }) {
+	
+	/**
+	 * @type {[boolean, SetStateActionBool]}
+	 */
 	const [sidebar, updateSidebar] = useState(false);
 
+	/**
+	 * 
+	 * @param {Event} open 
+	 * @returns 
+	 */
 	const toggleDrawer = (open) => (event) => {
 		if (
 			event.type === "keydown" &&
@@ -103,34 +115,40 @@ export default function Nav({
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block'}}}> 
+						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-						<NavSearchBar/>
+							<NavSearchBar/>
 						</Box>
 						<Box>
-						{token ? (
-							<Button
-								color="inherit"
-								onClick={() => {
-									setToken("");
-									navigate("/login");
-								}}
-								startIcon={<LogoutIcon />}
-							>
-								Logout
-							</Button>
-						) : (
-							<React.Fragment>
-								<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
-									Register
+							{token ? (
+								<Button
+									color="inherit"
+									onClick={() => {
+										setToken("");
+										navigate("/login");
+									}}
+									startIcon={<LogoutIcon />}
+								>
+									<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+										Logout
+									</Typography>
 								</Button>
-								<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
-									Login
-								</Button>
-							</React.Fragment>
-						)}
+							) : (
+								<React.Fragment>
+									<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
+										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+											Register
+										</Typography>
+									</Button>
+									<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
+										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+											Login 
+										</Typography>
+									</Button>
+								</React.Fragment>
+							)}
 						</Box>
 					</Toolbar>
 				</AppBar>

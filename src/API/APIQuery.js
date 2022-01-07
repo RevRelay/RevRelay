@@ -6,7 +6,7 @@ const baseHeaders = {"Content-Type": "application/json"}
 const APIQuery = axios.create({
     baseURL: apiBaseUrl,
     headers: baseHeaders}
-    );
+);
 
 export default APIQuery
 

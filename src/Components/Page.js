@@ -28,7 +28,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 /**
  * Renders a generic page with condintional rendering
- * @param {*} param0 JWT
+ * @param {object} param
+ * @param {string} param.JWT token determining user and log in information.
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
@@ -43,20 +44,21 @@ export default function Page({ JWT }) {
 		pageTitle: "test",
 		posts: [],
 		private: true,
-
 		pageTitle: "Test",
 	});
 
 	const [tab, updateTab] = useState(0);
-	const currnetUser = {
+	const currentUser = {
 		page: { userOwnerID: 0 },
 	};
 
 	useEffect(() => {
 		GetPage();
 	}, []);
+
 	/**
 	 * Gets Page from back server
+	 * @async
 	 */
 	async function GetPage() {
 		var apiRegisterUrl = "";
@@ -147,7 +149,7 @@ export default function Page({ JWT }) {
 								<Tab label="Friends" />
 							)}
 							{!page.groupPage && <Tab label="Groups" />}
-							{currnetUser.page.userOwnerID === page.userOwnerID || (
+							{currentUser.page.userOwnerID === page.userOwnerID || (
 								<Tab label="Settings" />
 							)}
 						</Tabs>
@@ -158,14 +160,16 @@ export default function Page({ JWT }) {
 			</Box>
 		</Box>
 	);
+
 	/**
 	 * Gets tab from state and renders current tab
+	 * 
 	 * @returns Current Tab
 	 */
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currnetUser={currnetUser} JWT={JWT} />;
+				return <Posts page={page} currentUser={currentUser} JWT={JWT} />;
 				break;
 			case 1:
 				return <About />;
@@ -183,8 +187,10 @@ export default function Page({ JWT }) {
 				break;
 		}
 	}
+
 	/**
 	 * Placeholder for About
+	 * 
 	 * @returns
 	 */
 	function About() {
@@ -192,6 +198,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Members
+	 * 
 	 * @returns
 	 */
 	function Members() {
@@ -199,6 +206,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Friends
+	 * 
 	 * @returns
 	 */
 	function Friends() {
@@ -206,6 +214,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Settings
+	 * 
 	 * @returns
 	 */
 	function Settings() {
@@ -213,6 +222,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Groups
+	 * 
 	 * @returns
 	 */
 	function Groups() {
