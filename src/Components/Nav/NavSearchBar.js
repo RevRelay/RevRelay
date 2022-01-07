@@ -28,6 +28,7 @@ import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
 import APIQuery from '../../API/APIQuery.js';
+import { SetStateActionString } from "../../typeDef";
 
 // From https://mui.com/components/app-bar/
 const Search = styled('div')(({ theme }) => ({
@@ -74,19 +75,36 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 /**
  * Component for rendering the search bar portion of the NavBar. 
+ * 
  * @returns Search Bar with text entry, startAdornment, and endAdornment.
  */
 export default function NavSearchBar() {
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
+	
+	/**
+	 * 
+	 * @param {event} event 
+	 */
 	const handleChangeSearchBar = (event) => {
 		setSearchInput({ searchTerm: event.target.value });
 	}
 
+	/**
+	 * 
+	 */
 	const handleClearSearchBar = () => {
 		setSearchInput({ ...searchInput, searchTerm: '' });
 	}
+
 	let navigate = useNavigate();
 
+	/**
+	 * 
+	 * @param {event} event 
+	 */
 	const handleSearchSubmit = (event) => {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
