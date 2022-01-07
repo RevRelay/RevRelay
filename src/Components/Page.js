@@ -1,4 +1,5 @@
 import {
+	Autocomplete,
 	Box,
 	Button,
 	Card,
@@ -21,6 +22,7 @@ import {
 	Stack,
 	Tab,
 	Tabs,
+	TextField,
 	Typography,
 } from "@mui/material";
 
@@ -44,6 +46,28 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Page({ JWT }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+	const [open2, setOpen2] = useState(false);
+
+	const handleClose2 = () => {
+		setOpen2(false);
+	};
+	const handleInvite = async () => {
+		console.log("Sending Invite");
+		const response = await APIQuery.post("/groups/addmember", null, {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				GroupID: userGroups.content.filter((x) => {
+					return x.groupName == selectedGroup;
+				})[0].groupID,
+				UserID: page.userID,
+			},
+		}).then((response) => response.data);
+		toast.success("Group Joined!");
+		console.log(response);
+		setOpen2(false);
+	};
 
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
@@ -51,7 +75,12 @@ export default function Page({ JWT }) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	const handleCloseInviteToGroup = async () => {
+		setOpen2(true);
+	};
 	//ADD add friend logic here
+
 	const handleCloseAddFriend = async () => {
 		const response = await APIQuery.post(
 			"/users/addFriend/" + currentUser.userID,
@@ -80,7 +109,7 @@ export default function Page({ JWT }) {
 				UserID: currentUser.userID,
 			},
 		}).then((response) => response.data);
-		toast.success("Friend added!");
+		toast.success("Group Joined!");
 		console.log(response);
 		setAnchorEl(null);
 	};
@@ -104,7 +133,9 @@ export default function Page({ JWT }) {
 	});
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
+	const [selectedGroup, setSelectedGroup] = useState(null);
 
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
@@ -149,6 +180,13 @@ export default function Page({ JWT }) {
 					Authorization: "Bearer " + JWT,
 				},
 			};
+			await APIQuery.get(
+				"groups/getgroups/" + data.data.userID,
+				axiosConfig
+			).then((data) => {
+				console.log(data.data);
+				setUserGroups(data.data);
+			});
 
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
 				let id = -1;
@@ -192,6 +230,32 @@ export default function Page({ JWT }) {
 
 	return (
 		<>
+			<Dialog open={open2} onClose={handleClose2}>
+				<DialogTitle>Send a Group Invite</DialogTitle>
+				<DialogContent>
+					<Autocomplete
+						disablePortal
+						id="combo-box-demo"
+						options={[
+							...userGroups.content.map((group) => {
+								return group.groupName + "";
+							}),
+						]}
+						onChange={(e, val) => {
+							setSelectedGroup(val);
+							console.log(val);
+						}}
+						sx={{ width: 300 }}
+						renderInput={(params) => (
+							<TextField {...params} label="Your Groups" />
+						)}
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose2}>Cancel</Button>
+					<Button onClick={handleInvite}>Send</Button>
+				</DialogActions>
+			</Dialog>
 			<ToastContainer />
 			{isBusy ? (
 				<LoadingPage />
@@ -317,6 +381,13 @@ export default function Page({ JWT }) {
 													) : (
 														<MenuItem onClick={handleCloseAddFriend}>
 															Add Friend
+														</MenuItem>
+													)}
+													{page.groupPage ? (
+														""
+													) : (
+														<MenuItem onClick={handleCloseInviteToGroup}>
+															Invite to group
 														</MenuItem>
 													)}
 
