@@ -75,6 +75,7 @@ function Client() {
 						visibility: currentChat === "add" ? "visible" : "hidden",
 						minWidth: "16vw",
 						minHeight: "25vh",
+
 						backgroundColor: "background.paper",
 						border: 1,
 						borderColor: "primary",
