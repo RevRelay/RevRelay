@@ -32,7 +32,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 /**
  * Render Posts Tab
- * @param {*} param0 PAGE,CurrenUser, JWT
+ * @param {object} 	param
+ * @param {}		
  * @returns
  */
 export default function Posts({ page, currnetUser, JWT }) {

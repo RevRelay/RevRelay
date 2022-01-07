@@ -34,9 +34,11 @@ import NavSearchBar from "./NavSearchBar.js";
  * 
  * Token themes change login/register to logout, and also logout the user
  * 
- * Themes import load all of the themes
- * 
- * @param {*} param0 Takes an array of inputs such as the active theme, themes, token, setToken, and updateActiveTheme
+ * @param {object} 		param
+ * @param {object}	 	param.themes 			load all of the themes
+ * @param {THEME} 		param.activeTheme 		the current theme
+ * @param {Function}	param.updateActiveTheme	passed to change the state of activeTheme
+ * @param {Function} 	param.setToken			passed to change the state of token
  * @returns Returns a react page for the navbar
  */
 export default function Nav({
@@ -48,6 +50,11 @@ export default function Nav({
 }) {
 	const [sidebar, updateSidebar] = useState(false);
 
+	/**
+	 * 
+	 * @param {event} open 
+	 * @returns 
+	 */
 	const toggleDrawer = (open) => (event) => {
 		if (
 			event.type === "keydown" &&
@@ -58,6 +65,7 @@ export default function Nav({
 
 		updateSidebar(open);
 	};
+
 	let navigate = useNavigate();
 	return (
 		<>

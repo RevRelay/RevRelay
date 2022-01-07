@@ -19,7 +19,13 @@ import {
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
+
 const socket = io.connect("http://localhost:3001");
+
+/**
+ * 
+ * @returns 
+ */
 function Client() {
 	const actions = [
 		{ icon: <AddBoxIcon />, name: "Join/Create Chat Room" },
@@ -32,6 +38,9 @@ function Client() {
 	const [room, setRoom] = useState("");
 	const [showChat, setShowChat] = useState(false);
 
+	/**
+	 * 
+	 */
 	const joinRoom = () => {
 		if (username !== "" && room !== "") {
 			socket.emit("join_room", { username, room });

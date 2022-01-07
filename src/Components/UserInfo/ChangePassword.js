@@ -34,6 +34,11 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
 
+/**
+ * 
+ * @param {object} param
+ * @param {string} param.JWT token determinig user and log in information.
+ */
 function ChangePassword({JWT}) {
 
 }

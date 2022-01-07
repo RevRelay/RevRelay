@@ -14,7 +14,7 @@ const apiRegisterUrl = "/public/users/register";
 /**
  * Axios query to create a user
  *
- * @param {*} user The user to be created
+ * @param {USER} user The user to be created
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
 async function registerUser(user) {
@@ -26,7 +26,7 @@ async function registerUser(user) {
 /**
  * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message
  *
- * @param {} user The object to check for validity
+ * @param {USER} user The object to check for validity
  * @returns returns negation of truthy or falsy of the image
  */
 function validInputRegister(user) {
@@ -55,7 +55,9 @@ function validInputRegister(user) {
 /**
  * Registering a user
  *
- * @param {*} param0 The token to return the JWT to the parent function
+ * @param {object} 		param
+ * @param {Function} 	param.setToken 	state variable setter for token field information.
+ * @param {TOKEN} 		param.token 	to return the JWT to the parent function.
  * @returns returns the React webpage for registering
  */
 export default function Register({ setToken, token }) {
@@ -69,7 +71,11 @@ export default function Register({ setToken, token }) {
 	const [displayName, setDisplayName] = useState();
 	let navigate = useNavigate();
 
-	//Submission of the user's information and returning of a jwt
+	/**
+	 * Submission of the user's information and returning of a JWT
+	 * 
+	 * @param {event} e 
+	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
 		if (
@@ -100,9 +106,6 @@ export default function Register({ setToken, token }) {
 
 	const registerSize = 19;
 
-	/**
-	 * The register page returned with react
-	 */
 	return (
 		<Grid
 			className="form"

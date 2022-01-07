@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	IconButton,
 	TextField,
@@ -13,23 +13,23 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import ChangePassword from "./ChangePassword";
-
 /**
  * Function for defining user info elements on UserInfo that are listed in the main body of the page 
- * (currently username, password, firstName, lastName, and birthDate).
+ * (currently firstName and lastName).
+ * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {string} props.varname 				the variable name associated with the list element (i.e. username).
- * @param {string} props.fieldName 				the display name of the list element (i.e. Username).
- * @param {Object} props.mostRecentUserInput 	state variable holding user field information.
- * @param {Function} props.setUserInput 		state variable setter for user field information.
- * @param {Object} props.toggleEdit 			state variable for determining if a field is toggled to display 
- * 												(false) or edit (true). 
- * @param {Function} props.setToggleEdit 		state variable setter for field toggle state. 
- * @returns ReactFragment	containing UserInfo data with toggles (and eventually editing ability) formatted for 
- * 							insertion into a grid. 
+ * @param {object} 		element 
+ * @param {string} 		element.varname 				the variable name associated with the list element (i.e. username).
+ * @param {string} 		element.fieldName 				the display name of the list element (i.e. Username).
+ * @param {object} 		element.mostRecentUserInfo 		state variable holding user field information.
+ * @param {function} 	element.setUserInput 			state variable setter for userInput field information.
+ * @param {object} 		element.toggleEdit 				state variable for determining if a field is toggled to display (false) 
+ * 														or edit (true). 
+ * @param {function} 	element.setToggleEdit 			state variable setter for toggleEdit field information. 
+ * @param {function} 	element.setMostRecentUserInfo 	state variable setter for mostRecentUserInfo field information.
+ * @returns ReactFragment containing UserInfo data with toggles editing ability formatted for insertion into a grid. 
  */
-export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
+export default function UserInfoEntryElement ({varname, fieldName, mostRecentUserInfo, setUserInput, toggleEdit, setToggleEdit, setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 		
 	return (
@@ -57,8 +57,8 @@ export default function UserInfoEntryElement ({varname, fieldName, mostRecentUse
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												setUserInput({...mostRecentUserInput, [varname] : userInfoFieldValue});
-												setMostRecentUserInfo({...mostRecentUserInput, [varname]: userInfoFieldValue});
+												setUserInput({...mostRecentUserInfo, [varname] : userInfoFieldValue});
+												setMostRecentUserInfo({...mostRecentUserInfo, [varname]: userInfoFieldValue});
 											}
 											setToggleEdit({...toggleEdit, [varname] : false});
 										}}>
@@ -72,7 +72,7 @@ export default function UserInfoEntryElement ({varname, fieldName, mostRecentUse
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{mostRecentUserInput[varname]}
+								{mostRecentUserInfo[varname]}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
@@ -87,7 +87,13 @@ export default function UserInfoEntryElement ({varname, fieldName, mostRecentUse
 	)
 };
 
-export function UserInfoEntryElementPassword ({}) {
+/**
+ * Function for defining user info elements on UserInfo about their password.
+ * The edit button redirects the user to the Change Password page.
+ * 
+ * @returns ReactFragment containing the user's "password" with redirection to change password page
+ */
+export function UserInfoEntryElementPassword () {
     let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
 
 	return (
@@ -113,7 +119,15 @@ export function UserInfoEntryElementPassword ({}) {
 	)
 };
 
-export function UserInfoElementUsername ({mostRecentUserInput}) {
+/**
+ * Function for defining user info elements on UserInfo pretaining to their username. This is not editable.
+ * 
+ * @param {object} 	element 
+ * @param {USER} 	element.mostRecentUserInfo state variable holding user field information.
+ * @returns ReactFragment containing UserInfo data about their username with toggles editing ability formatted for 
+ * 			insertion into a grid.
+ */
+export function UserInfoElementUsername ({mostRecentUserInfo}) {
 	return(
 		<React.Fragment>
 			<Stack direction="row" spacing={3}>
@@ -124,7 +138,7 @@ export function UserInfoElementUsername ({mostRecentUserInput}) {
 				</Box>
 				<Box sx={{width:"40%"}}>
 					<Typography>
-						{mostRecentUserInput.username}
+						{mostRecentUserInfo.username}
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}/>
@@ -133,7 +147,18 @@ export function UserInfoElementUsername ({mostRecentUserInput}) {
 	)
 }
 
-export function UserInfoEntryElementBirthDate ({mostRecentUserInput, setUserInput,  setMostRecentUserInfo}) {
+/**
+ * Function for defining user info elements on UserInfo pretaining to their birth date
+ * The calendar button allows the user to select a date from a calendar.
+ * 
+ * @param {object} 		element 
+ * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
+ * @param {function} 	element.setUserInput			state variable setter for UserInfo field information.
+ * @param {function} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @returns ReactFragment containing UserInfo data about their birth date with toggles editing ability formatted for 
+ * 			insertion into a grid.
+ */
+export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo}) {
 	{/*const [value, setValue] = useState(userInput.birthDate);*/}
 
 	return(
@@ -148,11 +173,11 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInput, setUserInpu
 					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<DesktopDatePicker
 							label="Birth Date"
-							value={mostRecentUserInput.birthDate}
+							value={mostRecentUserInfo.birthDate}
 							views={['year', 'month', 'day']}
 							onChange={(newValue) => {
-								setUserInput({...mostRecentUserInput, birthDate : newValue})
-								setMostRecentUserInfo({...mostRecentUserInput, birthDate: newValue})
+								setUserInput({...mostRecentUserInfo, birthDate : newValue})
+								setMostRecentUserInfo({...mostRecentUserInfo, birthDate: newValue})
 							}}
 							renderInput={(params) => <TextField {...params} />}
 						/>
@@ -163,7 +188,21 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInput, setUserInpu
 	)
 }
 
-export function UserInfoEntryElementDisplayName ({mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
+/**
+ * Function for defining user info elements on UserInfo pretaining to their display name.
+ * The edit button allows the user to edit these fields and select if they want to keep that info or not.
+ * 
+ * @param {object} 		element 
+ * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
+ * @param {Function} 	element.setUserInput			state variable setter for userInfo field information.
+ * @param {TOGGLE} 		element.toggleEdit				state variable for determining if a field is toggled to display (false) 
+ * 														or edit (true). 
+ * @param {Funtion} 	element.setToggleEdit			state variable setter for toggelEdit field information.
+ * @param {Funtion} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @returns ReactFragment containing UserInfo data about their display name with toggles editing ability formatted for 
+ * 			insertion into a grid.
+ */
+export function UserInfoEntryElementDisplayName ({mostRecentUserInfo, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
@@ -185,8 +224,8 @@ export function UserInfoEntryElementDisplayName ({mostRecentUserInput, setUserIn
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												setUserInput({...mostRecentUserInput, displayName : userInfoFieldValue});
-												setMostRecentUserInfo({...mostRecentUserInput, displayName: userInfoFieldValue});
+												setUserInput({...mostRecentUserInfo, displayName : userInfoFieldValue});
+												setMostRecentUserInfo({...mostRecentUserInfo, displayName: userInfoFieldValue});
 											}
 											setToggleEdit({...toggleEdit, displayName : false});
 										}}>
@@ -200,7 +239,7 @@ export function UserInfoEntryElementDisplayName ({mostRecentUserInput, setUserIn
 					<React.Fragment>
 						<Box sx={{width:"95%", textAlign:"right"}}>
 							<Typography variant="h5" sx={{textAlign:"right"}}>
-								{mostRecentUserInput.displayName}
+								{mostRecentUserInfo.displayName}
 							</Typography>
 						</Box>
 						<Box sx={{width:"5%"}}>
@@ -215,7 +254,21 @@ export function UserInfoEntryElementDisplayName ({mostRecentUserInput, setUserIn
 	)
 }
 
-export function UserInfoEntryElementEmail ({mostRecentUserInput, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
+/**
+ * Function for defining user info elements on UserInfo pretaining to their email
+ * The edit button allows the user to edit these fields and select if they want to keep that info or not.
+ * 
+ * @param {object} 		element 
+ * @param {USER} 		element.mostRecentUserInfo		state variable holding user field information.
+ * @param {Function} 	element.setUserInput			state variable setter for userInput field information.
+ * @param {TOGGLE} 		element.toggleEdit				state variable for determining if a field is toggled to display (false) 
+ * 														or edit (true). 
+ * @param {Funtion} 	element.setToggleEdit			state variable setter for toggleEdit field information.
+ * @param {Funtion} 	element.setMostRecentUserInfo	state variable setter for mostRecentUserInfo field information.
+ * @returns ReactFragment containing UserInfo about their email data with toggles editing ability formatted for insertion 
+ * 			into a grid.
+ */
+export function UserInfoEntryElementEmail ({mostRecentUserInfo, setUserInput, toggleEdit, setToggleEdit,  setMostRecentUserInfo}) {
 	let userInfoFieldValue;
 	return(
 		<React.Fragment>
@@ -233,8 +286,8 @@ export function UserInfoEntryElementEmail ({mostRecentUserInput, setUserInput, t
 								onClick={(x) => {
 									//this if statement is a very weak check for good input value, needs reinforcing - NL
 									if (userInfoFieldValue) {
-										setUserInput({...mostRecentUserInput, email : userInfoFieldValue});
-										setMostRecentUserInfo({...mostRecentUserInput, email: userInfoFieldValue});
+										setUserInput({...mostRecentUserInfo, email : userInfoFieldValue});
+										setMostRecentUserInfo({...mostRecentUserInfo, email: userInfoFieldValue});
 									}
 									setToggleEdit({...toggleEdit, email : false});
 								}}>
@@ -246,7 +299,7 @@ export function UserInfoEntryElementEmail ({mostRecentUserInput, setUserInput, t
 					<React.Fragment>
 						<Box sx={{width:"95%", textAlign:"right"}}>
 							<Typography variant="subtitle1" align="right">
-								{mostRecentUserInput.email}
+								{mostRecentUserInfo.email}
 							</Typography>
 						</Box>
 						<Box sx={{width:"5%"}}>

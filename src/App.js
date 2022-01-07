@@ -249,8 +249,13 @@ const themes = [
 	},
 ];
 
-//Comment For Git
-
+/**
+ * Main function of our single page aplication.
+ * 
+ * Changes theme and current page allowed based on their token.
+ * 
+ * @returns Single Page of our application.
+ */
 function App() {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
@@ -283,13 +288,21 @@ function App() {
 		</ThemeProvider>
 	);
 }
+
+/**
+ * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
+ * and will hold a JWT if there is currently a user logged in.
+ * 
+ * Use the token object passed above if you need to find any
+ * 
+ * @param {object} 		param
+ * @param {string} 		param.token 
+ * @param {Function} 	param.setToken
+ * @param {THEME} 		param.activeTheme
+ * @param {Funtion} 	param.updateActiveTheme
+ * @returns 
+ */
 function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
-	/**
-	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
-	 * and will hold a JWT if there is currently a user logged in.
-	 *
-	 * Use the token object passed above if you need to find any
-	 */
 	return (
 		<Routes>
 			<Route path="/">
@@ -345,26 +358,50 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 // 	return <p>Registration</p>;
 // }
 
+/**
+ * 
+ * @returns 
+ */
 function Users() {
 	return <Typography color="textPrimary">Users</Typography>;
 }
 
+/**
+ * 
+ * @returns 
+ */
 function User() {
 	return <Typography color="textPrimary">User</Typography>;
 }
 
+/**
+ * 
+ * @returns 
+ */
 function UserProfile() {
 	return <Typography color="textPrimary">UserProfile</Typography>;
 }
 
+/**
+ * 
+ * @returns 
+ */
 function Groups() {
 	return <Typography color="textPrimary">Groups</Typography>;
 }
 
+/**
+ * 
+ * @returns 
+ */
 function Group() {
 	return <Typography color="textPrimary">Group</Typography>;
 }
 
+/**
+ * 
+ * @returns 
+ */
 function GroupProfile() {
 	return <p>GroupProfile</p>;
 }

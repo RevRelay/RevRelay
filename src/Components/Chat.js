@@ -25,10 +25,21 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 
 //https://gridfiti.com/aesthetic-color-palettes/
+/**
+ * 
+ * @param {object} 	param
+ * @param {*}		param.socket
+ * @param {string}	param.username 	the username of the current user.
+ * @param {string}	param.room		the name of the room you are currently in.
+ * @returns 
+ */
 function Chat({ socket, username, room }) {
 	const [message, setMessage] = useState("");
 	const [messageList, setMesssagList] = useState([]);
 
+	/**
+	 * 
+	 */
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
@@ -45,6 +56,7 @@ function Chat({ socket, username, room }) {
 			setMesssagList((list) => [...list, data]);
 		});
 	}, [socket]);
+	
 	return (
 		<React.Fragment>
 			<h2 className="joinAlert">You are in room {room}</h2>

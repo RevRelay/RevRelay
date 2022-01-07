@@ -33,6 +33,12 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
   
+/**
+ * 
+ * @param {object} param
+ * @param {string} param.JWT the current JWT
+ * @returns 
+ */
 export default function Home({JWT}){
 	let navigate = useNavigate();
     //navigate("/user/profile")
