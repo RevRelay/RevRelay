@@ -181,7 +181,7 @@ export default function Posts({ page, currentUser, JWT }) {
 						display: "inline-block",
 					}}
 				>
-					{page.userOwnerID === currentUser.userID ? (
+					{page.userID === currentUser.userID ? (
 						<Tooltip
 							title="Add new post"
 							placement="top"

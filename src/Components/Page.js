@@ -133,24 +133,27 @@ export default function Page({ JWT }) {
 			};
 
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
+				let id = -1;
 				if (path.pathname.includes("user")) {
+					id = data.data.userID;
 					data.data.userPage.pageTitle = data.data.username + "'s Page!";
 					data.data.userPage.userID = data.data.userID
 					data.data.userPage.username = data.data.username
 					updatePage(data.data.userPage);
 				} else {
+					id = data.data.userOwnerID;
 					data.data.groupPage.pageTitle =
 						data.data.groupName + " is almost certianly a group page!";
-			     		data.data.userPage.userID = data.data.userOwnerID;
+			     		data.data.groupPage.userID = data.data.userOwnerID;
 					updatePage(data.data.groupPage);
 				}
-
-				await APIQuery.get("groups/getgroups/" + user.userID, axiosConfig).then(
-					(data) => {
-						setGroups(data.data);
-						setIsBusy(false);
-					}
-				);
+				await APIQuery.get(
+          "groups/getgroups/" + id,
+          axiosConfig
+        ).then((data) => {
+          setGroups(data.data);
+          setIsBusy(false);
+        });
 			});
 		});
 	}
@@ -242,9 +245,9 @@ export default function Page({ JWT }) {
 											<Tab label="Friends" />
 										)}
 										{!page.groupPage && <Tab label="Groups" />}
-										{currentUser.userID === page.userOwnerID || (
+										{currentUser.userID === page.userID ? 
 											<Tab label="Settings" />
-										)}
+										: ''}
 									</Tabs>
 
 									<div>
@@ -310,7 +313,7 @@ export default function Page({ JWT }) {
 						{page.groupPage ? (
 							<Members />
 						) : (
-							<FriendsTab currentUsername={currentUser.username} />
+							<FriendsTab currentUsername={page.username} />
 						)}{" "}
 					</>
 				);
@@ -413,25 +416,28 @@ export default function Page({ JWT }) {
 		};
 
 		return (
-			<>
-				{groups.content.map((group) => {
-					return (
-						<div key={group.groupID}>
-							<Typography>{group.groupName}</Typography>
-							<Typography>{group.groupID}</Typography>
-							<Button onClick={() => goToGroup(group.groupID)}>
-								Go to Group
-							</Button>
-							<Button onClick={() => deleteGroup(group.groupID)}>
-								Delete Group
-							</Button>
-						</div>
-					);
-				})}
-				<br />
-				<br />
-				<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
-			</>
-		);
+      <>
+        {groups.content.map((group) => {
+          return (
+            <div key={group.groupID}>
+              <Typography>{group.groupName}</Typography>
+              <Button onClick={() => goToGroup(group.groupID)}>
+                Go to Group
+              </Button>
+			          {page.userID === currentUser.userID ? 
+              <Button onClick={() => deleteGroup(group.groupID)}>
+                Delete Group
+              </Button>
+			  :''}
+            </div>
+          );
+        })}
+        <br />
+        <br />
+        {page.userID === currentUser.userID ? 
+        <CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
+		:''}
+      </>
+    );
 	}
 }
