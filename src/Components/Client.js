@@ -38,7 +38,7 @@ function Client() {
 		{ icon: <AddBoxIcon />, name: "Join/Create Chat Room" },
 		{ icon: <IndeterminateCheckBoxIcon />, name: "Leave Chat Room" },
 	];
-	var [chatrooms, updateChatrooms] = useState([]);
+	const [chatrooms, updateChatrooms] = useState([]);
 	const [currentChat, setCurrentChat] = useState(0);
 	const [username, setUserName] = useState("");
 	const [room, setRoom] = useState("");
