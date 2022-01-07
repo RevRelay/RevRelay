@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Grid, Paper, TextField } from "@mui/material";
+import PasswordField from "./PasswordField.js";
 import APIQuery from "../../API/APIQuery";
 import { useNavigate } from "react-router-dom";
 import { LoginSharp } from "@mui/icons-material";
@@ -85,19 +86,17 @@ export default function Login({ setToken, token }) {
 							required="true"
 							variant="outlined"
 							maxRows={1}
+							fullWidth={"true"}
 							onChange={(e) => setUsername(e.target.value)}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="password"
 							label="Password"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setPassword(e.target.value)}
+							password={password}
+							setter={setPassword}
 						/>
 					</Grid>
 					<Grid item xs={1}>
