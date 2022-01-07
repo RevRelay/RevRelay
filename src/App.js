@@ -17,6 +17,7 @@ import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
+import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
@@ -255,9 +256,28 @@ function App() {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
 
+	checkJWT();
+
+	async function checkJWT() {
+		console.log("Checking JWT");
+		let axiosConfig = {
+			headers: {
+				Authorization: "Bearer " + token,
+			},
+		};
+		await APIQuery.get("/validate", axiosConfig)
+			.then()
+			.catch((x) => {
+				setToken("");
+				localStorage.setItem("token", "");
+			});
+	}
+
 	const [activeTheme, updateActiveTheme] = useState(0);
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
+			{/* Renders Chat Box */}
+			{token ? <Client /> : <></>}
 			<Nav
 				themes={themes}
 				activeTheme={activeTheme}
@@ -298,7 +318,6 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 					path="login"
 					element={<Login setToken={setToken} token={token} />}
 				/>
-				<Route path="chat" element={<Client />} />
 				<Route
 					path="register"
 					element={<Registration setToken={setToken} token={token} />}
@@ -310,18 +329,32 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route path=":userID" element={
-						<Page theme={activeTheme} themes={updateActiveTheme} JWT={token} />
-					}
+					<Route
+						path=":userID"
+						element={
+							<Page
+								theme={activeTheme}
+								themes={updateActiveTheme}
+								JWT={token}
+							/>
+						}
 					/>
 					<Route path="profile">
-						<Route index element={
-							<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />
-						} />
+						<Route
+							index
+							element={
+								<Page
+									JWT={token}
+									theme={activeTheme}
+									themes={updateActiveTheme}
+								/>
+							}
+						/>
 						<Route path="userInfo" >
 							<Route index element={<UserInfo JWT={token} />} />
 							<Route path="password" element={<ChangePassword JWT={token}/>} />
 						</Route>
+						<Route path="userInfo" element={<UserInfo JWT={token} />} />
 					</Route>
 				</Route>
 			</Route>
