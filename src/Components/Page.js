@@ -33,6 +33,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /**
  * Renders a generic page with condintional rendering
@@ -59,6 +61,7 @@ export default function Page({ JWT }) {
 		  username: page.username
 	  }
     }).then((response)=> response.data);
+	toast.success('Friend added!')
 	  console.log(response);
 		setAnchorEl(null);
 	};
@@ -155,6 +158,7 @@ export default function Page({ JWT }) {
 
 	return (
 		<>
+		<ToastContainer />
 			{isBusy ? (
 				<LoadingPage />
 			) : (
