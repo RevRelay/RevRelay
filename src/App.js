@@ -359,7 +359,6 @@ function SwitchBoard({ token, setToken }) {
 							<Route index element={<UserInfo JWT={token} />} />
 							<Route path="changePassword" element={<ChangePassword JWT={token}/>} />
 						</Route>
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
 					</Route>
 				</Route>
 			</Route>
