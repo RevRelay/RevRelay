@@ -14,11 +14,14 @@ import {
 	Fade,
 	Grid,
 	IconButton,
+	Menu,
+	MenuItem,
 	Pagination,
 	Paper,
+	Stack,
 	Tab,
 	Tabs,
-	Typography
+	Typography,
 } from "@mui/material";
 
 import PageSetting from "./Page/PageSetting";
@@ -27,7 +30,7 @@ import CreateGroup from "./Group/CreateGroup";
 import { height, maxHeight, width } from "@mui/system";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from '../API/APIQuery';
+import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 
@@ -37,6 +40,27 @@ import FriendsTab from "./Page/FriendsTab";
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+	//ADD add friend logic here
+	const handleCloseAddFriend = () => {
+		setAnchorEl(null);
+	};
+	//ADD add join group logic here
+	const handleCloseJoinGroup = () => {
+		setAnchorEl(null);
+	};
+	//ADD start Chat Logic Here
+	const handleCloseStartChat = () => {
+		setAnchorEl(null);
+	};
+
 	let { pageParam } = useParams();
 	let path = useLocation();
 	const [tab, updateTab] = useState(0);
@@ -48,7 +72,7 @@ export default function Page({ JWT }) {
 		pageID: 1,
 		posts: [],
 		private: true,
-		pageTitle: "Title Not Found"
+		pageTitle: "Title Not Found",
 	});
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
@@ -71,17 +95,15 @@ export default function Page({ JWT }) {
 				Authorization: "Bearer " + JWT,
 			},
 		};
-		return await APIQuery.get("users/current", axiosConfig)
+		return await APIQuery.get("users/current", axiosConfig);
 	};
-
 
 	/**
 	 * Gets Page from back server
 	 */
 	async function GetPage() {
-
 		getCurrentUser().then(async (data) => {
-			let user = data.data
+			let user = data.data;
 			setCurrentUser(user);
 
 			let apiRegisterUrl = "";
@@ -98,80 +120,87 @@ export default function Page({ JWT }) {
 			};
 
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
-
 				if (path.pathname.includes("user")) {
 					data.data.userPage.pageTitle = data.data.username + "'s Page!";
 					updatePage(data.data.userPage);
-
-
 				} else {
-					data.data.groupPage.pageTitle = data.data.groupName + " is almost certianly a group page!";
+					data.data.groupPage.pageTitle =
+						data.data.groupName + " is almost certianly a group page!";
 					updatePage(data.data.groupPage);
 				}
 
-				await APIQuery.get("groups/getgroups/" + user.userID, axiosConfig).then((data) => {
-					setGroups(data.data);
-					setIsBusy(false);
-
-				});
-
+				await APIQuery.get("groups/getgroups/" + user.userID, axiosConfig).then(
+					(data) => {
+						setGroups(data.data);
+						setIsBusy(false);
+					}
+				);
 			});
 		});
-
 	}
 
 	return (
 		<>
-			{
-				isBusy ? (
-					<LoadingPage />
-				) : (
-					<Box sx={{ height: "80%" }}>
-						<Box
-							sx={{
-								border: 1,
-								borderColor: "primary.main",
-								borderRadius: 2,
-								borderWidth: 2,
-								marginLeft: "15%",
-								marginRight: "15%",
-								display: "flex",
-								minHeight: "80vh",
+			{isBusy ? (
+				<LoadingPage />
+			) : (
+				<Box sx={{ height: "80%" }}>
+					<Box
+						sx={{
+							border: 1,
+							borderColor: "primary.main",
+							borderRadius: 2,
+							borderWidth: 2,
+							marginLeft: "15%",
+							marginRight: "15%",
+							display: "flex",
+							minHeight: "80vh",
 
-								maxWidth: "100%",
-								minWidth: 500,
+							maxWidth: "100%",
+							minWidth: 500,
+						}}
+					>
+						<div
+							style={{
+								minHeight: "100%",
+								flexGrow: 1,
+								display: "flex",
+								flexFlow: "column",
 							}}
 						>
-							<div
-								style={{
-									minHeight: "100%",
-									flexGrow: 1,
-									display: "flex",
-									flexFlow: "column",
-								}}
+							<Card
+								sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}
 							>
-								<Card sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}>
-									<div
-										style={{
-											position: "absolute",
-											marginLeft: 10,
-											marginTop: 10,
-											minWidth: 100,
-											borderRadius: 25,
-										}}
-									>
-										<CardHeader title={page.pageTitle} />
-
-									</div>
-									<CardMedia
-										style={{ objectPosition: "0 0", zIndex: 0 }}
-										component="img"
-										image={page.bannerURL}
-										alt="green iguana"
-									/>
-								</Card>
 								<div
 									style={{
+										position: "absolute",
+										marginLeft: 10,
+										marginTop: 10,
+										minWidth: 100,
+										borderRadius: 25,
+									}}
+								>
+									<CardHeader title={page.pageTitle} />
+								</div>
+								<CardMedia
+									style={{ objectPosition: "0 0", zIndex: 0 }}
+									component="img"
+									image={page.bannerURL}
+									alt="green iguana"
+								/>
+							</Card>
+							<div
+								style={{
+									flexGrow: 1,
+									position: "relative",
+									width: "100%",
+									alignItems: "center",
+									justifyContent: "center",
+								}}
+							>
+								<Stack
+									direction="row"
+									sx={{
 										flexGrow: 1,
 										position: "relative",
 										width: "100%",
@@ -199,14 +228,44 @@ export default function Page({ JWT }) {
 											<Tab label="Settings" />
 										)}
 									</Tabs>
-									<Divider sx={{ width: "100%" }} />
-									<RenderTab />
-								</div>
+
+									<div>
+										<Button
+											id="basic-button"
+											aria-controls={open ? "basic-menu" : undefined}
+											aria-haspopup="true"
+											aria-expanded={open ? "true" : undefined}
+											onClick={handleClick}
+										>
+											Options
+										</Button>
+										<Menu
+											id="basic-menu"
+											anchorEl={anchorEl}
+											open={open}
+											onClose={handleClose}
+											MenuListProps={{
+												"aria-labelledby": "basic-button",
+											}}
+										>
+											{page.groupPage ? (
+												<MenuItem onClick={handleClose}>Join Group</MenuItem>
+											) : (
+												<MenuItem onClick={handleClose}>Add Friends</MenuItem>
+											)}
+
+											<MenuItem onClick={handleClose}>Chat</MenuItem>
+										</Menu>
+									</div>
+								</Stack>
+								<Divider sx={{ width: "100%" }} />
+
+								<RenderTab />
 							</div>
-						</Box>
+						</div>
 					</Box>
-				)
-			}
+				</Box>
+			)}
 		</>
 	);
 	/**
@@ -222,13 +281,37 @@ export default function Page({ JWT }) {
 				return <About />;
 				break;
 			case 2:
-				return <>{page.groupPage ? <Members /> : <FriendsTab currentUsername={currentUser.username} />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<Members />
+						) : (
+							<FriendsTab currentUsername={currentUser.username} />
+						)}{" "}
+					</>
+				);
 				break;
 			case 3:
-				return <>{page.groupPage ? <PageSetting page={page} updatePage={updatePage} /> : <Groups />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<PageSetting page={page} updatePage={updatePage} />
+						) : (
+							<Groups />
+						)}{" "}
+					</>
+				);
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <PageSetting page={page} updatePage={updatePage} />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<></>
+						) : (
+							<PageSetting page={page} updatePage={updatePage} />
+						)}{" "}
+					</>
+				);
 				break;
 			default:
 				break;
@@ -243,9 +326,8 @@ export default function Page({ JWT }) {
 					direction="column"
 					alignItems="center"
 					justifyContent="center"
-					style={{ minHeight: '80vh' }}
+					style={{ minHeight: "80vh" }}
 				>
-
 					<Grid item xs={3}>
 						<Typography>Loading...</Typography>
 					</Grid>
@@ -254,7 +336,7 @@ export default function Page({ JWT }) {
 					</Grid>
 				</Grid>
 			</>
-		)
+		);
 	}
 	/**
 	 * Placeholder for About
@@ -287,23 +369,24 @@ export default function Page({ JWT }) {
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + JWT,
-			}
+			},
 		};
 
 		const goToGroup = (groupID) => {
 			navigate("/group/" + groupID);
-		}
+		};
 
 		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/" + groupID, axiosConfig)
-				.catch((e) => { console.log(e) });//since this is attached to a group component, we're guaranteed that it exists to delete it
+			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
+				console.log(e);
+			}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
-			tempGroups.content = groups.content.filter(
-				e => { return e.groupID !== groupID; }
-			);
+			tempGroups.content = groups.content.filter((e) => {
+				return e.groupID !== groupID;
+			});
 			setGroups({ ...tempGroups });
-		}
+		};
 
 		return (
 			<>
@@ -312,12 +395,15 @@ export default function Page({ JWT }) {
 						<div key={group.groupID}>
 							<Typography>{group.groupName}</Typography>
 							<Typography>{group.groupID}</Typography>
-							<Button onClick={() => goToGroup(group.groupID)}>Go to Group</Button>
-							<Button onClick={() => deleteGroup(group.groupID)}>Delete Group</Button>
+							<Button onClick={() => goToGroup(group.groupID)}>
+								Go to Group
+							</Button>
+							<Button onClick={() => deleteGroup(group.groupID)}>
+								Delete Group
+							</Button>
 						</div>
 					);
-				})
-				}
+				})}
 				<br />
 				<br />
 				<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
