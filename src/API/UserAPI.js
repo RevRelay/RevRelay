@@ -36,7 +36,7 @@ function updatePassword(passwords, userID, JWT) {
 //}
 
 function updateUser(user, JWT){
-	user.birthDate = user.birthDate.getTime();
+	user.birthDate = user.birthDate.toJSON();
 	return axios.put(urlConnection + "users/current", user, axiosConfig(JWT));
 }
 

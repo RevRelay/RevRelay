@@ -217,7 +217,7 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{mostRecentUserInfo.birthDate.toDateString()}
+								{ (mostRecentUserInfo.birthDate) ? (mostRecentUserInfo.birthDate.toDateString()) : ("")}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
