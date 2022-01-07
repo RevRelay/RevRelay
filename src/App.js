@@ -258,6 +258,7 @@ function App() {
 	checkJWT();
 
 	async function checkJWT() {
+		console.log("Checking JWT");
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + token,
