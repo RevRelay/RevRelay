@@ -42,6 +42,7 @@ import FriendsTab from "./Page/FriendsTab";
 export default function Page({ JWT }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -49,7 +50,16 @@ export default function Page({ JWT }) {
 		setAnchorEl(null);
 	};
 	//ADD add friend logic here
-	const handleCloseAddFriend = () => {
+	const handleCloseAddFriend = async () => {
+		const response = await APIQuery.post("/users/addFriend/" + currentUser.userID,null, {
+      headers: {
+        Authorization: "Bearer " + JWT,
+      },
+	  params: {
+		  username: page.username
+	  }
+    }).then((response)=> response.data);
+	  console.log(response);
 		setAnchorEl(null);
 	};
 	//ADD add join group logic here
@@ -78,9 +88,9 @@ export default function Page({ JWT }) {
 	const [groups, setGroups] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
 
-	const currnetUser = {
-		page: { userOwnerID: 0 },
-	};
+	// const currnetUser = {
+	// 	page: { userOwnerID: 0 },
+	// };
 
 	useEffect(() => {
 		GetPage();
@@ -122,10 +132,13 @@ export default function Page({ JWT }) {
 			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
 				if (path.pathname.includes("user")) {
 					data.data.userPage.pageTitle = data.data.username + "'s Page!";
+					data.data.userPage.userID = data.data.userID
+					data.data.userPage.username = data.data.username
 					updatePage(data.data.userPage);
 				} else {
 					data.data.groupPage.pageTitle =
 						data.data.groupName + " is almost certianly a group page!";
+			     		data.data.userPage.userID = data.data.userOwnerID;
 					updatePage(data.data.groupPage);
 				}
 
@@ -138,6 +151,7 @@ export default function Page({ JWT }) {
 			});
 		});
 	}
+
 
 	return (
 		<>
@@ -230,6 +244,9 @@ export default function Page({ JWT }) {
 									</Tabs>
 
 									<div>
+										{currentUser.userID !== page.userID ? 
+										<>
+										
 										<Button
 											id="basic-button"
 											aria-controls={open ? "basic-menu" : undefined}
@@ -251,11 +268,14 @@ export default function Page({ JWT }) {
 											{page.groupPage ? (
 												<MenuItem onClick={handleClose}>Join Group</MenuItem>
 											) : (
-												<MenuItem onClick={handleClose}>Add Friends</MenuItem>
+												<MenuItem onClick={handleCloseAddFriend}>Add Friend</MenuItem>
 											)}
 
 											<MenuItem onClick={handleClose}>Chat</MenuItem>
 										</Menu>
+										</>
+										 : ''}
+										
 									</div>
 								</Stack>
 								<Divider sx={{ width: "100%" }} />
