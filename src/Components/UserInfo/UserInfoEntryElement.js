@@ -95,7 +95,7 @@ export default function UserInfoEntryElement ({varname, fieldName, mostRecentUse
  * @returns ReactFragment containing the user's "password" with redirection to change password page
  */
 export function UserInfoEntryElementPassword () {
-    let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+	let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
 	let navigate = useNavigate();
 
 	return (
@@ -180,37 +180,37 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 				</Box>
 				{toggleEdit.birthDate ? (
 					<React.Fragment>
-								<Box sx={{width:"40%"}}>
-									<LocalizationProvider dateAdapter={AdapterDateFns}>
-										<DesktopDatePicker
-											sx={{width:"100%"}}
-											label="Birth Date"
-											value={value.birthDate}
-											views={['year', 'month', 'day']}
-											onChange={(newValue) => {
-												setValue({...value, birthDate: newValue})
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</LocalizationProvider>
-								</Box>
-								<Box sx={{width:"40%"}}>
-									<Box>
-										<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
-											<CancelIcon  fontSize="inherit"/>
-										</IconButton>
-									</Box>
-									<Box>
-										<IconButton size="small" color="primary" variant="contained"
-											onClick={(x) => {
-												setUserInput({...value, birthDate : value.birthDate});
-												setMostRecentUserInfo({...value, birthDate: value.birthDate});
-												setToggleEdit({...toggleEdit, birthDate : false});
-											}}>
-											<CheckCircleIcon  fontSize="inherit"/>
-										</IconButton>
-									</Box>
-								</Box>
+						<Box sx={{width:"40%"}}>
+							<LocalizationProvider dateAdapter={AdapterDateFns}>
+								<DesktopDatePicker
+									sx={{width:"100%"}}
+									label="Birth Date"
+									value={value.birthDate}
+									views={['year', 'month', 'day']}
+									onChange={(newValue) => {
+										setValue({...value, birthDate: newValue})
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>
+						</Box>
+						<Box sx={{width:"40%"}}>
+							<Box>
+								<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
+									<CancelIcon  fontSize="inherit"/>
+								</IconButton>
+							</Box>
+							<Box>
+								<IconButton size="small" color="primary" variant="contained"
+									onClick={(x) => {
+										setUserInput({...value, birthDate : value.birthDate});
+										setMostRecentUserInfo({...value, birthDate: value.birthDate});
+										setToggleEdit({...toggleEdit, birthDate : false});
+									}}>
+									<CheckCircleIcon  fontSize="inherit"/>
+								</IconButton>
+							</Box>
+						</Box>
 					</React.Fragment>
 				) : (
 					<React.Fragment>

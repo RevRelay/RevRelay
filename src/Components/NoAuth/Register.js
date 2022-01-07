@@ -117,7 +117,7 @@ export default function Register({ setToken, token }) {
 			alignItems="center"
 			align="flex-start"
 		>
-            <Paper
+			<Paper
 					elevation={10}
 					sx={{
 						paddingLeft: 7,
@@ -127,78 +127,78 @@ export default function Register({ setToken, token }) {
 						borderRadius: 10,
 					}}
 				>
-                <form onSubmit={submitButton}>
-                    <Grid item xs={1}>
-                        <h2>Welcome to the Future of Social Media</h2>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <TextField
-                            id="username"
-                            label="Username"
+				<form onSubmit={submitButton}>
+					<Grid item xs={1}>
+						<h2>Welcome to the Future of Social Media</h2>
+					</Grid>
+					<Grid item xs={1}>
+						<TextField
+							id="username"
+							label="Username"
 							required="true"
-                            variant="outlined"
-                            maxRows={1}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </Grid>
-                    <br />
-                    <Grid item xs={1}>
-                        <TextField
-                            id="password"
-                            label="Password"
+							variant="outlined"
+							maxRows={1}
+							onChange={(e) => setUsername(e.target.value)}
+						/>
+					</Grid>
+					<br />
+					<Grid item xs={1}>
+						<TextField
+							id="password"
+							label="Password"
 							type="password"
 							required="true"
-                            variant="outlined"
-                            maxRows={1}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </Grid>
-                    <br />
-                    <Grid item xs={1}>
-                        <TextField
-                            id="passwordConfirm"
-                            label="PasswordConfirm"
+							variant="outlined"
+							maxRows={1}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+					</Grid>
+					<br />
+					<Grid item xs={1}>
+						<TextField
+							id="passwordConfirm"
+							label="PasswordConfirm"
 							type="password"
 							required="true"
-                            variant="outlined"
-                            maxRows={1}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                    </Grid>
-                    <br />
-                    <Grid item xs={1}>
-                        <TextField
-                            id="email"
-                            label="Email"
+							variant="outlined"
+							maxRows={1}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+						/>
+					</Grid>
+					<br />
+					<Grid item xs={1}>
+						<TextField
+							id="email"
+							label="Email"
 							required="true"
-                            variant="outlined"
-                            maxRows={1}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </Grid>
-                    <br />
-                    <Grid item xs={1}>
-                        <TextField
-                            id="displayName"
-                            label="Display Name"
+							variant="outlined"
+							maxRows={1}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+					</Grid>
+					<br />
+					<Grid item xs={1}>
+						<TextField
+							id="displayName"
+							label="Display Name"
 							required="true"
-                            variant="outlined"
-                            maxRows={1}
-                            onChange={(e) => setDisplayName(e.target.value)}
-                        />
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Button color="inherit" type="submit">
-                            Submit
-                        </Button>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Button color="inherit" onClick={(x) => navigate("/login")}>
-                            Already have an account? Click here.
-                        </Button>
-                    </Grid>
-			    </form>
-            </Paper>
+							variant="outlined"
+							maxRows={1}
+							onChange={(e) => setDisplayName(e.target.value)}
+						/>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" type="submit">
+							Submit
+						</Button>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" onClick={(x) => navigate("/login")}>
+							Already have an account? Click here.
+						</Button>
+					</Grid>
+				</form>
+			</Paper>
 		</Grid>
 	);
 }

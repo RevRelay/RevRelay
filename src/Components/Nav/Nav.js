@@ -114,30 +114,30 @@ export default function Nav({
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-						<NavSearchBar/>
+							<NavSearchBar/>
 						</Box>
 						<Box>
-						{token ? (
-							<Button
-								color="inherit"
-								onClick={() => {
-									setToken("");
-									navigate("/login");
-								}}
-								startIcon={<LogoutIcon />}
-							>
-								Logout
-							</Button>
-						) : (
-							<React.Fragment>
-								<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
-									Register
+							{token ? (
+								<Button
+									color="inherit"
+									onClick={() => {
+										setToken("");
+										navigate("/login");
+									}}
+									startIcon={<LogoutIcon />}
+								>
+									Logout
 								</Button>
-								<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
-									Login
-								</Button>
-							</React.Fragment>
-						)}
+							) : (
+								<React.Fragment>
+									<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
+										Register
+									</Button>
+									<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
+										Login
+									</Button>
+								</React.Fragment>
+							)}
 						</Box>
 					</Toolbar>
 				</AppBar>

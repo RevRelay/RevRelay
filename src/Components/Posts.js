@@ -33,10 +33,12 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 /**
  * Render Posts Tab
  * @param {object} 	param
- * @param {}		
+ * @param {}		param.page 
+ * @param {USER}	param.currentUser
+ * @param {string}	param.JWT			token determinig user and log in information.
  * @returns
  */
-export default function Posts({ page, currnetUser, JWT }) {
+export default function Posts({ page, currentUser, JWT }) {
 	const [posts, updatePosts] = useState({
 		content: [],
 		pageable: "INSTANCE",
@@ -91,6 +93,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 	};
 	/**
 	 * Gets posts from Server
+	 * @async
 	 */
 	async function GetPosts() {
 		var apiRegisterUrl = "posts/page/" + page.pageID;
@@ -106,6 +109,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 	}
 	/**
 	 * Save Posts
+	 * @async
 	 */
 	async function PostPosts() {
 		var apiRegisterUrl = "posts";
@@ -126,7 +130,8 @@ export default function Posts({ page, currnetUser, JWT }) {
 	
 	/**
 	 * Generate Posts html
-	 * @param {*} param0 post
+	 * @param {*} 	param
+	 * @param {}	param.post 
 	 * @returns posts html
 	 */
 	function PostElement({ post }) {
@@ -226,7 +231,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 						display: "inline-block",
 					}}
 				>
-					{page.userOwnerID === currnetUser.userID ? (
+					{page.userOwnerID === currentUser.userID ? (
 						<Tooltip
 							title="Add new post"
 							placement="top"

@@ -49,7 +49,7 @@ export default function Page({ JWT }) {
 	});
 
 	const [tab, updateTab] = useState(0);
-	const currnetUser = {
+	const currentUser = {
 		page: { userOwnerID: 0 },
 	};
 
@@ -150,7 +150,7 @@ export default function Page({ JWT }) {
 								<Tab label="Friends" />
 							)}
 							{!page.groupPage && <Tab label="Groups" />}
-							{currnetUser.page.userOwnerID === page.userOwnerID || (
+							{currentUser.page.userOwnerID === page.userOwnerID || (
 								<Tab label="Settings" />
 							)}
 						</Tabs>
@@ -170,7 +170,7 @@ export default function Page({ JWT }) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currnetUser={currnetUser} JWT={JWT} />;
+				return <Posts page={page} currentUser={currentUser} JWT={JWT} />;
 				break;
 			case 1:
 				return <About />;
