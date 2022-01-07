@@ -54,9 +54,11 @@ function updateUser(user,JWT){
  * @returns 
  */
 
- function passwordReset(resetPass, JWT) {
-	return axios.put(urlConnection + 'users/password', JSON.stringify(resetPass),
-     axiosConfig(JWT))
+ async function passwordReset(resetPass, JWT) {
+	return await axios.put(urlConnection + 'users/password', JSON.stringify(resetPass),
+     axiosConfig(JWT)).then(
+		(data) => data
+	);
 }
 
 export { updateEmail, updateFirstName, updateLastName, updatePassword, updateDisplayName, updateBirthdate, updateUser, passwordReset};
