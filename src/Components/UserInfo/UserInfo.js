@@ -93,7 +93,11 @@ function UserInfo({JWT}) {
 					"birthDate":userInput.birthDate,
 					"displayName":userInput.displayName,
 		};
-		updateUser(user, JWT);
+		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === ""){
+			alert("You cannot change nothing.");
+		} else {
+			updateUser(user, JWT);
+		}
 	};
 
 	return(

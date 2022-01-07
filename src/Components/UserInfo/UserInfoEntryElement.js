@@ -112,7 +112,7 @@ export function UserInfoEntryElementPassword () {
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}>
-					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/password/")}>
+					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/user/profile/userInfo/password")}>
 						<EditIcon  fontSize="inherit"/>
 					</IconButton>
 				</Box>

@@ -23,7 +23,6 @@ import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Logout } from "@mui/icons-material";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -117,7 +116,6 @@ export default function Nav({
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
 							<NavSearchBar/>
-
 						</Box>
 						<Box>
 							{token ? (

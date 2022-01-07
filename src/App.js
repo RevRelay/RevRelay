@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
+import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
@@ -369,6 +370,7 @@ function SwitchBoard({ token, setToken }) {
 							<Route index element={<UserInfo JWT={token} />} />
 							<Route path="changePassword" element={<ChangePassword JWT={token}/>} />
 						</Route>
+						<Route path="userInfo" element={<UserInfo JWT={token} />} />
 					</Route>
 				</Route>
 			</Route>
