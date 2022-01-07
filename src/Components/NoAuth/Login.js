@@ -9,6 +9,11 @@ import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
 import PropTypes from 'prop-types';
 import './Auth.css';
+import { Dispatch, SetStateAction } from "react";
+
+/**
+ * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
+ */
 
 /**
  * The url of the appended login url
@@ -31,8 +36,8 @@ async function loginUser(user) {
 /**
  * Login a user
  * 
- * @param {object} 		param 
- * @param {Function} 	param.setToken state variable setter for token field information.
+ * @param {object} 					param 
+ * @param {SetStateActionString} 	param.setToken state variable setter for token field information.
  * @returns Returns the login page with React
  */
 export default function Login({ setToken }) {

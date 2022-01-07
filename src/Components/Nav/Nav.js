@@ -28,17 +28,22 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
+import { Dispatch, SetStateAction } from "react";
+
+/**
+ * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
+ */
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
  * 
  * Token themes change login/register to logout, and also logout the user
  * 
- * @param {object} 		param
- * @param {object}	 	param.themes 			load all of the themes
- * @param {THEME} 		param.activeTheme 		the current theme
- * @param {Function}	param.updateActiveTheme	passed to change the state of activeTheme
- * @param {Function} 	param.setToken			passed to change the state of token
+ * @param {object} 					param
+ * @param {object}	 				param.themes 			load all of the themes
+ * @param {string} 					param.activeTheme 		the current theme
+ * @param {SetStateActionString}	param.updateActiveTheme	passed to change the state of activeTheme
+ * @param {SetStateActionString} 	param.setToken			passed to change the state of token
  * @returns Returns a react page for the navbar
  */
 export default function Nav({
@@ -48,6 +53,7 @@ export default function Nav({
 	token,
 	setToken,
 }) {
+	
 	const [sidebar, updateSidebar] = useState(false);
 
 	/**

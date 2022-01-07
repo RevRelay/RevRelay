@@ -5,6 +5,11 @@ import APIQuery from "../../API/APIQuery";
 import { Button, Grid, TextField, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
+import { Dispatch, SetStateAction } from "react";
+
+/**
+ * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
+ */
 
 /**
  * The url of the appended register url
@@ -55,12 +60,11 @@ function validInputRegister(user) {
 /**
  * Registering a user
  *
- * @param {object} 		param
- * @param {Function} 	param.setToken 	state variable setter for token field information.
- * @param {TOKEN} 		param.token 	to return the JWT to the parent function.
+ * @param {object} 					param
+ * @param {SetStateActionString} 	param.setToken 	state variable setter for token field information.
  * @returns returns the React webpage for registering
  */
-export default function Register({ setToken, token }) {
+export default function Register({ setToken }) {
 	/**
 	 * React useState to watch for userName and password
 	 */

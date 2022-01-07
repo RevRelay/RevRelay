@@ -23,12 +23,14 @@ import {
 	Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { Socket } from "socket.io-client";
 
 //https://gridfiti.com/aesthetic-color-palettes/
+
 /**
  * 
  * @param {object} 	param
- * @param {*}		param.socket
+ * @param {Socket}	param.socket
  * @param {string}	param.username 	the username of the current user.
  * @param {string}	param.room		the name of the room you are currently in.
  * @returns 

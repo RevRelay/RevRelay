@@ -10,7 +10,7 @@ import {
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
@@ -18,6 +18,17 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import Home from "./Components/HomeSplash/Home.js";
 import ChangePassword from "./Components/UserInfo/ChangePassword.js";
+import { Dispatch, SetStateAction } from "react";
+
+/**
+ * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
+ */
+/**
+ * @typedef {Dispatch<SetStateAction<number>>} SetStateActionNumber
+ */
+/**
+ * @typedef {Dispatch<SetStateAction<boolean>>} SetStateActionBool
+ */
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -26,6 +37,11 @@ import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 //Background Default - Background
 //Background Paper - Nav pop-out bar
 
+/**
+ * Array of all possible themes.
+ * @param {string} 	name 	name to call the theme.
+ * @param {Theme}	theme	the palate for the theme.
+ */
 const themes = [
 	{
 		name: "Default",
@@ -258,9 +274,15 @@ const themes = [
  */
 function App() {
 
+	/**
+	 * Setting the JWT string token 
+	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
 
+	/**
+	 * Setting the active theme but changing the int of activeTheme. Corresponding to the theme array
+	 */
 	const [activeTheme, updateActiveTheme] = useState(0);
 	
 	return (
@@ -295,9 +317,9 @@ function App() {
  * 
  * Use the token object passed above if you need to find any
  * 
- * @param {object} 		param
- * @param {string} 		param.token 				JWT token determinig user and log in information.
- * @param {Function} 	param.setToken				state variable setter for token field information.
+ * @param {object} 					param
+ * @param {string} 					param.token 	JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	param.setToken	state variable setter for token field information.
  * @returns 
  */
 function SwitchBoard({ token, setToken }) {
@@ -307,12 +329,12 @@ function SwitchBoard({ token, setToken }) {
 				<Route index element={<Home />} />
 				<Route
 					path="login"
-					element={<Login setToken={setToken} token={token} />}
+					element={<Login setToken={setToken} />}
 				/>
 				<Route path="chat" element={<Client />} />
 				<Route
 					path="register"
-					element={<Registration setToken={setToken} token={token} />}
+					element={<Registration setToken={setToken} />}
 				/>
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
