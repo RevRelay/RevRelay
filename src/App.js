@@ -257,10 +257,12 @@ const themes = [
  * @returns Single Page of our application.
  */
 function App() {
+
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
 
 	const [activeTheme, updateActiveTheme] = useState(0);
+	
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			<Nav
@@ -281,8 +283,6 @@ function App() {
 				<SwitchBoard
 					token={token}
 					setToken={setToken}
-					activeTheme={activeTheme}
-					updateActiveTheme={updateActiveTheme}
 				/>
 			</Box>
 		</ThemeProvider>
@@ -296,13 +296,11 @@ function App() {
  * Use the token object passed above if you need to find any
  * 
  * @param {object} 		param
- * @param {string} 		param.token 
- * @param {Function} 	param.setToken
- * @param {THEME} 		param.activeTheme
- * @param {Funtion} 	param.updateActiveTheme
+ * @param {string} 		param.token 				JWT token determinig user and log in information.
+ * @param {Function} 	param.setToken				state variable setter for token field information.
  * @returns 
  */
-function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
+function SwitchBoard({ token, setToken }) {
 	return (
 		<Routes>
 			<Route path="/">
@@ -324,12 +322,12 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 				<Route path="user">
 					<Route index element={<Users />} />
 					<Route path=":userID" element={
-						<Page theme={activeTheme} themes={updateActiveTheme} JWT={token} />
+						<Page JWT={token} />
 					}
 					/>
 					<Route path="profile">
 						<Route index element={
-							<Page JWT={token} theme={activeTheme} themes={updateActiveTheme} />
+							<Page JWT={token} />
 						} />
 						<Route path="userInfo" >
 							<Route index element={<UserInfo JWT={token} />} />
