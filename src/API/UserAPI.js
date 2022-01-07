@@ -51,9 +51,8 @@ function updateUser(user,JWT){
  * Helper function to send an API call to reset password endpoint
  * 
  * @param {Object} resetPass - An object with 3 String fields. 1 old password and 2 matching password fields 
- * @returns 
+ * @returns Returns true for a good change, false if it failed
  */
-
  async function passwordReset(resetPass, JWT) {
 	return await axios.put(urlConnection + 'users/password', JSON.stringify(resetPass),
      axiosConfig(JWT)).then(

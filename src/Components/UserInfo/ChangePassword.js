@@ -16,8 +16,9 @@ import { passLen } from "../NoAuth/RegisterConfig.js"
 const apiChangePasswordUrl = "/users/password";
 /**
  * Helper function to take 2 passwords as a passwordCheck object and return an alert if they dont match or if they arent valid
+ * 
  * @param {Object} PasswordCheck - An object with 2 Strings, Checks if strings are a valid length and then if they are matching
- * @returns 
+ * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy
  */
 function validPasswordReset(passwordCheck) {
 	let message = "";
@@ -35,9 +36,10 @@ function validPasswordReset(passwordCheck) {
 }
 
 /**
+ * The page for changing password, 1 hook for each data field
  * 
  * @param {String} - A JWT object 
- * @returns 
+ * @returns returns a react page
  */
 function ChangePassword({JWT}) {
 	const [oldPassword, setOldPassword] = useState();
