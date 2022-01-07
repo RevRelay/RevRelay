@@ -62,6 +62,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 		postOwnerID: 0,
 		children: null,
 	});
+
 	const handleClickOpen = (isOp, post) => {
 		if (!isOp) {
 			let np = { ...newpost };
@@ -122,6 +123,7 @@ export default function Posts({ page, currnetUser, JWT }) {
 		GetPosts();
 	}, []);
 	//console.log("POSTS:", posts);
+	
 	/**
 	 * Generate Posts html
 	 * @param {*} param0 post
