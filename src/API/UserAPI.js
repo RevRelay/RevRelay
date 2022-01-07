@@ -16,12 +16,11 @@ function axiosConfig(JWT) {
  * Updates password of the user using a put request.
  * 
  * @param {object} passwords 	Array of passwords: {current password, new password, repeated new password}.
- * @param {number} userID 		the userID of the current user.
  * @param {string} JWT 			token determinig user and log in information.
  * @returns a Put request to the correct place to change the password for the current user.
  */
-function updatePassword(passwords, userID, JWT) {
-	return axios.put(urlConnection + "users/password/" + userID, passwords, axiosConfig(JWT));
+function updatePassword(passwords, JWT) {
+	return axios.put(urlConnection + "users/password", passwords, axiosConfig(JWT));
 }
 
 /**
@@ -31,10 +30,6 @@ function updatePassword(passwords, userID, JWT) {
  * @param {string}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */
-//function updateUser(user, JWT){
-//	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
-//}
-
 function updateUser(user, JWT){
 	user.birthDate = user.birthDate.toJSON();
 	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));

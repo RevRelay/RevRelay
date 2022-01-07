@@ -112,7 +112,7 @@ export function UserInfoEntryElementPassword () {
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}>
-					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/user/profile/userInfo/password")}>
+					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/user/profile/userInfo/changePassword")}>
 						<EditIcon  fontSize="inherit"/>
 					</IconButton>
 				</Box>
@@ -184,17 +184,10 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 								<DesktopDatePicker
 									sx={{width:"100%"}}
 									label="Birth Date"
-<<<<<<< HEAD
-									value={value.birthDate}
-									views={['year', 'month', 'day']}
-									onChange={(newValue) => {
-										setValue({...value, birthDate: newValue})
-=======
 									value={(userInfoFieldValue) ? userInfoFieldValue : mostRecentUserInfo.birthDate}
 									views={['year', 'month', 'day']}
 									onChange={(newValue) => {
 										setUserInfoFieldValue(newValue);
->>>>>>> origin/JennicaBirthday-N8
 									}}
 									renderInput={(params) => <TextField {...params} />}
 								/>
@@ -209,15 +202,10 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 							<Box>
 								<IconButton size="small" color="primary" variant="contained"
 									onClick={(x) => {
-<<<<<<< HEAD
-										setUserInput({...value, birthDate : value.birthDate});
-										setMostRecentUserInfo({...value, birthDate: value.birthDate});
-=======
 										if (userInfoFieldValue) {
 											setUserInput({...mostRecentUserInfo, birthDate : userInfoFieldValue});
 											setMostRecentUserInfo({...mostRecentUserInfo, birthDate : userInfoFieldValue});
 										}
->>>>>>> origin/JennicaBirthday-N8
 										setToggleEdit({...toggleEdit, birthDate : false});
 									}}>
 									<CheckCircleIcon  fontSize="inherit"/>

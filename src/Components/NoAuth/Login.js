@@ -75,7 +75,7 @@ export default function Login({ setToken }) {
 				</Grid>
 				<br/>
 				<Grid item xs={1}>
-					<TextField id="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)}/>
+					<TextField id="password" type="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)}/>
 				</Grid>
 				<Grid item xs={1}>
 					<Button color="inherit" type="submit" variant="h5">Login</Button>

@@ -150,7 +150,7 @@ function UserInfo({JWT}) {
 							<br/>
 							<Box>
 								<UserInfoElementUsername key={"usernameElement"} mostRecentUserInfo={mostRecentUserInfo}/>
-								<UserInfoEntryElementPassword key={"passwordElemetn"} />
+								<UserInfoEntryElementPassword key={"passwordElement"} />
 								{userInfoFields.map((x) => {
 									return (
 										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} mostRecentUserInfo = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />

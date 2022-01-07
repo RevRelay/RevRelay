@@ -19,7 +19,6 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
-import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 import { Dispatch, SetStateAction } from "react";
 
 /**

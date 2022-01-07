@@ -10,7 +10,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 	useNavigate, 
 } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import { passwordReset } from "../../API/UserAPI";
+import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
 
 const apiChangePasswordUrl = "/users/password";
@@ -62,7 +62,7 @@ function ChangePassword({JWT}) {
 			e.preventDefault();
 			let response;
 			try {
-				response = await passwordReset({
+				response = await updatePassword({
 					oldPassword,
 					newPassword,
 					confirmPassword,
