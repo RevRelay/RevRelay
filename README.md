@@ -26,6 +26,10 @@ RevRelay is a social network for anyone with access to internet, to keep up with
   - As a User, I should be able to register a new account.
 - [x] **Login**
   - As a User, I should be able to log in to the application.
+- [x] **User Info**
+  - As a User, I should be able to add and change my information (first name, last name, display name, email, birthday).
+- [x] **Change Password**
+  - As a User, I should be able to change my password when I'm logged in.
 - [ ] **User Profile**
   - As a User, I should be able to create and maintain a profile page that is visible to other users.
 - [ ] **Create/Join a Group/Team**
