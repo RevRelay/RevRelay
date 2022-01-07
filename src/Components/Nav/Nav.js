@@ -17,6 +17,7 @@ import {
 	ListItemIcon,
 	Typography,
 } from "@mui/material";
+
 import React, { useState } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
@@ -34,11 +35,9 @@ import NavSearchBar from "./NavSearchBar.js";
  * 
  * Token themes change login/register to logout, and also logout the user
  * 
- * @param {object} 		param
- * @param {object}	 	param.themes 			load all of the themes
- * @param {THEME} 		param.activeTheme 		the current theme
- * @param {Function}	param.updateActiveTheme	passed to change the state of activeTheme
- * @param {Function} 	param.setToken			passed to change the state of token
+ * Themes import load all of the themes
+ * 
+ * @param {*} param0 Takes an array of inputs such as the active theme, themes, token, setToken, and updateActiveTheme
  * @returns Returns a react page for the navbar
  */
 export default function Nav({
@@ -50,11 +49,6 @@ export default function Nav({
 }) {
 	const [sidebar, updateSidebar] = useState(false);
 
-	/**
-	 * 
-	 * @param {event} open 
-	 * @returns 
-	 */
 	const toggleDrawer = (open) => (event) => {
 		if (
 			event.type === "keydown" &&
@@ -65,7 +59,6 @@ export default function Nav({
 
 		updateSidebar(open);
 	};
-
 	let navigate = useNavigate();
 	return (
 		<>
@@ -110,34 +103,40 @@ export default function Nav({
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block'}}}> 
+						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-						<NavSearchBar/>
+							<NavSearchBar />
 						</Box>
 						<Box>
-						{token ? (
-							<Button
-								color="inherit"
-								onClick={() => {
-									setToken("");
-									navigate("/login");
-								}}
-								startIcon={<LogoutIcon />}
-							>
-								Logout
-							</Button>
-						) : (
-							<React.Fragment>
-								<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
-									Register
+							{token ? (
+								<Button
+									color="inherit"
+									onClick={() => {
+										setToken("");
+										navigate("/login");
+									}}
+									startIcon={<LogoutIcon />}
+								>
+									<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+										Logout
+									</Typography>
 								</Button>
-								<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
-									Login
-								</Button>
-							</React.Fragment>
-						)}
+							) : (
+								<React.Fragment>
+									<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
+										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+											Register
+										</Typography>
+									</Button>
+									<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
+										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+											Login 
+										</Typography>
+									</Button>
+								</React.Fragment>
+							)}
 						</Box>
 					</Toolbar>
 				</AppBar>
