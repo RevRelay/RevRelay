@@ -1,14 +1,9 @@
 import { useState } from "react";
-<<<<<<< HEAD
-import { Box, Button, Grid, Paper, TextField } from "@mui/material";
-import PasswordField from "./PasswordField.js";
-=======
 import {
 	Button,
 	Grid,
 	TextField
 } from "@mui/material";
->>>>>>> 23977f7a706b8710de9faa58e0dfe39650cca5c0
 import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
 import { LoginSharp } from "@mui/icons-material";
