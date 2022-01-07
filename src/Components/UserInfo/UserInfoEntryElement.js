@@ -164,11 +164,10 @@ export function UserInfoElementUsername ({mostRecentUserInfo}) {
  * 			insertion into a grid.
  */
 export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput, setMostRecentUserInfo, toggleEdit, setToggleEdit}) {
-	const [value, setValue] = useState({
-		birthDate: mostRecentUserInfo.birthDate
-	});
-	console.log(value);
-	console.log(mostRecentUserInfo.birthDate);
+	//const [value, setValue] = useState({
+	//	birthDate: mostRecentUserInfo.birthDate
+	//});
+	const [userInfoFieldValue, setUserInfoFieldValue] = useState();
 
 	return(
 		<React.Fragment>
@@ -180,43 +179,45 @@ export function UserInfoEntryElementBirthDate ({mostRecentUserInfo, setUserInput
 				</Box>
 				{toggleEdit.birthDate ? (
 					<React.Fragment>
-								<Box sx={{width:"40%"}}>
-									<LocalizationProvider dateAdapter={AdapterDateFns}>
-										<DesktopDatePicker
-											sx={{width:"100%"}}
-											label="Birth Date"
-											value={value.birthDate}
-											views={['year', 'month', 'day']}
-											onChange={(newValue) => {
-												setValue({...value, birthDate: newValue})
-											}}
-											renderInput={(params) => <TextField {...params} />}
-										/>
-									</LocalizationProvider>
-								</Box>
-								<Box sx={{width:"40%"}}>
-									<Box>
-										<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
-											<CancelIcon  fontSize="inherit"/>
-										</IconButton>
-									</Box>
-									<Box>
-										<IconButton size="small" color="primary" variant="contained"
-											onClick={(x) => {
-												setUserInput({...value, birthDate : value.birthDate});
-												setMostRecentUserInfo({...value, birthDate: value.birthDate});
-												setToggleEdit({...toggleEdit, birthDate : false});
-											}}>
-											<CheckCircleIcon  fontSize="inherit"/>
-										</IconButton>
-									</Box>
-								</Box>
+						<Box sx={{width:"40%"}}>
+							<LocalizationProvider dateAdapter={AdapterDateFns}>
+								<DesktopDatePicker
+									sx={{width:"100%"}}
+									label="Birth Date"
+									value={(userInfoFieldValue) ? userInfoFieldValue : mostRecentUserInfo.birthDate}
+									views={['year', 'month', 'day']}
+									onChange={(newValue) => {
+										setUserInfoFieldValue(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>
+						</Box>
+						<Box sx={{width:"40%"}}>
+							<Box>
+								<IconButton size="small" color="primary" variant="contained" onClick={(x) => setToggleEdit({...toggleEdit, birthDate : false})}>
+									<CancelIcon  fontSize="inherit"/>
+								</IconButton>
+							</Box>
+							<Box>
+								<IconButton size="small" color="primary" variant="contained"
+									onClick={(x) => {
+										if (userInfoFieldValue) {
+											setUserInput({...mostRecentUserInfo, birthDate : userInfoFieldValue});
+											setMostRecentUserInfo({...mostRecentUserInfo, birthDate : userInfoFieldValue});
+										}
+										setToggleEdit({...toggleEdit, birthDate : false});
+									}}>
+									<CheckCircleIcon  fontSize="inherit"/>
+								</IconButton>
+							</Box>
+						</Box>
 					</React.Fragment>
 				) : (
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{value.birthDate}
+								{mostRecentUserInfo.birthDate.toDateString()}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
