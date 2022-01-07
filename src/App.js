@@ -275,7 +275,7 @@ function App() {
 	const [activeTheme, updateActiveTheme] = useState(0);
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
-			{/* Resnders Chat Box */}
+			{/* Renders Chat Box */}
 			{token ? <Client /> : <></>}
 			<Nav
 				themes={themes}
