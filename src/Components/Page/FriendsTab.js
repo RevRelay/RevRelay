@@ -5,11 +5,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { ListItemText } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import InboxIcon from "@mui/icons-material/Inbox";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
 const FriendsTab = ({currentUsername}) => {
+  let history = createBrowserHistory()
     console.log(currentUsername);
     const [friends, setFriends] = useState([]);
     const [loading, setLoading] = useState(true);
+    let navigate = useNavigate();
     const getAllFriends = async ()=> {
        const response = await APIQuery.get("/pages/friends/" + currentUsername, {
         headers: {
@@ -23,10 +27,14 @@ const FriendsTab = ({currentUsername}) => {
     useEffect(()=>{
        getAllFriends();
     }, []);
-        useEffect(() => {
-        }, [friends]);
+  
 
-
+        const goToFriendsPage = (id) => {
+          console.log('going to'+id);
+          navigate(`/user/${id}`);
+          history.go();
+          setLoading(true)
+          }
                             
 
     return (
@@ -45,7 +53,7 @@ const FriendsTab = ({currentUsername}) => {
           ? friends.map((friend) => {
               return (
                 <>
-                  <ListItemButton>
+                  <ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
                     <ListItemText primary={friend.username} />
                     <ListItemText primary={friend.email} />
                   </ListItemButton>
