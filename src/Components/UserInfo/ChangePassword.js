@@ -50,7 +50,7 @@ function ChangePassword({JWT}) {
 	/**
 	 * Submit button is pressed password reset request is sent to the backend
 	 *
-	 * @param {*} e The even of the login button being pressed, username and password are captured
+	 * @param {Event} e The even of the login button being pressed, username and password are captured
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -147,7 +147,7 @@ function ChangePassword({JWT}) {
 					</Grid>
 					<Grid item xs={1}>
 						<Button color="inherit" type="submit" variant="h5">
-							Login
+							Submit Change
 						</Button>
 					</Grid>
 				</Paper>
