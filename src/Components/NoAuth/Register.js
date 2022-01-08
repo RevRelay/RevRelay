@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import APIQuery from "../../API/APIQuery";
-import { Button, Grid, TextField, Paper } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
 import { User, SetStateActionString } from "../../typeDef";
+import {PasswordField, LoginRegisterField} from "../Library/FormField";
 
 /**
  * The url of the appended register url
@@ -65,23 +66,23 @@ export default function Register({ setToken }) {
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [username, setUsername] = useState();
+	const [username, setUsername] = useState('');
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [password, setPassword] = useState();
+	const [password, setPassword] = useState('');
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [confirmPassword, setConfirmPassword] = useState();
+	const [confirmPassword, setConfirmPassword] = useState('');
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [email, setEmail] = useState();
+	const [email, setEmail] = useState('');
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [displayName, setDisplayName] = useState();
+	const [displayName, setDisplayName] = useState('');
 	let navigate = useNavigate();
 
 	/**
@@ -145,59 +146,50 @@ export default function Register({ setToken }) {
 						<h2>Welcome to the Future of Social Media</h2>
 					</Grid>
 					<Grid item xs={1}>
-						<TextField
+						<LoginRegisterField
 							id="username"
 							label="Username"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setUsername(e.target.value)}
+							value={username}
+							setter={setUsername}
+							required={true}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="password"
 							label="Password"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setPassword(e.target.value)}
+							password={password}
+							setter={setPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="passwordConfirm"
-							label="PasswordConfirm"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setConfirmPassword(e.target.value)}
+							label="Confirm Password"
+							password={confirmPassword}
+							setter={setConfirmPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<LoginRegisterField
 							id="email"
 							label="Email"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setEmail(e.target.value)}
+							value={email}
+							setter={setEmail}
+							required={true}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<LoginRegisterField
 							id="displayName"
 							label="Display Name"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setDisplayName(e.target.value)}
+							value={displayName}
+							setter={setDisplayName}
+							required={true}
 						/>
 					</Grid>
 					<Grid item xs={1}>

@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
 	Button,
 	Grid,
 	TextField,
 	Paper,
 } from "@mui/material";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
- import {
-	useNavigate, 
-} from "react-router-dom";
-import APIQuery from "../../API/APIQuery";
+import {PasswordField} from "../Library/FormField";
+ import {useNavigate} from "react-router-dom";
 import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
 import {
@@ -123,38 +120,29 @@ function ChangePassword({JWT}) {
 						<h2>Login here</h2>
 					</Grid>
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="oldPassword"
-							label="oldPassword"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setOldPassword(e.target.value)}
+							label="Old Password"
+							password={oldPassword}
+							setter={setOldPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="newPassword"
-							label="newPassword"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setNewPassword(e.target.value)}
+							label="New Password"
+							password={newPassword}
+							setter={setNewPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
-						<TextField
+						<PasswordField
 							id="confirmPassword"
-							label="confirmPassword"
-							type="password"
-							required="true"
-							variant="outlined"
-							maxRows={1}
-							onChange={(e) => setConfirmPassword(e.target.value)}
+							label="Confirm New Password"
+							password={confirmPassword}
+							setter={setConfirmPassword}
 						/>
 					</Grid>
 					<Grid item xs={1}>
