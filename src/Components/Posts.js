@@ -29,10 +29,14 @@ import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { User, Page, Post } from "../typeDef";
 
 /**
  * Render Posts Tab
- * @param {*} param0 PAGE,CurrenUser, JWT
+ * @param {object} 	param
+ * @param {Page}	param.page 
+ * @param {User}	param.currentUser
+ * @param {string}	param.JWT			token determinig user and log in information.
  * @returns
 
  */
@@ -62,20 +66,21 @@ export default function Posts({ page, currentUser, JWT }) {
 		postOwnerID: 0,
 		children: null,
 	});
+
 	const handleClickOpen = (isOp, post) => {
 		if (!isOp) {
 			let np = { ...newpost };
 			np.parent = { postID: post };
 			np.postType = "REPLY";
 			updateNewPost(np);
-			console.log(post);
+			//console.log(post);
 			setOpen(true);
 		} else {
 			let np = { ...newpost };
 			np.parent = null;
 			np.postType = "ORIGINAL";
 			updateNewPost(np);
-			console.log(post);
+			//console.log(post);
 			setOpen(true);
 		}
 	};
@@ -84,12 +89,13 @@ export default function Posts({ page, currentUser, JWT }) {
 		setOpen(false);
 	};
 	const handlePost = () => {
-		console.log("Sending Post", newpost);
+		//console.log("Sending Post", newpost);
 		PostPosts();
 		setOpen(false);
 	};
 	/**
 	 * Gets posts from Server
+	 * @async
 	 */
 	async function GetPosts() {
 		var apiRegisterUrl = "posts/page/" + page.pageID;
@@ -101,10 +107,11 @@ export default function Posts({ page, currentUser, JWT }) {
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			updatePosts(data.data);
 		});
-		console.log(posts);
+		//console.log(posts);
 	}
 	/**
 	 * Save Posts
+	 * @async
 	 */
 	async function PostPosts() {
 		var apiRegisterUrl = "posts";
@@ -121,10 +128,12 @@ export default function Posts({ page, currentUser, JWT }) {
 	useEffect((x) => {
 		GetPosts();
 	}, []);
-	console.log("POSTS:", posts);
+	//console.log("POSTS:", posts);
+
 	/**
 	 * Generate Posts html
-	 * @param {*} param0 post
+	 * @param {object} 	param
+	 * @param {Post}	param.post
 	 * @returns posts html
 	 */
 	function PostElement({ post }) {

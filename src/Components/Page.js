@@ -40,7 +40,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 /**
  * Renders a generic page with condintional rendering
- * @param {*} param0 JWT
+ * @param {object} param
+ * @param {string} param.JWT token determining user and log in information.
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
@@ -136,6 +137,7 @@ export default function Page({ JWT }) {
 	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
+	const [tab, updateTab] = useState(0);
 
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
@@ -147,6 +149,7 @@ export default function Page({ JWT }) {
 
 	/**
 	 * Gets Page from back server
+	 * @async
 	 */
 	const [group, setGroup] = useState(null);
 	const getCurrentUser = async () => {
@@ -409,8 +412,10 @@ export default function Page({ JWT }) {
 			)}
 		</>
 	);
+
 	/**
 	 * Gets tab from state and renders current tab
+	 *
 	 * @returns Current Tab
 	 */
 	function RenderTab() {
@@ -481,6 +486,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for About
+	 *
 	 * @returns
 	 */
 	function About() {
@@ -488,6 +494,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Members
+	 *
 	 * @returns
 	 */
 	function Members() {
@@ -508,6 +515,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Settings
+	 *
 	 * @returns
 	 */
 	function Settings() {
@@ -515,6 +523,7 @@ export default function Page({ JWT }) {
 	}
 	/**
 	 * Placeholder for Groups
+	 *
 	 * @returns
 	 */
 	function Groups() {
