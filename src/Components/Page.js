@@ -58,7 +58,7 @@ export default function Page({ JWT }) {
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
-	
+
 	const handleInvite = async () => {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -106,7 +106,7 @@ export default function Page({ JWT }) {
 		console.log(response);
 		setAnchorEl(null);
 	};
-	
+
 	//ADD add join group logic here
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -167,7 +167,7 @@ export default function Page({ JWT }) {
 	 * @async
 	 */
 	async function getCurrentGroup() {}
-	
+
 	/**
 	 * Gets Page from back server
 	 * @async
@@ -482,7 +482,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for About
 	 *
@@ -513,7 +513,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for Settings
 	 *
@@ -557,19 +557,25 @@ export default function Page({ JWT }) {
 			<>
 				{groups.content.map((group) => {
 					return (
-						<div key={group.groupID}>
+						<Paper key={group.groupID} sx={{ marginBottom: 3 }} elevation={3}>
 							<Typography>{group.groupName}</Typography>
-							<Button onClick={() => goToGroup(group.groupID)}>
+							<Button
+								onClick={() => goToGroup(group.groupID)}
+								variant="outlined"
+							>
 								Go to Group
 							</Button>
-							{page.userID === currentUser.userID ? (
-								<Button onClick={() => deleteGroup(group.groupID)}>
+							{group.userOwnerID === currentUser.userID ? (
+								<Button
+									onClick={() => deleteGroup(group.groupID)}
+									variant="outlined"
+								>
 									Delete Group
 								</Button>
 							) : (
 								""
 							)}
-						</div>
+						</Paper>
 					);
 				})}
 				<br />
