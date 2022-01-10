@@ -35,6 +35,7 @@ var socket;
 function Client() {
 	useEffect(() => {
 		socket = io.connect("http://localhost:3001");
+
 		return;
 	}, []);
 
@@ -47,7 +48,7 @@ function Client() {
 	 * @type {[ChatRoom, SetStateActionChatRoom]}
 	 */
 	const [chatrooms, updateChatrooms] = useState([]);
-	const [currentChat, setCurrentChat] = useState(0);
+	const [currentChat, setCurrentChat] = useState("");
 	const [username, setUserName] = useState("");
 	const [room, setRoom] = useState("");
 
