@@ -8,12 +8,13 @@ import {
 	Typography,
 	CardContent,
 	CardActions,
-	Stack
+	Stack,
+	useRadioGroup, 
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/Save';
 import APIQuery from "../../API/APIQuery";
-import { updateUser } from "../../API/UserAPI";
+import { updateUser, uploadImage, getProfilePic } from "../../API/UserAPI";
 import UserInfoEntryElement, { UserInfoElementUsername, 
 	UserInfoEntryElementPassword,
 	UserInfoEntryElementBirthDate, 
@@ -34,6 +35,27 @@ import {
  * @returns 
  */
 function UserInfo({JWT}) {
+
+	// used for choosing an image
+	const inputRef = React.useRef();
+	const filePopup = () => inputRef.current.click();
+
+	// state for setting image
+	const [image, setImage] = React.useState(null);
+	
+	/**
+	 * Makes sure that file is valid, sets selected file to profile picture
+	 * @param {} event 
+	 */
+	const onSelectFile = (event) => {
+		if(event.target.files && event.target.files.length > 0) {
+			const reader = new FileReader();
+			reader.readAsDataURL(event.target.files[0]);
+			reader.addEventListener('load', ()=> {
+				setImage(reader.result);
+			})
+		}
+	};
 
 	/**
 	 * @type {[User, SetStateActionUser]}
@@ -84,7 +106,7 @@ function UserInfo({JWT}) {
 	 * @async
 	 * @param {Event} e 
 	 */
-	const FetchUserInfo = async (e) => {		
+	const FetchUserInfo = async (e) => {	
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		setMostRecentUserInfo({
 			username:response.data.username,
@@ -95,6 +117,12 @@ function UserInfo({JWT}) {
 			displayName:response.data.displayName,
 			userID:response.data.userID
 		});
+
+		// get user profile picture from s3 using userId, clear previous profile picture if changed
+		sessionStorage.clear();
+		if(!image) {
+			setImage(getProfilePic(response.data.userID));
+		}
 	}
 
 	/**
@@ -107,10 +135,14 @@ function UserInfo({JWT}) {
 					"birthDate":userInput.birthDate,
 					"displayName":userInput.displayName,
 		};
-		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === ""){
+		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === "" && !image){
 			alert("You cannot change nothing.");
 		} else {
 			updateUser(user, JWT);
+		}
+		// need to check if image changed, save to s3 bucket
+		if(image) {
+			uploadImage(image, mostRecentUserInfo.userID);
 		}
 	};
 
@@ -140,10 +172,11 @@ function UserInfo({JWT}) {
 									<br/><br/>
 									<Avatar
 										alt="Remy Sharp"
-										src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
-										sx={{ width: 150, height: 150 }}
+										src={image}
+										sx={{ width: 150, height: 150}}							
 									/>
-									<IconButton color="primary" variant="contained">
+									<input type='file' accept='image/*' ref={inputRef} onChange={onSelectFile} hidden={true} />
+									<IconButton color="primary" variant="contained" onClick={filePopup}> 
 										<AddAPhotoIcon />
 									</IconButton>
 								</Box>
