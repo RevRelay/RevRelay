@@ -145,7 +145,7 @@ export default function Page({ JWT }) {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
 	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState("");
+	const [tab, updateTab] = useState(0);
 
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
@@ -154,7 +154,7 @@ export default function Page({ JWT }) {
 	useEffect(() => {
 		setReload(false);
 		GetPage();
-		updateTab(0);
+	//	updateTab(0);
 	}, [reload]);
 
 	/**

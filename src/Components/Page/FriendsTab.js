@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import APIQuery from "../../API/APIQuery";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { Box, ListItemText } from "@mui/material";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import InboxIcon from "@mui/icons-material/Inbox";
+import { Box, ListItemText, Badge } from "@mui/material";
+import PeopleIcon from "@mui/icons-material/People";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
@@ -15,7 +14,7 @@ import { createBrowserHistory } from "history";
  */
 const FriendsTab = ({ currentUsername }) => {
 	let history = createBrowserHistory();
-	const [friends, setFriends] = useState([]);
+	const [friends, setFriends] = useState(false);
 	const [loading, setLoading] = useState(true);
 	let navigate = useNavigate();
 	const getAllFriends = async () => {
@@ -44,34 +43,29 @@ const FriendsTab = ({ currentUsername }) => {
 	};
 
 	return (
-		<>
-			<ListItemButton>
-				<ListItemIcon>
-					<InboxIcon />
-					<ListItemText primary="Friends" />
-				</ListItemIcon>
-			</ListItemButton>
-			{loading ? (
-				<>
-					<h3>Loading...</h3>
-				</>
-			) : (
-				""
-			)}
-			{!loading
-				? friends.map((friend) => {
-						return (
-							<Box key={friend.userID}>
-								<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
-									<ListItemText primary={friend.displayName} />
-									<ListItemText primary={friend.email} />
-								</ListItemButton>
-							</Box>
-						);
-				  })
-			: ""}
-		</>
-	);
+    <>
+      {loading ? (
+        <>
+          <h3>Loading...</h3>
+        </>
+      ) : (
+        ""
+      )}
+	  {!loading && !friends ? <h3>You have no friends yet!</h3> : ''}
+      {!loading 
+        ? friends.map((friend) => {
+            return (
+              <Box key={friend.userID}>
+                <ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
+                  <ListItemText primary={friend.displayName} />
+                  <ListItemText primary={friend.email} />
+                </ListItemButton>
+              </Box>
+            );
+          })
+        : ""}
+    </>
+  );
 };
 
 export default FriendsTab;
