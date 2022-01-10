@@ -1,7 +1,9 @@
 import axios from "axios";
+import Axios from 'axios';
 import { User } from "../typeDef";
 
 const urlConnection = "http://localhost:5000/"
+const profileS3bucket = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload"
 
 /**
  * Axios configuration that all other functions in file uses.
@@ -32,8 +34,22 @@ function updatePassword(passwords, JWT) {
  * @returns a Put request to the correct place to change the user information for the current user.
  */
 function updateUser(user, JWT){
-	user.birthDate = user.birthDate.toJSON();
+	//user.birthDate = user.birthDate.toJSON();
 	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
+}
+
+/**
+ * Uploads a users profile picture to s3
+ * 
+ * @param {image} image 
+ * @returns axios call to database
+ */
+function uploadImage(image, userId) {
+	const parts = image.split(';');
+	const mime = parts[0].split(':')[1];
+	const data = parts[1];
+
+	return Axios.post(profileS3bucket, { mime, userId, image: data});
 }
 
 export const dataURLtoFile = (dataurl, filename) => {
@@ -48,4 +64,4 @@ export const dataURLtoFile = (dataurl, filename) => {
 	return new File([u8arr], filename, {type: mime });
 }
 
-export { updatePassword, updateUser};
+export { updatePassword, updateUser, uploadImage};
