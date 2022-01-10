@@ -1,27 +1,15 @@
 import {
-	AppBar,
-	Autocomplete,
-	Box,
-	Button,
-	Card,
-	Drawer,
-	IconButton,
-	InputLabel,
-	MenuItem,
-	Select,
 	List,
 	ListItem,
 	Divider,
 	ListItemText,
 	ListItemButton,
-	Toolbar,
 	ListItemIcon,
-	Typography,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
-import React, { useState } from "react";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -37,10 +25,7 @@ export default function SidebarList() {
 	return (
 		<React.Fragment>
 			<List>
-				<ListItemButton
-					onClick={(x) => navigate("/user/profile")}
-					key="buttonUserProfile"
-				>
+				<ListItemButton key="buttonUserProfile" onClick={(x) => navigate("/user/profile")}>
 					<ListItemIcon>
 						<HomeIcon />
 					</ListItemIcon>
@@ -49,10 +34,7 @@ export default function SidebarList() {
 			</List>
 			<Divider />
 			<List>
-				<ListItemButton
-					onClick={(x) => navigate("/user/profile/userInfo")}
-					key="buttonUserProfileSettings"
-				>
+				<ListItemButton key="buttonUserProfileSettings" onClick={(x) => navigate("/user/profile/userInfo")}>
 					<ListItemIcon>
 						<SettingsIcon />
 					</ListItemIcon>
@@ -60,17 +42,6 @@ export default function SidebarList() {
 				</ListItemButton>
 			</List>
 		</React.Fragment>
-		//     {["Inbox", "Starred", "Send email", "Drafts"].map(
-		//         (text, index) => (
-		//             <ListItem button key={text}>
-		//                 <ListItemIcon>
-		//                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-		//                 </ListItemIcon>
-		//                 <ListItemText primary={text} />
-		//             </ListItem>
-		//         )
-		//     )}
-		// </List>
 	);
 }
 

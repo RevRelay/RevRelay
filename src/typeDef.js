@@ -112,10 +112,18 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * @typedef {Object}				NavBar					An Array for the Nav to determine the theme and update the theme.
+ * @param {any[]}	 				themes 				Load all of the List of Themes.
+ * @param {Number} 					activeTheme 		Integer referencing the current theme.
+ * @param {SetStateActionNumber}	updateActiveTheme	State variable setter of activeTheme.
+ * @param {SetStateActionString} 	setToken			State variable setter of token.
+ */
+
+/**
  * @typedef {Object}	Group		An Array for a Group.
- * @property {String} 	groupName	Name of the Group
- * @property {Boolean} 	isPrivate	Is the group private (false) or not (true)
- * @property {User[]}	members		List of users in a group
+ * @property {String} 	groupName	Name of the Group.
+ * @property {Boolean} 	isPrivate	Is the group private (false) or not (true).
+ * @property {User[]}	members		List of users in a group.
  */
 
 /**

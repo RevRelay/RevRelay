@@ -1,34 +1,27 @@
 import {
 	AppBar,
-	Autocomplete,
 	Box,
 	Button,
-	Card,
 	Drawer,
 	IconButton,
-	InputLabel,
 	MenuItem,
 	Select,
-	List,
-	ListItem,
-	Divider,
-	ListItemText,
 	Toolbar,
-	ListItemIcon,
 	Typography,
 } from "@mui/material";
-
 import React, { useState } from "react";
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
-import { SetStateActionNumber, SetStateActionString, SetStateActionBool } from "../../typeDef";
+import {
+	NavBar,
+	SetStateActionNumber,
+	SetStateActionString,
+} from "../../typeDef";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
@@ -36,24 +29,15 @@ import { SetStateActionNumber, SetStateActionString, SetStateActionBool } from "
  * Token change login/register to logout, and also logout the user
  * Themes import load all of the themes
  * 
- * @param {object} 					param
- * @param {object}	 				param.themes 			load all of the themes
- * @param {number} 					param.activeTheme 		integer referencing the current theme
- * @param {SetStateActionNumber}	param.updateActiveTheme	passed to change the state of activeTheme
- * @param {SetStateActionString} 	param.setToken			passed to change the state of token
+ * @param {NavBar} 					navProp						An Array for the Nav to determine the theme and update the theme.
+ * @param {any[]}	 				navProp.themes 				Load all of the List of Themes.
+ * @param {Number} 					navProp.activeTheme 		Integer referencing the current theme
+ * @param {SetStateActionNumber}	navProp.updateActiveTheme	State variable setter of activeTheme.
+ * @param {SetStateActionString} 	navProp.setToken			State variable setter of token.
  * @returns Returns a react page for the navbar
  */
-export default function Nav({
-	themes,
-	activeTheme,
-	updateActiveTheme,
-	token,
-	setToken,
-}) {
+export default function Nav(navProp) {
 	
-	/**
-	 * @type {[boolean, SetStateActionBool]}
-	 */
 	const [sidebar, updateSidebar] = useState(false);
 
 	/**
@@ -76,25 +60,25 @@ export default function Nav({
 		<>
 			<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 				<Box
-					sx={{ width: 250, height: "100%" }}
-					role="presentation"
-					onClick={toggleDrawer(false)}
-					onKeyDown={toggleDrawer(false)}
+					sx = {{ width: 250, height: "100%" }}
+					role = "presentation"
+					onClick = {toggleDrawer(false)}
+					onKeyDown = {toggleDrawer(false)}
 				>
 					{SidebarList()}
 					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						defaultValue={0}
-						value={activeTheme}
-						onChange={(x) => {
-							updateActiveTheme(x.target.value);
+						labelId = "demo-simple-select-label"
+						id = "demo-simple-select"
+						defaultValue = {0}
+						value = {navProp.activeTheme}
+						onChange = {(x) => {
+							navProp.updateActiveTheme(x.target.value);
 						}}
-						style={{ marginLeft: "5%", width: "90%" }}
+						style = {{ marginLeft: "5%", width: "90%" }}
 					>
-						{themes.map((x) => {
+						{navProp.themes.map((x) => {
 							return (
-								<MenuItem key={themes.indexOf(x)} value={themes.indexOf(x)}>
+								<MenuItem key={navProp.themes.indexOf(x)} value={navProp.themes.indexOf(x)}>
 									{x.name}
 								</MenuItem>
 							);
@@ -106,12 +90,12 @@ export default function Nav({
 				<AppBar position="static">
 					<Toolbar>
 						<IconButton
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-label="menu"
-							sx={{ mr: 2 }}
-							onClick={toggleDrawer(true)}
+							size = "large"
+							edge = "start"
+							color = "inherit"
+							aria-label = "menu"
+							sx = {{ mr: 2 }}
+							onClick = {toggleDrawer(true)}
 						>
 							<MenuIcon />
 						</IconButton>
@@ -122,11 +106,11 @@ export default function Nav({
 							<NavSearchBar/>
 						</Box>
 						<Box>
-							{token ? (
+							{navProp.token ? (
 								<Button
-									color="inherit"
+									color = "inherit"
 									onClick={() => {
-										setToken("");
+										navProp.setToken("");
 										navigate("/login");
 									}}
 									startIcon={<LogoutIcon />}
