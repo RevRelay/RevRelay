@@ -1,7 +1,8 @@
 import { useState } from "react";
 import {
 	Button,
-	Grid
+	Grid,
+	Paper
 } from "@mui/material";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
 import APIQuery from "../../API/APIQuery";
@@ -67,24 +68,26 @@ export default function Login({ setToken }) {
 	 */
 	return (
 		<Grid className="form" spacing={2} columns={1} container direction="row" justifyContent="center" alignItems="center" align="flex-start">
-			<form onSubmit={submitButton}>
-				<Grid item xs={1}>
-					<h2>Login here</h2>
-				</Grid>
-				<Grid item xs={1}>
-					<LoginRegisterField id="username" label="Username" value={username} setter={setUsername} required={true}/>
-				</Grid>
-				<br/>
-				<Grid item xs={1}>
-					<PasswordField id="password" label="Password" password={password} setter={setPassword}/>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" type="submit" variant="h5">Login</Button>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
-				</Grid>
-			</form>
+			<Paper elevation={10}sx={{ paddingLeft: 7, paddingRight: 7, paddingTop: 5, paddingBottom: 5, borderRadius: 10,}} >
+				<form onSubmit={submitButton}>
+					<Grid item xs={1}>
+						<h2>Login here</h2>
+					</Grid>
+					<Grid item xs={1}>
+						<LoginRegisterField id="username" label="Username" value={username} setter={setUsername} required={true}/>
+					</Grid>
+					<br/>
+					<Grid item xs={1}>
+						<PasswordField id="password" label="Password" password={password} setter={setPassword}/>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" type="submit" variant="h5">Login</Button>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+					</Grid>
+				</form>
+			</Paper>
 		</Grid>
 	)
 	//<LoginSplash /> Used for background for login page

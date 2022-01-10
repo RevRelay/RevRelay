@@ -53,7 +53,7 @@ export default function Home({JWT}){
 					<br></br>
 					<Button onClick={(x) => navigate("/login")} primary="login" startIcon={<LoginIcon />} > Login </Button>
 				</Item>
-				<Item key="Register" item>
+				<Item key="Register" >
 					<Typography  > New User </Typography>
 					<br></br>
 					<Button onClick={(x) => navigate("/register")} primary="register" startIcon={<HowToRegIcon />} > Register </Button>
