@@ -62,7 +62,7 @@ function uploadImage(image, userId) {
 function getProfilePic(userId) {
 	const key = `${userId}.jpg`;
 	return `${s3Storage}/${key}`;
-	//Axios.get(s3Retrieve, { key });
+	//Axios.get(s3Retrieve, { key }); alternative implementation, save comment
 }
 
 
