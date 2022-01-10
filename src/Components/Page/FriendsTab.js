@@ -10,7 +10,7 @@ import { createBrowserHistory } from "history";
 
 /**
  * renders all the friends of a user and provides links to their pages
- * @param {currentUsername} param0 the current username
+ * @param {string} currentUsername the current username
  * @returns html friend
  */
 const FriendsTab = ({ currentUsername }) => {
