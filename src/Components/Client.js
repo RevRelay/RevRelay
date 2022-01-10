@@ -23,26 +23,38 @@ import {
 	Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
+
 var socket;
 
 /**
  * Allows for Creation of Chats and Chat box
+ *
  * @returns html for chat box in bottom left
  */
 function Client() {
 	useEffect(() => {
 		socket = io.connect("http://localhost:3001");
+
 		return;
 	}, []);
+
 	const actions = [
 		{ icon: <AddBoxIcon />, name: "Join/Create Chat Room" },
 		{ icon: <IndeterminateCheckBoxIcon />, name: "Leave Chat Room" },
 	];
+
+	/**
+	 * @type {[ChatRoom, SetStateActionChatRoom]}
+	 */
 	const [chatrooms, updateChatrooms] = useState([]);
-	const [currentChat, setCurrentChat] = useState(0);
+	const [currentChat, setCurrentChat] = useState("");
 	const [username, setUserName] = useState("");
 	const [room, setRoom] = useState("");
 
+	/**
+	 *
+	 */
 	const joinRoom = () => {
 		if (username !== "" && room !== "") {
 			socket.emit("join_room", { username, room });
@@ -53,6 +65,7 @@ function Client() {
 			setCurrentChat(room);
 		}
 	};
+
 	const handleChange = (event) => {
 		setCurrentChat(event.target.value);
 	};
@@ -65,6 +78,7 @@ function Client() {
 					right: 10,
 					bottom: 10,
 					minWidth: 275,
+					zIndex: 1000,
 				}}
 			>
 				<Box
@@ -75,6 +89,7 @@ function Client() {
 						visibility: currentChat === "add" ? "visible" : "hidden",
 						minWidth: "16vw",
 						minHeight: "25vh",
+
 						backgroundColor: "background.paper",
 						border: 1,
 						borderColor: "primary",

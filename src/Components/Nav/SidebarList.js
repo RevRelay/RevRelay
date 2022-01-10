@@ -27,8 +27,13 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Logout } from "@mui/icons-material";
 
+/**
+ * 
+ * @returns 
+ */
 export default function SidebarList() {
 	let navigate = useNavigate();
+
 	return (
 		<React.Fragment>
 			<List>
@@ -69,6 +74,10 @@ export default function SidebarList() {
 	);
 }
 
+/**
+ * 
+ * @returns 
+ */
 export function SidebarList2() {
 	return (
 		<List>

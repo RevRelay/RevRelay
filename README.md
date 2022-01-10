@@ -1,13 +1,35 @@
-# RevRelay
-Our Front End to the project
+# Project 3: RevRelay
+RevRelay is a social network for anyone with access to internet, to keep up with friends/family, etc. Every day new users join to share their passions and ideas for people to see and connect with others that share the same passion.
 
-- Currently untested is what you should be pulling
+## Tech Stack
+- RDBMS for persistence
+- API built with Java 8 and Spring 5
+- UI built with React JS, JavaScript, HTML, and CSS
+- Java API will use Hibernate to communicate with a PostGreSQL RDBMS
+- Java API will use Maven to resolve dependencies
+- Java API will leverage the Spring Framework utilizing Spring Data, Spring Boot, Spring ORM, and Spring AOP
+- Java API will be RESTful 
+- Complete CI/CD pipelines will use AWS (CodePipeline, CodeBuild, Elastic Beanstalk, and S3)
+- RDBMS will be deployed to the cloud (AWS RDS)
+- Java API will be deployed to the cloud (AWS EC2)
+- UI application will be deployed to the cloud (AWS S3)
+- Java API will have >=80% test coverage for service layer leveraging JUnit and Movkito
+- Java API will leverage Spring's MockMVC for integration/e2e tests of controller endpoints
+- UI will leverage Jest and Enzyme for testing
+- Java API will be secured using Spring Security
+- Java API will be adequately documented (Java Docs and web endpoint documentation [Swagger/OpenAPI])
+- UI will leverage Axios for managing HTTP requests/responses
+- NodeJS with Socket.io will be leveraged for facilitating chats
 
 ## User Story Goals
 - [x] **Register Account**
   - As a User, I should be able to register a new account.
 - [x] **Login**
   - As a User, I should be able to log in to the application.
+- [x] **User Info**
+  - As a User, I should be able to add and change my information (first name, last name, display name, email, birthday).
+- [x] **Change Password**
+  - As a User, I should be able to change my password when I'm logged in.
 - [ ] **User Profile**
   - As a User, I should be able to create and maintain a profile page that is visible to other users.
 - [ ] **Create/Join a Group/Team**

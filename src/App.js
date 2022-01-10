@@ -10,14 +10,16 @@ import {
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
+import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
+import { SetStateActionString } from "./typeDef.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -26,6 +28,11 @@ import Home from "./Components/HomeSplash/Home.js";
 //Background Default - Background
 //Background Paper - Nav pop-out bar
 
+/**
+ * Array of all possible themes.
+ * @param {string} 	name 	name to call the theme.
+ * @param {Theme}	theme	the palate for the theme.
+ */
 const themes = [
 	{
 		name: "Default",
@@ -33,7 +40,13 @@ const themes = [
 	},
 	{
 		name: "Dark",
-		theme: createTheme({ palette: { mode: "dark" } }),
+		theme: createTheme({ palette: { mode: "dark" },
+							typography: {
+								allVariants: {
+								color: "lightgrey"
+								},
+							}
+		}),
 	},
 	{
 		name: "RevRelay",
@@ -79,6 +92,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 	{
@@ -104,6 +122,11 @@ const themes = [
 					secondary: "#FFFFFF",
 					disabled: "#FFFFFF",
 					hint: "#FFFFFF",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -133,6 +156,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 
@@ -148,7 +176,7 @@ const themes = [
 				secondary: {
 					light: "#b0e1ff",
 					main: "#befcff",
-					dark: "#defffa",
+					dark: "#c997c9",
 				},
 				background: {
 					paper: "#ffc1cc",
@@ -156,9 +184,14 @@ const themes = [
 				},
 				text: {
 					primary: "#000000",
-					secondary: "#000000",
+					secondary: "#708aa3",
 					disabled: "#000000",
 					hint: "#000000",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -186,6 +219,11 @@ const themes = [
 					secondary: "#D3D3D3",
 					disabled: "#ffffff",
 					hint: "#ffffff",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -218,6 +256,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 	{
@@ -245,15 +288,33 @@ const themes = [
 					hint: "#000000",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 ];
 
-//Comment For Git
-
+/**
+ * Main function of our single page aplication.
+ *
+ * Changes theme and current page allowed based on their token.
+ *
+ * @returns Single Page of our application.
+ */
 function App() {
+	/**
+	 * Setting the JWT string token
+	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
+
+	/**
+	 * @type {[boolean, SetStateActionString]}
+	 */
+	const [sendSearch, setSendSearch] = useState(false);
 
 	checkJWT();
 
@@ -272,7 +333,11 @@ function App() {
 			});
 	}
 
+	/**
+	 * Setting the active theme but changing the int of activeTheme. Corresponding to the theme array
+	 */
 	const [activeTheme, updateActiveTheme] = useState(0);
+
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			{/* Renders Chat Box */}
@@ -283,6 +348,8 @@ function App() {
 				updateActiveTheme={updateActiveTheme}
 				token={token}
 				setToken={setToken}
+				sendSearch = {sendSearch}
+				setSendSearch = {setSendSearch}
 			/>
 			<Box
 				sx={{
@@ -292,71 +359,55 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard
-					token={token}
-					setToken={setToken}
-					activeTheme={activeTheme}
-					updateActiveTheme={updateActiveTheme}
-				/>
+				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch}/>
 			</Box>
 		</ThemeProvider>
 	);
 }
-function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
-	/**
-	 * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
-	 * and will hold a JWT if there is currently a user logged in.
-	 *
-	 * Use the token object passed above if you need to find any
-	 */
+
+/**
+ * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
+ * and will hold a JWT if there is currently a user logged in.
+ *
+ * Use the token object passed above if you need to find any
+ *
+ * @param {object} 					param
+ * @param {string} 					param.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	param.setToken			state variable setter for token field information.
+ * @param {boolean}					param.sendSearch		boolean state managing searching status
+ * @param {SetStateActionBool}		param.setSendSearch		setter for the above
+ * @returns
+ */
+function SwitchBoard({ token, setToken, sendSearch}) {
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route
-					path="login"
-					element={<Login setToken={setToken} token={token} />}
-				/>
-				<Route
-					path="register"
-					element={<Registration setToken={setToken} token={token} />}
-				/>
+				<Route path="login" element={<Login setToken={setToken} />} />
+				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} />} />
+					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route
-						path=":userID"
-						element={
-							<Page
-								theme={activeTheme}
-								themes={updateActiveTheme}
-								JWT={token}
-							/>
-						}
-					/>
+					<Route path=":pageParam" element={<Page JWT={token} />} />
 					<Route path="profile">
-						<Route
-							index
-							element={
-								<Page
-									JWT={token}
-									theme={activeTheme}
-									themes={updateActiveTheme}
-								/>
-							}
-						/>
-						<Route path="userInfo" element={<UserInfo JWT={token} />} />
+						<Route index element={<Page JWT={token} />} />
+						<Route path="userInfo">
+							<Route index element={<UserInfo JWT={token} />} />
+							<Route
+								path="changePassword"
+								element={<ChangePassword JWT={token} />}
+							/>
+						</Route>
 					</Route>
 				</Route>
 			</Route>
 			<Route path="group">
 				<Route index element={<Groups />} />
-				<Route path=":userID" element={<Group />} />
-				<Route path="profile" element={<GroupProfile />} />
+				<Route path=":pageParam" element={<Page JWT={token} />} />
 			</Route>
 		</Routes>
 	);
@@ -373,26 +424,42 @@ function SwitchBoard({ token, setToken, activeTheme, updateActiveTheme }) {
 // 	return <p>Registration</p>;
 // }
 
+/**
+ *
+ * @returns
+ */
 function Users() {
 	return <Typography color="textPrimary">Users</Typography>;
 }
 
+/**
+ *
+ * @returns
+ */
 function User() {
 	return <Typography color="textPrimary">User</Typography>;
 }
 
+/**
+ *
+ * @returns
+ */
 function UserProfile() {
 	return <Typography color="textPrimary">UserProfile</Typography>;
 }
 
+/**
+ *
+ * @returns
+ */
 function Groups() {
 	return <Typography color="textPrimary">Groups</Typography>;
 }
 
-function Group() {
-	return <Typography color="textPrimary">Group</Typography>;
-}
-
+/**
+ *
+ * @returns
+ */
 function GroupProfile() {
 	return <p>GroupProfile</p>;
 }

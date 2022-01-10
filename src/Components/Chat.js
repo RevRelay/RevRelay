@@ -25,13 +25,17 @@ import {
 	Stack,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { Socket } from "socket.io-client";
 import MicIcon from "@mui/icons-material/Mic";
 
 //https://gridfiti.com/aesthetic-color-palettes/
 
 /**
- * Creates a Chat box.
- * @param {*} param0 {Socket,username,room}
+ *
+ * @param {object} 	param
+ * @param {Socket}	param.socket
+ * @param {string}	param.username 	the username of the current user.
+ * @param {string}	param.room		the name of the room you are currently in.
  * @returns HTML for Chatbox
  */
 function Chat({ socket, username, room }) {
@@ -45,6 +49,7 @@ function Chat({ socket, username, room }) {
 			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 		}
 	}, [messageList]);
+
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
@@ -63,6 +68,7 @@ function Chat({ socket, username, room }) {
 			setMessageList((list) => [...list, data]);
 		});
 	}, [socket]);
+
 	// Clear the chatroom
 	const clearMessages = () => {
 		setMessageList((list) => []);
@@ -197,14 +203,16 @@ function Chat({ socket, username, room }) {
 
 	return (
 		<Box>
-			<h2
+			<Typography
 				style={{
 					textAlign: "center",
 					width: "100%",
 				}}
 			>
-				You are in room {room}
-			</h2>
+				<h2>
+					You are in room {room}
+				</h2>
+			</Typography>
 			<Box
 				ref={scrollRef}
 				sx={{
@@ -221,7 +229,7 @@ function Chat({ socket, username, room }) {
 				<Box>
 					{messageList.map((content) => {
 						return (
-							<Box
+							<Typography
 								sx={{
 									width: "100%",
 									textAlign: content.user !== username ? "left" : "right",
@@ -229,7 +237,7 @@ function Chat({ socket, username, room }) {
 							>
 								{content.user !== username ? "from " + content.user + ": " : ""}
 								{content.message}
-							</Box>
+							</Typography>
 						);
 					})}
 				</Box>
@@ -241,7 +249,7 @@ function Chat({ socket, username, room }) {
 				>
 					{usersTyping.map((typer) => {
 						return typer.username !== username ? (
-							<p>{typer.username} is typing</p>
+							<Typography>{typer.username} is typing</Typography>
 						) : (
 							<></>
 						);
