@@ -92,9 +92,9 @@ export default function Page({ JWT }) {
 	};
 	//ADD add friend logic here
 
-	const handleCloseAddFriend = async () => {
+	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post(
-			"/users/addFriend/" + currentUser.userID,
+			"/users/friend",
 			null,
 			{
 				headers: {
@@ -105,8 +105,8 @@ export default function Page({ JWT }) {
 				},
 			}
 		).then((response) => response.data);
-		toast.success("Friend added!");
-		console.log(response);
+		//toast.success("Friend added!");
+		//console.log(response);
 		setAnchorEl(null);
 	};
 	
@@ -378,7 +378,7 @@ export default function Page({ JWT }) {
 															Join Group
 														</MenuItem>
 													) : (
-														<MenuItem onClick={handleCloseAddFriend}>
+														<MenuItem onClick={handleCloseToggleFriend}>
 															Add Friend
 														</MenuItem>
 													)}
