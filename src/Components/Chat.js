@@ -190,14 +190,16 @@ function Chat(chatProp) {
 
 	return (
 		<Box>
-			<h2
+			<Typography
 				style={{
 					textAlign: "center",
 					width: "100%",
 				}}
 			>
-				You are in room {chatProp.room}
-			</h2>
+				<h2>
+					You are in room {chatProp.room}
+				</h2>
+			</Typography>
 			<Box
 				ref={scrollRef}
 				sx={{
@@ -214,7 +216,7 @@ function Chat(chatProp) {
 				<Box>
 					{messageList.map((content) => {
 						return (
-							<Box
+							<Typography
 								sx={{
 									width: "100%",
 									textAlign: content.user !== chatProp.username ? "left" : "right",
@@ -222,7 +224,7 @@ function Chat(chatProp) {
 							>
 								{content.user !== chatProp.username ? "from " + content.user + ": " : ""}
 								{content.message}
-							</Box>
+							</Typography>
 						);
 					})}
 				</Box>
@@ -233,8 +235,8 @@ function Chat(chatProp) {
 					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
 					{usersTyping.map((typer) => {
-						return typer.username !== chatProp.username ? (
-							<p>{typer.username} is typing</p>
+						return typer.username !== username ? (
+							<Typography>{typer.username} is typing</Typography>
 						) : (
 							<></>
 						);

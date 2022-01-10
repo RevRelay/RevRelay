@@ -55,7 +55,7 @@ export default function CreateGroup(createGroupProp) {
 		}).catch((e) => {
 		});
 	}
-
+	
 	return (
 		<>
 			<Button onClick={toggleOpen}>Create Group</Button>
@@ -80,7 +80,9 @@ export default function CreateGroup(createGroupProp) {
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={toggleOpen}>Cancel</Button>
+				<Button sx={{
+						color: "palette.secondary.dark",
+					}} onClick={toggleOpen}>Cancel</Button>
 					<Button onClick={createGroup}>Create Group!</Button>
 				</DialogActions>
 			</Dialog>

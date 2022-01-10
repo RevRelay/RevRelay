@@ -40,7 +40,13 @@ const themes = [
 	},
 	{
 		name: "Dark",
-		theme: createTheme({ palette: { mode: "dark" } }),
+		theme: createTheme({ palette: { mode: "dark" },
+							typography: {
+								allVariants: {
+								color: "lightgrey"
+								},
+							}
+		}),
 	},
 	{
 		name: "RevRelay",
@@ -86,6 +92,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 	{
@@ -111,6 +122,11 @@ const themes = [
 					secondary: "#FFFFFF",
 					disabled: "#FFFFFF",
 					hint: "#FFFFFF",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -140,6 +156,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 
@@ -155,7 +176,7 @@ const themes = [
 				secondary: {
 					light: "#b0e1ff",
 					main: "#befcff",
-					dark: "#defffa",
+					dark: "#c997c9",
 				},
 				background: {
 					paper: "#ffc1cc",
@@ -163,9 +184,14 @@ const themes = [
 				},
 				text: {
 					primary: "#000000",
-					secondary: "#000000",
+					secondary: "#708aa3",
 					disabled: "#000000",
 					hint: "#000000",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -193,6 +219,11 @@ const themes = [
 					secondary: "#D3D3D3",
 					disabled: "#ffffff",
 					hint: "#ffffff",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -225,6 +256,11 @@ const themes = [
 					hint: "#FFFFFF",
 				},
 			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
+				},
+			},
 		}),
 	},
 	{
@@ -250,6 +286,11 @@ const themes = [
 					secondary: "#000000",
 					disabled: "#000000",
 					hint: "#000000",
+				},
+			},
+			typography: {
+				allVariants: {
+				color: "palette.text.secondary"
 				},
 			},
 		}),
