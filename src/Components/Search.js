@@ -19,7 +19,7 @@ import { NavigateFunction, useNavigate, useParams } from 'react-router-dom'
  * @returns Component containing search results in Card format, as well as a message
  * 			displaying "Loading" or "No Results Found". 
  */
-export default function Search({ token }) {
+export default function Search({ token, sendSearch}) {
 	let navigate = useNavigate();
 	let { searchTerm } = useParams();
 
@@ -43,7 +43,7 @@ export default function Search({ token }) {
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
-	useEffect(() => { FetchSearchResults(); }, []);
+	useEffect(() => { FetchSearchResults(); }, [sendSearch]);
 	return (
 		<Box>
 			{(searchResults && searchResults[0]) ? (
