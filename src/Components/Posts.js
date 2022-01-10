@@ -169,11 +169,23 @@ export default function Posts({ page, currentUser, JWT }) {
 					<Typography>{post.postTitle}</Typography>
 					<Typography>{post.postContent}</Typography>
 					<IconButton onClick={(x) => onVote(post.postID, true)}>
-						<KeyboardArrowUpIcon color="primary" />
+						<KeyboardArrowUpIcon
+							color={
+								post.upVoters.includes(currentUser.userID)
+									? "success"
+									: "primary"
+							}
+						/>
 					</IconButton>
 					{post.upVoters.length}/{post.downVoters.length}
 					<IconButton onClick={(x) => onVote(post.postID, false)}>
-						<KeyboardArrowDownIcon color="primary" />
+						<KeyboardArrowDownIcon
+							color={
+								post.upVoters.includes(currentUser.userID)
+									? "success"
+									: "secondary"
+							}
+						/>
 					</IconButton>
 					<Button onClick={() => handleClickOpen(false, post.postID)}>
 						Reply
