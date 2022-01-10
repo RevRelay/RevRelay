@@ -282,16 +282,13 @@ export default function Page({ JWT }) {
 								flexFlow: "column",
 							}}
 						>
-							
-
 							<Card
 								sx={{
 									minHeight: "10vh",
 									maxHeight: "25vh",
 									maxWidth: "100%",
 								}}
-							>
-								
+							>				
 								<div
 									style={{
 										position: "absolute",
@@ -311,9 +308,7 @@ export default function Page({ JWT }) {
 									image={page.bannerURL}
 									alt="green iguana"
 								/>
-								
 							</Card>
-							
 							<div
 								style={{
 									flexGrow: 1,
