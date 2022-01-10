@@ -42,12 +42,14 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 /**
  * Component for rendering the search bar portion of the NavBar. 
  * 
+ * @param {boolean}					param.sendSearch		boolean state managing searching status
+ * @param {SetStateActionBool}		param.setSendSearch		setter for the above
  * @returns Search Bar with text entry, startAdornment, and endAdornment.
  */
 export default function NavSearchBar() {
 
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
-	
+
 	/**
 	 * 
 	 * @param {Event} event 
@@ -73,7 +75,9 @@ export default function NavSearchBar() {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
 			handleClearSearchBar();
-			window.location.reload(false);
+			console.log(sendSearch)
+			setSendSearch(!sendSearch);
+			console.log(sendSearch)
 		}
 	};
 

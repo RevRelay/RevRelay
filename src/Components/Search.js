@@ -44,7 +44,7 @@ export default function Search(searchProp) {
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
-	useEffect(() => { FetchSearchResults(); }, []);
+	useEffect(() => { FetchSearchResults(); }, [sendSearch]);
 	return (
 		<Box>
 			{(searchResults && searchResults[0]) ? (

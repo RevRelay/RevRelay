@@ -159,7 +159,7 @@ function UserInfo(infoProp) {
 								<Box  width="95%" sx={{paddingLeft:"30%"}}>
 									<br/><br/>
 									<Avatar
-										alt="Remy Sharp"
+										alt="Pidgeon"
 										src={image}
 										sx={{ width: 150, height: 150}}							
 									/>

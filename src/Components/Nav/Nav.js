@@ -103,7 +103,7 @@ export default function Nav(navProp) {
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-							<NavSearchBar/>
+							<NavSearchBar sendSearch = {sendSearch} setSendSearch = {setSendSearch} />
 						</Box>
 						<Box>
 							{navProp.token ? (
