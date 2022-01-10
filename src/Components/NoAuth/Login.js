@@ -42,13 +42,8 @@ async function loginUser(user) {
  * @returns Returns the login page with React
  */
 export default function Login(loginProp) {
-	/**
-	 * @type {[String, SetStateActionString]}
-	 */
+
 	const [username, setUsername] = useState('');
-	/**
-	 * @type {[String, SetStateActionString]}
-	 */
 	const [password, setPassword] = useState('');
 	let navigate = useNavigate();
 
@@ -72,17 +67,37 @@ export default function Login(loginProp) {
 	 * The login page returned with React
 	 */
 	return (
-		<Grid className="form" spacing={2} columns={1} container direction="row" justifyContent="center" alignItems="center" align="flex-start">
+		<Grid 
+			className = "form"
+			spacing = {2}
+			columns = {1}
+			container
+			direction = "row"
+			justifyContent = "center"
+			alignItems = "center"
+			align = "flex-start"
+		>
 			<form onSubmit={submitButton}>
 				<Grid item xs={1}>
 					<h2>Login here</h2>
 				</Grid>
 				<Grid item xs={1}>
-					<LoginRegisterField id="username" label="Username" value={username} setter={setUsername} required={true}/>
+					<LoginRegisterField 
+						id = "username"
+						label = "Username"
+						value = {username} 
+						setter = {setUsername}
+						required = {true}
+					/>
 				</Grid>
 				<br/>
 				<Grid item xs={1}>
-					<PasswordField id="password" label="Password" password={password} setter={setPassword}/>
+					<PasswordField
+						id = "password"
+						label = "Password"
+						password = {password}
+						setter = {setPassword}
+					/>
 				</Grid>
 				<Grid item xs={1}>
 					<Button color="inherit" type="submit" variant="h5">Login</Button>

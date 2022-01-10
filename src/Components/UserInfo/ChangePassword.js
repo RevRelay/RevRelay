@@ -11,7 +11,6 @@ import { passLen } from "../NoAuth/RegisterConfig.js"
 import {
 	JWTs,
 	PasswordCheck,
-	SetStateActionString 
 } from "../../typeDef"
 
 const apiChangePasswordUrl = "/users/password";
@@ -47,17 +46,9 @@ function validPasswordReset(passwordCheck) {
  * @returns The change password page returned with React
  */
 function ChangePassword(passwordChange) {
-	/**
-	 * @type {[String, SetStateActionString]}
-	 */
+	
 	const [oldPassword, setOldPassword] = useState('');
-	/**
-	 * @type {[String, SetStateActionString]}
-	 */
 	const [newPassword, setNewPassword] = useState('');
-	/**
-	 * @type {[String, SetStateActionString]}
-	 */
 	const [confirmPassword, setConfirmPassword] = useState('');
 	let navigate = useNavigate();
 
@@ -98,14 +89,14 @@ function ChangePassword(passwordChange) {
 
 	return (
 		<Grid
-			className="form"
-			spacing={2}
-			columns={1}
+			className = "form"
+			spacing = {2}
+			columns = {1}
 			container
-			direction="row"
-			justifyContent="center"
-			alignItems="center"
-			align="flex-start"
+			direction = "row"
+			justifyContent = "center"
+			alignItems = "center"
+			align = "flex-start"
 		>
 			<form onSubmit={submitButton} className="form">
 				<Paper
@@ -123,28 +114,28 @@ function ChangePassword(passwordChange) {
 					</Grid>
 					<Grid item xs={1}>
 						<PasswordField
-							id="oldPassword"
-							label="Old Password"
-							password={oldPassword}
-							setter={setOldPassword}
+							id = "oldPassword"
+							label = "Old Password"
+							password = {oldPassword}
+							setter = {setOldPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="newPassword"
-							label="New Password"
-							password={newPassword}
-							setter={setNewPassword}
+							id = "newPassword"
+							label = "New Password"
+							password = {newPassword}
+							setter = {setNewPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="confirmPassword"
-							label="Confirm New Password"
-							password={confirmPassword}
-							setter={setConfirmPassword}
+							id = "confirmPassword"
+							label = "Confirm New Password"
+							password = {confirmPassword}
+							setter = {setConfirmPassword}
 						/>
 					</Grid>
 					<Grid item xs={1}>

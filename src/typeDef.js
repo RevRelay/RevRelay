@@ -113,10 +113,20 @@ import { Socket } from "socket.io-client";
 
 /**
  * @typedef 	{Object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.
- * @property 	{String} 					ID 				TextField ID.
+ * @property 	{String} 					id 				TextField ID.
  * @property 	{String} 					label 			TextField label.
  * @property 	{String} 					password 		State variable holding the password.
  * @property 	{SetStateActionString} 		setter 			Setter function for the state variable holding the text field value. 
+ */
+
+/**
+ * @typedef {Object}				LoginProp	An Array for Login Prop for Login so that the length of the hidden/unhidden 
+ * 												password isn't a different lenght.
+ * @param {String} 					id 			TextField ID.
+ * @param {String} 					abel 		TextField label.
+ * @param {String} 					value 		State variable holding the value.
+ * @param {SetStateActionString}	setter 		Setter function for the state variable holding the text field value. 
+ * @param {Boolean} 				required 	True if required, false otherwise.
  */
 
 /**

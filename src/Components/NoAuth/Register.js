@@ -85,8 +85,8 @@ export default function Register(registerProp) {
 	/**
 	 * Submission of the user's information and returning of a JWT
 	 * 
-	 * @param {Event} e 
 	 * @async
+	 * @param {Event} e 
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -120,14 +120,14 @@ export default function Register(registerProp) {
 
 	return (
 		<Grid
-			className="form"
-			spacing={2}
-			columns={1}
+			className = "form"
+			spacing = {2}
+			columns = {1}
 			container
-			direction="row"
-			justifyContent="center"
-			alignItems="center"
-			align="flex-start"
+			direction = "row"
+			justifyContent = "center"
+			alignItems = "center"
+			align = "flex-start"
 		>
 			<Paper
 					elevation={10}
@@ -145,49 +145,49 @@ export default function Register(registerProp) {
 					</Grid>
 					<Grid item xs={1}>
 						<LoginRegisterField
-							id="username"
-							label="Username"
-							value={username}
-							setter={setUsername}
-							required={true}
+							id = "username"
+							label = "Username"
+							value = {username}
+							setter = {setUsername}
+							required = {true}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="password"
-							label="Password"
-							password={password}
-							setter={setPassword}
+							id = "password"
+							label = "Password"
+							password = {password}
+							setter = {setPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="passwordConfirm"
-							label="Confirm Password"
-							password={confirmPassword}
-							setter={setConfirmPassword}
+							id = "passwordConfirm"
+							label = "Confirm Password"
+							password = {confirmPassword}
+							setter = {setConfirmPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<LoginRegisterField
-							id="email"
-							label="Email"
-							value={email}
-							setter={setEmail}
-							required={true}
+							id = "email"
+							label = "Email"
+							value = {email}
+							setter = {setEmail}
+							required = {true}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<LoginRegisterField
-							id="displayName"
-							label="Display Name"
-							value={displayName}
-							setter={setDisplayName}
-							required={true}
+							id = "displayName"
+							label = "Display Name"
+							value = {displayName}
+							setter = {setDisplayName}
+							required = {true}
 						/>
 					</Grid>
 					<Grid item xs={1}>

@@ -9,7 +9,6 @@ import {
 	CardContent,
 	CardActions,
 	Stack,
-	useRadioGroup, 
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/Save';
@@ -21,20 +20,14 @@ import UserInfoEntryElement, { UserInfoElementUsername,
 	UserInfoEntryElementDisplayName, 
 	UserInfoEntryElementEmail 
 } from "./UserInfoEntryElement";
-import {
-	JWTs,
-	User,
-	Toggle,
-	SetStateActionUser,
-	SetStateActionTog, 
-} from "../../typeDef"
+import { JWTs } from "../../typeDef"
 
 /**
  * Shows the user their user info and allows them to change their information on the page.
  * If they want to change their password it redirects them to the Change Password page.
  * 
  * @param {JWTs} 	infoProp		The Array for an object that just contains a JWT
- * @param {string}	infoProp.token 	JWT Token determinig user and log in information.
+ * @param {Atring}	infoProp.token 	JWT Token determinig user and log in information.
  * @returns The user info page returned with React
  */
 function UserInfo(infoProp) {
@@ -61,34 +54,25 @@ function UserInfo(infoProp) {
 		}
 	};
 
-	/**
-	 * @type {[User, SetStateActionUser]}
-	 */
 	const [mostRecentUserInfo, setMostRecentUserInfo] = useState({
-		username:'',
-		firstName:'',
-		lastName:'',
-		email:'',
-		birthDate:'',
-		displayName:'',
-		userID:''
+		username: '',
+		firstName: '',
+		lastName: '',
+		email: '',
+		birthDate: '',
+		displayName: '',
+		userID: ''
 	});
 
-	/**
-	 * @type {[User, SetStateActionUser]}
-	 */
 	const [userInput, setUserInput] = useState({
-		username:'',
-		firstName:'',
-		lastName:'',
-		email:'',
-		birthDate:'',
-		displayName:''
+		username: '',
+		firstName: '',
+		lastName: '',
+		email: '',
+		birthDate: '',
+		displayName: ''
 	});
 
-	/**
-	 * @type {[Toggle, SetStateActionTog]}
-	 */
 	const [toggleEdit, setToggleEdit] = useState({
 		username: false,
 		firstName: false,
@@ -113,13 +97,13 @@ function UserInfo(infoProp) {
 	const FetchUserInfo = async (e) => {	
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + infoProp.token}}).then(resp => resp);
 		setMostRecentUserInfo({
-			username:response.data.username,
-			firstName:response.data.firstName, 
-			lastName:response.data.lastName,
-			email:response.data.email,
+			username: response.data.username,
+			firstName: response.data.firstName, 
+			lastName: response.data.lastName,
+			email: response.data.email,
 			birthDate: new Date(response.data.birthDate),
-			displayName:response.data.displayName,
-			userID:response.data.userID
+			displayName: response.data.displayName,
+			userID: response.data.userID
 		});
 
 		// get user profile picture from s3 using userId, clear previous profile picture if changed
@@ -133,11 +117,12 @@ function UserInfo(infoProp) {
 	 * 
 	 */
 	function submitButton() {
-		let user = {"email":userInput.email,
-					"firstName":userInput.firstName,
-					"lastName":userInput.lastName,
-					"birthDate":userInput.birthDate,
-					"displayName":userInput.displayName,
+		let user = {
+			"email": userInput.email,
+			"firstName": userInput.firstName,
+			"lastName": userInput.lastName,
+			"birthDate": userInput.birthDate,
+			"displayName": userInput.displayName,
 		};
 		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === "" && !image){
 			alert("You cannot change nothing.");
@@ -163,7 +148,6 @@ function UserInfo(infoProp) {
 						marginRight: "15%",
 						display: "flex",
 						height: "100%",
-
 						maxWidth: "100%",
 						minWidth: 500,
 					}}
@@ -209,13 +193,13 @@ function UserInfo(infoProp) {
 					<Card sx={{ width: "65%"}} style={{ borderColor: "none", boxShadow: "none" }}>
 						<CardContent sx={{ marginLeft: "2%", marginRight: "2%"}}>
 							<br/><br/><br/><br/>
-							<Typography variant="h4">
+							<Typography variant = "h4">
 								Profile Settings
 							</Typography>
 							<br/>
 							<Box>
-								<UserInfoElementUsername key={"usernameElement"} user={mostRecentUserInfo}/>
-								<UserInfoEntryElementPassword key={"passwordElement"} />
+								<UserInfoElementUsername key = {"usernameElement"} user = {mostRecentUserInfo}/>
+								<UserInfoEntryElementPassword key = {"passwordElement"} />
 								{userInfoFields.map((x) => {
 									return (
 										<UserInfoEntryElement 
