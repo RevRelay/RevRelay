@@ -176,7 +176,7 @@ export default function Page({ JWT }) {
 	/**
 	 * @async
 	 */
-	async function getCurrentGroup() { }
+	async function getCurrentGroup() {}
 
 	/**
 	 * Gets Page from back server
@@ -409,7 +409,7 @@ export default function Page({ JWT }) {
 									console.log(val);
 								}}
 								sx={{ margin: 5, width: 300, height: 200 }}
-								ListboxProps={{ style: { maxHeight: '150px' } }}
+								ListboxProps={{ style: { maxHeight: "150px" } }}
 								renderInput={(params) => (
 									<TextField {...params} label="Your Groups" />
 								)}
@@ -588,7 +588,7 @@ export default function Page({ JWT }) {
 								Go to Group
 							</Button>
 							{page.userID === currentUser.userID &&
-								currentUser.userID === group.userOwnerID ? (
+							currentUser.userID === group.userOwnerID ? (
 								<Button onClick={() => deleteGroup(group.groupID)}>
 									Delete Group
 								</Button>
