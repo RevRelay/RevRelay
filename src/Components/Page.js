@@ -37,7 +37,11 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import getCurrentUser, {
+	getGroupsByID,
+	getPageAxios,
+	getUserGroups,
+} from "../API/PageAPI";
 /**
  * Renders a generic page with condintional rendering
  * @param {object} param
@@ -121,7 +125,6 @@ export default function Page({ JWT }) {
 
 	let { pageParam } = useParams();
 	let path = useLocation();
-	const [tab, updateTab] = useState(0);
 
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
@@ -137,29 +140,24 @@ export default function Page({ JWT }) {
 	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [tab, updateTab] = useState(0);
+	const [reload, setReload] = useState(false);
+	const [tab, updateTab] = useState("");
 
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
 	// };
 
 	useEffect(() => {
+		setReload(false);
 		GetPage();
-	}, []);
+		updateTab(0);
+	}, [reload]);
 
 	/**
 	 * Gets Page from back server
 	 * @async
 	 */
 	const [group, setGroup] = useState(null);
-	const getCurrentUser = async () => {
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + JWT,
-			},
-		};
-		return await APIQuery.get("users/current", axiosConfig);
-	};
 
 	/**
 	 * Gets Page from back server
@@ -167,7 +165,7 @@ export default function Page({ JWT }) {
 
 	async function getCurrentGroup() {}
 	async function GetPage() {
-		getCurrentUser().then(async (data) => {
+		getCurrentUser(JWT).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
 
@@ -178,20 +176,12 @@ export default function Page({ JWT }) {
 				apiRegisterUrl = "/users/" + pageParam;
 			else apiRegisterUrl = "/groups/" + pageParam;
 
-			let axiosConfig = {
-				headers: {
-					Authorization: "Bearer " + JWT,
-				},
-			};
-			await APIQuery.get(
-				"groups/getgroups/" + data.data.userID,
-				axiosConfig
-			).then((data) => {
+			getUserGroups(JWT, data.data.userID).then((data) => {
 				console.log(data.data);
 				setUserGroups(data.data);
 			});
 
-			await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
+			getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
 				let id = -1;
 				if (path.pathname.includes("user")) {
 					id = data.data.userID;
@@ -200,12 +190,10 @@ export default function Page({ JWT }) {
 					data.data.userPage.username = data.data.username;
 					data.data.userPage.displayName = data.data.displayName;
 					updatePage(data.data.userPage);
-					await APIQuery.get("groups/getgroups/" + id, axiosConfig).then(
-						(data) => {
-							setGroups(data.data);
-							setIsBusy(false);
-						}
-					);
+					getGroupsByID(JWT, id).then((data) => {
+						setGroups(data.data);
+						setIsBusy(false);
+					});
 				} else {
 					id = data.data.userOwnerID;
 					data.data.groupPage.pageTitle =
@@ -216,12 +204,7 @@ export default function Page({ JWT }) {
 
 					apiRegisterUrl = "/groups/" + pageParam;
 
-					axiosConfig = {
-						headers: {
-							Authorization: "Bearer " + JWT,
-						},
-					};
-					await APIQuery.get(apiRegisterUrl, axiosConfig).then(async (data) => {
+					getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
 						console.log(data.data);
 					});
@@ -441,7 +424,11 @@ export default function Page({ JWT }) {
 				return (
 					<>
 						{page.groupPage ? (
-							<PageSetting page={page} updatePage={updatePage} />
+							<PageSetting
+								page={page}
+								updatePage={updatePage}
+								setReload={setReload}
+							/>
 						) : (
 							<Groups />
 						)}{" "}
@@ -454,7 +441,11 @@ export default function Page({ JWT }) {
 						{page.groupPage ? (
 							<></>
 						) : (
-							<PageSetting page={page} updatePage={updatePage} />
+							<PageSetting
+								page={page}
+								updatePage={updatePage}
+								setReload={setReload}
+							/>
 						)}{" "}
 					</>
 				);

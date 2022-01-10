@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import APIQuery from "../../API/APIQuery";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { ListItemText } from "@mui/material";
+import { Box, ListItemText } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -10,7 +10,6 @@ import { createBrowserHistory } from "history";
 
 const FriendsTab = ({ currentUsername }) => {
 	let history = createBrowserHistory();
-	console.log(currentUsername);
 	const [friends, setFriends] = useState([]);
 	const [loading, setLoading] = useState(true);
 	let navigate = useNavigate();
@@ -22,8 +21,12 @@ const FriendsTab = ({ currentUsername }) => {
 		}).then((response) => response.data);
 		setFriends(response);
 		setLoading(false);
+		return () => {
+			setFriends({}); // This worked for me
+			setLoading(false);
+		};
 	};
-	console.log(friends);
+
 	useEffect(() => {
 		getAllFriends();
 	}, []);
@@ -53,12 +56,12 @@ const FriendsTab = ({ currentUsername }) => {
 			{!loading
 				? friends.map((friend) => {
 						return (
-							<>
+							<Box key={friend.userID}>
 								<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
 									<ListItemText primary={friend.displayName} />
 									<ListItemText primary={friend.email} />
 								</ListItemButton>
-							</>
+							</Box>
 						);
 				  })
 				: ""}

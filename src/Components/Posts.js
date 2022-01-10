@@ -130,6 +130,24 @@ export default function Posts({ page, currentUser, JWT }) {
 	}, []);
 	//console.log("POSTS:", posts);
 
+	async function onVote(postID, up) {
+		let axiosConfig = {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				userID: page.userID,
+				upvote: up,
+			},
+		};
+		console.log(axiosConfig);
+		await APIQuery.put("posts/" + postID + "/vote", null, axiosConfig).then(
+			(data) => {
+				GetPosts();
+			}
+		);
+	}
+
 	/**
 	 * Generate Posts html
 	 * @param {object} 	param
@@ -147,11 +165,11 @@ export default function Posts({ page, currentUser, JWT }) {
 				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
 					<Typography>{post.postTitle}</Typography>
 					<Typography>{post.postContent}</Typography>
-					<IconButton>
+					<IconButton onClick={(x) => onVote(post.postID, true)}>
 						<KeyboardArrowUpIcon color="primary" />
 					</IconButton>
-					{post.postLikes}
-					<IconButton>
+					{post.upVoters.length}/{post.downVoters.length}
+					<IconButton onClick={(x) => onVote(post.postID, false)}>
 						<KeyboardArrowDownIcon color="primary" />
 					</IconButton>
 					<Button onClick={() => handleClickOpen(false, post.postID)}>
