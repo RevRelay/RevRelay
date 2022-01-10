@@ -1,48 +1,35 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-
+import React, { useState, 
+	useEffect, 
+	useRef, 
+	useCallback 
+} from "react";
 import {
 	Box,
-	Button,
-	Card,
-	CardHeader,
-	CardMedia,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	Divider,
-	Fade,
-	Grid,
 	IconButton,
-	Pagination,
-	Paper,
-	Tab,
-	Tabs,
 	TextField,
-	Tooltip,
-	Typography,
 	Stack,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Socket } from "socket.io-client";
 import MicIcon from "@mui/icons-material/Mic";
+import { ChatRoom } from "../typeDef"
 
 //https://gridfiti.com/aesthetic-color-palettes/
 
 /**
  * 
- * @param {object} 	param
- * @param {Socket}	param.socket
- * @param {string}	param.username 	the username of the current user.
- * @param {string}	param.room		the name of the room you are currently in.
+ * @param {ChatRoom} 	chatProp
+ * @param {Socket}		chatProp.socket
+ * @param {String}		chatProp.username 	The username of the current user.
+ * @param {String}		chatProp.room		The name of the room you are currently in.
  * @returns HTML for Chatbox
  */
-function Chat({ socket, username, room }) {
+function Chat(chatProp) {
 	const [message, setMessage] = useState("");
 	const [messageList, setMessageList] = useState([]);
-	const scrollRef = useRef(null);
 	const [usersTyping, setUsersTyping] = useState([]);
+
+	const scrollRef = useRef(null);
 
 	useEffect(() => {
 		if (scrollRef.current) {
@@ -53,21 +40,21 @@ function Chat({ socket, username, room }) {
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
-				room: room,
-				user: username,
+				room: chatProp.room,
+				user: chatProp.username,
 				message: message,
 			};
-			socket.emit("send_message", messageBody);
+			chatProp.socket.emit("send_message", messageBody);
 			setMessageList((list) => [...list, messageBody]);
 			setMessage("");
 		}
 	};
 
 	useEffect(() => {
-		socket.on("receive_message", (data) => {
+		chatProp.socket.on("receive_message", (data) => {
 			setMessageList((list) => [...list, data]);
 		});
-	}, [socket]);
+	}, [chatProp.socket]);
 	
 	// Clear the chatroom
 	const clearMessages = () => {
@@ -80,31 +67,31 @@ function Chat({ socket, username, room }) {
 		console.log(usersTyping);
 		let userActive = false;
 		for (var i = 0; i < usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == username) {
+			if (usersTyping[i]["username"] == chatProp.username) {
 				userActive = true;
 				//If current typing countdown is 4, don't start a new countdown timer
 				if (usersTyping[i]["countdown"] < 4) {
-					socket.emit("active countdown", {
-						user: username,
-						room: room,
+					chatProp.socket.emit("active countdown", {
+						user: chatProp.username,
+						room: chatProp.room,
 					});
 				}
 			}
 		}
 		if (!userActive) {
-			socket.emit("active countdown", {
-				user: username,
-				room: room,
+			chatProp.socket.emit("active countdown", {
+				user: chatProp.username,
+				room: chatProp.room,
 			});
 		}
 	};
 
 	const setNotActive = () => {
 		for (var i = 0; i < usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == username) {
-				socket.emit("not active", {
-					user: username,
-					room: room,
+			if (usersTyping[i]["username"] == chatProp.username) {
+				chatProp.socket.emit("not active", {
+					user: chatProp.username,
+					room: chatProp.room,
 				});
 			}
 		}
@@ -168,7 +155,7 @@ function Chat({ socket, username, room }) {
 						type: "audio/ogg; codecs=opus",
 					});
 					console.log("sending audio");
-					socket.emit("radio", blob, room);
+					chatProp.socket.emit("radio", blob, chatProp.room);
 				};
 
 				//Start recording
@@ -193,11 +180,11 @@ function Chat({ socket, username, room }) {
 	});
 
 	useEffect(() => {
-		socket.on("typing countdown", setCountdown);
-		socket.on("voice", playAudio);
+		chatProp.socket.on("typing countdown", setCountdown);
+		chatProp.socket.on("voice", playAudio);
 		return () => {
-			socket.off("typing countdown", setCountdown);
-			socket.off("voice", playAudio);
+			chatProp.socket.off("typing countdown", setCountdown);
+			chatProp.socket.off("voice", playAudio);
 		};
 	}, [usersTyping, playAudio, setCountdown]);
 
@@ -209,7 +196,7 @@ function Chat({ socket, username, room }) {
 					width: "100%",
 				}}
 			>
-				You are in room {room}
+				You are in room {chatProp.room}
 			</h2>
 			<Box
 				ref={scrollRef}
@@ -230,10 +217,10 @@ function Chat({ socket, username, room }) {
 							<Box
 								sx={{
 									width: "100%",
-									textAlign: content.user !== username ? "left" : "right",
+									textAlign: content.user !== chatProp.username ? "left" : "right",
 								}}
 							>
-								{content.user !== username ? "from " + content.user + ": " : ""}
+								{content.user !== chatProp.username ? "from " + content.user + ": " : ""}
 								{content.message}
 							</Box>
 						);
@@ -246,7 +233,7 @@ function Chat({ socket, username, room }) {
 					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
 					{usersTyping.map((typer) => {
-						return typer.username !== username ? (
+						return typer.username !== chatProp.username ? (
 							<p>{typer.username} is typing</p>
 						) : (
 							<></>

@@ -45,9 +45,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
  * @returns Search Bar with text entry, startAdornment, and endAdornment.
  */
 export default function NavSearchBar() {
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
+
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 	
 	/**
