@@ -118,8 +118,7 @@ function UserInfo({JWT}) {
 			userID:response.data.userID
 		});
 
-		// get user profile picture from s3 using userId
-		console.log(getProfilePic(response.data.userID));
+		// get user profile picture from s3 using userId, clear previous profile picture if changed
 		sessionStorage.clear();
 		if(!image) {
 			setImage(getProfilePic(response.data.userID));
