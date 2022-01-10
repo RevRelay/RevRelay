@@ -64,7 +64,7 @@ const FriendsTab = ({ currentUsername }) => {
 							</Box>
 						);
 				  })
-				: ""}
+			: ""}
 		</>
 	);
 };
