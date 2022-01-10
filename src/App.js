@@ -19,7 +19,7 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
-import { SetStateActionString } from "./typeDef.js";
+import { SetStateActionBool } from "./typeDef.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -309,15 +309,16 @@ function App() {
 	 * Setting the JWT string token
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
-	localStorage.setItem("token", token);
-
-	/**
-	 * @type {[boolean, SetStateActionString]}
-	 */
 	const [isSendSearch, setIsSendSearch] = useState(false);
+
+	localStorage.setItem("token", token);
 
 	checkJWT();
 
+	/**
+	 * ---
+	 * @async
+	 */
 	async function checkJWT() {
 		console.log("Checking JWT");
 		let axiosConfig = {
@@ -371,7 +372,7 @@ function App() {
  *
  * Use the token object passed above if you need to find any
  *
- * @param {object} 					param
+ * @param {object} 					param					---
  * @param {String} 					param.token 			JWT token determinig user and log in information.
  * @param {SetStateActionString} 	param.setToken			State variable setter for token field information.
  * @param {Boolean}					param.isSendSearch		Boolean state managing searching status.
@@ -412,52 +413,41 @@ function SwitchBoard({ token, setToken, isSendSearch}) {
 	);
 }
 
-// function Home() {
-// 	return <Typography color="textPrimary">HOME</Typography>;
-// }
-
-// function Login() {
-// 	return <p>Login</p>;
-// // }
-// function Registration() {
-// 	return <p>Registration</p>;
-// }
-
 /**
- *
- * @returns
+ * ---
+ * @returns ---
  */
 function Users() {
 	return <Typography color="textPrimary">Users</Typography>;
 }
 
 /**
- *
- * @returns
+ * ---
+ * @returns ---
  */
 function User() {
 	return <Typography color="textPrimary">User</Typography>;
 }
 
 /**
- *
- * @returns
+ * ---
+ * @returns ---
  */
 function UserProfile() {
 	return <Typography color="textPrimary">UserProfile</Typography>;
 }
 
 /**
- *
- * @returns
+ * ---
+ * @returns ---
  */
 function Groups() {
 	return <Typography color="textPrimary">Groups</Typography>;
 }
 
 /**
- *
- * @returns
+ * ---
+ * @returns ---
  */
 function GroupProfile() {
 	return <p>GroupProfile</p>;

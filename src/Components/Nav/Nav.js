@@ -27,7 +27,7 @@ import {
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
  * 
- * Token change login/register to logout, and also logout the user
+ * Token change login/register to logout, and also logout the user.
  * Themes import load all of the themes
  * 
  * @param {NavBar} 					navProp						An Array for the Nav to determine the theme and update the theme.
@@ -44,9 +44,9 @@ export default function Nav(navProp) {
 	const [sidebar, updateSidebar] = useState(false);
 
 	/**
-	 * 
-	 * @param {Event} open 
-	 * @returns 
+	 * ---
+	 * @param {Event} open ---
+	 * @returns ---
 	 */
 	const toggleDrawer = (open) => (event) => {
 		if (
@@ -59,6 +59,7 @@ export default function Nav(navProp) {
 		updateSidebar(open);
 	};
 	let navigate = useNavigate();
+	
 	return (
 		<>
 			<Drawer open={sidebar} onClose={toggleDrawer(false)}>

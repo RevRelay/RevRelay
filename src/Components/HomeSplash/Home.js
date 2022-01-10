@@ -11,6 +11,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { JWTs } from "../../typeDef";
 
+/**
+ * ---
+ */
 const Item = styled(Paper)(({ theme }) => ({
 	...theme.typography.body2,
 	padding: theme.spacing(1),
@@ -19,10 +22,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 /**
+ * ---
  * 
  * @param {JWTs} 	homeProp		The Array for an object that just contains a JWT.
  * @param {String} 	homeProp.token 	JWT Token determinig user and log in information.
- * @returns 
+ * @returns ---
  */
 export default function Home(homeProp){
 	let navigate = useNavigate();

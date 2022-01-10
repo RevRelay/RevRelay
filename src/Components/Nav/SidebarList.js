@@ -12,12 +12,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Logout } from "@mui/icons-material";
 
 /**
+ * ---
  * 
- * @returns 
+ * @returns ---
  */
 export default function SidebarList() {
 	let navigate = useNavigate();
@@ -46,8 +45,8 @@ export default function SidebarList() {
 }
 
 /**
- * 
- * @returns 
+ * ---
+ * @returns ---
  */
 export function SidebarList2() {
 	return (

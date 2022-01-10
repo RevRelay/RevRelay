@@ -42,6 +42,10 @@ export default function Search(searchProp) {
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
+
+	/**
+	 * ---
+	 */
 	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
 	return (
 		<Box>
@@ -75,7 +79,7 @@ export default function Search(searchProp) {
  */
 function SearchResultCard(result, index, navigate) {
 	/**
-	 * 
+	 * ---
 	 */
 	function handleClickSearchResult() {
 		if (result.type == "USER") {
@@ -85,6 +89,7 @@ function SearchResultCard(result, index, navigate) {
 			navigate(`/group/${result.id}`);
 		}
 	}
+	
 	return (
 		<Card key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<CardContent>

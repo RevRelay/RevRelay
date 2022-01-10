@@ -19,12 +19,7 @@ export default function PageSetting({ page, updatePage, setReload }) {
 	const [loading, setLoading] = useState(false);
 	let tempPage = { ...page };
 	tempPage.posts = null;
-	const [form, updateForm] = useState({
-		...tempPage,
-		// bannerURL: page.bannerURL,
-		// description: page.description,
-		// isPrivate: page.private,
-	});
+	const [form, updateForm] = useState({...tempPage,});
 
 	const { description, bannerURL, isPrivate } = form;
 	// stretch goal: page title (custom name of page)
@@ -34,12 +29,20 @@ export default function PageSetting({ page, updatePage, setReload }) {
 	// description
 	// banner
 
+	/**
+	 * ---
+	 * @param {Event} e ---
+	 */
 	const changeDescription = (e) => {
 		let tempForm = { ...form };
 		tempForm.description = e.target.value;
 		updateForm(tempForm);
 	};
 
+	/**
+	 * ---
+	 * @param {Event} e ---
+	 */
 	const togglePrivacy = (e) => {
 		let tempForm = { ...form };
 
@@ -47,12 +50,20 @@ export default function PageSetting({ page, updatePage, setReload }) {
 		updateForm(tempForm);
 	};
 
+	/**
+	 * ---
+	 * @param {Event} e ---
+	 */
 	const changeURL = (e) => {
 		let tempForm = { ...form };
 		tempForm.bannerURL = e.target.value;
 		updateForm(tempForm);
 	};
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const saveChanges = async () => {
 		setLoading(true);
 		//Axios:
@@ -68,56 +79,56 @@ export default function PageSetting({ page, updatePage, setReload }) {
 	};
 
 	return (
-    <>
-      <Box
-        sx={{
-          marginTop: "5%",
-          marginLeft: "5%",
-          marginRight: "5%",
-          maxWidth: "100%",
-        }}
-      >
-        {!loading ? (
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch onChange={togglePrivacy} checked={form.private} />
-                  }
-                  label="Private Page"
-                />
-              </FormGroup>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                value={description}
-                label="Description"
-                onChange={(e) => changeDescription(e)}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                value={bannerURL}
-                label="URL of Banner"
-                onChange={(e) => changeURL(e)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  saveChanges();
-                }}
-              >
-                Save Page Settings
-              </Button>
-            </Grid>
-          </Grid>
-        ) : (
-          <h3>Loading...</h3>
-        )}
-      </Box>
-    </>
-  );
+		<>
+			<Box
+				sx={{
+				marginTop: "5%",
+				marginLeft: "5%",
+				marginRight: "5%",
+				maxWidth: "100%",
+				}}
+			>
+				{!loading ? (
+					<Grid container spacing={2}>
+						<Grid item xs={4}>
+						<FormGroup>
+							<FormControlLabel
+								control={
+									<Switch onChange={togglePrivacy} checked={form.private} />
+								}
+								label="Private Page"
+							/>
+						</FormGroup>
+						</Grid>
+						<Grid item xs={4}>
+							<TextField
+								value={description}
+								label="Description"
+								onChange={(e) => changeDescription(e)}
+							/>
+						</Grid>
+						<Grid item xs={4}>
+							<TextField
+								value={bannerURL}
+								label="URL of Banner"
+								onChange={(e) => changeURL(e)}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="contained"
+								onClick={() => {
+									saveChanges();
+								}}
+							>
+								Save Page Settings
+							</Button>
+						</Grid>
+					</Grid>
+				) : (
+					<h3>Loading...</h3>
+				)}
+		</Box>
+		</>
+	);
 }

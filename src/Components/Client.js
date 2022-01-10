@@ -22,6 +22,9 @@ var socket;
  * @returns html for chat box in bottom left
  */
 function Client() {
+	/**
+	 * ---
+	 */
 	useEffect(() => {
 		socket = io.connect("http://localhost:3001");
 
@@ -42,7 +45,7 @@ function Client() {
 	const [room, setRoom] = useState("");
 
 	/**
-	 *
+	 * ---
 	 */
 	const joinRoom = () => {
 		if (username !== "" && room !== "") {
@@ -55,6 +58,10 @@ function Client() {
 		}
 	};
 
+	/**
+	 * ---
+	 * @param {Event} event ---
+	 */
 	const handleChange = (event) => {
 		setCurrentChat(event.target.value);
 	};

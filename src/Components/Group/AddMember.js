@@ -10,13 +10,17 @@ import { GroupSolo, Group } from "../../typeDef"
 /**
  * Adds a Member to a group
  * @param {GroupSolo} 	memberProp			An Array for a prop object that just contain a group.
- * @param {Group}		memberProp.group	
+ * @param {Group}		memberProp.group	---
  * @returns the same group with an added User via their ID
  */
 export default function AddMember(memberProp) {
 
     const [memberID, updateMemberID] = useState();
 
+	/**
+	 * --
+	 * @async
+	 */
     const addMember = async () => {
         let tempGroup = { ...memberProp.group };
         tempGroup.members.push(memberID);

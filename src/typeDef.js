@@ -12,8 +12,19 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * @typedef {Object}	FriendsTabs			The Array for a prop object that just conatins the username for a user.
+ * @property {String}	currentUsername		The current username of a user.
+ */
+
+/**
  * @typedef {Object}	UserProp	The Array for an object that just contains a User.
  * @property {User}		user		The Array for a User.
+ */
+
+/**
+ * @typedef {Object}	Friend		---
+ * @property {String}	userID		---
+ * @property {String}	displayName	The display name of the friend.
  */
 
 /**
@@ -249,7 +260,16 @@ import { Socket } from "socket.io-client";
  * 		groups:	{
  * 					groupID: String;
  * 					isPrivate: Boolean;
- * 					members: User[]
+ * 					members: User[];
  * 				}[];
  * }>>} SetStateActionGroups State Setter Function for a list of Groups
+ */
+
+/**
+ * @typedef {Dispatch<SetStateAction<{
+ * 		friends:	{
+ * 					userID: String;
+ * 					displayName: String;
+ * 				}[];
+ * }>>} SetStateActionFriends State Setter Function for a list of Friends
  */

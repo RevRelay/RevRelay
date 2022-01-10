@@ -34,6 +34,10 @@ function UserInfo(infoProp) {
 
 	// used for choosing an image
 	const inputRef = React.useRef();
+
+	/**
+	 * ---
+	 */
 	const filePopup = () => inputRef.current.click();
 
 	// state for setting image
@@ -42,7 +46,7 @@ function UserInfo(infoProp) {
 	/**
 	 * Makes sure that file is valid, sets selected file to profile picture.
 	 * 
-	 * @param {event} event 
+	 * @param {event} event ---
 	 */
 	const onSelectFile = (event) => {
 		if(event.target.files && event.target.files.length > 0) {
@@ -88,11 +92,16 @@ function UserInfo(infoProp) {
 		{name: "Last Name", varname: "lastName"},
 	]
 
+	/**
+	 * ---
+	 */
 	useEffect(()=>{ FetchUserInfo(); },[])
 
 	/**
+	 * ---
+	 * 
 	 * @async
-	 * @param {Event} e 
+	 * @param {Event} e ---
 	 */
 	const FetchUserInfo = async (e) => {	
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + infoProp.token}}).then(resp => resp);
@@ -114,7 +123,7 @@ function UserInfo(infoProp) {
 	}
 
 	/**
-	 * 
+	 * ---
 	 */
 	function submitButton() {
 		let user = {

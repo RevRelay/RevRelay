@@ -13,7 +13,6 @@ import {
 	CreateGroups,
 	Group, 
 	SetStateActionGroups,
-	SetStateActionGroup
 } from "../../typeDef";
 
 /**
@@ -33,16 +32,19 @@ export default function CreateGroup(createGroupProp) {
 		isPrivate: false,
 		members: null
 	});
-		
+	
+	/**
+	 * ---
+	 */
 	const toggleOpen = () => {
 		setOpen(!open);
 	};
 
 	/**
+	 * ---
 	 * @async
 	 */
 	const createGroup = async () => {
-
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + createGroupProp.JWT,

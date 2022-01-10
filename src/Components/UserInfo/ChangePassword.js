@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-	Button,
-	Grid,
-	Paper,
-} from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { PasswordField } from "../Library/FormField";
 import { useNavigate } from "react-router-dom";
 import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
-import {
-	JWTs,
-	PasswordCheck,
-} from "../../typeDef"
+import { JWTs, PasswordCheck } from "../../typeDef"
 
 const apiChangePasswordUrl = "/users/password";
 

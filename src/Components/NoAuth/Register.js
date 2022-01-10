@@ -21,10 +21,6 @@ const apiRegisterUrl = "/public/users/register";
  * Axios query to create a user
  *
  * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
- * @param {String} 			user.username		The registering user's username.
- * @param {String}			user.password		The registering user's password.
- * @param {String} 			user.email			The registering user's email.
- * @param {String}			user.displayName	The registering user's display name.
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
 async function registerUser(user) {
@@ -71,7 +67,7 @@ function validInputRegister(user) {
  *
  * @param {SetJWTs} 				registerProp			The Array for an object that just contains the setter for the JWT.
  * @param {SetStateActionString} 	registerProp.setToken 	State variable setter for token field information.
- * @returns returns the React webpage for registering
+ * @returns returns the React webpage for registering a user.
  */
 export default function Register(registerProp) {
 
@@ -83,10 +79,10 @@ export default function Register(registerProp) {
 	let navigate = useNavigate();
 
 	/**
-	 * Submission of the user's information and returning of a JWT
+	 * Submission of the user's information and returning of a JWT.
 	 * 
 	 * @async
-	 * @param {Event} e 
+	 * @param {Event} e ---
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -205,7 +201,6 @@ export default function Register(registerProp) {
 		</Grid>
 	);
 }
-//<LoginSplash /> Used for background for register page
 
 Register.propTypes = {
 	setToken: PropTypes.func.isRequired,

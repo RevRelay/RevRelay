@@ -18,6 +18,7 @@ import { ChatRoom } from "../typeDef"
 //https://gridfiti.com/aesthetic-color-palettes/
 
 /**
+ * ---
  * 
  * @param {ChatRoom} 	chatProp
  * @param {Socket}		chatProp.socket
@@ -32,12 +33,18 @@ function Chat(chatProp) {
 
 	const scrollRef = useRef(null);
 
+	/**
+	 * ---
+	 */
 	useEffect(() => {
 		if (scrollRef.current) {
 			scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 		}
 	}, [messageList]);
 
+	/**
+	 * ---
+	 */
 	const sendMessage = () => {
 		if (message !== "") {
 			const messageBody = {
@@ -51,19 +58,26 @@ function Chat(chatProp) {
 		}
 	};
 
+	/**
+	 * ---
+	 */
 	useEffect(() => {
 		chatProp.socket.on("receive_message", (data) => {
 			setMessageList((list) => [...list, data]);
 		});
 	}, [chatProp.socket]);
 	
-	// Clear the chatroom
+	/**
+	 * Clear the chatroom
+	 */
 	const clearMessages = () => {
 		setMessageList((list) => []);
 	};
 
-	// Setting active/non-active users
-	// Shows if someone is typing
+	/**
+	 * Setting active/non-active users.
+	 * Shows if someone is typing.
+	 */
 	const setActive = () => {
 		console.log(usersTyping);
 		let userActive = false;
@@ -87,6 +101,9 @@ function Chat(chatProp) {
 		}
 	};
 
+	/**
+	 * ---
+	 */
 	const setNotActive = () => {
 		for (var i = 0; i < usersTyping.length; i++) {
 			if (usersTyping[i]["username"] == chatProp.username) {
@@ -98,7 +115,10 @@ function Chat(chatProp) {
 		}
 	};
 
-	//Actually manipulate the frontend state of the list of which users are typing
+	/**
+	 * Actually manipulate the frontend state of the list of which users are typing
+	 * @param {---} data ---
+	 */
 	const setCountdown = (data) => {
 		console.log(data);
 		let userActive = false;
@@ -130,7 +150,9 @@ function Chat(chatProp) {
 		console.log(usersTyping);
 	};
 
-	// Send audio to server, records 5 seconds after button is pressed
+	/**
+	 * Send audio to server, records 5 seconds after --- button is pressed
+	 */
 	const sendAudio = () => {
 		const constraints = { audio: true };
 		console.log("audio button pressed");
@@ -170,7 +192,9 @@ function Chat(chatProp) {
 			});
 	};
 
-	//Playback audio received from server
+	/**
+	 * Playback audio received from server
+	 */
 	const playAudio = useCallback((arrayBuffer) => {
 		console.log("playing audio!");
 		let blob = new Blob([arrayBuffer], {
@@ -181,6 +205,9 @@ function Chat(chatProp) {
 		audio.play();
 	});
 
+	/**
+	 * 
+	 */
 	useEffect(() => {
 		chatProp.socket.on("typing countdown", setCountdown);
 		chatProp.socket.on("voice", playAudio);

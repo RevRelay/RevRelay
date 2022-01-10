@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
 	Button,
 	Grid,
-	Paper
 } from "@mui/material";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
 import APIQuery from "../../API/APIQuery";
@@ -21,13 +20,13 @@ import {
 const apiLoginUrl = '/public/users/login'
 
 /**
- * Axios query to login a user
+ * Axios query to login a user.
  * 
  * @async
  * @param {LoginUser}	user			The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
  * @param {String} 		user.username	The logging in user's username.
  * @param {String}		user.password	The logging in user's password.
- * @returns The JWT of the user in the form data{jwt{*KEY*}}
+ * @returns The JWT of the user in the form data{jwt{*KEY*}}.
  */
 async function loginUser(user) {
 	return await APIQuery.post(apiLoginUrl,
@@ -49,10 +48,10 @@ export default function Login(loginProp) {
 	let navigate = useNavigate();
 
 	/**
-	 * Submit button is pressed login request is sent
+	 * Submit button is pressed login request is sent.
 	 * 
 	 * @async
-	 * @param {Event} e The event of the login button being pressed, username and password are captured
+	 * @param {Event} e The event of the login button being pressed, username and password are captured.
 	 */
 	const submitButton = async e => {
 		e.preventDefault();
@@ -64,9 +63,6 @@ export default function Login(loginProp) {
 		JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
 
-	/**
-	 * The login page returned with React
-	 */
 	return (
 		<Grid 
 			className = "form"
@@ -109,7 +105,6 @@ export default function Login(loginProp) {
 			</form>
 		</Grid>
 	)
-	//<LoginSplash /> Used for background for login page
 }
 
 Login.propTypes = {

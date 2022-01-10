@@ -2,10 +2,10 @@ import {
 	IconButton,
 	FormControl,
 	OutlinedInput,
+	InputAdornment
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled, alpha } from '@mui/material/styles';
-import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -52,15 +52,16 @@ export default function NavSearchBar(searchProp) {
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 
 	/**
+	 * ---
 	 * 
-	 * @param {Event} event 
+	 * @param {Event} event ---
 	 */
 	const handleChangeSearchBar = (event) => {
 		setSearchInput({ searchTerm: event.target.value });
 	}
 
 	/**
-	 * 
+	 * ---
 	 */
 	const handleClearSearchBar = () => {
 		setSearchInput({ ...searchInput, searchTerm: '' });
@@ -69,8 +70,8 @@ export default function NavSearchBar(searchProp) {
 	let navigate = useNavigate();
 
 	/**
-	 * 
-	 * @param {Event} event 
+	 * ---
+	 * @param {Event} event	---
 	 */
 	const handleSearchSubmit = (event) => {
 		if (searchInput.searchTerm != '') {

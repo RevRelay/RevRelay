@@ -10,15 +10,11 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
 	DialogTitle,
 	Divider,
-	Fade,
 	Grid,
-	IconButton,
 	Menu,
 	MenuItem,
-	Pagination,
 	Paper,
 	Stack,
 	Tab,
@@ -26,7 +22,6 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
 import CreateGroup from "./Group/CreateGroup";
@@ -78,16 +73,27 @@ export default function Page(pageProp) {
 	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
 
+	/**
+	 * ---
+	 */
 	const path = useLocation();
 	useEffect(() => {
 		setIsReload(false);
 		GetPage();
 		updateTab(0);
 	}, [isReload]);
+
+	/**
+	 * ---
+	 */
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleInvite = async () => {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -110,18 +116,33 @@ export default function Page(pageProp) {
 		setOpen2(false);
 	};
 
+	/**
+	 * ---
+	 * @param {Event} event ---
+	 */
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+
+	/**
+	 * ---
+	 */
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseInviteToGroup = async () => {
 		setOpen2(true);
 	};
 
-	//ADD add friend logic here
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post("/users/friend", null, {
 			headers: {
@@ -134,7 +155,10 @@ export default function Page(pageProp) {
 		setAnchorEl(null);
 	};
 
-	//ADD add join group logic here
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
@@ -150,12 +174,15 @@ export default function Page(pageProp) {
 		setAnchorEl(null);
 	};
 
-	//ADD start Chat Logic Here
+	/**
+	 * ---
+	 */
 	const handleCloseStartChat = () => {
 		setAnchorEl(null);
 	};
 
 	/**
+	 * ---
 	 * @async
 	 */
 	async function getCurrentGroup() {}
@@ -214,8 +241,9 @@ export default function Page(pageProp) {
 	}
 
 	/**
+	 * ---
 	 * @async
-	 * @returns 
+	 * @returns ---
 	 */
 	async function getAllFriends() {
 		if (!page.username) return;
@@ -520,12 +548,17 @@ export default function Page(pageProp) {
 	/**
 	 * Placeholder for About
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function About() {
 		return <Typography>{page.description}</Typography>;
 	}
 
+	/**
+	 * ---
+	 * 
+	 * @returns ---
+	 */
 	function Private() {
 		console.log(currentUser);
 		return <></>;
@@ -534,7 +567,7 @@ export default function Page(pageProp) {
 	/**
 	 * Placeholder for Members
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Members() {
 		let nav = useNavigate();
@@ -557,7 +590,7 @@ export default function Page(pageProp) {
 	/**
 	 * Placeholder for Settings
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Settings() {
 		return <div></div>;
@@ -566,7 +599,7 @@ export default function Page(pageProp) {
 	/**
 	 * Placeholder for Groups
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Groups() {
 		let navigate = useNavigate();
@@ -577,10 +610,19 @@ export default function Page(pageProp) {
 			},
 		};
 
+		/**
+		 * ---
+		 * @param {String} groupID ---
+		 */
 		const goToGroup = (groupID) => {
 			navigate("/group/" + groupID);
 		};
 
+		/**
+		 * ---
+		 * @async
+		 * @param {String} groupID ---
+		 */
 		const deleteGroup = async (groupID) => {
 			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
 				console.log(e);

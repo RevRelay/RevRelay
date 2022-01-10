@@ -34,11 +34,11 @@ import { User, Page, Post } from "../typeDef";
 /**
  * Render Posts Tab
  *
- * @param {object} 	param
- * @param {Page}	param.page
- * @param {User}	param.currentUser
- * @param {string}	param.JWT			token determinig user and log in information.
- * @returns
+ * @param {object} 	param				---
+ * @param {Page}	param.page			---
+ * @param {User}	param.currentUser	---
+ * @param {String}	param.JWT			JWT token determinig user and log in information.
+ * @returns ---
  */
 export default function Posts({ page, currentUser, JWT }) {
 	const [posts, updatePosts] = useState({
@@ -67,6 +67,11 @@ export default function Posts({ page, currentUser, JWT }) {
 		children: null,
 	});
 
+	/**
+	 * ---
+	 * @param {Boolean} isOp	---
+	 * @param {---} 	post 	---
+	 */
 	const handleClickOpen = (isOp, post) => {
 		if (!isOp) {
 			let np = { ...newpost };
@@ -85,11 +90,17 @@ export default function Posts({ page, currentUser, JWT }) {
 		}
 	};
 
+	/**
+	 * ---
+	 */
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	/**
+	 * ---
+	 */
 	const handlePost = () => {
-		//console.log("Sending Post", newpost);
 		PostPosts();
 		setOpen(false);
 	};
@@ -111,6 +122,7 @@ export default function Posts({ page, currentUser, JWT }) {
 		return () => (running = false);
 		//console.log(posts);
 	}
+
 	/**
 	 * Save Posts
 	 * @async
@@ -127,11 +139,18 @@ export default function Posts({ page, currentUser, JWT }) {
 		});
 	}
 
+	/**
+	 * ---
+	 */
 	useEffect((x) => {
 		GetPosts();
 	}, []);
-	//console.log("POSTS:", posts);
 
+	/**
+	 * ---
+	 * @param {String} 	postID 	---
+	 * @param {---} 	up 		---
+	 */
 	async function onVote(postID, up) {
 		let axiosConfig = {
 			headers: {
@@ -153,9 +172,9 @@ export default function Posts({ page, currentUser, JWT }) {
 	/**
 	 * Generate Posts html
 	 *
-	 * @param {object} 	param
-	 * @param {Post}	param.post
-	 * @returns posts html
+	 * @param {object} 	param		---
+	 * @param {Post}	param.post	---
+	 * @returns ---
 	 */
 	function PostElement({ post }) {
 		return (
@@ -197,7 +216,6 @@ export default function Posts({ page, currentUser, JWT }) {
 					);
 				})}
 			</Box>
-
 			<br />
 			<br />
 			<Box>

@@ -3,11 +3,12 @@ import APIQuery from "./APIQuery";
 const urlConnection = "http://localhost:5000/";
 // const urlConnection =
 //   "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
+
 /**
  * ---
  * 
  * @async
- * @param {String} JWT 
+ * @param {String} JWT ---
  * @returns ---
  */
 export default async function getCurrentUser(JWT) {
@@ -22,8 +23,8 @@ export default async function getCurrentUser(JWT) {
 /**
  * ---
  * 
- * @param {String} JWT 
- * @param {String} userID 
+ * @param {String} JWT 		---
+ * @param {String} userID 	---
  * @returns ---
  */
 export async function getUserGroups(JWT, userID) {
@@ -38,8 +39,8 @@ export async function getUserGroups(JWT, userID) {
 /**
  * ---
  * 
- * @param {String} JWT 
- * @param {String} apiRegisterUrl 
+ * @param {String} JWT 				---
+ * @param {String} apiRegisterUrl 	---
  * @returns ---
  */
 export async function getPageAxios(JWT, apiRegisterUrl) {
@@ -54,8 +55,8 @@ export async function getPageAxios(JWT, apiRegisterUrl) {
 /**
  * ---
  * 
- * @param {String} JWT 
- * @param {String} ID 
+ * @param {String} JWT 	---
+ * @param {String} ID 	---
  * @returns ---
  */
 export async function getGroupsByID(JWT, ID) {
