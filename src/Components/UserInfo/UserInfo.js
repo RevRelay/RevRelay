@@ -22,6 +22,7 @@ import UserInfoEntryElement, { UserInfoElementUsername,
 	UserInfoEntryElementEmail 
 } from "./UserInfoEntryElement";
 import {
+	JWTs,
 	User,
 	Toggle,
 	SetStateActionUser,
@@ -29,12 +30,14 @@ import {
 } from "../../typeDef"
 
 /**
+ * Shows the user their user info and allows them to change their information on the page.
+ * If they want to change their password it redirects them to the Change Password page.
  * 
- * @param {object} prop
- * @param {string} prop.JWT token determinig user and log in information.
- * @returns 
+ * @param {JWTs} 	infoProp		The Array for an object that just contains a JWT
+ * @param {string}	infoProp.token 	JWT Token determinig user and log in information.
+ * @returns The user info page returned with React
  */
-function UserInfo({JWT}) {
+function UserInfo(infoProp) {
 
 	// used for choosing an image
 	const inputRef = React.useRef();
@@ -45,7 +48,7 @@ function UserInfo({JWT}) {
 	
 	/**
 	 * Makes sure that file is valid, sets selected file to profile picture
-	 * @param {} event 
+	 * @param {event} event 
 	 */
 	const onSelectFile = (event) => {
 		if(event.target.files && event.target.files.length > 0) {
@@ -107,7 +110,7 @@ function UserInfo({JWT}) {
 	 * @param {Event} e 
 	 */
 	const FetchUserInfo = async (e) => {	
-		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
+		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + infoProp.token}}).then(resp => resp);
 		setMostRecentUserInfo({
 			username:response.data.username,
 			firstName:response.data.firstName, 
@@ -138,7 +141,7 @@ function UserInfo({JWT}) {
 		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === "" && !image){
 			alert("You cannot change nothing.");
 		} else {
-			updateUser(user, JWT);
+			updateUser(user, infoProp.token);
 		}
 		// need to check if image changed, save to s3 bucket
 		if(image) {
@@ -196,11 +199,21 @@ function UserInfo({JWT}) {
 							</Typography>
 							<br/>
 							<Box>
-								<UserInfoElementUsername key={"usernameElement"} mostRecentUserInfo={mostRecentUserInfo}/>
+								<UserInfoElementUsername key={"usernameElement"} user={mostRecentUserInfo}/>
 								<UserInfoEntryElementPassword key={"passwordElement"} />
 								{userInfoFields.map((x) => {
 									return (
-										<UserInfoEntryElement key = {x.varname+"EntryElement"} varname={x.varname} fieldName = {x.name} mostRecentUserInfo = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
+										<UserInfoEntryElement 
+											key = {x.varname+"EntryElement"}
+											varname={x.varname}
+											fieldName = {x.name}
+											mostRecentUserInfo = {mostRecentUserInfo}
+											setUserInput = {setUserInput}
+											toggleEdit = {toggleEdit}
+											setToggleEdit =
+											{setToggleEdit}
+											setMostRecentUserInfo={setMostRecentUserInfo}
+										/>
 									)
 								})}
 								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} mostRecentUserInfo={mostRecentUserInfo} setUserInput={setUserInput} setMostRecentUserInfo={setMostRecentUserInfo} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />

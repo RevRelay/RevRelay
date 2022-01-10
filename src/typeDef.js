@@ -2,34 +2,65 @@ import { Dispatch, SetStateAction } from "react";
 import { Socket } from "socket.io-client";
 
 /**
+ * @typedef {object} 	JWTs	The Array for an object that just contains a JWT.
+ * @property {string}	token	JWT Token determinig user and log in information.
+ */
+
+/**
+ * @typedef {object} 	SetJWTs					The Array for an object that just contains the setter for the JWT.
+ * @property {SetStateActionString}	setToken	State variable setter for JWT token field information.
+ */
+
+/**
+ * @typedef {object}	UserProp	The Array for an object that just contains a User.
+ * @property {User}		user		The Array for a User.
+ */
+
+/**
  * @typedef {object} 	User		The Array for a User. Does not include the password or userID.
- * @property {string} 	username	
- * @property {string} 	firstName
- * @property {string} 	lastName
- * @property {Date} 	birthDate
- * @property {string}	displayName
+ * @property {string} 	username	The logged in user's username.
+ * @property {string} 	firstName	The logged in user's first name.
+ * @property {string} 	lastName	The logged in user's last name.
+ * @property {string} 	email		The logged in user's email.
+ * @property {Date} 	birthDate	The logged in user's birth date.
+ * @property {string}	displayName	The logged in user's display name.
  */
 
 /**
- * @typedef {object} 	Toggle		The Array for which variable of the User Array are we trying to update
- * @property {boolean} 	username 
- * @property {boolean} 	firstName
- * @property {boolean} 	lastName
- * @property {boolean} 	birthDate
- * @property {boolean}	displayName
+ * @typedef {object} 	RegisterUser	The Array for a User when registering. Does not include userID, names, or birth date.
+ * @property {string} 	username		The registering user's username.
+ * @property {string}	password		The registering user's password.
+ * @property {string} 	email			The registering user's email.
+ * @property {string}	displayName		The registering user's display name.
  */
 
 /**
- * @typedef {object}	PasswordCheck	The Array used to check if the two new password inputs are the same.
- * @property {string}	newPassword 
- * @property {string}	confirmPassword
+ * @typedef {object} 	LoginUser	The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
+ * @property {string} 	username	The logging in user's username.
+ * @property {string}	password	The logging in user's password.
+ */
+
+/**
+ * @typedef {object} 	Toggle		The Array for which variable of the User Array are we trying to update. True is editing. False is not editing.
+ * @property {boolean} 	username 	Is the user's username being edited?
+ * @property {boolean} 	firstName	Is the user's first name being edited?
+ * @property {boolean} 	lastName	Is the user's last name being edited?
+ * @property {boolean}	email		Is the user's email being edited?
+ * @property {boolean} 	birthDate	Is the user's birth date being edited?
+ * @property {boolean}	displayName	Is the user's display name being edited?
+ */
+
+/**
+ * @typedef {object}	PasswordCheck	An Array with 2 Strings used to check if the two new password inputs are the same.
+ * @property {string}	newPassword 	The new password.
+ * @property {string}	confirmPassword	New password repeated. Needs to be the same at the new password.
  */
 
 /**
  * @typedef {object} 	ChatRoom
  * @property {Socket}	socket
- * @property {string}	username 	the username of the current user.
- * @property {string}	room		the name of the room you are currently in.
+ * @property {string}	username 	The username of the current user.
+ * @property {string}	room		The name of the room you are currently in.
  */
 
 /**
@@ -61,6 +92,14 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * @typedef 	{object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.
+ * @property 	{String} 					ID 				TextField ID.
+ * @property 	{String} 					label 			TextField label.
+ * @property 	{String} 					password 		State variable holding the password.
+ * @property 	{SetStateActionString} 		setter 			Setter function for the state variable holding the text field value. 
+ */
+
+/**
  * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
  */
 
@@ -83,7 +122,7 @@ import { Socket } from "socket.io-client";
  * 		lastName: 		string;
  * 		email: 			string;
  * 		birthDate: 		Date;
- * 		displayName: string;
+ * 		displayName: 	string;
  * }>>} SetStateActionUser
  */
 

@@ -8,7 +8,11 @@ import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import './Auth.css';
-import { User, SetStateActionString } from "../../typeDef";
+import { 
+	SetJWTs,
+	LoginUser,
+	SetStateActionString 
+} from "../../typeDef";
 
 /**
  * The url of the appended login url
@@ -19,7 +23,9 @@ const apiLoginUrl = '/public/users/login'
  * Axios query to login a user
  * 
  * @async
- * @param {User} user The user to be logged in
+ * @param {LoginUser}	user			The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
+ * @param {string} 		user.username	The logging in user's username.
+ * @param {string}		user.password	The logging in user's password.
  * @returns The JWT of the user in the form data{jwt{*KEY*}}
  */
 async function loginUser(user) {
@@ -31,11 +37,11 @@ async function loginUser(user) {
 /**
  * Login a user
  * 
- * @param {object} 					param 
- * @param {SetStateActionString} 	param.setToken state variable setter for token field information.
+ * @param {SetJWTs} 				loginProp 			The Array for an object that just contains the setter for the JWT.
+ * @param {SetStateActionString} 	loginProp.setToken 	State variable setter for token field information.
  * @returns Returns the login page with React
  */
-export default function Login({ setToken }) {
+export default function Login(loginProp) {
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
@@ -54,12 +60,12 @@ export default function Login({ setToken }) {
 	 */
 	const submitButton = async e => {
 		e.preventDefault();
-		const jwt = await loginUser({
+		const JWT = await loginUser({
 			username,
 			password
 		});
-		setToken(jwt);
-		jwt ? navigate("/user/profile") : alert("Unable to log in.");
+		loginProp.setToken(JWT);
+		JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
 
 	/**

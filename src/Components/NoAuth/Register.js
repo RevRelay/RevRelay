@@ -5,7 +5,11 @@ import APIQuery from "../../API/APIQuery";
 import { Button, Grid, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
-import { User, SetStateActionString } from "../../typeDef";
+import { 
+	SetJWTs,
+	RegisterUser, 
+	SetStateActionString 
+} from "../../typeDef";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
 
 /**
@@ -16,7 +20,11 @@ const apiRegisterUrl = "/public/users/register";
 /**
  * Axios query to create a user
  *
- * @param {User} user The user to be created
+ * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
+ * @param {string} 			user.username		The registering user's username.
+ * @param {string}			user.password		The registering user's password.
+ * @param {string} 			user.email			The registering user's email.
+ * @param {string}			user.displayName	The registering user's display name.
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
 async function registerUser(user) {
@@ -26,10 +34,14 @@ async function registerUser(user) {
 }
 
 /**
- * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message
+ * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message.
  *
- * @param {User} user The object to check for validity
- * @returns returns negation of truthy or falsy of the image
+ * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
+ * @param {string} 			user.username		The registering user's username.
+ * @param {string}			user.password		The registering user's password.
+ * @param {string} 			user.email			The registering user's email.
+ * @param {string}			user.displayName	The registering user's display name.
+ * @returns returns negation of truthy or falsy of the image.
  */
 function validInputRegister(user) {
 	let message = "";
@@ -57,11 +69,11 @@ function validInputRegister(user) {
 /**
  * Registering a user
  *
- * @param {object} 					param
- * @param {SetStateActionString} 	param.setToken 	state variable setter for token field information.
+ * @param {SetJWTs} 				registerProp			The Array for an object that just contains the setter for the JWT.
+ * @param {SetStateActionString} 	registerProp.setToken 	State variable setter for token field information.
  * @returns returns the React webpage for registering
  */
-export default function Register({ setToken }) {
+export default function Register(registerProp) {
 
 	/**
 	 * @type {[string, SetStateActionString]}
@@ -89,6 +101,7 @@ export default function Register({ setToken }) {
 	 * Submission of the user's information and returning of a JWT
 	 * 
 	 * @param {event} e 
+	 * @async
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -110,7 +123,7 @@ export default function Register({ setToken }) {
 					email,
 					displayName,
 				});
-				setToken(response.data.jwt);
+				registerProp.setToken(response.data.jwt);
 				navigate("/user/profile");
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);

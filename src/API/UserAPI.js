@@ -65,11 +65,11 @@ function uploadImage(image, userId) {
 /**
  * Retrieves a users profile picture from the s3 bucket, not using axios to connect but rather just accessing public url
  * 
- * @param {*} userId 
+ * @param {number} userID 
  * @returns link to where image is hosted
  */
-function getProfilePic(userId) {
-	const key = `${userId}.jpg`;
+function getProfilePic(userID) {
+	const key = `${userID}.jpg`;
 	return `${s3Storage}/${key}`;
 	//Axios.get(s3Retrieve, { key }); alternative implementation, save comment
 }

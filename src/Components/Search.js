@@ -9,17 +9,18 @@ import {
 	TextField
 } from "@mui/material";
 import APIQuery from "../API/APIQuery";
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom'
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { JWTs } from "../typeDef";
 
 /**
  * Component for rendering search results. 
  * 
- * @param {object} param 
- * @param {string} param.token JWT token determinig user and log in information.
+ * @param {JWTs} 	searchProp 			The Array for an object that just contains a JWT
+ * @param {string} 	searchProp.token 	JWT token determinig user and log in information.
  * @returns Component containing search results in Card format, as well as a message
  * 			displaying "Loading" or "No Results Found". 
  */
-export default function Search({ token }) {
+export default function Search(searchProp) {
 	let navigate = useNavigate();
 	let { searchTerm } = useParams();
 
@@ -38,7 +39,7 @@ export default function Search({ token }) {
 		setSearchComplete('');
 		const response = await APIQuery.get(
 			`/search/name/${searchTerm}`,
-			{ headers: { "Authorization": "Bearer " + token } }
+			{ headers: { "Authorization": "Bearer " + searchProp.token } }
 		).then(resp => resp);
 		setSearchResults(response.data);
 		setSearchComplete('true');

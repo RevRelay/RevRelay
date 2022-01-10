@@ -42,15 +42,16 @@ import getCurrentUser, {
 	getPageAxios,
 	getUserGroups,
 } from "../API/PageAPI";
+import { JWTs } from "../typeDef";
 
 /**
- * Renders a generic page with condintional rendering
+ * Renders a generic page with condintional rendering.
  *
- * @param {object} param
- * @param {string} param.JWT token determining user and log in information.
- * @returns HTML for default page
+ * @param {JWTs} 	pageProp		The Array for an object that just contains a JWT
+ * @param {string} 	pageProp.token 	Token determining user and log in information.
+ * @returns The default page for a user or group returned with React.
  */
-export default function Page({ JWT }) {
+export default function Page(pageProp) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
@@ -63,7 +64,7 @@ export default function Page({ JWT }) {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
 				GroupID: userGroups.content.filter((x) => {
@@ -95,7 +96,7 @@ export default function Page({ JWT }) {
 			null,
 			{
 				headers: {
-					Authorization: "Bearer " + JWT,
+					Authorization: "Bearer " + pageProp.token,
 				},
 				params: {
 					username: page.username,
@@ -111,7 +112,7 @@ export default function Page({ JWT }) {
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
 				GroupID: page.groupID,
@@ -173,7 +174,7 @@ export default function Page({ JWT }) {
 	 * @async
 	 */
 	async function GetPage() {
-		getCurrentUser(JWT).then(async (data) => {
+		getCurrentUser(pageProp.token).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
 
@@ -184,12 +185,12 @@ export default function Page({ JWT }) {
 				apiRegisterUrl = "/users/" + pageParam;
 			else apiRegisterUrl = "/groups/" + pageParam;
 
-			getUserGroups(JWT, data.data.userID).then((data) => {
+			getUserGroups(pageProp.token, data.data.userID).then((data) => {
 				console.log(data.data);
 				setUserGroups(data.data);
 			});
 
-			getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+			getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
 				let id = -1;
 				if (path.pathname.includes("user")) {
 					id = data.data.userID;
@@ -198,7 +199,7 @@ export default function Page({ JWT }) {
 					data.data.userPage.username = data.data.username;
 					data.data.userPage.displayName = data.data.displayName;
 					updatePage(data.data.userPage);
-					getGroupsByID(JWT, id).then((data) => {
+					getGroupsByID(pageProp.token, id).then((data) => {
 						setGroups(data.data);
 						setIsBusy(false);
 					});
@@ -212,7 +213,7 @@ export default function Page({ JWT }) {
 
 					apiRegisterUrl = "/groups/" + pageParam;
 
-					getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+					getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
 						console.log(data.data);
 					});
@@ -411,7 +412,7 @@ export default function Page({ JWT }) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currentUser={currentUser} JWT={JWT} />;
+				return <Posts page={page} currentUser={currentUser} JWT={pageProp.token} />;
 				break;
 			case 1:
 				return <About />;
@@ -533,7 +534,7 @@ export default function Page({ JWT }) {
 
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 		};
 
@@ -575,7 +576,7 @@ export default function Page({ JWT }) {
 				<br />
 				<br />
 				{page.userID === currentUser.userID ? (
-					<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
+					<CreateGroup JWT={pageProp.token} groups={groups} setGroups={setGroups} />
 				) : (
 					""
 				)}

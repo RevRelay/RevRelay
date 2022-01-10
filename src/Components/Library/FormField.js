@@ -2,6 +2,7 @@ import { useState } from "react";
 import { OutlinedInput, FormControl, InputLabel, InputAdornment, IconButton, withStyles } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
+import { PasswordProp } from "../../typeDef";
 
 const FormControlStd = styled(FormControl)({
 	width: "26ch"
@@ -9,15 +10,17 @@ const FormControlStd = styled(FormControl)({
 
 /**
  * Generic password entry TextField.
- * @param {String} props.id TextField Id.
- * @param {String} props.label TextField label.
- * @param {String} props.password State variable holding the password.
- * @param {Function} props.setter Setter function for the state variable holding the text field value. 
+ * 
+ * @param {PasswordProp}	passwordProp			Password Prop to show or not show the password in forms.
+ * @param {String} 			passwordProp.id 		TextField Id.
+ * @param {String} 			passwordProp.label 		TextField label.
+ * @param {String} 			passwordProp.password 	State variable holding the password.
+ * @param {Function} 		passwordProp.setter 	Setter function for the state variable holding the text field value. 
  * @returns 
  */
-export function PasswordField(props) {
+export function PasswordField(passwordProp) {
 
-	const passwordSetter = props.setter;
+	const passwordSetter = passwordProp.setter;
 	
 	const [showPassword, setShowPassword] = useState('');
 
@@ -31,12 +34,12 @@ export function PasswordField(props) {
 	
 	return (
 		<FormControlStd variant="outlined">
-			<InputLabel required={true} htmlFor="outlined-password">{props.label}</InputLabel>
+			<InputLabel required={true} htmlFor="outlined-password">{passwordProp.label}</InputLabel>
 			<OutlinedInput
-				id={props.id}
-				label={props.label+" *"}
+				id={passwordProp.id}
+				label={passwordProp.label+" *"}
 				type={showPassword ? 'text' : 'password'}
-				value={props.password}
+				value={passwordProp.password}
 				onChange={(e) => passwordSetter(e.target.value)}
 				maxRows={1}
 				endAdornment = {

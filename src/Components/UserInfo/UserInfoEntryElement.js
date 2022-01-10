@@ -15,6 +15,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import {
 	User,
+	UserProp,
 	Toggle,
 	SetStateActionUser,
 	SetStateActionTog, 
@@ -134,12 +135,17 @@ export function UserInfoEntryElementPassword () {
 /**
  * Function for defining user info elements on UserInfo pretaining to their username. This is not editable.
  * 
- * @param {object} 	element 
- * @param {User} 	element.mostRecentUserInfo state variable holding user field information.
+ * @param {User} 		usernameProp.user 				State variable holding user field information.
+ * @param {string} 		usernameProp.user.username		The logged in user's username.
+ * @param {string} 		usernameProp.user.firstName		The logged in user's first name.
+ * @param {string} 		usernameProp.user.lastName		The logged in user's last name.
+ * @param {Date} 		usernameProp.user.birthDate		The logged in user's birth date.
+ * @param {string}		usernameProp.user.displayName	The logged in user's display name.
+ * 
  * @returns ReactFragment containing UserInfo data about their username with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
-export function UserInfoElementUsername ({mostRecentUserInfo}) {
+export function UserInfoElementUsername (usernameProp) {
 	return(
 		<React.Fragment>
 			<Stack direction="row" spacing={3}>
@@ -150,7 +156,7 @@ export function UserInfoElementUsername ({mostRecentUserInfo}) {
 				</Box>
 				<Box sx={{width:"40%"}}>
 					<Typography>
-						{mostRecentUserInfo.username}
+						{usernameProp.user.username}
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}/>
