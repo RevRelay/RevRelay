@@ -1,5 +1,6 @@
 import {
 	Autocomplete,
+	Avatar,
 	Box,
 	Button,
 	Card,
@@ -36,6 +37,7 @@ import APIQuery from "../API/APIQuery";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
+import { getProfilePic } from "../API/UserAPI";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,
@@ -75,6 +77,7 @@ export default function Page({ JWT }) {
 	const [friends, setFriends] = useState([]);
 	const [group, setGroup] = useState(null);
 	const { pageParam } = useParams();
+	const [image, setImage] = useState(null);
 
 	const path = useLocation();
 	useEffect(() => {
@@ -176,7 +179,7 @@ export default function Page({ JWT }) {
 		getCurrentUser(JWT).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
-
+			setImage(getProfilePic(user.userID));
 			let apiRegisterUrl = "";
 			if (path.pathname.includes("user/profile"))
 				apiRegisterUrl = "/users/current";
@@ -314,6 +317,11 @@ export default function Page({ JWT }) {
 									}}
 								>
 									<CardHeader title={page.pageTitle} />
+									<Avatar
+										alt="Pidgeon"
+										src={image}
+										sx={{ width: 190, height: 190 }}
+									/>
 								</div>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}

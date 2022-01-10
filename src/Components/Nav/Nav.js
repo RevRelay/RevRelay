@@ -41,6 +41,8 @@ import { SetStateActionNumber, SetStateActionString, SetStateActionBool } from "
  * @param {number} 					param.activeTheme 		integer referencing the current theme
  * @param {SetStateActionNumber}	param.updateActiveTheme	passed to change the state of activeTheme
  * @param {SetStateActionString} 	param.setToken			passed to change the state of token
+ * @param {boolean}					param.sendSearch		boolean state managing searching status
+ * @param {SetStateActionBool}		param.setSendSearch		setter for the above
  * @returns Returns a react page for the navbar
  */
 export default function Nav({
@@ -49,6 +51,8 @@ export default function Nav({
 	updateActiveTheme,
 	token,
 	setToken,
+	sendSearch,
+	setSendSearch
 }) {
 	
 	/**
@@ -119,7 +123,7 @@ export default function Nav({
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-							<NavSearchBar/>
+							<NavSearchBar sendSearch = {sendSearch} setSendSearch = {setSendSearch} />
 						</Box>
 						<Box>
 							{token ? (
