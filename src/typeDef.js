@@ -2,97 +2,117 @@ import { Dispatch, SetStateAction } from "react";
 import { Socket } from "socket.io-client";
 
 /**
- * @typedef {object} 	JWTs	The Array for an object that just contains a JWT.
- * @property {string}	token	JWT Token determinig user and log in information.
+ * @typedef {Object} 	JWTs	The Array for an object that just contains a JWT.
+ * @property {String}	token	JWT Token determinig user and log in information.
  */
 
 /**
- * @typedef {object} 	SetJWTs					The Array for an object that just contains the setter for the JWT.
+ * @typedef {Object} 	SetJWTs					The Array for an object that just contains the setter for the JWT.
  * @property {SetStateActionString}	setToken	State variable setter for JWT token field information.
  */
 
 /**
- * @typedef {object}	UserProp	The Array for an object that just contains a User.
+ * @typedef {Object}	UserProp	The Array for an object that just contains a User.
  * @property {User}		user		The Array for a User.
  */
 
 /**
- * @typedef {object} 	User		The Array for a User. Does not include the password or userID.
- * @property {string} 	username	The logged in user's username.
- * @property {string} 	firstName	The logged in user's first name.
- * @property {string} 	lastName	The logged in user's last name.
- * @property {string} 	email		The logged in user's email.
+ * @typedef {Object} 	User		The Array for a User. Does not include the password or userID.
+ * @property {String} 	username	The logged in user's username.
+ * @property {String} 	firstName	The logged in user's first name.
+ * @property {String} 	lastName	The logged in user's last name.
+ * @property {String} 	email		The logged in user's email.
  * @property {Date} 	birthDate	The logged in user's birth date.
- * @property {string}	displayName	The logged in user's display name.
+ * @property {String}	displayName	The logged in user's display name.
  */
 
 /**
- * @typedef {object} 	RegisterUser	The Array for a User when registering. Does not include userID, names, or birth date.
- * @property {string} 	username		The registering user's username.
- * @property {string}	password		The registering user's password.
- * @property {string} 	email			The registering user's email.
- * @property {string}	displayName		The registering user's display name.
+ * @typedef {Object} 	RegisterUser	The Array for a User when registering. Does not include userID, names, or birth date.
+ * @property {String} 	username		The registering user's username.
+ * @property {String}	password		The registering user's password.
+ * @property {String} 	email			The registering user's email.
+ * @property {String}	displayName		The registering user's display name.
  */
 
 /**
- * @typedef {object} 	LoginUser	The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
- * @property {string} 	username	The logging in user's username.
- * @property {string}	password	The logging in user's password.
+ * @typedef {Object} 	LoginUser	The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
+ * @property {String} 	username	The logging in user's username.
+ * @property {String}	password	The logging in user's password.
  */
 
 /**
- * @typedef {object} 	Toggle		The Array for which variable of the User Array are we trying to update. True is editing. False is not editing.
- * @property {boolean} 	username 	Is the user's username being edited?
- * @property {boolean} 	firstName	Is the user's first name being edited?
- * @property {boolean} 	lastName	Is the user's last name being edited?
- * @property {boolean}	email		Is the user's email being edited?
- * @property {boolean} 	birthDate	Is the user's birth date being edited?
- * @property {boolean}	displayName	Is the user's display name being edited?
+ * @typedef {Object} 	Toggle		The Array for which variable of the User Array are we trying to update. True is editing. False is not editing.
+ * @property {Boolean} 	username 	Is the user's username being edited?
+ * @property {Boolean} 	firstName	Is the user's first name being edited?
+ * @property {Boolean} 	lastName	Is the user's last name being edited?
+ * @property {Boolean}	email		Is the user's email being edited?
+ * @property {Boolean} 	birthDate	Is the user's birth date being edited?
+ * @property {Boolean}	displayName	Is the user's display name being edited?
  */
 
 /**
- * @typedef {object}	PasswordCheck	An Array with 2 Strings used to check if the two new password inputs are the same.
- * @property {string}	newPassword 	The new password.
- * @property {string}	confirmPassword	New password repeated. Needs to be the same at the new password.
+ * @typedef {Object}				VarEditInfo				The Array for Editing user information that info is in a map.
+ * @property {String}				varname 				The variable name associated with the list element (i.e. username).
+ * @property {String} 				fieldName 				The display name of the list element (i.e. Username).
+ * @property {User} 				mostRecentUserInfo 		Array for a state variable holding user field information.
+ * @property {SetStateActionUser} 	setUserInput 			State variable setter for userInput field information.
+ * @property {SetStateActionUser} 	setMostRecentUserInfo 	State variable setter for mostRecentUserInfo field information.
+ * @property {Toggle} 				toggleEdit 				Array for a state variable for determining if a field is toggled to display (false) or edit (true). 
+ * @property {SetStateActionTog}	setToggleEdit			State variable setter for toggleEdit field information. 
  */
 
 /**
- * @typedef {object} 	ChatRoom
+ * @typedef {Object}				EditInfo				The Array for Editing user information. 
+ * @property {User} 				mostRecentUserInfo 		Array for a state variable holding user field information.
+ * @property {SetStateActionUser} 	setUserInput 			State variable setter for userInput field information.
+ * @property {SetStateActionUser} 	setMostRecentUserInfo	State variable setter for userInput field information.
+ * @property {Toggle} 				toggleEdit 				Array for a state variable for determining if a field is toggled to display (false) or edit (true). 
+ * @property {SetStateActionTog}	setToggleEdit 			State variable setter for toggleEdit field information. 
+ */
+
+/**
+ * @typedef {Object}	PasswordCheck	An Array with 2 Strings used to check if the two new password inputs are the same.
+ * @property {String}	newPassword 	The new password.
+ * @property {String}	confirmPassword	New password repeated. Needs to be the same at the new password.
+ */
+
+/**
+ * @typedef {Object} 	ChatRoom
  * @property {Socket}	socket
- * @property {string}	username 	The username of the current user.
- * @property {string}	room		The name of the room you are currently in.
+ * @property {String}	username 	The username of the current user.
+ * @property {String}	room		The name of the room you are currently in.
  */
 
 /**
- * @typedef {object} 	Page
- * @property {string} 	bannerURL
- * @property {string} 	description
- * @property {boolean} 	groupPage
- * @property {number} 	pageID
- * @property {string} 	pageTitle
+ * @typedef {Object} 	Page
+ * @property {String} 	bannerURL
+ * @property {String} 	description
+ * @property {Boolean} 	groupPage
+ * @property {Number} 	pageID
+ * @property {String} 	pageTitle
  * @property {any[]}	posts
- * @property {boolean} 	private
+ * @property {Boolean} 	private
  */
 
 /**
- * @typedef {object} 	postPage
- * @property {number}	pageID
+ * @typedef {Object} 	postPage
+ * @property {Number}	pageID
  */
 
 /**
- * @typedef {object}	Post 
+ * @typedef {Object}	Post 
  * @property {postPage} postPage
- * @property {string} 	postType
- * @property {string} 	postTitle
- * @property {string} 	postContent
- * @property {number} 	postLikes
- * @property {number} 	postTime
- * @property {number} 	postOwnerID
- * @property {object}	children
+ * @property {String} 	postType
+ * @property {String} 	postTitle
+ * @property {String} 	postContent
+ * @property {Number} 	postLikes
+ * @property {Number} 	postTime
+ * @property {Number} 	postOwnerID
+ * @property {Object}	children
  */
 
 /**
- * @typedef 	{object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.
+ * @typedef 	{Object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.
  * @property 	{String} 					ID 				TextField ID.
  * @property 	{String} 					label 			TextField label.
  * @property 	{String} 					password 		State variable holding the password.
@@ -100,15 +120,15 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<string>>} SetStateActionString
+ * @typedef {Dispatch<SetStateAction<String>>} SetStateActionString
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<number>>} SetStateActionNumber
+ * @typedef {Dispatch<SetStateAction<Number>>} SetStateActionNumber
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<boolean>>} SetStateActionBool
+ * @typedef {Dispatch<SetStateAction<Boolean>>} SetStateActionBool
  */
 
 /**
@@ -117,23 +137,23 @@ import { Socket } from "socket.io-client";
 
 /**
  * @typedef {Dispatch<SetStateAction<{
- * 		username: 		string;
- * 		firstName: 		string;
- * 		lastName: 		string;
- * 		email: 			string;
+ * 		username: 		String;
+ * 		firstName: 		String;
+ * 		lastName: 		String;
+ * 		email: 			String;
  * 		birthDate: 		Date;
- * 		displayName: 	string;
+ * 		displayName: 	String;
  * }>>} SetStateActionUser
  */
 
 /**
  * @typedef {Dispatch<SetStateAction<{
- * 		username: 		boolean,
- * 		firstName: 		boolean,
- * 		lastName: 		boolean,
- * 		email: 			boolean,
- * 		birthDate: 		boolean,
- * 		displayName: 	boolean
+ * 		username: 		Boolean,
+ * 		firstName: 		Boolean,
+ * 		lastName: 		Boolean,
+ * 		email: 			Boolean,
+ * 		birthDate: 		Boolean,
+ * 		displayName: 	Boolean
  * }>>} SetStateActionTog
  */
 
@@ -141,20 +161,20 @@ import { Socket } from "socket.io-client";
  * 
  * @typedef {Dispatch<SetStateAction<{
  * 		socket: 	Socket,
- * 		username: 	string,
- * 		room: 		boolean,
+ * 		username: 	String,
+ * 		room: 		Boolean,
  * }>>} SetStateActionChatRoom
  */
 
 /**
  * @typedef {Dispatch<SetStateAction<{
- * 		bannerURL: string;
- * 		description: string;
- * 		groupPage: boolean;
- * 		pageID: number;
- * 		pageTitle: string;
- * 		posts: any[];
- * 		private: boolean;
+ * 		bannerURL: 		String;
+ * 		description: 	String;
+ * 		groupPage: 		Boolean;
+ * 		pageID: 		Number;
+ * 		pageTitle: 		String;
+ * 		posts: 			any[];
+ * 		private: 		Boolean;
  * }>>} SetStateActionPage
  */
 

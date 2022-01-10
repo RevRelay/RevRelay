@@ -21,13 +21,12 @@ const apiChangePasswordUrl = "/users/password";
  * they are matching. Returns an alert if they dont match or if they arent valid.
  * 
  * @param {PasswordCheck} 	passwordCheck 				An object with 2 Strings.
- * @param {string} 			passwordCheck.newPassword 	The new password
- * @param {string} 			passwordCheck.checkPassword	New password repeated. Needs to be the same at the new password.
+ * @param {String} 			passwordCheck.newPassword 	The new password
+ * @param {String} 			passwordCheck.checkPassword	New password repeated. Needs to be the same at the new password.
  * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy.
  */
 function validPasswordReset(passwordCheck) {
 	let message = "";
-	console.log(message)
 	if (!(passwordCheck.newPassword && passwordCheck.newPassword.length >= passLen)) {
 		message += `Minimum password length ${passLen} \n`;
 	}
@@ -44,20 +43,20 @@ function validPasswordReset(passwordCheck) {
  * Allows the user to change their password.
  * 
  * @param {JWTs} 	passwordChange 			Prop that just contains the JWT.
- * @param {string} 	passwordChange.token 	JWT Token determinig user and log in information.
+ * @param {String} 	passwordChange.token 	JWT Token determinig user and log in information.
  * @returns The change password page returned with React
  */
 function ChangePassword(passwordChange) {
 	/**
-	 * @type {[string, SetStateActionString]}
+	 * @type {[String, SetStateActionString]}
 	 */
 	const [oldPassword, setOldPassword] = useState('');
 	/**
-	 * @type {[string, SetStateActionString]}
+	 * @type {[String, SetStateActionString]}
 	 */
 	const [newPassword, setNewPassword] = useState('');
 	/**
-	 * @type {[string, SetStateActionString]}
+	 * @type {[String, SetStateActionString]}
 	 */
 	const [confirmPassword, setConfirmPassword] = useState('');
 	let navigate = useNavigate();
@@ -65,8 +64,8 @@ function ChangePassword(passwordChange) {
 	/**
 	 * Submit button is pressed password reset request is sent to the backend.
 	 *
-	 * @param {Event} e The event of the login button being pressed. Username and password are captured.
 	 * @async
+	 * @param {Event} e The event of the login button being pressed. Username and password are captured.
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -87,7 +86,6 @@ function ChangePassword(passwordChange) {
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);
 			}
-			console.log(response.data);
 			if(response.data){
 				alert(`Password Successfully changed!`)
 				navigate("/user/profile/userinfo");

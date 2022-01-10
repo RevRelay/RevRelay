@@ -21,10 +21,10 @@ const apiRegisterUrl = "/public/users/register";
  * Axios query to create a user
  *
  * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
- * @param {string} 			user.username		The registering user's username.
- * @param {string}			user.password		The registering user's password.
- * @param {string} 			user.email			The registering user's email.
- * @param {string}			user.displayName	The registering user's display name.
+ * @param {String} 			user.username		The registering user's username.
+ * @param {String}			user.password		The registering user's password.
+ * @param {String} 			user.email			The registering user's email.
+ * @param {String}			user.displayName	The registering user's display name.
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
 async function registerUser(user) {
@@ -37,10 +37,10 @@ async function registerUser(user) {
  * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message.
  *
  * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
- * @param {string} 			user.username		The registering user's username.
- * @param {string}			user.password		The registering user's password.
- * @param {string} 			user.email			The registering user's email.
- * @param {string}			user.displayName	The registering user's display name.
+ * @param {String} 			user.username		The registering user's username.
+ * @param {String}			user.password		The registering user's password.
+ * @param {String} 			user.email			The registering user's email.
+ * @param {String}			user.displayName	The registering user's display name.
  * @returns returns negation of truthy or falsy of the image.
  */
 function validInputRegister(user) {
@@ -75,32 +75,17 @@ function validInputRegister(user) {
  */
 export default function Register(registerProp) {
 
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
 	const [username, setUsername] = useState('');
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
 	const [password, setPassword] = useState('');
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
 	const [confirmPassword, setConfirmPassword] = useState('');
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
 	const [email, setEmail] = useState('');
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
 	const [displayName, setDisplayName] = useState('');
 	let navigate = useNavigate();
 
 	/**
 	 * Submission of the user's information and returning of a JWT
 	 * 
-	 * @param {event} e 
+	 * @param {Event} e 
 	 * @async
 	 */
 	const submitButton = async (e) => {

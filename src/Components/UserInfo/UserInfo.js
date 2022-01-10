@@ -47,7 +47,8 @@ function UserInfo(infoProp) {
 	const [image, setImage] = React.useState(null);
 	
 	/**
-	 * Makes sure that file is valid, sets selected file to profile picture
+	 * Makes sure that file is valid, sets selected file to profile picture.
+	 * 
 	 * @param {event} event 
 	 */
 	const onSelectFile = (event) => {
@@ -185,8 +186,22 @@ function UserInfo(infoProp) {
 								</Box>
 								<br/>
 								<Box width="95%">
-									<UserInfoEntryElementDisplayName key={"displayNameEntryElement"} mostRecentUserInfo = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
-									<UserInfoEntryElementEmail key={"emailEntryElement"} mostRecentUserInfo = {mostRecentUserInfo} setUserInput = {setUserInput} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} setMostRecentUserInfo={setMostRecentUserInfo} />
+									<UserInfoEntryElementDisplayName 
+										key = {"displayNameEntryElement"}
+										mostRecentUserInfo = {mostRecentUserInfo}
+										setMostRecentUserInfo = {setMostRecentUserInfo}
+										setUserInput = {setUserInput}
+										toggleEdit = {toggleEdit}
+										setToggleEdit = {setToggleEdit}
+									/>
+									<UserInfoEntryElementEmail 
+										key = {"emailEntryElement"}
+										mostRecentUserInfo = {mostRecentUserInfo}
+										setMostRecentUserInfo = {setMostRecentUserInfo}
+										setUserInput = {setUserInput}
+										toggleEdit = {toggleEdit}
+										setToggleEdit = {setToggleEdit}
+									/>
 								</Box>
 							</Stack>
 						</CardContent>
@@ -208,15 +223,21 @@ function UserInfo(infoProp) {
 											varname={x.varname}
 											fieldName = {x.name}
 											mostRecentUserInfo = {mostRecentUserInfo}
+											setMostRecentUserInfo = {setMostRecentUserInfo}
 											setUserInput = {setUserInput}
 											toggleEdit = {toggleEdit}
-											setToggleEdit =
-											{setToggleEdit}
-											setMostRecentUserInfo={setMostRecentUserInfo}
+											setToggleEdit = {setToggleEdit}
 										/>
 									)
 								})}
-								<UserInfoEntryElementBirthDate key={"birthDateEntryElement"} mostRecentUserInfo={mostRecentUserInfo} setUserInput={setUserInput} setMostRecentUserInfo={setMostRecentUserInfo} toggleEdit = {toggleEdit} setToggleEdit = {setToggleEdit} />
+								<UserInfoEntryElementBirthDate 
+									key = {"birthDateEntryElement"} 
+									mostRecentUserInfo = {mostRecentUserInfo}
+									setMostRecentUserInfo = {setMostRecentUserInfo}
+									setUserInput = {setUserInput}
+									toggleEdit = {toggleEdit}
+									setToggleEdit = {setToggleEdit}
+								/>
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>

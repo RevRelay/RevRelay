@@ -24,8 +24,8 @@ const apiLoginUrl = '/public/users/login'
  * 
  * @async
  * @param {LoginUser}	user			The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
- * @param {string} 		user.username	The logging in user's username.
- * @param {string}		user.password	The logging in user's password.
+ * @param {String} 		user.username	The logging in user's username.
+ * @param {String}		user.password	The logging in user's password.
  * @returns The JWT of the user in the form data{jwt{*KEY*}}
  */
 async function loginUser(user) {
@@ -43,11 +43,11 @@ async function loginUser(user) {
  */
 export default function Login(loginProp) {
 	/**
-	 * @type {[string, SetStateActionString]}
+	 * @type {[String, SetStateActionString]}
 	 */
 	const [username, setUsername] = useState('');
 	/**
-	 * @type {[string, SetStateActionString]}
+	 * @type {[String, SetStateActionString]}
 	 */
 	const [password, setPassword] = useState('');
 	let navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function Login(loginProp) {
 	 * Submit button is pressed login request is sent
 	 * 
 	 * @async
-	 * @param {event} e The event of the login button being pressed, username and password are captured
+	 * @param {Event} e The event of the login button being pressed, username and password are captured
 	 */
 	const submitButton = async e => {
 		e.preventDefault();
