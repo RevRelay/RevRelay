@@ -31,7 +31,7 @@ import MicIcon from "@mui/icons-material/Mic";
 //https://gridfiti.com/aesthetic-color-palettes/
 
 /**
- * 
+ *
  * @param {object} 	param
  * @param {Socket}	param.socket
  * @param {string}	param.username 	the username of the current user.
@@ -68,7 +68,7 @@ function Chat({ socket, username, room }) {
 			setMessageList((list) => [...list, data]);
 		});
 	}, [socket]);
-	
+
 	// Clear the chatroom
 	const clearMessages = () => {
 		setMessageList((list) => []);

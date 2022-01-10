@@ -51,10 +51,37 @@ import getCurrentUser, {
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
+	useEffect(getAllFriends, []);
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
+	const [page, updatePage] = useState({
+		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
+		description: "You description here",
+		groupPage: false,
+		pageID: 1,
+		posts: [],
+		private: true,
+		pageTitle: "Title Not Found",
+	});
+	const [isBusy, setIsBusy] = useState(true);
+	const [groups, setGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState({ content: [] });
+	const [currentUser, setCurrentUser] = useState(null);
+	const [selectedGroup, setSelectedGroup] = useState(null);
+	const [reload, setReload] = useState(false);
+	const [tab, updateTab] = useState("");
+	const [friends, setFriends] = useState([]);
+	const [group, setGroup] = useState(null);
+	const { pageParam } = useParams();
 
+	const path = useLocation();
+	useEffect(() => {
+		setReload(false);
+		GetPage();
+		updateTab(0);
+	}, [reload]);
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
@@ -127,41 +154,14 @@ export default function Page({ JWT }) {
 		setAnchorEl(null);
 	};
 
-	let { pageParam } = useParams();
-	let path = useLocation();
-
-	const [page, updatePage] = useState({
-		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
-		description: "You description here",
-		groupPage: false,
-		pageID: 1,
-		posts: [],
-		private: true,
-		pageTitle: "Title Not Found",
-	});
-	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState(true);
-	const [userGroups, setUserGroups] = useState({ content: [] });
-	const [currentUser, setCurrentUser] = useState(null);
-	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState("");
-
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
 	// };
-
-	useEffect(() => {
-		setReload(false);
-		GetPage();
-		updateTab(0);
-	}, [reload]);
 
 	/**
 	 * Gets Page from back server
 	 * @async
 	 */
-	const [group, setGroup] = useState(null);
 
 	/**
 	 * @async
@@ -220,6 +220,24 @@ export default function Page({ JWT }) {
 				}
 			});
 		});
+	}
+
+	async function getAllFriends() {
+		if (!page.username) return;
+		const response = await APIQuery.get("/pages/friends/" + page.username, {
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+		}).then((response) => response.data);
+		let arr = response.map((f) => f.userID);
+		setFriends(arr);
+		return () => {
+			setFriends({}); // This worked for me
+		};
+	}
+	if (isBusy) return <LoadingPage />;
+	if (page.private && page.userID != currentUser.userID) {
+		if (!friends.includes(currentUser.userID)) return <Private />;
 	}
 
 	return (
@@ -492,6 +510,11 @@ export default function Page({ JWT }) {
 		return <div>{page.description}</div>;
 	}
 
+	function Private() {
+		console.log(currentUser);
+		return <></>;
+	}
+
 	/**
 	 * Placeholder for Members
 	 *
@@ -503,6 +526,7 @@ export default function Page({ JWT }) {
 			<>
 				{group.members.map((member) => (
 					<Button
+						onKeyUp={member.userID}
 						onClick={() => {
 							nav("/user/" + member.userID);
 						}}
