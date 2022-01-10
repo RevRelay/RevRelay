@@ -1,5 +1,6 @@
 import {
 	Autocomplete,
+	Avatar,
 	Box,
 	Button,
 	Card,
@@ -36,6 +37,7 @@ import APIQuery from "../API/APIQuery";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
+import { getProfilePic } from "../API/UserAPI";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,
@@ -55,6 +57,7 @@ export default function Page({ JWT }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
+	const [image, setImage] = useState(null);
 
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState(true);
@@ -106,9 +109,9 @@ export default function Page({ JWT }) {
 	};
 	//ADD add friend logic here
 
-	const handleCloseAddFriend = async () => {
+	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post(
-			"/users/addFriend/" + currentUser.userID,
+			"/users/friend",
 			null,
 			{
 				headers: {
@@ -119,8 +122,8 @@ export default function Page({ JWT }) {
 				},
 			}
 		).then((response) => response.data);
-		toast.success("Friend added!");
-		console.log(response);
+		//toast.success("Friend added!");
+		//console.log(response);
 		setAnchorEl(null);
 	};
 
@@ -186,7 +189,7 @@ export default function Page({ JWT }) {
 		getCurrentUser(JWT).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
-
+			setImage(getProfilePic(user.userID));
 			let apiRegisterUrl = "";
 			if (path.pathname.includes("user/profile"))
 				apiRegisterUrl = "/users/current";
@@ -267,7 +270,7 @@ export default function Page({ JWT }) {
 									maxHeight: "25vh",
 									maxWidth: "100%",
 								}}
-							>
+							>				
 								<div
 									style={{
 										position: "absolute",
@@ -277,7 +280,9 @@ export default function Page({ JWT }) {
 										borderRadius: 25,
 									}}
 								>
+
 									<CardHeader title={page.pageTitle} />
+									<Avatar alt="Pidgeon" src={image} sx={{ width: 190, height: 190}} />
 								</div>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
@@ -355,7 +360,7 @@ export default function Page({ JWT }) {
 															Join Group
 														</MenuItem>
 													) : (
-														<MenuItem onClick={handleCloseAddFriend}>
+														<MenuItem onClick={handleCloseToggleFriend}>
 															Add Friend
 														</MenuItem>
 													)}
