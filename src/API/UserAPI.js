@@ -46,15 +46,9 @@ function updatePassword(passwords, JWT) {
  * @param {string}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */
-<<<<<<< HEAD
-function updateUser(user, JWT){
-	user.birthDate = user.birthDate.toJSON();
-	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
-=======
 function updateUser(user, JWT) {
   //user.birthDate = user.birthDate.toJSON();
   return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
->>>>>>> d3e9c1a07d65856f18b53f56c6a587502da2907c
 }
 
 /**
