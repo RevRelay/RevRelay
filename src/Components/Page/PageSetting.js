@@ -6,7 +6,6 @@ import {
 	Switch,
 	Grid,
 } from "@mui/material";
-
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";

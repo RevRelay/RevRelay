@@ -21,7 +21,6 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
-
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 
@@ -34,6 +33,7 @@ export default function CreateGroup({ JWT, groups, setGroups }) {
         members: null
 
     });
+    
     const toggleOpen = () => {
         setOpen(!open);
     };
@@ -50,12 +50,10 @@ export default function CreateGroup({ JWT, groups, setGroups }) {
             tempGroups.content.push(data.data);
             setGroups({ ...tempGroups });
             //toggleOpen(); //close dialog
-        }
-        ).catch((e) => {
+        }).catch((e) => {
             console.log("Group name collision!");
             //TODO: notify front end.
         });
-
     }
 
     return (

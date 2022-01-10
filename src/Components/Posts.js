@@ -33,12 +33,12 @@ import { User, Page, Post } from "../typeDef";
 
 /**
  * Render Posts Tab
+ * 
  * @param {object} 	param
  * @param {Page}	param.page 
  * @param {User}	param.currentUser
  * @param {string}	param.JWT			token determinig user and log in information.
  * @returns
-
  */
 export default function Posts({ page, currentUser, JWT }) {
 	const [posts, updatePosts] = useState({
@@ -150,6 +150,7 @@ export default function Posts({ page, currentUser, JWT }) {
 
 	/**
 	 * Generate Posts html
+	 * 
 	 * @param {object} 	param
 	 * @param {Post}	param.post
 	 * @returns posts html

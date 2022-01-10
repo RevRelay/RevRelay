@@ -42,8 +42,10 @@ import getCurrentUser, {
 	getPageAxios,
 	getUserGroups,
 } from "../API/PageAPI";
+
 /**
  * Renders a generic page with condintional rendering
+ *
  * @param {object} param
  * @param {string} param.JWT token determining user and log in information.
  * @returns HTML for default page
@@ -56,6 +58,7 @@ export default function Page({ JWT }) {
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
+	
 	const handleInvite = async () => {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -103,6 +106,7 @@ export default function Page({ JWT }) {
 		console.log(response);
 		setAnchorEl(null);
 	};
+	
 	//ADD add join group logic here
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -160,10 +164,14 @@ export default function Page({ JWT }) {
 	const [group, setGroup] = useState(null);
 
 	/**
-	 * Gets Page from back server
+	 * @async
 	 */
-
 	async function getCurrentGroup() {}
+	
+	/**
+	 * Gets Page from back server
+	 * @async
+	 */
 	async function GetPage() {
 		getCurrentUser(JWT).then(async (data) => {
 			let user = data.data;
@@ -386,7 +394,6 @@ export default function Page({ JWT }) {
 									</div>
 								</Stack>
 								<Divider sx={{ width: "100%" }} />
-
 								<RenderTab />
 							</div>
 						</div>
@@ -475,6 +482,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
+	
 	/**
 	 * Placeholder for About
 	 *
@@ -483,6 +491,7 @@ export default function Page({ JWT }) {
 	function About() {
 		return <div>{page.description}</div>;
 	}
+
 	/**
 	 * Placeholder for Members
 	 *
@@ -504,6 +513,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
+	
 	/**
 	 * Placeholder for Settings
 	 *
@@ -512,6 +522,7 @@ export default function Page({ JWT }) {
 	function Settings() {
 		return <div></div>;
 	}
+
 	/**
 	 * Placeholder for Groups
 	 *
