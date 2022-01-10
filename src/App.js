@@ -270,6 +270,11 @@ function App() {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
 
+	/**
+	 * @type {[boolean, SetStateActionString]}
+	 */
+	const [sendSearch, setSendSearch] = useState(false);
+
 	checkJWT();
 
 	async function checkJWT() {
@@ -302,6 +307,8 @@ function App() {
 				updateActiveTheme={updateActiveTheme}
 				token={token}
 				setToken={setToken}
+				sendSearch = {sendSearch}
+				setSendSearch = {setSendSearch}
 			/>
 			<Box
 				sx={{
@@ -311,7 +318,7 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard token={token} setToken={setToken} />
+				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch}/>
 			</Box>
 		</ThemeProvider>
 	);
@@ -324,11 +331,13 @@ function App() {
  * Use the token object passed above if you need to find any
  *
  * @param {object} 					param
- * @param {string} 					param.token 	JWT token determinig user and log in information.
- * @param {SetStateActionString} 	param.setToken	state variable setter for token field information.
+ * @param {string} 					param.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	param.setToken			state variable setter for token field information.
+ * @param {boolean}					param.sendSearch		boolean state managing searching status
+ * @param {SetStateActionBool}		param.setSendSearch		setter for the above
  * @returns
  */
-function SwitchBoard({ token, setToken }) {
+function SwitchBoard({ token, setToken, sendSearch}) {
 	return (
 		<Routes>
 			<Route path="/">
@@ -338,7 +347,7 @@ function SwitchBoard({ token, setToken }) {
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} />} />
+					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />

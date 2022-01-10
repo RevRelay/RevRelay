@@ -44,7 +44,7 @@ function updatePassword(passwords, JWT) {
  * @returns a Put request to the correct place to change the user information for the current user.
  */
 function updateUser(user, JWT){
-	//user.birthDate = user.birthDate.toJSON();
+	user.birthDate = user.birthDate.toJSON();
 	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
 }
 
