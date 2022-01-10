@@ -23,13 +23,13 @@ import {
 	Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import {ChatRoom, SetStateActionChatRoom} from "../typeDef"
+import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
 
 var socket;
 
 /**
  * Allows for Creation of Chats and Chat box
- * 
+ *
  * @returns html for chat box in bottom left
  */
 function Client() {
@@ -52,7 +52,7 @@ function Client() {
 	const [room, setRoom] = useState("");
 
 	/**
-	 * 
+	 *
 	 */
 	const joinRoom = () => {
 		if (username !== "" && room !== "") {
@@ -77,6 +77,7 @@ function Client() {
 					right: 10,
 					bottom: 10,
 					minWidth: 275,
+					zIndex: 1000,
 				}}
 			>
 				<Box
