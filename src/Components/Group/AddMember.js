@@ -7,7 +7,7 @@ import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 
 /**
- * 
+ * Adds a Member to a group
  * @param {*} param0 the entire group model
  * @returns the same group with an added User via their ID
  */
