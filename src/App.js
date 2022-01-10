@@ -314,7 +314,7 @@ function App() {
 	/**
 	 * @type {[boolean, SetStateActionString]}
 	 */
-	const [sendSearch, setSendSearch] = useState(false);
+	const [isSendSearch, setIsSendSearch] = useState(false);
 
 	checkJWT();
 
@@ -343,13 +343,13 @@ function App() {
 			{/* Renders Chat Box */}
 			{token ? <Client /> : <></>}
 			<Nav
-				themes={themes}
-				activeTheme={activeTheme}
-				updateActiveTheme={updateActiveTheme}
-				token={token}
-				setToken={setToken}
-				sendSearch = {sendSearch}
-				setSendSearch = {setSendSearch}
+				themes = {themes}
+				activeTheme = {activeTheme}
+				updateActiveTheme = {updateActiveTheme}
+				token = {token}
+				setToken = {setToken}
+				isSendSearch = {isSendSearch}
+				setIsSendSearch = {setIsSendSearch}
 			/>
 			<Box
 				sx={{
@@ -359,7 +359,7 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch}/>
+				<SwitchBoard token={token} setToken={setToken} isSendSearch={isSendSearch}/>
 			</Box>
 		</ThemeProvider>
 	);
@@ -372,13 +372,12 @@ function App() {
  * Use the token object passed above if you need to find any
  *
  * @param {object} 					param
- * @param {string} 					param.token 			JWT token determinig user and log in information.
- * @param {SetStateActionString} 	param.setToken			state variable setter for token field information.
- * @param {boolean}					param.sendSearch		boolean state managing searching status
- * @param {SetStateActionBool}		param.setSendSearch		setter for the above
+ * @param {String} 					param.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	param.setToken			State variable setter for token field information.
+ * @param {Boolean}					param.isSendSearch		Boolean state managing searching status.
  * @returns
  */
-function SwitchBoard({ token, setToken, sendSearch}) {
+function SwitchBoard({ token, setToken, isSendSearch}) {
 	return (
 		<Routes>
 			<Route path="/">
@@ -388,7 +387,7 @@ function SwitchBoard({ token, setToken, sendSearch}) {
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
+					<Route path=":searchTerm" element={<Search token={token} isSendSearch = {isSendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />

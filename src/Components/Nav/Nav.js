@@ -21,6 +21,7 @@ import {
 	NavBar,
 	SetStateActionNumber,
 	SetStateActionString,
+	SetStateActionBool
 } from "../../typeDef";
 
 /**
@@ -34,6 +35,8 @@ import {
  * @param {Number} 					navProp.activeTheme 		Integer referencing the current theme
  * @param {SetStateActionNumber}	navProp.updateActiveTheme	State variable setter of activeTheme.
  * @param {SetStateActionString} 	navProp.setToken			State variable setter of token.
+ * @param {Boolean}					navProp.isSendSearch		Boolean state managing searching status.
+ * @param {SetStateActionBool}		navProp.setIsSendSearch		State variable setter of isSendSerch.
  * @returns Returns a react page for the navbar
  */
 export default function Nav(navProp) {
@@ -103,7 +106,7 @@ export default function Nav(navProp) {
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-							<NavSearchBar sendSearch = {sendSearch} setSendSearch = {setSendSearch} />
+							<NavSearchBar isSendSearch = {navProp.isSendSearch} setIsSendSearch = {navProp.isSendSearch} />
 						</Box>
 						<Box>
 							{navProp.token ? (

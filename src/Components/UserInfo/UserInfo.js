@@ -27,7 +27,7 @@ import { JWTs } from "../../typeDef"
  * If they want to change their password it redirects them to the Change Password page.
  * 
  * @param {JWTs} 	infoProp		The Array for an object that just contains a JWT
- * @param {Atring}	infoProp.token 	JWT Token determinig user and log in information.
+ * @param {String}	infoProp.token 	JWT Token determinig user and log in information.
  * @returns The user info page returned with React
  */
 function UserInfo(infoProp) {

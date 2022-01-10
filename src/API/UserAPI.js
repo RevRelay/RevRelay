@@ -1,18 +1,16 @@
 import axios from "axios";
-import Axios from "axios";
-import { User } from "../typeDef";
+import { User, PasswordsToBackend } from "../typeDef";
 
 const urlConnection = "http://localhost:5000/";
 // const urlConnection =
 //   "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
-const s3Upload =
-	"https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload";
+const s3Upload = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload";
 const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com";
 
 /**
  * Axios configuration that all other functions in file uses.
  *
- * @param {string} JWT token determinig user and log in information.
+ * @param {String} JWT token determinig user and log in information.
  * @returns Axios configuration for the given JWT
  */
 function axiosConfig(JWT) {
@@ -27,8 +25,8 @@ function axiosConfig(JWT) {
 /**
  * Updates password of the user using a put request.
  *
- * @param {object} passwords 	Array of passwords: {current password, new password, repeated new password}.
- * @param {string} JWT 			token determinig user and log in information.
+ * @param {PasswordsToBackend} passwords 	Array of passwords: {current password, new password, repeated new password}.
+ * @param {String} 				JWT 		JWT token determinig user and log in information.
  * @returns a Put request to the correct place to change the password for the current user.
  */
 function updatePassword(passwords, JWT) {
@@ -43,7 +41,7 @@ function updatePassword(passwords, JWT) {
  * Updates the User's information including first name, last name, email, display name, and birth date using a put request.
  *
  * @param {User} 	user 	Array of the user information including first name, last name, email, display name, and birth date.
- * @param {string}  JWT 	token determinig user and log in information.
+ * @param {String}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */
 function updateUser(user, JWT) {
@@ -54,21 +52,22 @@ function updateUser(user, JWT) {
 /**
  * Uploads a users profile picture to s3
  *
- * @param {image} image
+ * @param {String} image	URL to the user's profile picture
+ * @param {String} userID	The logged in user's ID.
  * @returns axios call to database
  */
-function uploadImage(image, userId) {
+function uploadImage(image, userID) {
 	const parts = image.split(";");
 	const mime = parts[0].split(":")[1];
 	const data = parts[1];
 
-	return Axios.post(s3Upload, { mime, userId, image: data });
+	return axios.post(s3Upload, { mime, userID, image: data });
 }
 
 /**
  * Retrieves a users profile picture from the s3 bucket, not using axios to connect but rather just accessing public url
  * 
- * @param {number} userID 
+ * @param {String} userID 
  * @returns link to where image is hosted
  */
 function getProfilePic(userID) {

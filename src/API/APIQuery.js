@@ -11,11 +11,3 @@ const APIQuery = axios.create({
 });
 
 export default APIQuery;
-
-//I'm not sure this is possible to implement the way I want to without Redux or a similar solution - NL
-// /*
-// const function APIQueryAuth(JWT) = axios.create({
-//     baseURL: apiBaseUrl,
-//     headers: {...baseHeaders, "Authorization": "Bearer " + JWT}}
-//     );
-// */

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Socket } from "socket.io-client";
 
 /**
- * @typedef {Object} 	JWTs	The Array for an object that just contains a JWT.
+ * @typedef {Object} 	JWTs	The Array for a prop object that just contains a JWT.
  * @property {String}	token	JWT Token determinig user and log in information.
  */
 
@@ -51,6 +51,18 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * @typedef {Object}	Group		An Array for a Group.
+ * @property {String} 	groupName	Name of the Group.
+ * @property {Boolean} 	isPrivate	Is the group private (false) or not (true).
+ * @property {User[]}	members		List of users in a group.
+ */
+
+/**
+ * @typedef {Object}	GroupSolo	An Array for a prop object that just contain a group.
+ * @property {Group}	group		---
+ */
+
+/**
  * @typedef {Object}				VarEditInfo				The Array for Editing user information that info is in a map.
  * @property {String}				varname 				The variable name associated with the list element (i.e. username).
  * @property {String} 				fieldName 				The display name of the list element (i.e. Username).
@@ -74,6 +86,13 @@ import { Socket } from "socket.io-client";
  * @typedef {Object}	PasswordCheck	An Array with 2 Strings used to check if the two new password inputs are the same.
  * @property {String}	newPassword 	The new password.
  * @property {String}	confirmPassword	New password repeated. Needs to be the same at the new password.
+ */
+
+/**
+ * @typedef {Object}	PasswordsToBackend 	An Array of 3 Strings of passwords to be send to the backend.
+ * @property {String}	oldPassword			The user's current password.
+ * @property {String}	newPassword			The password the user wants to change to.
+ * @property {String}	confirmPassword		New password repeated. Needs to be the same at the new password.
  */
 
 /**
@@ -112,19 +131,20 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Object}				NavBar				An Array for the Nav to determine the theme and update the theme.
- * @param {any[]}	 				themes 				Load all of the List of Themes.
- * @param {Number} 					activeTheme 		Integer referencing the current theme.
- * @param {SetStateActionNumber}	updateActiveTheme	State variable setter of activeTheme.
- * @param {SetStateActionString} 	setToken			State variable setter of token.
+ * @typedef {Object}					NavBar				An Array for the Nav to determine the theme and update the theme.
+ * @property {any[]}	 				themes 				Load all of the List of Themes.
+ * @property {Number} 					activeTheme 		Integer referencing the current theme.
+ * @property {SetStateActionNumber}		updateActiveTheme	State variable setter of activeTheme.
+ * @property {SetStateActionString} 	setToken			State variable setter of token.
+ * @property {Boolean}					isSendSearch		Boolean state managing searching status.
+ * @property {SetStateActionBool}		setIsSendSearch		State variable setter of isSendSerch.
  */
 
-/**
- * @typedef {Object}	Group		An Array for a Group.
- * @property {String} 	groupName	Name of the Group.
- * @property {Boolean} 	isPrivate	Is the group private (false) or not (true).
- * @property {User[]}	members		List of users in a group.
- */
+/** 
+ * @typedef {Object}	SearchBar		---
+ * @property {String}	token			JWT Token determinig user and log in information.
+ * @property {Boolean}	isSendSearch	Boolean state managing searching status.
+*/
 
 /**
  * @typedef 	{Object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.

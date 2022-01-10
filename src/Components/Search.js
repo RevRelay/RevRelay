@@ -4,19 +4,17 @@ import {
 	Card,
 	CardContent,
 	Typography,
-	Button,
-	Grid,
-	TextField
 } from "@mui/material";
 import APIQuery from "../API/APIQuery";
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import { JWTs } from "../typeDef";
+import { SearchBar } from "../typeDef";
 
 /**
  * Component for rendering search results. 
  * 
- * @param {JWTs} 	searchProp 			The Array for an object that just contains a JWT
- * @param {string} 	searchProp.token 	JWT token determinig user and log in information.
+ * @param {SearchBar} 	searchProp 				---
+ * @param {String} 		searchProp.token 		JWT token determinig user and log in information.
+ * @param {Boolean}		searchProp.isSendSearch	Boolean state managing searching status.
  * @returns Component containing search results in Card format, as well as a message
  * 			displaying "Loading" or "No Results Found". 
  */
@@ -44,7 +42,7 @@ export default function Search(searchProp) {
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
-	useEffect(() => { FetchSearchResults(); }, [sendSearch]);
+	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
 	return (
 		<Box>
 			{(searchResults && searchResults[0]) ? (

@@ -30,11 +30,9 @@ import {
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
 import CreateGroup from "./Group/CreateGroup";
-import { height, maxHeight, width } from "@mui/system";
 import { useEffect, useState } from "react";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
@@ -45,7 +43,6 @@ import getCurrentUser, {
 	getUserGroups,
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
-import { ComponentsProps } from "@mui/material/styles";
 
 /**
  * Renders a generic page with condintional rendering.
@@ -159,11 +156,6 @@ export default function Page(pageProp) {
 	};
 
 	/**
-	 * Gets Page from back server
-	 * @async
-	 */
-
-	/**
 	 * @async
 	 */
 	async function getCurrentGroup() {}
@@ -221,6 +213,10 @@ export default function Page(pageProp) {
 		});
 	}
 
+	/**
+	 * @async
+	 * @returns 
+	 */
 	async function getAllFriends() {
 		if (!page.username) return;
 		const response = await APIQuery.get("/pages/friends/" + page.username, {

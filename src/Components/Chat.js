@@ -8,6 +8,7 @@ import {
 	IconButton,
 	TextField,
 	Stack,
+	Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Socket } from "socket.io-client";
@@ -115,6 +116,7 @@ function Chat(chatProp) {
 				}
 			}
 		}
+
 		if (!userActive && data["countdown"] == 4) {
 			newList.push({
 				username: data["user"],
@@ -235,7 +237,7 @@ function Chat(chatProp) {
 					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
 					{usersTyping.map((typer) => {
-						return typer.username !== username ? (
+						return typer.username !== chatProp.username ? (
 							<Typography>{typer.username} is typing</Typography>
 						) : (
 							<></>
@@ -247,23 +249,23 @@ function Chat(chatProp) {
 					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
 					<TextField
-						sx={{ width: "90%" }}
-						id="standard-basic"
-						label="Message here..."
-						variant="standard"
-						value={message}
-						onChange={(event) => {
+						sx = {{ width: "90%" }}
+						id = "standard-basic"
+						label = "Message here..."
+						variant = "standard"
+						value = {message}
+						onChange = {(event) => {
 							setMessage(event.target.value);
 							setActive();
 							console.log("made it here");
 						}}
 					/>
 					<IconButton
-						onClick={() => {
+						onClick = {() => {
 							sendMessage();
 							setNotActive();
 						}}
-						aria-label="Example"
+						aria-label = "Example"
 					>
 						<SendIcon />
 					</IconButton>
