@@ -25,7 +25,7 @@ import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 
 /**
- * 
+ * Creates a group owned by the creating user.
  * @param {*} param0 the groups state and its corresponding useState function
  * @returns adds a group to the list the user owns and reflect the change by adding it a visual list
  */
