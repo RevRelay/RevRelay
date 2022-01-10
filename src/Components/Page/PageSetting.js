@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 
 /**
- * Renders the page settings tabs
+ * Renders the page settings tabs. Can set three attributes: private, description, and banner
  * @param {page, updatePage,setReload} param0 page that the users is currently on, update state on updatePage, setReload reloads the page on true
  * @returns page html
  */

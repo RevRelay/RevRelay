@@ -24,6 +24,11 @@ import {
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 
+/**
+ * 
+ * @param {*} param0 the groups state and its corresponding useState function
+ * @returns adds a group to the list the user owns and reflect the change by adding it a visual list
+ */
 export default function CreateGroup({ JWT, groups, setGroups }) {
 
     const [open, setOpen] = useState(false);

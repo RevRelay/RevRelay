@@ -9,7 +9,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 /**
- * renders all the friends of a user
+ * renders all the friends of a user and provides links to their pages
  * @param {currentUsername} param0 the current username
  * @returns html friend
  */
