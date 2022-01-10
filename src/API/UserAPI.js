@@ -2,7 +2,6 @@ import axios from "axios";
 import Axios from 'axios';
 import { User } from "../typeDef";
 
-
 const urlConnection = "http://localhost:5000/"
 const s3Upload = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload"
 const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com"
