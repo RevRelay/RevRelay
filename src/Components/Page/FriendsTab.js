@@ -8,6 +8,11 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
+/**
+ * renders all the friends of a user
+ * @param {currentUsername} param0 the current username
+ * @returns html friend
+ */
 const FriendsTab = ({ currentUsername }) => {
 	let history = createBrowserHistory();
 	const [friends, setFriends] = useState([]);
