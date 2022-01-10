@@ -33,9 +33,9 @@ import { User, Page, Post } from "../typeDef";
 
 /**
  * Render Posts Tab
- * 
+ *
  * @param {object} 	param
- * @param {Page}	param.page 
+ * @param {Page}	param.page
  * @param {User}	param.currentUser
  * @param {string}	param.JWT			token determinig user and log in information.
  * @returns
@@ -98,6 +98,7 @@ export default function Posts({ page, currentUser, JWT }) {
 	 * @async
 	 */
 	async function GetPosts() {
+		var running = true;
 		var apiRegisterUrl = "posts/page/" + page.pageID;
 		let axiosConfig = {
 			headers: {
@@ -105,8 +106,9 @@ export default function Posts({ page, currentUser, JWT }) {
 			},
 		};
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
-			updatePosts(data.data);
+			if (running) updatePosts(data.data);
 		});
+		return () => (running = false);
 		//console.log(posts);
 	}
 	/**
@@ -150,7 +152,7 @@ export default function Posts({ page, currentUser, JWT }) {
 
 	/**
 	 * Generate Posts html
-	 * 
+	 *
 	 * @param {object} 	param
 	 * @param {Post}	param.post
 	 * @returns posts html

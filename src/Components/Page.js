@@ -44,6 +44,7 @@ import getCurrentUser, {
 	getPageAxios,
 	getUserGroups,
 } from "../API/PageAPI";
+import { ComponentsProps } from "@mui/material/styles";
 
 /**
  * Renders a generic page with condintional rendering
@@ -53,15 +54,42 @@ import getCurrentUser, {
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
+	useEffect(getAllFriends, []);
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
+	const [page, updatePage] = useState({
+		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
+		description: "You description here",
+		groupPage: false,
+		pageID: 1,
+		posts: [],
+		private: true,
+		pageTitle: "Title Not Found",
+	});
+	const [isBusy, setIsBusy] = useState(true);
+	const [groups, setGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState({ content: [] });
+	const [currentUser, setCurrentUser] = useState(null);
+	const [selectedGroup, setSelectedGroup] = useState(null);
+	const [reload, setReload] = useState(false);
+	const [tab, updateTab] = useState("");
+	const [friends, setFriends] = useState([]);
+	const [group, setGroup] = useState(null);
+	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
 
+	const path = useLocation();
+	useEffect(() => {
+		setReload(false);
+		GetPage();
+		updateTab(0);
+	}, [reload]);
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
-	
+
 	const handleInvite = async () => {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -75,8 +103,16 @@ export default function Page({ JWT }) {
 				UserID: page.userID,
 			},
 		}).then((response) => response.data);
-		toast.success("Group Joined!");
-		console.log(response);
+		toast.success("Added User to Group!");
+		let currentSelectedGroup = userGroups.content.filter((x) => {
+			return x.groupName == selectedGroup;
+		})[0];
+
+		GetPage();
+		// let tempGroups = { ...groups };
+		// tempGroups.push(currentSelectedGroup);
+		// console.log(tempGroups);
+		// setGroups(tempGroups);
 		setOpen2(false);
 	};
 
@@ -93,23 +129,19 @@ export default function Page({ JWT }) {
 	//ADD add friend logic here
 
 	const handleCloseToggleFriend = async () => {
-		const response = await APIQuery.post(
-			"/users/friend",
-			null,
-			{
-				headers: {
-					Authorization: "Bearer " + JWT,
-				},
-				params: {
-					username: page.username,
-				},
-			}
-		).then((response) => response.data);
+		const response = await APIQuery.post("/users/friend", null, {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				username: page.username,
+			},
+		}).then((response) => response.data);
 		//toast.success("Friend added!");
 		//console.log(response);
 		setAnchorEl(null);
 	};
-	
+
 	//ADD add join group logic here
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -130,47 +162,20 @@ export default function Page({ JWT }) {
 		setAnchorEl(null);
 	};
 
-	let { pageParam } = useParams();
-	let path = useLocation();
-
-	const [page, updatePage] = useState({
-		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
-		description: "You description here",
-		groupPage: false,
-		pageID: 1,
-		posts: [],
-		private: true,
-		pageTitle: "Title Not Found",
-	});
-	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState(true);
-	const [userGroups, setUserGroups] = useState({ content: [] });
-	const [currentUser, setCurrentUser] = useState(null);
-	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState("");
-
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
 	// };
-
-	useEffect(() => {
-		setReload(false);
-		GetPage();
-		updateTab(0);
-	}, [reload]);
 
 	/**
 	 * Gets Page from back server
 	 * @async
 	 */
-	const [group, setGroup] = useState(null);
 
 	/**
 	 * @async
 	 */
 	async function getCurrentGroup() {}
-	
+
 	/**
 	 * Gets Page from back server
 	 * @async
@@ -188,7 +193,6 @@ export default function Page({ JWT }) {
 			else apiRegisterUrl = "/groups/" + pageParam;
 
 			getUserGroups(JWT, data.data.userID).then((data) => {
-				console.log(data.data);
 				setUserGroups(data.data);
 			});
 
@@ -225,35 +229,26 @@ export default function Page({ JWT }) {
 		});
 	}
 
+	async function getAllFriends() {
+		if (!page.username) return;
+		const response = await APIQuery.get("/pages/friends/" + page.username, {
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+		}).then((response) => response.data);
+		let arr = response.map((f) => f.userID);
+		setFriends(arr);
+		return () => {
+			setFriends({}); // This worked for me
+		};
+	}
+	if (isBusy) return <LoadingPage />;
+	if (page.private && page.userID != currentUser.userID) {
+		if (!friends.includes(currentUser.userID)) return <Private />;
+	}
+
 	return (
 		<>
-			<Dialog open={open2} onClose={handleClose2}>
-				<DialogTitle>Send a Group Invite</DialogTitle>
-				<DialogContent>
-					<Autocomplete
-						disablePortal
-						id="combo-box-demo"
-						options={[
-							...userGroups.content.map((group) => {
-								return group.groupName + "";
-							}),
-						]}
-						onChange={(e, val) => {
-							setSelectedGroup(val);
-							console.log(val);
-						}}
-						sx={{ width: 300 }}
-						renderInput={(params) => (
-							<TextField {...params} label="Your Groups" />
-						)}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose2}>Cancel</Button>
-					<Button onClick={handleInvite}>Send</Button>
-				</DialogActions>
-			</Dialog>
-			<ToastContainer />
 			{isBusy ? (
 				<LoadingPage />
 			) : (
@@ -288,7 +283,7 @@ export default function Page({ JWT }) {
 									maxHeight: "25vh",
 									maxWidth: "100%",
 								}}
-							>				
+							>
 								<div
 									style={{
 										position: "absolute",
@@ -298,11 +293,14 @@ export default function Page({ JWT }) {
 										borderRadius: 25,
 									}}
 								>
-
-									<CardHeader title={page.pageTitle}sx={{
+									<CardHeader title={page.pageTitle} sx={{
 										color: "palette.text.primary",
-									}} />
-									<Avatar alt="Pidgeon" src={image} sx={{ width: 190, height: 190}} />
+									}}/>
+									<Avatar
+										alt="Pidgeon"
+										src={image}
+										sx={{ width: 190, height: 190 }}
+									/>
 								</div>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
@@ -405,6 +403,47 @@ export default function Page({ JWT }) {
 							</div>
 						</div>
 					</Box>
+					<Dialog open={open2} onClose={handleClose2}>
+						<DialogTitle>Send a Group Invite</DialogTitle>
+						<DialogContent>
+							<Autocomplete
+								disablePortal
+								id="combo-box-demo"
+								options={[
+									...userGroups.content
+										.filter((group) => {
+											if (groups.content) {
+												console.log(groups.content);
+												for (let currentGroup of groups.content) {
+													console.log(currentGroup);
+													if (group.groupID === currentGroup.groupID) {
+														return false;
+													}
+												}
+												return true;
+											}
+										})
+										.map((group) => {
+											return group.groupName + "";
+										}),
+								]}
+								onChange={(e, val) => {
+									setSelectedGroup(val);
+									console.log(val);
+								}}
+								sx={{ margin: 5, width: 300, height: 200 }}
+								ListboxProps={{ style: { maxHeight: "150px" } }}
+								renderInput={(params) => (
+									<TextField {...params} label="Your Groups" />
+								)}
+							/>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleClose2}>Cancel</Button>
+							<Button onClick={handleInvite}>Send</Button>
+						</DialogActions>
+					</Dialog>
+					<ToastContainer />
 				</Box>
 			)}
 		</>
@@ -489,7 +528,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for About
 	 *
@@ -497,6 +536,11 @@ export default function Page({ JWT }) {
 	 */
 	function About() {
 		return <Typography>{page.description}</Typography>;
+	}
+
+	function Private() {
+		console.log(currentUser);
+		return <></>;
 	}
 
 	/**
@@ -510,6 +554,7 @@ export default function Page({ JWT }) {
 			<>
 				{group.members.map((member) => (
 					<Button
+						onKeyUp={member.userID}
 						onClick={() => {
 							nav("/user/" + member.userID);
 						}}
@@ -520,7 +565,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for Settings
 	 *
@@ -563,20 +608,28 @@ export default function Page({ JWT }) {
 		return (
 			<>
 				{groups.content.map((group) => {
+					console.log("SOMETHING HERE");
+					console.log(group);
 					return (
-						<div key={group.groupID}>
+						<Paper key={group.groupID} sx={{ marginBottom: 3 }} elevation={3}>
 							<Typography>{group.groupName}</Typography>
-							<Button onClick={() => goToGroup(group.groupID)}>
+							<Button
+								onClick={() => goToGroup(group.groupID)}
+								variant="outlined"
+							>
 								Go to Group
 							</Button>
-							{page.userID === currentUser.userID ? (
-								<Button onClick={() => deleteGroup(group.groupID)}>
+							{group.userOwnerID === currentUser.userID ? (
+								<Button
+									onClick={() => deleteGroup(group.groupID)}
+									variant="outlined"
+								>
 									Delete Group
 								</Button>
 							) : (
 								""
 							)}
-						</div>
+						</Paper>
 					);
 				})}
 				<br />
