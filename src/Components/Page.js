@@ -298,15 +298,11 @@ export default function Page({ JWT }) {
 										borderRadius: 25,
 									}}
 								>
-<<<<<<< HEAD
-									<CardHeader title={page.pageTitle} sx={{
+
+									<CardHeader title={page.pageTitle}sx={{
 										color: "palette.text.primary",
 									}} />
-=======
-
-									<CardHeader title={page.pageTitle} />
 									<Avatar alt="Pidgeon" src={image} sx={{ width: 190, height: 190}} />
->>>>>>> 6a632c2ce2b2562ae93baffbed44c50bdef556ad
 								</div>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
