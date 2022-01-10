@@ -3,7 +3,8 @@ import Axios from 'axios';
 import { User } from "../typeDef";
 
 const urlConnection = "http://localhost:5000/"
-const profileS3bucket = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload"
+const s3Upload = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload"
+const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com"
 
 /**
  * Axios configuration that all other functions in file uses.
@@ -49,19 +50,21 @@ function uploadImage(image, userId) {
 	const mime = parts[0].split(':')[1];
 	const data = parts[1];
 
-	return Axios.post(profileS3bucket, { mime, userId, image: data});
+	return Axios.post(s3Upload, { mime, userId, image: data});
 }
 
-export const dataURLtoFile = (dataurl, filename) => {
-	const arr = dataurl.split(",");
-	const mime = arr[0].match(/:(.*?);/)[1];
-	const bstr = atob(arr[1]);
-	let n = bstr.length;
-	const u8arr = new Uint8Array(n);
-
-	while(n--) u8arr[n] = bstr.charCodeAt(n);
-
-	return new File([u8arr], filename, {type: mime });
+/**
+ * Retrieves a users profile picture from the s3 bucket, not using axios to connect but rather just accessing public url
+ * 
+ * @param {*} userId 
+ * @returns link to where image is hosted
+ */
+function getProfilePic(userId) {
+	const key = `${userId}.jpg`;
+	console.log(key)
+	return `${s3Storage}/${key}`;
+	//Axios.get(s3Retrieve, { key });
 }
 
-export { updatePassword, updateUser, uploadImage};
+
+export { updatePassword, updateUser, uploadImage, getProfilePic };

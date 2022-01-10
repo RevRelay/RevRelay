@@ -14,8 +14,7 @@ import {
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/Save';
 import APIQuery from "../../API/APIQuery";
-import { updateUser, uploadImage } from "../../API/UserAPI";
-import { dataURLtoFile } from "../../API/UserAPI";
+import { updateUser, uploadImage, getProfilePic } from "../../API/UserAPI";
 import UserInfoEntryElement, { UserInfoElementUsername, 
 	UserInfoEntryElementPassword,
 	UserInfoEntryElementBirthDate, 
@@ -28,7 +27,6 @@ import {
 	SetStateActionUser,
 	SetStateActionTog, 
 } from "../../typeDef"
-
 
 /**
  * 
@@ -108,7 +106,7 @@ function UserInfo({JWT}) {
 	 * @async
 	 * @param {Event} e 
 	 */
-	const FetchUserInfo = async (e) => {		
+	const FetchUserInfo = async (e) => {	
 		const response = await APIQuery.get("/users/current", {headers: {"Authorization":"Bearer " + JWT}}).then(resp => resp);
 		setMostRecentUserInfo({
 			username:response.data.username,
@@ -119,9 +117,13 @@ function UserInfo({JWT}) {
 			displayName:response.data.displayName,
 			userID:response.data.userID
 		});
+
 		// get user profile picture from s3 using userId
-
-
+		console.log(getProfilePic(response.data.userID));
+		sessionStorage.clear();
+		if(!image) {
+			setImage(getProfilePic(response.data.userID));
+		}
 	}
 
 	/**
@@ -141,18 +143,6 @@ function UserInfo({JWT}) {
 		}
 		// need to check if image changed, save to s3 bucket
 		if(image) {
-			//const file = dataURLtoFile(image, 'profile-image');
-			//uploadImage(image);
-			//console.log(file);
-			console.log(image);
-			const parts = image.split(";");
-			console.log(parts);
-			const mime = parts[0].split(':')[1];
-			console.log(mime);
-			const data = parts[1];
-			console.log(data);
-			const name = mostRecentUserInfo.userID;
-			console.log(name);
 			uploadImage(image, mostRecentUserInfo.userID);
 		}
 	};
