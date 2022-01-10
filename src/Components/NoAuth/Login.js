@@ -1,12 +1,11 @@
 import { useState } from "react";
 import {
 	Button,
-	Grid,
-	TextField
+	Grid
 } from "@mui/material";
+import {PasswordField, LoginRegisterField} from "../Library/FormField";
 import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
-import { LoginSharp } from "@mui/icons-material";
 import PropTypes from 'prop-types';
 import './Auth.css';
 import { User, SetStateActionString } from "../../typeDef";
@@ -40,11 +39,11 @@ export default function Login({ setToken }) {
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [username, setUsername] = useState();
+	const [username, setUsername] = useState('');
 	/**
 	 * @type {[string, SetStateActionString]}
 	 */
-	const [password, setPassword] = useState();
+	const [password, setPassword] = useState('');
 	let navigate = useNavigate();
 
 	/**
@@ -73,11 +72,11 @@ export default function Login({ setToken }) {
 					<h2>Login here</h2>
 				</Grid>
 				<Grid item xs={1}>
-					<TextField id="username" label="Username" variant="outlined" maxRows={1} onChange={e => setUsername(e.target.value)}/>
+					<LoginRegisterField id="username" label="Username" value={username} setter={setUsername} required={true}/>
 				</Grid>
 				<br/>
 				<Grid item xs={1}>
-					<TextField id="password" type="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)}/>
+					<PasswordField id="password" label="Password" password={password} setter={setPassword}/>
 				</Grid>
 				<Grid item xs={1}>
 					<Button color="inherit" type="submit" variant="h5">Login</Button>
