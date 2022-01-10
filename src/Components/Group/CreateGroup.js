@@ -9,13 +9,23 @@ import {
 } from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
+import {
+	CreateGroups,
+	Group, 
+	SetStateActionGroups,
+	SetStateActionGroup
+} from "../../typeDef";
 
 /**
  * Creates a group owned by the creating user.
- * @param {*} param0 the groups state and its corresponding useState function
+ * 
+ * @param {CreateGroups}			createGroupProp				---
+ * @param {String}					createGroupProp.JWT			JWT Token determinig user and log in information.
+ * @param {Group[]}					createGroupProp.groups		The list of groups the user you are looking at is in.
+ * @param {SetStateActionGroups}	createGroupProp.setGroups	Setter function for the state variable groups.
  * @returns adds a group to the list the user owns and reflect the change by adding it a visual list
  */
-export default function CreateGroup({ JWT, groups, setGroups }) {
+export default function CreateGroup(createGroupProp) {
 
 	const [open, setOpen] = useState(false);
 	const [newGroup, updateNewGroup] = useState({
@@ -35,17 +45,14 @@ export default function CreateGroup({ JWT, groups, setGroups }) {
 
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + createGroupProp.JWT,
 			}
 		};
 		await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
-			let tempGroups = groups;
+			let tempGroups = createGroupProp.groups;
 			tempGroups.content.push(data.data);
-			setGroups({ ...tempGroups });
-			//toggleOpen(); //close dialog
+			createGroupProp.setGroups({ ...tempGroups });
 		}).catch((e) => {
-			console.log("Group name collision!");
-			//TODO: notify front end.
 		});
 	}
 

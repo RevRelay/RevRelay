@@ -9,7 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { SetStateActionString } from "../../typeDef";
+import { SearchBar, SetStateActionBool } from "../../typeDef";
 
 // From https://mui.com/components/app-bar/
 const Search = styled('div')(({ theme }) => ({
@@ -42,11 +42,12 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 /**
  * Component for rendering the search bar portion of the NavBar. 
  * 
- * @param {boolean}					param.sendSearch		boolean state managing searching status
- * @param {SetStateActionBool}		param.setSendSearch		setter for the above
+ * @param {SearchBar}			searchProp					---
+ * @param {Boolean}				searchProp.sendSearch		State variable managing searching status. true is being sent, false for not.
+ * @param {SetStateActionBool}	searchProp.setSendSearch	Setter function for the sendSearch.
  * @returns Search Bar with text entry, startAdornment, and endAdornment.
  */
-export default function NavSearchBar() {
+export default function NavSearchBar(searchProp) {
 
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 
@@ -75,9 +76,7 @@ export default function NavSearchBar() {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
 			handleClearSearchBar();
-			console.log(sendSearch)
-			setSendSearch(!sendSearch);
-			console.log(sendSearch)
+			searchProp.setSendSearch(!searchProp.sendSearch);
 		}
 	};
 

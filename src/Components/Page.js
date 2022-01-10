@@ -70,11 +70,11 @@ export default function Page(pageProp) {
 		pageTitle: "Title Not Found",
 	});
 	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState(true);
+	const [groups, setGroups] = useState('');
 	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [reload, setReload] = useState(false);
+	const [isReload, setIsReload] = useState(false);
 	const [tab, updateTab] = useState("");
 	const [friends, setFriends] = useState([]);
 	const [group, setGroup] = useState(null);
@@ -83,10 +83,10 @@ export default function Page(pageProp) {
 
 	const path = useLocation();
 	useEffect(() => {
-		setReload(false);
+		setIsReload(false);
 		GetPage();
 		updateTab(0);
-	}, [reload]);
+	}, [isReload]);
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
@@ -110,10 +110,6 @@ export default function Page(pageProp) {
 		})[0];
 
 		GetPage();
-		// let tempGroups = { ...groups };
-		// tempGroups.push(currentSelectedGroup);
-		// console.log(tempGroups);
-		// setGroups(tempGroups);
 		setOpen2(false);
 	};
 
@@ -132,14 +128,12 @@ export default function Page(pageProp) {
 	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post("/users/friend", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
 				username: page.username,
 			},
 		}).then((response) => response.data);
-		//toast.success("Friend added!");
-		//console.log(response);
 		setAnchorEl(null);
 	};
 
@@ -158,14 +152,11 @@ export default function Page(pageProp) {
 		console.log(response);
 		setAnchorEl(null);
 	};
+
 	//ADD start Chat Logic Here
 	const handleCloseStartChat = () => {
 		setAnchorEl(null);
 	};
-
-	// const currnetUser = {
-	// 	page: { userOwnerID: 0 },
-	// };
 
 	/**
 	 * Gets Page from back server
@@ -193,7 +184,7 @@ export default function Page(pageProp) {
 				apiRegisterUrl = "/users/" + pageParam;
 			else apiRegisterUrl = "/groups/" + pageParam;
 
-			getUserGroups(JWT, data.data.userID).then((data) => {
+			getUserGroups(pageProp.token, data.data.userID).then((data) => {
 				setUserGroups(data.data);
 			});
 
@@ -479,7 +470,7 @@ export default function Page(pageProp) {
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
-								setReload={setReload}
+								setIsReload={setIsReload}
 							/>
 						) : (
 							<Groups />
@@ -496,7 +487,7 @@ export default function Page(pageProp) {
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
-								setReload={setReload}
+								setIsReload={setIsReload}
 							/>
 						)}{" "}
 					</>

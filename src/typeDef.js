@@ -77,42 +77,42 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Object} 	ChatRoom
- * @property {Socket}	socket
+ * @typedef {Object} 	ChatRoom	---
+ * @property {Socket}	socket		---
  * @property {String}	username 	The username of the current user.
  * @property {String}	room		The name of the room you are currently in.
  */
 
 /**
- * @typedef {Object} 	Page
- * @property {String} 	bannerURL
- * @property {String} 	description
- * @property {Boolean} 	groupPage
- * @property {Number} 	pageID
- * @property {String} 	pageTitle
- * @property {any[]}	posts
- * @property {Boolean} 	private
+ * @typedef {Object} 	Page		---
+ * @property {String} 	bannerURL	---
+ * @property {String} 	description	---
+ * @property {Boolean} 	groupPage	---
+ * @property {Number} 	pageID		---
+ * @property {String} 	pageTitle	---
+ * @property {any[]}	posts		---
+ * @property {Boolean} 	private		---
  */
 
 /**
- * @typedef {Object} 	postPage
- * @property {Number}	pageID
+ * @typedef {Object} 	postPage	---
+ * @property {Number}	pageID		---
  */
 
 /**
- * @typedef {Object}	Post 
- * @property {postPage} postPage
- * @property {String} 	postType
- * @property {String} 	postTitle
- * @property {String} 	postContent
- * @property {Number} 	postLikes
- * @property {Number} 	postTime
- * @property {Number} 	postOwnerID
- * @property {Object}	children
+ * @typedef {Object}	Post 		---
+ * @property {postPage} postPage	---
+ * @property {String} 	postType	---
+ * @property {String} 	postTitle	---
+ * @property {String} 	postContent	---
+ * @property {Number} 	postLikes	---
+ * @property {Number} 	postTime	---
+ * @property {Number} 	postOwnerID	---
+ * @property {Object}	children	---
  */
 
 /**
- * @typedef {Object}				NavBar					An Array for the Nav to determine the theme and update the theme.
+ * @typedef {Object}				NavBar				An Array for the Nav to determine the theme and update the theme.
  * @param {any[]}	 				themes 				Load all of the List of Themes.
  * @param {Number} 					activeTheme 		Integer referencing the current theme.
  * @param {SetStateActionNumber}	updateActiveTheme	State variable setter of activeTheme.
@@ -137,27 +137,40 @@ import { Socket } from "socket.io-client";
 /**
  * @typedef {Object}				LoginProp	An Array for Login Prop for Login so that the length of the hidden/unhidden 
  * 												password isn't a different lenght.
- * @param {String} 					id 			TextField ID.
- * @param {String} 					abel 		TextField label.
- * @param {String} 					value 		State variable holding the value.
- * @param {SetStateActionString}	setter 		Setter function for the state variable holding the text field value. 
- * @param {Boolean} 				required 	True if required, false otherwise.
+ * @property {String} 				id 			TextField ID.
+ * @property {String} 				label 		TextField label.
+ * @property {String} 				value 		State variable holding the value.
+ * @property {SetStateActionString}	setter 		Setter function for the state variable holding the text field value. 
+ * @property {Boolean} 				required 	True if required, false otherwise.
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<String>>} SetStateActionString
+ * @typedef {Object}				CreateGroups	---
+ * @property {String} 				JWT				JWT Token determinig user and log in information.
+ * @property {Group[]} 				groups 			The list of groups the user you are looking at is in.
+ * @property {SetStateActionGroups}	setGroups 		Setter function for the state variable groups.
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<Number>>} SetStateActionNumber
+ * @typedef {Object}					SearchBar		---
+ * @property {Boolean}					sendSearch		State variable managing searching status. true is being sent, false for not.
+ * @property {SetStateActionBool}		setSendSearch	Setter function for the sendSearch.
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<Boolean>>} SetStateActionBool
+ * @typedef {Dispatch<SetStateAction<String>>} SetStateActionString State Setter Function for a String
  */
 
 /**
- * @typedef {Dispatch<SetStateAction<Date>>} SetStateActionDate
+ * @typedef {Dispatch<SetStateAction<Number>>} SetStateActionNumber	State Setter Function for a Number
+ */
+
+/**
+ * @typedef {Dispatch<SetStateAction<Boolean>>} SetStateActionBool State Setter Function for Boolean
+ */
+
+/**
+ * @typedef {Dispatch<SetStateAction<Date>>} SetStateActionDate State Setter Function for Date
  */
 
 /**
@@ -168,7 +181,7 @@ import { Socket } from "socket.io-client";
  * 		email: 			String;
  * 		birthDate: 		Date;
  * 		displayName: 	String;
- * }>>} SetStateActionUser
+ * }>>} SetStateActionUser State Setter Function for a User
  */
 
 /**
@@ -179,7 +192,7 @@ import { Socket } from "socket.io-client";
  * 		email: 			Boolean,
  * 		birthDate: 		Boolean,
  * 		displayName: 	Boolean
- * }>>} SetStateActionTog
+ * }>>} SetStateActionTog State Setter Function for Toggle
  */
 
 /**
@@ -188,7 +201,7 @@ import { Socket } from "socket.io-client";
  * 		socket: 	Socket,
  * 		username: 	String,
  * 		room: 		Boolean,
- * }>>} SetStateActionChatRoom
+ * }>>} SetStateActionChatRoom State Setter Function for a Room
  */
 
 /**
@@ -200,7 +213,23 @@ import { Socket } from "socket.io-client";
  * 		pageTitle: 		String;
  * 		posts: 			any[];
  * 		private: 		Boolean;
- * }>>} SetStateActionPage
+ * }>>} SetStateActionPage State Setter Function for a Page
  */
 
+/**
+ * @typedef {Dispatch<SetStateAction<{
+ * 		groupID: String;
+ * 		isPrivate: Boolean;
+ * 		members: User[]
+ * }>>} SetStateActionGroup State Setter Function for a Group
+ */
 
+/**
+ * @typedef {Dispatch<SetStateAction<{
+ * 		groups:	{
+ * 					groupID: String;
+ * 					isPrivate: Boolean;
+ * 					members: User[]
+ * 				}[];
+ * }>>} SetStateActionGroups State Setter Function for a list of Groups
+ */
