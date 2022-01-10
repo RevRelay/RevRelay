@@ -332,7 +332,7 @@ function SwitchBoard({ token, setToken }) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home />} />
+				<Route index element={<Home token={token}/>} />
 				<Route path="login" element={<Login setToken={setToken} />} />
 				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="search">

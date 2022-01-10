@@ -112,6 +112,13 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * @typedef {Object}	Group		An Array for a Group.
+ * @property {String} 	groupName	Name of the Group
+ * @property {Boolean} 	isPrivate	Is the group private (false) or not (true)
+ * @property {User[]}	members		List of users in a group
+ */
+
+/**
  * @typedef 	{Object}					PasswordProp	An Array for Password Prop to show or not show the password in forms.
  * @property 	{String} 					id 				TextField ID.
  * @property 	{String} 					label 			TextField label.

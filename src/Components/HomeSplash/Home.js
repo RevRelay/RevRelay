@@ -1,22 +1,6 @@
 import {
-	AppBar,
-	Autocomplete,
-	Box,
 	Button,
-	Card,
-	Drawer,
-	IconButton,
-	InputLabel,
-	MenuItem,
-	Select,
-	List,
-	ListItem,
-	Divider,
-	ListItemText,
-	Toolbar,
-	ListItemIcon,
 	Typography,
-	Grid,
 	Stack,
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
@@ -25,6 +9,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { JWTs } from "../../typeDef";
 
 const Item = styled(Paper)(({ theme }) => ({
 	...theme.typography.body2,
@@ -35,26 +20,26 @@ const Item = styled(Paper)(({ theme }) => ({
   
 /**
  * 
- * @param {object} param
- * @param {string} param.JWT token determinig user and log in information.
+ * @param {JWTs} 	homeProp		The Array for an object that just contains a JWT.
+ * @param {String} 	homeProp.token 	JWT Token determinig user and log in information.
  * @returns 
  */
-export default function Home({JWT}){
+export default function Home(homeProp){
 	let navigate = useNavigate();
 
-	return ( JWT? navigate("/user/profile") :
+	return ( homeProp.token? navigate("/user/profile") :
 		<>
 			<Stack direction="row" spacing={15} justifyContent="center" >
 			</Stack>
 			<br></br>
 			<Stack direction="row" spacing={15} justifyContent="center" >
 				<Item key="Login" >
-					<Typography  > Returning User</Typography>
+					<Typography > Returning User</Typography>
 					<br></br>
 					<Button onClick={(x) => navigate("/login")} primary="login" startIcon={<LoginIcon />} > Login </Button>
 				</Item>
 				<Item key="Register" item>
-					<Typography  > New User </Typography>
+					<Typography>New User</Typography>
 					<br></br>
 					<Button onClick={(x) => navigate("/register")} primary="register" startIcon={<HowToRegIcon />} > Register </Button>
 				</Item>
