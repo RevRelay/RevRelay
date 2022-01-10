@@ -74,7 +74,7 @@ export default function Page({ JWT }) {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
 	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState("");
+	const [tab, updateTab] = useState(0);
 	const [friends, setFriends] = useState([]);
 	const [group, setGroup] = useState(null);
 	const { pageParam } = useParams();
@@ -84,35 +84,31 @@ export default function Page({ JWT }) {
 	useEffect(() => {
 		setReload(false);
 		GetPage();
-		updateTab(0);
 	}, [reload]);
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
 
 	const handleInvite = async () => {
-		console.log("Sending Invite");
+
+		let currentSelectedGroup = userGroups.content.filter((x) => {
+			return x.groupName == selectedGroup;
+		})[0];
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
 				Authorization: "Bearer " + JWT,
 			},
 			params: {
-				GroupID: userGroups.content.filter((x) => {
-					return x.groupName == selectedGroup;
-				})[0].groupID,
+				GroupID: currentSelectedGroup.groupID,
 				UserID: page.userID,
 			},
 		}).then((response) => response.data);
 		toast.success("Added User to Group!");
-		let currentSelectedGroup = userGroups.content.filter((x) => {
-			return x.groupName == selectedGroup;
-		})[0];
 
 		GetPage();
-		// let tempGroups = { ...groups };
-		// tempGroups.push(currentSelectedGroup);
-		// console.log(tempGroups);
-		// setGroups(tempGroups);
+		let tempGroups = [...groups];
+		tempGroups.push(currentSelectedGroup);
+		setGroups(tempGroups);
 		setOpen2(false);
 	};
 
@@ -138,7 +134,6 @@ export default function Page({ JWT }) {
 			},
 		}).then((response) => response.data);
 		//toast.success("Friend added!");
-		//console.log(response);
 		setAnchorEl(null);
 	};
 
@@ -154,7 +149,6 @@ export default function Page({ JWT }) {
 			},
 		}).then((response) => response.data);
 		toast.success("Group Joined!");
-		console.log(response);
 		setAnchorEl(null);
 	};
 	//ADD start Chat Logic Here
@@ -174,7 +168,7 @@ export default function Page({ JWT }) {
 	/**
 	 * @async
 	 */
-	async function getCurrentGroup() {}
+	async function getCurrentGroup() { }
 
 	/**
 	 * Gets Page from back server
@@ -221,9 +215,8 @@ export default function Page({ JWT }) {
 
 					getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
-						console.log(data.data);
+						setIsBusy(false);
 					});
-					setIsBusy(false);
 				}
 			});
 		});
@@ -243,9 +236,17 @@ export default function Page({ JWT }) {
 		};
 	}
 	if (isBusy) return <LoadingPage />;
-	if (page.private && page.userID != currentUser.userID) {
-		if (!friends.includes(currentUser.userID)) return <Private />;
+	if (page.groupPage) {
+		if (page.private && page.userID != currentUser.userID) {
+
+			if (!group.members.map(m => m.userID).includes(currentUser.userID)) return <Private />;
+		}
+	} else {
+		if (page.private && page.userID != currentUser.userID) {
+			if (!friends.includes(currentUser.userID)) return <Private />;
+		}
 	}
+
 
 	return (
 		<>
@@ -295,7 +296,7 @@ export default function Page({ JWT }) {
 								>
 									<CardHeader title={page.pageTitle} sx={{
 										color: "palette.text.primary",
-									}}/>
+									}} />
 									<Avatar
 										alt="Pidgeon"
 										src={image}
@@ -413,9 +414,7 @@ export default function Page({ JWT }) {
 									...userGroups.content
 										.filter((group) => {
 											if (groups.content) {
-												console.log(groups.content);
 												for (let currentGroup of groups.content) {
-													console.log(currentGroup);
 													if (group.groupID === currentGroup.groupID) {
 														return false;
 													}
@@ -429,7 +428,6 @@ export default function Page({ JWT }) {
 								]}
 								onChange={(e, val) => {
 									setSelectedGroup(val);
-									console.log(val);
 								}}
 								sx={{ margin: 5, width: 300, height: 200 }}
 								ListboxProps={{ style: { maxHeight: "150px" } }}
@@ -539,8 +537,7 @@ export default function Page({ JWT }) {
 	}
 
 	function Private() {
-		console.log(currentUser);
-		return <></>;
+		return <Typography>This page is private!</Typography>;
 	}
 
 	/**
@@ -595,7 +592,6 @@ export default function Page({ JWT }) {
 
 		const deleteGroup = async (groupID) => {
 			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
-				console.log(e);
 			}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
@@ -608,8 +604,6 @@ export default function Page({ JWT }) {
 		return (
 			<>
 				{groups.content.map((group) => {
-					console.log("SOMETHING HERE");
-					console.log(group);
 					return (
 						<Paper key={group.groupID} sx={{ marginBottom: 3 }} elevation={3}>
 							<Typography>{group.groupName}</Typography>

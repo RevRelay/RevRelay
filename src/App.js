@@ -40,12 +40,13 @@ const themes = [
 	},
 	{
 		name: "Dark",
-		theme: createTheme({ palette: { mode: "dark" },
-							typography: {
-								allVariants: {
-								color: "lightgrey"
-								},
-							}
+		theme: createTheme({
+			palette: { mode: "dark" },
+			typography: {
+				allVariants: {
+					color: "lightgrey"
+				},
+			}
 		}),
 	},
 	{
@@ -94,7 +95,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -126,7 +127,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -158,7 +159,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -191,7 +192,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -223,7 +224,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -258,7 +259,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -290,7 +291,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -341,15 +342,15 @@ function App() {
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			{/* Renders Chat Box */}
-			{token ? <Client /> : <></>}
+			{/* {token ? <Client /> : <></>} */}
 			<Nav
 				themes={themes}
 				activeTheme={activeTheme}
 				updateActiveTheme={updateActiveTheme}
 				token={token}
 				setToken={setToken}
-				sendSearch = {sendSearch}
-				setSendSearch = {setSendSearch}
+				sendSearch={sendSearch}
+				setSendSearch={setSendSearch}
 			/>
 			<Box
 				sx={{
@@ -359,7 +360,7 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch}/>
+				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch} />
 			</Box>
 		</ThemeProvider>
 	);
@@ -378,7 +379,7 @@ function App() {
  * @param {SetStateActionBool}		param.setSendSearch		setter for the above
  * @returns
  */
-function SwitchBoard({ token, setToken, sendSearch}) {
+function SwitchBoard({ token, setToken, sendSearch }) {
 	return (
 		<Routes>
 			<Route path="/">
@@ -388,7 +389,7 @@ function SwitchBoard({ token, setToken, sendSearch}) {
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
+					<Route path=":searchTerm" element={<Search token={token} sendSearch={sendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />

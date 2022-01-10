@@ -1,14 +1,15 @@
 import {
-	Button,
-	FormControlLabel,
-	FormGroup,
-	TextField,
-	Switch,
-	Grid,
+  Button,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+  Switch,
+  Grid,
 } from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";
+import { ToastContainer, toast } from "react-toastify";
 
 /**
  * Renders the page settings tabs. Can set three attributes: private, description, and banner
@@ -16,59 +17,60 @@ import { Box } from "@mui/system";
  * @returns page html
  */
 export default function PageSetting({ page, updatePage, setReload }) {
-	const [loading, setLoading] = useState(false);
-	let tempPage = { ...page };
-	tempPage.posts = null;
-	const [form, updateForm] = useState({
-		...tempPage,
-		// bannerURL: page.bannerURL,
-		// description: page.description,
-		// isPrivate: page.private,
-	});
+  const [loading, setLoading] = useState(false);
+  let tempPage = { ...page };
+  tempPage.posts = null;
+  const [form, updateForm] = useState({
+    ...tempPage,
+    // bannerURL: page.bannerURL,
+    // description: page.description,
+    // isPrivate: page.private,
+  });
 
-	const { description, bannerURL, isPrivate } = form;
-	// stretch goal: page title (custom name of page)
+  const { description, bannerURL, isPrivate } = form;
+  // stretch goal: page title (custom name of page)
 
-	// privacy
-	// name of the page (default name of page)
-	// description
-	// banner
+  // privacy
+  // name of the page (default name of page)
+  // description
+  // banner
 
-	const changeDescription = (e) => {
-		let tempForm = { ...form };
-		tempForm.description = e.target.value;
-		updateForm(tempForm);
-	};
+  const changeDescription = (e) => {
+    let tempForm = { ...form };
+    tempForm.description = e.target.value;
+    updateForm(tempForm);
+  };
 
-	const togglePrivacy = (e) => {
-		let tempForm = { ...form };
+  const togglePrivacy = (e) => {
+    let tempForm = { ...form };
 
-		tempForm.private = e.target.checked;
-		updateForm(tempForm);
-	};
+    tempForm.private = e.target.checked;
+    updateForm(tempForm);
+  };
 
-	const changeURL = (e) => {
-		let tempForm = { ...form };
-		tempForm.bannerURL = e.target.value;
-		updateForm(tempForm);
-	};
+  const changeURL = (e) => {
+    let tempForm = { ...form };
+    tempForm.bannerURL = e.target.value;
+    updateForm(tempForm);
+  };
 
-	const saveChanges = async () => {
-		setLoading(true);
-		//Axios:
-		const response = await APIQuery.put("/pages", form, {
-			headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-		}).then((data) => {
+  const saveChanges = async () => {
+    setLoading(true);
+    //Axios:
+    const response = await APIQuery.put("/pages", form, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    }).then((data) => {
+      setReload(true);
+      toast.success("Successfully updated group!");
+      return data;
+    });
+    console.log(response);
+    setLoading(false);
+  };
 
-			return data;
-		});
-		console.log(response);
-
-		setLoading(false);
-	};
-
-	return (
+  return (
     <>
+      <ToastContainer />
       <Box
         sx={{
           marginTop: "5%",
