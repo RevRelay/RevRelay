@@ -42,6 +42,7 @@ import getCurrentUser, {
 	getPageAxios,
 	getUserGroups,
 } from "../API/PageAPI";
+import { ComponentsProps } from "@mui/material/styles";
 
 /**
  * Renders a generic page with condintional rendering
@@ -55,10 +56,18 @@ export default function Page({ JWT }) {
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
 
+	const [isBusy, setIsBusy] = useState(true);
+	const [groups, setGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState({ content: [] });
+	const [currentUser, setCurrentUser] = useState(null);
+	const [selectedGroup, setSelectedGroup] = useState(null);
+	const [reload, setReload] = useState(false);
+	const [tab, updateTab] = useState(0);
+
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
-	
+
 	const handleInvite = async () => {
 		console.log("Sending Invite");
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -72,8 +81,16 @@ export default function Page({ JWT }) {
 				UserID: page.userID,
 			},
 		}).then((response) => response.data);
-		toast.success("Group Joined!");
-		console.log(response);
+		toast.success("Added User to Group!");
+		let currentSelectedGroup = userGroups.content.filter((x) => {
+			return x.groupName == selectedGroup;
+		})[0];
+
+		GetPage();
+		// let tempGroups = { ...groups };
+		// tempGroups.push(currentSelectedGroup);
+		// console.log(tempGroups);
+		// setGroups(tempGroups);
 		setOpen2(false);
 	};
 
@@ -106,7 +123,7 @@ export default function Page({ JWT }) {
 		console.log(response);
 		setAnchorEl(null);
 	};
-	
+
 	//ADD add join group logic here
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
@@ -139,13 +156,6 @@ export default function Page({ JWT }) {
 		private: true,
 		pageTitle: "Title Not Found",
 	});
-	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState(true);
-	const [userGroups, setUserGroups] = useState({ content: [] });
-	const [currentUser, setCurrentUser] = useState(null);
-	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState(0);
 
 	// const currnetUser = {
 	// 	page: { userOwnerID: 0 },
@@ -154,7 +164,7 @@ export default function Page({ JWT }) {
 	useEffect(() => {
 		setReload(false);
 		GetPage();
-	//	updateTab(0);
+		//updateTab(0);
 	}, [reload]);
 
 	/**
@@ -166,8 +176,8 @@ export default function Page({ JWT }) {
 	/**
 	 * @async
 	 */
-	async function getCurrentGroup() {}
-	
+	async function getCurrentGroup() { }
+
 	/**
 	 * Gets Page from back server
 	 * @async
@@ -185,7 +195,6 @@ export default function Page({ JWT }) {
 			else apiRegisterUrl = "/groups/" + pageParam;
 
 			getUserGroups(JWT, data.data.userID).then((data) => {
-				console.log(data.data);
 				setUserGroups(data.data);
 			});
 
@@ -224,33 +233,6 @@ export default function Page({ JWT }) {
 
 	return (
 		<>
-			<Dialog open={open2} onClose={handleClose2}>
-				<DialogTitle>Send a Group Invite</DialogTitle>
-				<DialogContent>
-					<Autocomplete
-						disablePortal
-						id="combo-box-demo"
-						options={[
-							...userGroups.content.map((group) => {
-								return group.groupName + "";
-							}),
-						]}
-						onChange={(e, val) => {
-							setSelectedGroup(val);
-							console.log(val);
-						}}
-						sx={{ width: 300 }}
-						renderInput={(params) => (
-							<TextField {...params} label="Your Groups" />
-						)}
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose2}>Cancel</Button>
-					<Button onClick={handleInvite}>Send</Button>
-				</DialogActions>
-			</Dialog>
-			<ToastContainer />
 			{isBusy ? (
 				<LoadingPage />
 			) : (
@@ -398,6 +380,47 @@ export default function Page({ JWT }) {
 							</div>
 						</div>
 					</Box>
+					<Dialog open={open2} onClose={handleClose2}>
+						<DialogTitle>Send a Group Invite</DialogTitle>
+						<DialogContent>
+							<Autocomplete
+								disablePortal
+								id="combo-box-demo"
+								options={[
+									...userGroups.content
+										.filter((group) => {
+											if (groups.content) {
+												console.log(groups.content);
+												for (let currentGroup of groups.content) {
+													console.log(currentGroup);
+													if (group.groupID === currentGroup.groupID) {
+														return false;
+													}
+												}
+												return true;
+											}
+										})
+										.map((group) => {
+											return group.groupName + "";
+										}),
+								]}
+								onChange={(e, val) => {
+									setSelectedGroup(val);
+									console.log(val);
+								}}
+								sx={{ margin: 5, width: 300, height: 200 }}
+								ListboxProps={{ style: { maxHeight: '150px' } }}
+								renderInput={(params) => (
+									<TextField {...params} label="Your Groups" />
+								)}
+							/>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={handleClose2}>Cancel</Button>
+							<Button onClick={handleInvite}>Send</Button>
+						</DialogActions>
+					</Dialog>
+					<ToastContainer />
 				</Box>
 			)}
 		</>
@@ -482,7 +505,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for About
 	 *
@@ -513,7 +536,7 @@ export default function Page({ JWT }) {
 			</>
 		);
 	}
-	
+
 	/**
 	 * Placeholder for Settings
 	 *
@@ -556,13 +579,16 @@ export default function Page({ JWT }) {
 		return (
 			<>
 				{groups.content.map((group) => {
+					console.log("SOMETHING HERE");
+					console.log(group);
 					return (
 						<div key={group.groupID}>
 							<Typography>{group.groupName}</Typography>
 							<Button onClick={() => goToGroup(group.groupID)}>
 								Go to Group
 							</Button>
-							{page.userID === currentUser.userID ? (
+							{page.userID === currentUser.userID &&
+								currentUser.userID === group.userOwnerID ? (
 								<Button onClick={() => deleteGroup(group.groupID)}>
 									Delete Group
 								</Button>

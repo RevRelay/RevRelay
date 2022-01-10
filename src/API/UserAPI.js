@@ -1,10 +1,13 @@
 import axios from "axios";
-import Axios from 'axios';
+import Axios from "axios";
 import { User } from "../typeDef";
 
-const urlConnection = "http://localhost:5000/"
-const s3Upload = "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload"
-const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com"
+const urlConnection = "http://localhost:5000/";
+// const urlConnection =
+//   "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
+const s3Upload =
+  "https://i9gd5w6v12.execute-api.us-west-2.amazonaws.com/dev/image-upload";
+const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com";
 
 /**
  * Axios configuration that all other functions in file uses.
@@ -13,12 +16,12 @@ const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com"
  * @returns Axios configuration for the given JWT
  */
 function axiosConfig(JWT) {
-	return {
-		headers: {
-			Authorization: "Bearer " + JWT,
-			"Content-Type": "application/json",
-		},
-	};
+  return {
+    headers: {
+      Authorization: "Bearer " + JWT,
+      "Content-Type": "application/json",
+    },
+  };
 }
 
 /**
@@ -29,11 +32,11 @@ function axiosConfig(JWT) {
  * @returns a Put request to the correct place to change the password for the current user.
  */
 function updatePassword(passwords, JWT) {
-	return axios.put(
-		urlConnection + "users/password",
-		passwords,
-		axiosConfig(JWT)
-	);
+  return axios.put(
+    urlConnection + "users/password",
+    passwords,
+    axiosConfig(JWT)
+  );
 }
 
 /**
@@ -43,36 +46,41 @@ function updatePassword(passwords, JWT) {
  * @param {string}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */
+<<<<<<< HEAD
 function updateUser(user, JWT){
 	user.birthDate = user.birthDate.toJSON();
 	return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
+=======
+function updateUser(user, JWT) {
+  //user.birthDate = user.birthDate.toJSON();
+  return axios.put(urlConnection + "users/update", user, axiosConfig(JWT));
+>>>>>>> d3e9c1a07d65856f18b53f56c6a587502da2907c
 }
 
 /**
  * Uploads a users profile picture to s3
- * 
- * @param {image} image 
+ *
+ * @param {image} image
  * @returns axios call to database
  */
 function uploadImage(image, userId) {
-	const parts = image.split(';');
-	const mime = parts[0].split(':')[1];
-	const data = parts[1];
+  const parts = image.split(";");
+  const mime = parts[0].split(":")[1];
+  const data = parts[1];
 
-	return Axios.post(s3Upload, { mime, userId, image: data});
+  return Axios.post(s3Upload, { mime, userId, image: data });
 }
 
 /**
  * Retrieves a users profile picture from the s3 bucket, not using axios to connect but rather just accessing public url
- * 
- * @param {*} userId 
+ *
+ * @param {*} userId
  * @returns link to where image is hosted
  */
 function getProfilePic(userId) {
-	const key = `${userId}.jpg`;
-	return `${s3Storage}/${key}`;
-	//Axios.get(s3Retrieve, { key }); alternative implementation, save comment
+  const key = `${userId}.jpg`;
+  return `${s3Storage}/${key}`;
+  //Axios.get(s3Retrieve, { key }); alternative implementation, save comment
 }
-
 
 export { updatePassword, updateUser, uploadImage, getProfilePic };
