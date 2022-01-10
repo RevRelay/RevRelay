@@ -85,6 +85,11 @@ export default function NavSearchBar() {
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 	
 	/**
+	 * @type {[boolean, SetStateActionString]}
+	 */
+	const [sendSearch, setSendSearch] = useState(false);
+
+	/**
 	 * 
 	 * @param {event} event 
 	 */
@@ -109,7 +114,7 @@ export default function NavSearchBar() {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
 			handleClearSearchBar();
-			window.location.reload(false);
+			setSendSearch(!sendSearch);
 		}
 	};
 
