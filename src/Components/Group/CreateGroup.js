@@ -85,7 +85,9 @@ export default function CreateGroup({ JWT, groups, setGroups }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={toggleOpen}>Cancel</Button>
+                    <Button sx={{
+                        color: "palette.secondary.dark",
+                    }} onClick={toggleOpen}>Cancel</Button>
                     <Button onClick={createGroup}>Create Group!</Button>
                 </DialogActions>
             </Dialog>

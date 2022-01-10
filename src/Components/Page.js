@@ -293,7 +293,9 @@ export default function Page({ JWT }) {
 										borderRadius: 25,
 									}}
 								>
-									<CardHeader title={page.pageTitle} />
+									<CardHeader title={page.pageTitle} sx={{
+										color: "palette.text.primary",
+									}}/>
 									<Avatar
 										alt="Pidgeon"
 										src={image}
@@ -533,7 +535,7 @@ export default function Page({ JWT }) {
 	 * @returns
 	 */
 	function About() {
-		return <div>{page.description}</div>;
+		return <Typography>{page.description}</Typography>;
 	}
 
 	function Private() {

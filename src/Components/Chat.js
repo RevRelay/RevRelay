@@ -203,14 +203,16 @@ function Chat({ socket, username, room }) {
 
 	return (
 		<Box>
-			<h2
+			<Typography
 				style={{
 					textAlign: "center",
 					width: "100%",
 				}}
 			>
-				You are in room {room}
-			</h2>
+				<h2>
+					You are in room {room}
+				</h2>
+			</Typography>
 			<Box
 				ref={scrollRef}
 				sx={{
@@ -227,7 +229,7 @@ function Chat({ socket, username, room }) {
 				<Box>
 					{messageList.map((content) => {
 						return (
-							<Box
+							<Typography
 								sx={{
 									width: "100%",
 									textAlign: content.user !== username ? "left" : "right",
@@ -235,7 +237,7 @@ function Chat({ socket, username, room }) {
 							>
 								{content.user !== username ? "from " + content.user + ": " : ""}
 								{content.message}
-							</Box>
+							</Typography>
 						);
 					})}
 				</Box>
@@ -247,7 +249,7 @@ function Chat({ socket, username, room }) {
 				>
 					{usersTyping.map((typer) => {
 						return typer.username !== username ? (
-							<p>{typer.username} is typing</p>
+							<Typography>{typer.username} is typing</Typography>
 						) : (
 							<></>
 						);
