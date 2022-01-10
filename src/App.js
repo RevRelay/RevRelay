@@ -258,15 +258,14 @@ const themes = [
 
 /**
  * Main function of our single page aplication.
- * 
+ *
  * Changes theme and current page allowed based on their token.
- * 
+ *
  * @returns Single Page of our application.
  */
 function App() {
-
 	/**
-	 * Setting the JWT string token 
+	 * Setting the JWT string token
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	localStorage.setItem("token", token);
@@ -292,7 +291,7 @@ function App() {
 	 * Setting the active theme but changing the int of activeTheme. Corresponding to the theme array
 	 */
 	const [activeTheme, updateActiveTheme] = useState(0);
-	
+
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			{/* Renders Chat Box */}
@@ -312,10 +311,7 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard
-					token={token}
-					setToken={setToken}
-				/>
+				<SwitchBoard token={token} setToken={setToken} />
 			</Box>
 		</ThemeProvider>
 	);
@@ -324,27 +320,21 @@ function App() {
 /**
  * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
  * and will hold a JWT if there is currently a user logged in.
- * 
+ *
  * Use the token object passed above if you need to find any
- * 
+ *
  * @param {object} 					param
  * @param {string} 					param.token 	JWT token determinig user and log in information.
  * @param {SetStateActionString} 	param.setToken	state variable setter for token field information.
- * @returns 
+ * @returns
  */
 function SwitchBoard({ token, setToken }) {
 	return (
 		<Routes>
 			<Route path="/">
 				<Route index element={<Home />} />
-				<Route
-					path="login"
-					element={<Login setToken={setToken} />}
-				/>
-				<Route
-					path="register"
-					element={<Registration setToken={setToken} />}
-				/>
+				<Route path="login" element={<Login setToken={setToken} />} />
+				<Route path="register" element={<Registration setToken={setToken} />} />
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
@@ -352,20 +342,22 @@ function SwitchBoard({ token, setToken }) {
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route path=":userID" element={<Page JWT={token} />}/>
+					<Route path=":pageParam" element={<Page JWT={token} />} />
 					<Route path="profile">
 						<Route index element={<Page JWT={token} />} />
-						<Route path="userInfo" >
+						<Route path="userInfo">
 							<Route index element={<UserInfo JWT={token} />} />
-							<Route path="changePassword" element={<ChangePassword JWT={token}/>} />
+							<Route
+								path="changePassword"
+								element={<ChangePassword JWT={token} />}
+							/>
 						</Route>
 					</Route>
 				</Route>
 			</Route>
 			<Route path="group">
 				<Route index element={<Groups />} />
-				<Route path=":userID" element={<Group />} />
-				<Route path="profile" element={<GroupProfile />} />
+				<Route path=":pageParam" element={<Page JWT={token} />} />
 			</Route>
 		</Routes>
 	);
@@ -383,48 +375,40 @@ function SwitchBoard({ token, setToken }) {
 // }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 function Users() {
 	return <Typography color="textPrimary">Users</Typography>;
 }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 function User() {
 	return <Typography color="textPrimary">User</Typography>;
 }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 function UserProfile() {
 	return <Typography color="textPrimary">UserProfile</Typography>;
 }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 function Groups() {
 	return <Typography color="textPrimary">Groups</Typography>;
 }
 
 /**
- * 
- * @returns 
- */
-function Group() {
-	return <Typography color="textPrimary">Group</Typography>;
-}
-
-/**
- * 
- * @returns 
+ *
+ * @returns
  */
 function GroupProfile() {
 	return <p>GroupProfile</p>;

@@ -1,9 +1,11 @@
 import {
+	Autocomplete,
 	Box,
 	Button,
 	Card,
 	CardHeader,
 	CardMedia,
+	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -13,27 +15,119 @@ import {
 	Fade,
 	Grid,
 	IconButton,
+	Menu,
+	MenuItem,
 	Pagination,
 	Paper,
+	Stack,
 	Tab,
 	Tabs,
+	TextField,
+	Typography,
 } from "@mui/material";
+
+import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
+import CreateGroup from "./Group/CreateGroup";
 import { height, maxHeight, width } from "@mui/system";
-import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import FriendsTab from "./Page/FriendsTab";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import getCurrentUser, {
+	getGroupsByID,
+	getPageAxios,
+	getUserGroups,
+} from "../API/PageAPI";
 
 /**
  * Renders a generic page with condintional rendering
+ *
  * @param {object} param
  * @param {string} param.JWT token determining user and log in information.
  * @returns HTML for default page
  */
 export default function Page({ JWT }) {
-	let { userID } = useParams();
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const [open2, setOpen2] = useState(false);
+
+	const handleClose2 = () => {
+		setOpen2(false);
+	};
+	
+	const handleInvite = async () => {
+		console.log("Sending Invite");
+		const response = await APIQuery.post("/groups/addmember", null, {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				GroupID: userGroups.content.filter((x) => {
+					return x.groupName == selectedGroup;
+				})[0].groupID,
+				UserID: page.userID,
+			},
+		}).then((response) => response.data);
+		toast.success("Group Joined!");
+		console.log(response);
+		setOpen2(false);
+	};
+
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const handleCloseInviteToGroup = async () => {
+		setOpen2(true);
+	};
+	//ADD add friend logic here
+
+	const handleCloseAddFriend = async () => {
+		const response = await APIQuery.post(
+			"/users/addFriend/" + currentUser.userID,
+			null,
+			{
+				headers: {
+					Authorization: "Bearer " + JWT,
+				},
+				params: {
+					username: page.username,
+				},
+			}
+		).then((response) => response.data);
+		toast.success("Friend added!");
+		console.log(response);
+		setAnchorEl(null);
+	};
+	
+	//ADD add join group logic here
+	const handleCloseJoinGroup = async () => {
+		const response = await APIQuery.post("/groups/addmember", null, {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+			params: {
+				GroupID: page.groupID,
+				UserID: currentUser.userID,
+			},
+		}).then((response) => response.data);
+		toast.success("Group Joined!");
+		console.log(response);
+		setAnchorEl(null);
+	};
+	//ADD start Chat Logic Here
+	const handleCloseStartChat = () => {
+		setAnchorEl(null);
+	};
+
+	let { pageParam } = useParams();
 	let path = useLocation();
 
 	const [page, updatePage] = useState({
@@ -41,129 +135,277 @@ export default function Page({ JWT }) {
 		description: "You description here",
 		groupPage: false,
 		pageID: 1,
-		pageTitle: "test",
 		posts: [],
 		private: true,
-		pageTitle: "Test",
+		pageTitle: "Title Not Found",
 	});
+	const [isBusy, setIsBusy] = useState(true);
+	const [groups, setGroups] = useState(true);
+	const [userGroups, setUserGroups] = useState({ content: [] });
+	const [currentUser, setCurrentUser] = useState(null);
+	const [selectedGroup, setSelectedGroup] = useState(null);
+	const [reload, setReload] = useState(false);
+	const [tab, updateTab] = useState("");
 
-	const [tab, updateTab] = useState(0);
-	const currentUser = {
-		page: { userOwnerID: 0 },
-	};
+	// const currnetUser = {
+	// 	page: { userOwnerID: 0 },
+	// };
 
 	useEffect(() => {
+		setReload(false);
 		GetPage();
-	}, []);
+		updateTab(0);
+	}, [reload]);
 
 	/**
 	 * Gets Page from back server
 	 * @async
 	 */
-	async function GetPage() {
-		var apiRegisterUrl = "";
-		if (path.pathname.includes("user/profile"))
-			apiRegisterUrl = "/users/current";
-		else if (path.pathname.includes("user"))
-			apiRegisterUrl = "/users/" + userID;
-		else apiRegisterUrl = "/groups/" + userID;
+	const [group, setGroup] = useState(null);
 
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + JWT,
-			},
-		};
-		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
-			if (path.pathname.includes("user")) {
-				data.data.userPage.pageTitle = data.data.displayName + "'s Page";
-				updatePage(data.data.userPage);
-			}
+	/**
+	 * @async
+	 */
+	async function getCurrentGroup() {}
+	
+	/**
+	 * Gets Page from back server
+	 * @async
+	 */
+	async function GetPage() {
+		getCurrentUser(JWT).then(async (data) => {
+			let user = data.data;
+			setCurrentUser(user);
+
+			let apiRegisterUrl = "";
+			if (path.pathname.includes("user/profile"))
+				apiRegisterUrl = "/users/current";
+			else if (path.pathname.includes("user"))
+				apiRegisterUrl = "/users/" + pageParam;
+			else apiRegisterUrl = "/groups/" + pageParam;
+
+			getUserGroups(JWT, data.data.userID).then((data) => {
+				console.log(data.data);
+				setUserGroups(data.data);
+			});
+
+			getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+				let id = -1;
+				if (path.pathname.includes("user")) {
+					id = data.data.userID;
+					data.data.userPage.pageTitle = data.data.displayName + "'s Page!";
+					data.data.userPage.userID = data.data.userID;
+					data.data.userPage.username = data.data.username;
+					data.data.userPage.displayName = data.data.displayName;
+					updatePage(data.data.userPage);
+					getGroupsByID(JWT, id).then((data) => {
+						setGroups(data.data);
+						setIsBusy(false);
+					});
+				} else {
+					id = data.data.userOwnerID;
+					data.data.groupPage.pageTitle =
+						data.data.groupName + " is almost certianly a group page!";
+					data.data.groupPage.userID = data.data.userOwnerID;
+					data.data.groupPage.groupID = data.data.groupID;
+					updatePage(data.data.groupPage);
+
+					apiRegisterUrl = "/groups/" + pageParam;
+
+					getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+						setGroup(data.data);
+						console.log(data.data);
+					});
+					setIsBusy(false);
+				}
+			});
 		});
 	}
-	return (
-		<Box sx={{ height: "80%" }}>
-			<Box
-				sx={{
-					border: 1,
-					borderColor: "primary.main",
-					borderRadius: 2,
-					borderWidth: 2,
-					marginLeft: "15%",
-					marginRight: "15%",
-					display: "flex",
-					minHeight: "80vh",
 
-					maxWidth: "100%",
-					minWidth: 500,
-				}}
-			>
-				<div
-					style={{
-						minHeight: "100%",
-						flexGrow: 1,
-						display: "flex",
-						flexFlow: "column",
-					}}
-				>
-					<Card sx={{ minHeight: "10vh", maxHeight: "25vh", maxWidth: "100%" }}>
-						<div
-							style={{
-								position: "absolute",
-								marginLeft: 10,
-								marginTop: 10,
-								minWidth: 100,
-								borderRadius: 25,
-							}}
-						>
-							<CardHeader title={page.pageTitle} />
-						</div>
-						<CardMedia
-							style={{ objectPosition: "0 0", zIndex: 0 }}
-							component="img"
-							image={page.bannerURL}
-							alt="green iguana"
-						/>
-					</Card>
-					<div
-						style={{
-							flexGrow: 1,
-							position: "relative",
-							width: "100%",
-							alignItems: "center",
-							justifyContent: "center",
+	return (
+		<>
+			<Dialog open={open2} onClose={handleClose2}>
+				<DialogTitle>Send a Group Invite</DialogTitle>
+				<DialogContent>
+					<Autocomplete
+						disablePortal
+						id="combo-box-demo"
+						options={[
+							...userGroups.content.map((group) => {
+								return group.groupName + "";
+							}),
+						]}
+						onChange={(e, val) => {
+							setSelectedGroup(val);
+							console.log(val);
+						}}
+						sx={{ width: 300 }}
+						renderInput={(params) => (
+							<TextField {...params} label="Your Groups" />
+						)}
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose2}>Cancel</Button>
+					<Button onClick={handleInvite}>Send</Button>
+				</DialogActions>
+			</Dialog>
+			<ToastContainer />
+			{isBusy ? (
+				<LoadingPage />
+			) : (
+				<Box sx={{ height: "80%" }}>
+					<Box
+						sx={{
+							border: 1,
+							borderColor: "primary.main",
+							borderRadius: 2,
+							borderWidth: 2,
+							marginLeft: "15%",
+							marginRight: "15%",
+							display: "flex",
+							minHeight: "75vh",
+							maxHeight: "80vh",
+
+							maxWidth: "100%",
+							minWidth: 500,
 						}}
 					>
-						<Tabs
-							aria-label="basic tabs example"
-							centered
-							value={tab}
-							onChange={(x, n) => {
-								updateTab(n);
+						<div
+							style={{
+								minHeight: "100%",
+								flexGrow: 1,
+								display: "flex",
+								flexFlow: "column",
 							}}
 						>
-							<Tab label="Posts" />
-							<Tab label="About" />
-							{page.groupPage ? (
-								<Tab label="Members" />
-							) : (
-								<Tab label="Friends" />
-							)}
-							{!page.groupPage && <Tab label="Groups" />}
-							{currentUser.page.userOwnerID === page.userOwnerID || (
-								<Tab label="Settings" />
-							)}
-						</Tabs>
-						<Divider sx={{ width: "100%" }} />
-						<RenderTab />
-					</div>
-				</div>
-			</Box>
-		</Box>
+							<Card
+								sx={{
+									minHeight: "10vh",
+									maxHeight: "25vh",
+									maxWidth: "100%",
+								}}
+							>
+								<div
+									style={{
+										position: "absolute",
+										marginLeft: 10,
+										marginTop: 10,
+										minWidth: 100,
+										borderRadius: 25,
+									}}
+								>
+									<CardHeader title={page.pageTitle} />
+								</div>
+								<CardMedia
+									style={{ objectPosition: "0 0", zIndex: 0 }}
+									component="img"
+									image={page.bannerURL}
+									alt="green iguana"
+								/>
+							</Card>
+							<div
+								style={{
+									flexGrow: 1,
+									position: "relative",
+									width: "100%",
+									alignItems: "center",
+									justifyContent: "center",
+									overflow: "hidden",
+								}}
+							>
+								<Stack
+									direction="row"
+									sx={{
+										flexGrow: 1,
+										position: "relative",
+										width: "100%",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								>
+									<Tabs
+										aria-label="basic tabs example"
+										centered
+										value={tab}
+										onChange={(x, n) => {
+											updateTab(n);
+										}}
+									>
+										<Tab label="Posts" />
+										<Tab label="About" />
+										{page.groupPage ? (
+											<Tab label="Members" />
+										) : (
+											<Tab label="Friends" />
+										)}
+										{!page.groupPage && <Tab label="Groups" />}
+										{currentUser.userID === page.userID ? (
+											<Tab label="Settings" />
+										) : (
+											""
+										)}
+									</Tabs>
+
+									<div>
+										{currentUser.userID !== page.userID ? (
+											<>
+												<Button
+													id="basic-button"
+													aria-controls={open ? "basic-menu" : undefined}
+													aria-haspopup="true"
+													aria-expanded={open ? "true" : undefined}
+													onClick={handleClick}
+												>
+													Options
+												</Button>
+												<Menu
+													id="basic-menu"
+													anchorEl={anchorEl}
+													open={open}
+													onClose={handleClose}
+													MenuListProps={{
+														"aria-labelledby": "basic-button",
+													}}
+												>
+													{page.groupPage ? (
+														<MenuItem onClick={handleCloseJoinGroup}>
+															Join Group
+														</MenuItem>
+													) : (
+														<MenuItem onClick={handleCloseAddFriend}>
+															Add Friend
+														</MenuItem>
+													)}
+													{page.groupPage ? (
+														""
+													) : (
+														<MenuItem onClick={handleCloseInviteToGroup}>
+															Invite to group
+														</MenuItem>
+													)}
+
+													<MenuItem onClick={handleClose}>Chat</MenuItem>
+												</Menu>
+											</>
+										) : (
+											""
+										)}
+									</div>
+								</Stack>
+								<Divider sx={{ width: "100%" }} />
+								<RenderTab />
+							</div>
+						</div>
+					</Box>
+				</Box>
+			)}
+		</>
 	);
 
 	/**
 	 * Gets tab from state and renders current tab
-	 * 
+	 *
 	 * @returns Current Tab
 	 */
 	function RenderTab() {
@@ -175,57 +417,169 @@ export default function Page({ JWT }) {
 				return <About />;
 				break;
 			case 2:
-				return <>{page.groupPage ? <Members /> : <Friends />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<Members />
+						) : (
+							<FriendsTab currentUsername={page.username} />
+						)}{" "}
+					</>
+				);
 				break;
 			case 3:
-				return <>{page.groupPage ? <Settings /> : <Groups />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<PageSetting
+								page={page}
+								updatePage={updatePage}
+								setReload={setReload}
+							/>
+						) : (
+							<Groups />
+						)}{" "}
+					</>
+				);
 				break;
 			case 4:
-				return <>{page.groupPage ? <></> : <Settings />} </>;
+				return (
+					<>
+						{page.groupPage ? (
+							<></>
+						) : (
+							<PageSetting
+								page={page}
+								updatePage={updatePage}
+								setReload={setReload}
+							/>
+						)}{" "}
+					</>
+				);
 				break;
 			default:
 				break;
 		}
 	}
-
+	function LoadingPage() {
+		return (
+			<>
+				<Grid
+					container
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					justifyContent="center"
+					style={{ minHeight: "80vh" }}
+				>
+					<Grid item xs={3}>
+						<Typography>Loading...</Typography>
+					</Grid>
+					<Grid item xs={3}>
+						<CircularProgress />
+					</Grid>
+				</Grid>
+			</>
+		);
+	}
+	
 	/**
 	 * Placeholder for About
-	 * 
+	 *
 	 * @returns
 	 */
 	function About() {
 		return <div>{page.description}</div>;
 	}
+
 	/**
 	 * Placeholder for Members
-	 * 
+	 *
 	 * @returns
 	 */
 	function Members() {
-		return <div></div>;
+		let nav = useNavigate();
+		return (
+			<>
+				{group.members.map((member) => (
+					<Button
+						onClick={() => {
+							nav("/user/" + member.userID);
+						}}
+					>
+						{member.displayName}
+					</Button>
+				))}
+			</>
+		);
 	}
-	/**
-	 * Placeholder for Friends
-	 * 
-	 * @returns
-	 */
-	function Friends() {
-		return <div></div>;
-	}
+	
 	/**
 	 * Placeholder for Settings
-	 * 
+	 *
 	 * @returns
 	 */
 	function Settings() {
 		return <div></div>;
 	}
+
 	/**
 	 * Placeholder for Groups
-	 * 
+	 *
 	 * @returns
 	 */
 	function Groups() {
-		return <div></div>;
+		let navigate = useNavigate();
+
+		let axiosConfig = {
+			headers: {
+				Authorization: "Bearer " + JWT,
+			},
+		};
+
+		const goToGroup = (groupID) => {
+			navigate("/group/" + groupID);
+		};
+
+		const deleteGroup = async (groupID) => {
+			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
+				console.log(e);
+			}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			//update front end
+			let tempGroups = groups;
+			tempGroups.content = groups.content.filter((e) => {
+				return e.groupID !== groupID;
+			});
+			setGroups({ ...tempGroups });
+		};
+
+		return (
+			<>
+				{groups.content.map((group) => {
+					return (
+						<div key={group.groupID}>
+							<Typography>{group.groupName}</Typography>
+							<Button onClick={() => goToGroup(group.groupID)}>
+								Go to Group
+							</Button>
+							{page.userID === currentUser.userID ? (
+								<Button onClick={() => deleteGroup(group.groupID)}>
+									Delete Group
+								</Button>
+							) : (
+								""
+							)}
+						</div>
+					);
+				})}
+				<br />
+				<br />
+				{page.userID === currentUser.userID ? (
+					<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
+				) : (
+					""
+				)}
+			</>
+		);
 	}
 }

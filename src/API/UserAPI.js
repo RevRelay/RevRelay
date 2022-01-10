@@ -8,28 +8,37 @@ const s3Storage = "https://justin-sherfey-s3.s3.us-west-2.amazonaws.com"
 
 /**
  * Axios configuration that all other functions in file uses.
- * 
+ *
  * @param {string} JWT token determinig user and log in information.
  * @returns Axios configuration for the given JWT
  */
 function axiosConfig(JWT) {
-	return {headers: {"Authorization":"Bearer " + JWT, "Content-Type": "application/json"}};
+	return {
+		headers: {
+			Authorization: "Bearer " + JWT,
+			"Content-Type": "application/json",
+		},
+	};
 }
 
 /**
  * Updates password of the user using a put request.
- * 
+ *
  * @param {object} passwords 	Array of passwords: {current password, new password, repeated new password}.
  * @param {string} JWT 			token determinig user and log in information.
  * @returns a Put request to the correct place to change the password for the current user.
  */
 function updatePassword(passwords, JWT) {
-	return axios.put(urlConnection + "users/password", passwords, axiosConfig(JWT));
+	return axios.put(
+		urlConnection + "users/password",
+		passwords,
+		axiosConfig(JWT)
+	);
 }
 
 /**
  * Updates the User's information including first name, last name, email, display name, and birth date using a put request.
- * 
+ *
  * @param {User} 	user 	Array of the user information including first name, last name, email, display name, and birth date.
  * @param {string}  JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
