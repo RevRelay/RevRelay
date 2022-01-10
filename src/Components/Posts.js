@@ -138,7 +138,6 @@ export default function Posts({ page, currentUser, JWT }) {
 				Authorization: "Bearer " + JWT,
 			},
 			params: {
-				userID: page.userID,
 				upvote: up,
 			},
 		};
