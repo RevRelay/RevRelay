@@ -13,6 +13,7 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import { ToastContainer, toast } from "react-toastify";
 import { PageSingle } from "../../typeDef";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Renders the page settings tabs. Can set three attributes: private, description, and banner
@@ -26,6 +27,16 @@ export default function PageSetting(pageSetting) {
 	let tempPage = { ...pageSetting.page };
 	tempPage.posts = null;
 	const [form, updateForm] = useState({ ...tempPage });
+	const navigate = useNavigate();
+
+	console.log(pageSetting.token);
+	let axiosConfig = {
+		headers: {
+			Authorization: "Bearer " + pageSetting.token,
+		},
+	};
+
+	console.log(pageSetting.token);
 
 	const { description, bannerURL, isPrivate } = form;
 	// stretch goal: page title (custom name of page)
@@ -70,6 +81,18 @@ export default function PageSetting(pageSetting) {
 		console.log(response);
 		setLoading(false);
 	};
+
+	/**
+ * ---
+ * @async
+ * @param {String} groupID ---
+ */
+	const deleteGroup = async () => {
+		await APIQuery.delete("/groups/" + pageSetting.page.groupID, axiosConfig).catch((e) => { }); //since this is attached to a group component, we're guaranteed that it exists to delete it
+		//update front end
+		navigate("/user/profile");
+	};
+
 
 	return (
 		<>
@@ -126,6 +149,17 @@ export default function PageSetting(pageSetting) {
 									>
 										Save Page Settings
 									</Button>
+									{pageSetting.page.isGroupPage ? (
+										<Button
+											variant="contained"
+											color="error"
+											onClick={() => {
+												deleteGroup();
+											}}
+										>
+											Delete Group
+										</Button>
+									) : (<></>)}
 								</Box>
 							</center>
 

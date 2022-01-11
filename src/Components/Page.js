@@ -44,7 +44,7 @@ import getCurrentUser, {
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
 import { alpha } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 
 
 /**
@@ -84,14 +84,15 @@ export default function Page(pageProp) {
 	const [group, setGroup] = useState(null);
 	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
+	const theme = useTheme();
 
 	const path = useLocation();
 
-	const Title = styled(CardHeader)(({ theme }) => ({
-		backgroundColor: alpha(theme.palette.background.paper, 0.5),
-	}));
+	const Title = styled(CardHeader)(({ theme }) => (
+		{
+			backgroundColor: alpha(theme.palette.background.paper, 0.5),
+		}));
 
-	console.log(styled(CardHeader));
 
 	/**
 	 * ---
@@ -342,10 +343,10 @@ export default function Page(pageProp) {
 									}}
 								>
 
-									<Button
+									{/* <Button
 										variant="contained" color="success">
 										Add Friend
-									</Button>
+									</Button> */}
 								</Box>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
@@ -438,12 +439,22 @@ export default function Page(pageProp) {
 							</Box>
 
 						</Box >
-						<Box sx={{
-							backgroundColor: "primary", minHeight: "100vh",
-						}} >
-							<Divider sx={{ width: "100%" }} />
-							<RenderTab />
-						</Box>
+						{theme.palette.mode === "light" ? (
+							<Box sx={{
+								backgroundColor: "hsl(0, 0%, 97%)", minHeight: "100vh",
+							}} >
+								<Divider sx={{ width: "100%" }} />
+								<RenderTab />
+							</Box>
+						) : (
+							<Box sx={{
+								backgroundColor: "primary", minHeight: "100vh",
+							}} >
+								<Divider sx={{ width: "100%" }} />
+								<RenderTab />
+							</Box>
+						)}
+
 					</Stack >
 
 					<Dialog open={openInviteUser}>
@@ -521,6 +532,7 @@ export default function Page(pageProp) {
 								page={page}
 								updatePage={updatePage}
 								setIsReload={setIsReload}
+								token={pageProp.token}
 							/>
 						) : (
 							<Groups />
@@ -665,12 +677,6 @@ export default function Page(pageProp) {
 	function Groups() {
 		let navigate = useNavigate();
 
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + pageProp.token,
-			},
-		};
-
 		/**
 		 * ---
 		 * @param {String} groupID ---
@@ -679,22 +685,6 @@ export default function Page(pageProp) {
 			navigate("/group/" + groupID);
 		};
 
-		/**
-		 * ---
-		 * @async
-		 * @param {String} groupID ---
-		 */
-		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => { }); //since this is attached to a group component, we're guaranteed that it exists to delete it
-			//update front end
-			let tempGroups = groups;
-			tempGroups.content = groups.content.filter((e) => {
-				return e.groupID !== groupID;
-			});
-			setGroups({ ...tempGroups });
-		};
-
-		console.log(groups.content);
 		return (
 			<Box sx={{ width: "100%", pt: "2%" }}>
 				<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
