@@ -1,47 +1,39 @@
 import {
 	Box,
 	Button,
-	Card,
-	CardHeader,
-	CardMedia,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Divider,
 	Fade,
 	Grid,
 	IconButton,
 	Pagination,
 	Paper,
-	Tab,
-	Tabs,
 	TextField,
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import { borderLeft, height, maxHeight, width } from "@mui/system";
-import { current } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import { User, Page, Post } from "../typeDef";
+import { User, Page, Post, Posting, PostSingle } from "../typeDef";
 
 /**
  * Render Posts Tab
  *
- * @param {object} 	param
- * @param {Page}	param.page
- * @param {User}	param.currentUser
- * @param {string}	param.JWT			token determinig user and log in information.
- * @returns
+ * @param {Posting} postsProp						---
+ * @param {Page}	postsProp.page					---
+ * @param {Number}	postsProp.page.pageID			The ID for the Page.
+ * @param {User}	postsProp.currentUser			The current User's info.
+ * @param {Number}	postsProp.currentUser.userID	The curren't User's userID.
+ * @param {String}	postsProp.JWT					JWT token determinig user and log in information.
+ * @returns ---
  */
-export default function Posts({ page, currentUser, JWT }) {
+export default function Posts(postsProp) {
 	const [posts, updatePosts] = useState({
 		content: [],
 		pageable: "INSTANCE",
@@ -55,10 +47,9 @@ export default function Posts({ page, currentUser, JWT }) {
 		first: true,
 		empty: true,
 	});
-
 	const [open, setOpen] = useState(false);
 	const [newpost, updateNewPost] = useState({
-		postPage: { pageID: page.pageID },
+		postPage: { pageID: postsProp.page.pageID },
 		postType: "ORIGINAL",
 		postTitle: "New Post",
 		postContent: "Hello World!",
@@ -68,15 +59,19 @@ export default function Posts({ page, currentUser, JWT }) {
 		children: null,
 	});
 
-	const handleClickOpen = (isOp, post) => {
+	/**
+	 * ---
+	 * @param {Boolean} isOp	---
+	 * @param {Number} 	postID 	The parent Post's postID.
+	 */
+	const handleClickOpen = (isOp, postID) => {
 		if (!isOp) {
 			let np = { ...newpost };
-			np.parent = { postID: post };
+			np.parent = { postID: postID };
 			np.postType = "REPLY";
 			np.postOwnerID = currentUser.userID;
 			np.postTime = Date.now();
 			updateNewPost(np);
-			//console.log(post);
 			setOpen(true);
 		} else {
 			let np = { ...newpost };
@@ -85,16 +80,21 @@ export default function Posts({ page, currentUser, JWT }) {
 			np.postOwnerID = currentUser.userID;
 			np.postTime = Date.now();
 			updateNewPost(np);
-			//console.log(post);
 			setOpen(true);
 		}
 	};
 
+	/**
+	 * ---
+	 */
 	const handleClose = () => {
 		setOpen(false);
 	};
+
+	/**
+	 * ---
+	 */
 	const handlePost = () => {
-		//console.log("Sending Post", newpost);
 		PostPosts();
 		setOpen(false);
 	};
@@ -104,18 +104,18 @@ export default function Posts({ page, currentUser, JWT }) {
 	 */
 	async function GetPosts() {
 		var running = true;
-		var apiRegisterUrl = "posts/page/" + page.pageID;
+		var apiRegisterUrl = "posts/page/" + postsProp.page.pageID;
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + postsProp.JWT,
 			},
 		};
 		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
 			if (running) updatePosts(data.data);
 		});
 		return () => (running = false);
-		//console.log(posts);
 	}
+
 	/**
 	 * Save Posts
 	 * @async
@@ -124,7 +124,7 @@ export default function Posts({ page, currentUser, JWT }) {
 		var apiRegisterUrl = "posts";
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + postsProp.JWT,
 			},
 		};
 		await APIQuery.post(apiRegisterUrl, newpost, axiosConfig).then((data) => {
@@ -132,21 +132,28 @@ export default function Posts({ page, currentUser, JWT }) {
 		});
 	}
 
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'GetPosts'. Either include it or remove the dependency array
 	useEffect((x) => {
 		GetPosts();
 	}, []);
-	//console.log("POSTS:", posts);
 
+	/**
+	 * ---
+	 * @param {String} 	postID 	---
+	 * @param {---} 	up 		---
+	 */
 	async function onVote(postID, up) {
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + postsProp.JWT,
 			},
 			params: {
 				upvote: up,
 			},
 		};
-		console.log(axiosConfig);
 		await APIQuery.put("posts/" + postID + "/vote", null, axiosConfig).then(
 			(data) => {
 				GetPosts();
@@ -157,13 +164,18 @@ export default function Posts({ page, currentUser, JWT }) {
 	/**
 	 * Generate Posts html
 	 *
-	 * @param {object} 	param
-	 * @param {Post}	param.post
-	 * @returns posts html
+	 * @param {PostSingle} 	postElement						The Array for a prop object that just contains a post.
+	 * @param {Post}		postElement.post				---
+	 * @param {Number}		postElement.post.postID			The ID for the post.
+	 * @param {String}		postElement.post.postType		---
+	 * @param {Sting}		postElement.post.postTitle		The title for the post.
+	 * @param {String}		postElement.post.postContent	The content contained in the post.
+	 * @param {Number}		postElement.post.upVoters		The number of up Votes for the post.
+	 * @param {Number}		postElement.post.downVoters		The number of down Votes for the post.
+	 * @returns ---
 	 */
-	function PostElement({ post }) {
+	function PostElement(postElement) {
 		let d = new Date(Date.parse(post.postTime));
-
 		return (
 			<Box
 				sx={{
@@ -203,12 +215,14 @@ export default function Posts({ page, currentUser, JWT }) {
 							}}
 						/>
 					</IconButton>
-					<Button onClick={() => handleClickOpen(false, post.postID)}>
+					<Button
+						onClick={() => handleClickOpen(false, postElement.post.postID)}
+					>
 						Reply
 					</Button>
 				</Paper>
-				{post.children.map((post) => {
-					return <PostElement post={post} key={post.postID} />;
+				{postElement.post.children.map((newPost) => {
+					return <PostElement post={newPost} key={newPost.postID} />;
 				})}
 			</Box>
 		);
@@ -217,15 +231,14 @@ export default function Posts({ page, currentUser, JWT }) {
 	return (
 		<Box sx={{ overflowY: "auto", maxHeight: "100%" }}>
 			<Box sx={{ marginBottom: "5%" }}>
-				{posts.content.map((post) => {
-					return post.postType !== "ORIGINAL" ? (
+				{posts.content.map((newPost) => {
+					return newPost.postType !== "ORIGINAL" ? (
 						<></>
 					) : (
-						<PostElement post={post} key={post.postID} />
+						<PostElement post={newPost} key={newPost.postID} />
 					);
 				})}
 			</Box>
-
 			<br />
 			<br />
 			<Box>
@@ -286,7 +299,7 @@ export default function Posts({ page, currentUser, JWT }) {
 							display: "inline-block",
 						}}
 					>
-						{page.userID === currentUser.userID ? (
+						{postsProp.page.userID === postsProp.currentUser.userID ? (
 							<Tooltip
 								title="Add new post"
 								placement="top"

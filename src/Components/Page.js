@@ -10,15 +10,11 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
 	DialogTitle,
 	Divider,
-	Fade,
 	Grid,
-	IconButton,
 	Menu,
 	MenuItem,
-	Pagination,
 	Paper,
 	Stack,
 	Tab,
@@ -26,15 +22,12 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
 import CreateGroup from "./Group/CreateGroup";
-import { height, maxHeight, width } from "@mui/system";
 import { useEffect, useState } from "react";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
@@ -44,16 +37,20 @@ import getCurrentUser, {
 	getPageAxios,
 	getUserGroups,
 } from "../API/PageAPI";
-import { ComponentsProps } from "@mui/material/styles";
+import { JWTs } from "../typeDef";
 
 /**
- * Renders a generic page with condintional rendering
+ * Renders a generic page with condintional rendering.
  *
- * @param {object} param
- * @param {string} param.JWT token determining user and log in information.
- * @returns HTML for default page
+ * @param {JWTs} 	pageProp		The Array for an object that just contains a JWT
+ * @param {string} 	pageProp.token 	Token determining user and log in information.
+ * @returns The default page for a user or group returned with React.
  */
-export default function Page({ JWT }) {
+export default function Page(pageProp) {
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'page.username'. Either include it or remove the dependency array
 	useEffect(getAllFriends, []);
 
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -69,37 +66,52 @@ export default function Page({ JWT }) {
 		pageTitle: "Title Not Found",
 	});
 	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState(true);
+	const [groups, setGroups] = useState("");
 	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
-	const [reload, setReload] = useState(false);
-	const [tab, updateTab] = useState(0);
+	const [isReload, setIsReload] = useState(false);
+	const [tab, updateTab] = useState("");
 	const [friends, setFriends] = useState([]);
 	const [group, setGroup] = useState(null);
 	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
 
 	const path = useLocation();
+
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'GetPage'. Either include it or remove the dependency array
 	useEffect(() => {
-		setReload(false);
+		setIsReload(false);
 		GetPage();
-	}, [reload]);
+		updateTab(0);
+	}, [isReload]);
+
+	/**
+	 * ---
+	 */
 	const handleClose2 = () => {
 		setOpen2(false);
 	};
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleInvite = async () => {
-
 		let currentSelectedGroup = userGroups.content.filter((x) => {
 			return x.groupName == selectedGroup;
 		})[0];
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
-				GroupID: currentSelectedGroup.groupID,
+				GroupID: userGroups.content.filter((x) => {
+					return x.groupName === selectedGroup;
+				})[0].groupID,
 				UserID: page.userID,
 			},
 		}).then((response) => response.data);
@@ -112,22 +124,37 @@ export default function Page({ JWT }) {
 		setOpen2(false);
 	};
 
+	/**
+	 * ---
+	 * @param {Event} event ---
+	 */
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+
+	/**
+	 * ---
+	 */
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseInviteToGroup = async () => {
 		setOpen2(true);
 	};
-	//ADD add friend logic here
 
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post("/users/friend", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
 				username: page.username,
@@ -137,11 +164,14 @@ export default function Page({ JWT }) {
 		setAnchorEl(null);
 	};
 
-	//ADD add join group logic here
+	/**
+	 * ---
+	 * @async
+	 */
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 			params: {
 				GroupID: page.groupID,
@@ -151,31 +181,26 @@ export default function Page({ JWT }) {
 		toast.success("Group Joined!");
 		setAnchorEl(null);
 	};
-	//ADD start Chat Logic Here
+
+	/**
+	 * ---
+	 */
 	const handleCloseStartChat = () => {
 		setAnchorEl(null);
 	};
 
-	// const currnetUser = {
-	// 	page: { userOwnerID: 0 },
-	// };
-
 	/**
-	 * Gets Page from back server
+	 * ---
 	 * @async
 	 */
-
-	/**
-	 * @async
-	 */
-	async function getCurrentGroup() { }
+	async function getCurrentGroup() {}
 
 	/**
 	 * Gets Page from back server
 	 * @async
 	 */
 	async function GetPage() {
-		getCurrentUser(JWT).then(async (data) => {
+		getCurrentUser(pageProp.token).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
 			setImage(getProfilePic(user.userID));
@@ -186,11 +211,11 @@ export default function Page({ JWT }) {
 				apiRegisterUrl = "/users/" + pageParam;
 			else apiRegisterUrl = "/groups/" + pageParam;
 
-			getUserGroups(JWT, data.data.userID).then((data) => {
+			getUserGroups(pageProp.token, data.data.userID).then((data) => {
 				setUserGroups(data.data);
 			});
 
-			getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+			getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
 				let id = -1;
 				if (path.pathname.includes("user")) {
 					id = data.data.userID;
@@ -199,7 +224,7 @@ export default function Page({ JWT }) {
 					data.data.userPage.username = data.data.username;
 					data.data.userPage.displayName = data.data.displayName;
 					updatePage(data.data.userPage);
-					getGroupsByID(JWT, id).then((data) => {
+					getGroupsByID(pageProp.token, id).then((data) => {
 						setGroups(data.data);
 						setIsBusy(false);
 					});
@@ -213,7 +238,7 @@ export default function Page({ JWT }) {
 
 					apiRegisterUrl = "/groups/" + pageParam;
 
-					getPageAxios(JWT, apiRegisterUrl).then(async (data) => {
+					getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
 						setIsBusy(false);
 					});
@@ -222,6 +247,12 @@ export default function Page({ JWT }) {
 		});
 	}
 
+	/**
+	 * ---
+	 * @async
+	 * @returns ---
+	 */
+	// TODO: Effect callbacks are synchronous to prevent race conditions. Put the async function inside:
 	async function getAllFriends() {
 		if (!page.username) return;
 		const response = await APIQuery.get("/pages/friends/" + page.username, {
@@ -238,15 +269,14 @@ export default function Page({ JWT }) {
 	if (isBusy) return <LoadingPage />;
 	if (page.groupPage) {
 		if (page.private && page.userID != currentUser.userID) {
-
-			if (!group.members.map(m => m.userID).includes(currentUser.userID)) return <Private />;
+			if (!group.members.map((m) => m.userID).includes(currentUser.userID))
+				return <Private />;
 		}
 	} else {
 		if (page.private && page.userID != currentUser.userID) {
 			if (!friends.includes(currentUser.userID)) return <Private />;
 		}
 	}
-
 
 	return (
 		<>
@@ -294,9 +324,12 @@ export default function Page({ JWT }) {
 										borderRadius: 25,
 									}}
 								>
-									<CardHeader title={page.pageTitle} sx={{
-										color: "palette.text.primary",
-									}} />
+									<CardHeader
+										title={page.pageTitle}
+										sx={{
+											color: "palette.text.primary",
+										}}
+									/>
 									<Avatar
 										alt="Pidgeon"
 										src={image}
@@ -340,12 +373,12 @@ export default function Page({ JWT }) {
 									>
 										<Tab label="Posts" />
 										<Tab label="About" />
-										{page.groupPage ? (
+										{page.isGroupPage ? (
 											<Tab label="Members" />
 										) : (
 											<Tab label="Friends" />
 										)}
-										{!page.groupPage && <Tab label="Groups" />}
+										{!page.isGroupPage && <Tab label="Groups" />}
 										{currentUser.userID === page.userID ? (
 											<Tab label="Settings" />
 										) : (
@@ -374,7 +407,7 @@ export default function Page({ JWT }) {
 														"aria-labelledby": "basic-button",
 													}}
 												>
-													{page.groupPage ? (
+													{page.isGroupPage ? (
 														<MenuItem onClick={handleCloseJoinGroup}>
 															Join Group
 														</MenuItem>
@@ -383,14 +416,13 @@ export default function Page({ JWT }) {
 															Add Friend
 														</MenuItem>
 													)}
-													{page.groupPage ? (
+													{page.isGroupPage ? (
 														""
 													) : (
 														<MenuItem onClick={handleCloseInviteToGroup}>
 															Invite to group
 														</MenuItem>
 													)}
-
 													<MenuItem onClick={handleClose}>Chat</MenuItem>
 												</Menu>
 											</>
@@ -455,52 +487,49 @@ export default function Page({ JWT }) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currentUser={currentUser} JWT={JWT} />;
-				break;
+				return (
+					<Posts page={page} currentUser={currentUser} JWT={pageProp.token} />
+				);
 			case 1:
 				return <About />;
-				break;
 			case 2:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<Members />
 						) : (
 							<FriendsTab currentUsername={page.username} />
 						)}{" "}
 					</>
 				);
-				break;
 			case 3:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
-								setReload={setReload}
+								setIsReload={setIsReload}
 							/>
 						) : (
 							<Groups />
 						)}{" "}
 					</>
 				);
-				break;
 			case 4:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<></>
 						) : (
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
-								setReload={setReload}
+								setIsReload={setIsReload}
 							/>
 						)}{" "}
 					</>
 				);
-				break;
 			default:
 				break;
 		}
@@ -530,12 +559,17 @@ export default function Page({ JWT }) {
 	/**
 	 * Placeholder for About
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function About() {
 		return <Typography>{page.description}</Typography>;
 	}
 
+	/**
+	 * ---
+	 *
+	 * @returns ---
+	 */
 	function Private() {
 		return <Typography>This page is private!</Typography>;
 	}
@@ -543,7 +577,7 @@ export default function Page({ JWT }) {
 	/**
 	 * Placeholder for Members
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Members() {
 		let nav = useNavigate();
@@ -566,7 +600,7 @@ export default function Page({ JWT }) {
 	/**
 	 * Placeholder for Settings
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Settings() {
 		return <div></div>;
@@ -575,24 +609,32 @@ export default function Page({ JWT }) {
 	/**
 	 * Placeholder for Groups
 	 *
-	 * @returns
+	 * @returns ---
 	 */
 	function Groups() {
 		let navigate = useNavigate();
 
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + JWT,
+				Authorization: "Bearer " + pageProp.token,
 			},
 		};
 
+		/**
+		 * ---
+		 * @param {String} groupID ---
+		 */
 		const goToGroup = (groupID) => {
 			navigate("/group/" + groupID);
 		};
 
+		/**
+		 * ---
+		 * @async
+		 * @param {String} groupID ---
+		 */
 		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
-			}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
 			tempGroups.content = groups.content.filter((e) => {
@@ -629,7 +671,11 @@ export default function Page({ JWT }) {
 				<br />
 				<br />
 				{page.userID === currentUser.userID ? (
-					<CreateGroup JWT={JWT} groups={groups} setGroups={setGroups} />
+					<CreateGroup
+						JWT={pageProp.token}
+						groups={groups}
+						setGroups={setGroups}
+					/>
 				) : (
 					""
 				)}

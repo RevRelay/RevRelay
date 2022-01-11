@@ -4,22 +4,21 @@ import {
 	Card,
 	CardContent,
 	Typography,
-	Button,
-	Grid,
-	TextField
 } from "@mui/material";
 import APIQuery from "../API/APIQuery";
-import { NavigateFunction, useNavigate, useParams } from 'react-router-dom'
+import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import { SearchBar } from "../typeDef";
 
 /**
  * Component for rendering search results. 
  * 
- * @param {object} param 
- * @param {string} param.token JWT token determinig user and log in information.
+ * @param {SearchBar} 	searchProp 				---
+ * @param {String} 		searchProp.token 		JWT token determinig user and log in information.
+ * @param {Boolean}		searchProp.isSendSearch	Boolean state managing searching status.
  * @returns Component containing search results in Card format, as well as a message
  * 			displaying "Loading" or "No Results Found". 
  */
-export default function Search({ token, sendSearch}) {
+export default function Search(searchProp) {
 	let navigate = useNavigate();
 	let { searchTerm } = useParams();
 
@@ -38,12 +37,17 @@ export default function Search({ token, sendSearch}) {
 		setSearchComplete('');
 		const response = await APIQuery.get(
 			`/search/name/${searchTerm}`,
-			{ headers: { "Authorization": "Bearer " + token } }
+			{ headers: { "Authorization": "Bearer " + searchProp.token } }
 		).then(resp => resp);
 		setSearchResults(response.data);
 		setSearchComplete('true');
 	}
-	useEffect(() => { FetchSearchResults(); }, [sendSearch]);
+
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'FetchSearchResults'. Either include it or remove the dependency array
+	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
 	return (
 		<Box>
 			{(searchResults && searchResults[0]) ? (
@@ -76,16 +80,17 @@ export default function Search({ token, sendSearch}) {
  */
 function SearchResultCard(result, index, navigate) {
 	/**
-	 * 
+	 * ---
 	 */
 	function handleClickSearchResult() {
-		if (result.type == "USER") {
+		if (result.type === "USER") {
 			navigate(`/user/${result.id}`);
 		}
-		if (result.type == "GROUP") {
+		if (result.type === "GROUP") {
 			navigate(`/group/${result.id}`);
 		}
 	}
+	
 	return (
 		<Card key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<CardContent>

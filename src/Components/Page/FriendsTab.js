@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react";
 import APIQuery from "../../API/APIQuery";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { Box, ListItemText, Badge } from "@mui/material";
-import PeopleIcon from "@mui/icons-material/People";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Box, ListItemText } from "@mui/material";
+import { useNavigate} from "react-router-dom";
 import { createBrowserHistory } from "history";
+import { FriendsTabs, Friend, SetStateActionFriends } from "../../typeDef";
 
 /**
  * renders all the friends of a user and provides links to their pages
- * @param {string} currentUsername the current username
+ * @param {FriendsTabs}	tabProp						The Array for a prop object that just conatins the username for a user.
+ * @param {String}		tabProp.currentUsername		The current username of a user.
  * @returns html friend
  */
-const FriendsTab = ({ currentUsername }) => {
+const FriendsTab = (tabProp) => {
 	let history = createBrowserHistory();
-	const [friends, setFriends] = useState(false);
-	const [loading, setLoading] = useState(true);
+
+	/**
+	 * @type {[Friend[], SetStateActionFriends]}
+	 */
+	const [friends, setFriends] = useState('');
+	const [loading, setLoading] = useState(true)
 	let navigate = useNavigate();
+
+	/**
+	 * ---
+	 * 
+	 * @async
+	 * @returns ---
+	 */
 	const getAllFriends = async () => {
-		const response = await APIQuery.get("/pages/friends/" + currentUsername, {
+		const response = await APIQuery.get("/pages/friends/" + tabProp.currentUsername, {
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
@@ -31,10 +42,18 @@ const FriendsTab = ({ currentUsername }) => {
 		};
 	};
 
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'getAllFriends'. Either include it or remove the dependency array
 	useEffect(() => {
 		getAllFriends();
 	}, []);
 
+	/**
+	 * ---
+	 * @param {String} id ---
+	 */
 	const goToFriendsPage = (id) => {
 		console.log("going to" + id);
 		navigate(`/user/${id}`);
@@ -43,29 +62,28 @@ const FriendsTab = ({ currentUsername }) => {
 	};
 
 	return (
-    <>
-      {loading ? (
-        <>
-          <h3>Loading...</h3>
-        </>
-      ) : (
-        ""
-      )}
-	  {!loading && !friends ? <h3>You have no friends yet!</h3> : ''}
-      {!loading 
-        ? friends.map((friend) => {
-            return (
-              <Box key={friend.userID}>
-                <ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
-                  <ListItemText primary={friend.displayName} />
-                  <ListItemText primary={friend.email} />
-                </ListItemButton>
-              </Box>
-            );
-          })
-        : ""}
-    </>
-  );
+		<>
+			{loading ? (
+				<>
+					<h3>Loading...</h3>
+				</>
+		) : (
+			""
+		)}
+		{!loading && !friends ? <h3>You have no friends yet!</h3> : ''}
+		{!loading 
+			? friends.map((friend) => {
+				return (
+				<Box key={friend.userID}>
+					<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
+						<ListItemText primary={friend.displayName} />
+					</ListItemButton>
+				</Box>
+				);
+			})
+			: ""}
+		</>
+	);
 };
 
 export default FriendsTab;

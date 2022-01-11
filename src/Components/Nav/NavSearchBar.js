@@ -1,34 +1,15 @@
 import {
-	AppBar,
-	Autocomplete,
-	Box,
-	Button,
-	Card,
-	Drawer,
 	IconButton,
-	InputLabel,
-	MenuItem,
-	Select,
-	List,
-	ListItem,
-	Divider,
-	ListItemText,
-	Toolbar,
-	ListItemIcon,
-	Typography,
-	TextField,
 	FormControl,
 	OutlinedInput,
+	InputAdornment
 } from "@mui/material";
 import React, { useState } from "react";
 import { styled, alpha } from '@mui/material/styles';
-import InputAdornment from '@mui/material/InputAdornment';
-import ClearIcon from '@mui/icons-material/Clear';
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
-import APIQuery from '../../API/APIQuery.js';
-import { SetStateActionString } from "../../typeDef";
+import { SearchBar, SetStateActionBool } from "../../typeDef";
 
 // From https://mui.com/components/app-bar/
 const Search = styled('div')(({ theme }) => ({
@@ -58,44 +39,29 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 	justifyContent: 'center',
 }));
 
-// From https://mui.com/components/app-bar/
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//	 color: 'inherit',
-//	 '& .MuiInputBase-input': {
-//		 padding: theme.spacing(1, 1, 1, 0),
-//		 // vertical padding + font size from searchIcon
-//		 paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//		 transition: theme.transitions.create('width'),
-//		 width: '100%',
-//		 [theme.breakpoints.up('md')]: {
-//		 width: '20ch',
-//		 },
-//	 },
-// }));
-
 /**
  * Component for rendering the search bar portion of the NavBar. 
  * 
- * @param {boolean}					param.sendSearch		boolean state managing searching status
- * @param {SetStateActionBool}		param.setSendSearch		setter for the above
+ * @param {SearchBar}			searchProp					---
+ * @param {Boolean}				searchProp.sendSearch		State variable managing searching status. true is being sent, false for not.
+ * @param {SetStateActionBool}	searchProp.setSendSearch	Setter function for the sendSearch.
  * @returns Search Bar with text entry, startAdornment, and endAdornment.
  */
-export default function NavSearchBar({sendSearch, setSendSearch}) {
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
+export default function NavSearchBar(searchProp) {
+
 	const [searchInput, setSearchInput] = useState({ searchTerm: '' })
 
 	/**
+	 * ---
 	 * 
-	 * @param {event} event 
+	 * @param {Event} event ---
 	 */
 	const handleChangeSearchBar = (event) => {
 		setSearchInput({ searchTerm: event.target.value });
 	}
 
 	/**
-	 * 
+	 * ---
 	 */
 	const handleClearSearchBar = () => {
 		setSearchInput({ ...searchInput, searchTerm: '' });
@@ -104,16 +70,14 @@ export default function NavSearchBar({sendSearch, setSendSearch}) {
 	let navigate = useNavigate();
 
 	/**
-	 * 
-	 * @param {event} event 
+	 * ---
+	 * @param {Event} event	---
 	 */
 	const handleSearchSubmit = (event) => {
 		if (searchInput.searchTerm != '') {
 			navigate(`/search/${searchInput.searchTerm}`);
 			handleClearSearchBar();
-			console.log(sendSearch)
-			setSendSearch(!sendSearch);
-			console.log(sendSearch)
+			searchProp.setSendSearch(!searchProp.sendSearch);
 		}
 	};
 
@@ -121,18 +85,18 @@ export default function NavSearchBar({sendSearch, setSendSearch}) {
 		<Search>
 			<FormControl variant="outlined" sx={{ width: '100%' }}>
 				<OutlinedInput
-					id="searchbar-text-field"
-					sx={{ display: 'flex' }}
-					value={searchInput.searchTerm}
-					onChange={handleChangeSearchBar}
-					startAdornment={
+					id = "searchbar-text-field"
+					sx = {{ display: 'flex' }}
+					value = {searchInput.searchTerm}
+					onChange = {handleChangeSearchBar}
+					startAdornment = {
 						<InputAdornment position="start">
 							<IconButton onClick={handleSearchSubmit} edge="end" >
 								<SearchIcon />
 							</IconButton>
 						</InputAdornment>
 					}
-					endAdornment={
+					endAdornment = {
 						<InputAdornment position="end">
 							<IconButton onClick={handleClearSearchBar} edge="end" >
 								<CancelIcon />
@@ -142,32 +106,5 @@ export default function NavSearchBar({sendSearch, setSendSearch}) {
 				</OutlinedInput>
 			</FormControl>
 		</Search>
-
-		// This was an early attempt at a search bar with autocomplete, which was shelved pending MVP - NL.
-		// <Search>
-		//	 <Autocomplete 
-		//		 // freeSolo
-		//		 id='search-bar-autocomplete'
-		//		 options={searchOptions.map((option) => option)}
-		//		 renderInput={(params) => 
-		//			 <TextField 
-		//				 {...params}
-		//				 id="searchbar-text-field"
-		//				 sx={{display:'flex'}} onChange={handleChangeSearchBar}
-		//				 // filteroptions={(x) => x}
-		//				 InputProps={{
-		//					 ...params.InputProps,
-		//					 startAdornment:
-		//						 <InputAdornment position="start">
-		//							 <IconButton onClick={handleSearchSubmit} edge="end" >
-		//								 <SearchIcon />
-		//							 </IconButton>
-		//						 </InputAdornment>
-		//					 }
-		//				 }
-		//			 />
-		//		 }
-		//	 />
-		// </Search>
 	)
 }

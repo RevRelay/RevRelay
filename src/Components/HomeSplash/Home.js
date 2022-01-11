@@ -1,31 +1,15 @@
-import {
-	AppBar,
-	Autocomplete,
-	Box,
-	Button,
-	Card,
-	Drawer,
-	IconButton,
-	InputLabel,
-	MenuItem,
-	Select,
-	List,
-	ListItem,
-	Divider,
-	ListItemText,
-	Toolbar,
-	ListItemIcon,
-	Typography,
-	Grid,
-	Stack,
-} from "@mui/material";
+import { Button, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoginIcon from "@mui/icons-material/Login";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { JWTs } from "../../typeDef";
 
+/**
+ * ---
+ */
 const Item = styled(Paper)(({ theme }) => ({
 	...theme.typography.body2,
 	padding: theme.spacing(1),
@@ -34,15 +18,16 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 /**
- *
- * @param {object} param
- * @param {string} param.JWT token determinig user and log in information.
- * @returns
+ * ---
+ * 
+ * @param {JWTs} 	homeProp		The Array for an object that just contains a JWT.
+ * @param {String} 	homeProp.token 	JWT Token determinig user and log in information.
+ * @returns ---
  */
-export default function Home({ JWT }) {
+export default function Home(homeProp){
 	let navigate = useNavigate();
-
-	return JWT ? (
+	
+	return homeProp.token ? (
 		navigate("/user/profile")
 	) : (
 		<>

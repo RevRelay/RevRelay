@@ -1,96 +1,93 @@
 import {
-    Box,
-    Button,
-    Card,
-    CardHeader,
-    CardMedia,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Divider,
-    Fade,
-    Grid,
-    IconButton,
-    Pagination,
-    Paper,
-    Tab,
-    Tabs,
-    TextField,
-    Tooltip,
-    Typography
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	TextField,
 } from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
+import {
+	CreateGroups,
+	Group, 
+	SetStateActionGroups,
+} from "../../typeDef";
 
 /**
  * Creates a group owned by the creating user.
- * @param {*} param0 the groups state and its corresponding useState function
+ * 
+ * @param {CreateGroups}			createGroupProp				---
+ * @param {String}					createGroupProp.JWT			JWT Token determinig user and log in information.
+ * @param {Group[]}					createGroupProp.groups		The list of groups the user you are looking at is in.
+ * @param {SetStateActionGroups}	createGroupProp.setGroups	Setter function for the state variable groups.
  * @returns adds a group to the list the user owns and reflect the change by adding it a visual list
  */
-export default function CreateGroup({ JWT, groups, setGroups }) {
+export default function CreateGroup(createGroupProp) {
 
-    const [open, setOpen] = useState(false);
-    const [newGroup, updateNewGroup] = useState({
-        groupName: "New Group",
-        isPrivate: false,
-        members: null
+	const [open, setOpen] = useState(false);
+	const [newGroup, updateNewGroup] = useState({
+		groupName: "New Group",
+		isPrivate: false,
+		members: null
+	});
+	
+	/**
+	 * ---
+	 */
+	const toggleOpen = () => {
+		setOpen(!open);
+	};
 
-    });
-    
-    const toggleOpen = () => {
-        setOpen(!open);
-    };
-
-    const createGroup = async () => {
-
-        let axiosConfig = {
-            headers: {
-                Authorization: "Bearer " + JWT,
-            }
-        };
-        await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
-            let tempGroups = groups;
-            tempGroups.content.push(data.data);
-            setGroups({ ...tempGroups });
-            //toggleOpen(); //close dialog
-        }).catch((e) => {
-            console.log("Group name collision!");
-            //TODO: notify front end.
-        });
-    }
-
-    return (
-        <>
-            <Button onClick={toggleOpen}>Create Group</Button>
-            <Dialog open={open} onClose={toggleOpen}>
-                <DialogTitle>New Group</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Create A New Group</DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="title"
-                        label="Title"
-                        type="test"
-                        fullWidth
-                        variant="standard"
-                        defaultValue="New Group"
-                        onChange={(e) => {
-                            let tempGroup = { ...newGroup };
-                            tempGroup.groupName = e.target.value;
-                            updateNewGroup(tempGroup);
-                        }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button sx={{
-                        color: "palette.secondary.dark",
-                    }} onClick={toggleOpen}>Cancel</Button>
-                    <Button onClick={createGroup}>Create Group!</Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
+	/**
+	 * ---
+	 * @async
+	 */
+	const createGroup = async () => {
+		let axiosConfig = {
+			headers: {
+				Authorization: "Bearer " + createGroupProp.JWT,
+			}
+		};
+		await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
+			let tempGroups = createGroupProp.groups;
+			tempGroups.content.push(data.data);
+			createGroupProp.setGroups({ ...tempGroups });
+		}).catch((e) => {
+		});
+	}
+	
+	return (
+		<>
+			<Button onClick={toggleOpen}>Create Group</Button>
+			<Dialog open={open} onClose={toggleOpen}>
+				<DialogTitle>New Group</DialogTitle>
+				<DialogContent>
+					<DialogContentText>Create A New Group</DialogContentText>
+					<TextField
+						autoFocus
+						margin = "dense"
+						id = "title"
+						label = "Title"
+						type = "test"
+						fullWidth
+						variant = "standard"
+						defaultValue = "New Group"
+						onChange = {(e) => {
+							let tempGroup = { ...newGroup };
+							tempGroup.groupName = e.target.value;
+							updateNewGroup(tempGroup);
+						}}
+					/>
+				</DialogContent>
+				<DialogActions>
+				<Button sx={{
+						color: "palette.secondary.dark",
+					}} onClick={toggleOpen}>Cancel</Button>
+					<Button onClick={createGroup}>Create Group!</Button>
+				</DialogActions>
+			</Dialog>
+		</>
+	);
 }
