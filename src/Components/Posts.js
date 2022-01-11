@@ -21,6 +21,9 @@ import APIQuery from "../API/APIQuery";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { User, Page, Post, Posting, PostSingle } from "../typeDef";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import ChatIcon from "@mui/icons-material/Chat";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 
 /**
  * Render Posts Tab
@@ -69,12 +72,16 @@ export default function Posts(postsProp) {
 			let np = { ...newpost };
 			np.parent = { postID: postID };
 			np.postType = "REPLY";
+			np.postOwnerID = postsProp.currentUser.userID;
+			np.postTime = Date.now();
 			updateNewPost(np);
 			setOpen(true);
 		} else {
 			let np = { ...newpost };
 			np.parent = null;
 			np.postType = "ORIGINAL";
+			np.postOwnerID = postsProp.currentUser.userID;
+			np.postTime = Date.now();
 			updateNewPost(np);
 			setOpen(true);
 		}
@@ -171,6 +178,8 @@ export default function Posts(postsProp) {
 	 * @returns ---
 	 */
 	function PostElement(postElement) {
+		const [isShowing, setIsShowing] = useState(false);
+		let d = new Date(Date.parse(postElement.post.postTime));
 		return (
 			<Box
 				sx={{
@@ -179,22 +188,70 @@ export default function Posts(postsProp) {
 				}}
 			>
 				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
-					<Typography>{postElement.post.postTitle}</Typography>
+					<Typography sx={{ fontSize: 12 }}>
+						{postElement.post.postOwnerID +
+							" @ " +
+							d.toDateString() +
+							" " +
+							("" + d.getHours()).padStart(2, "0") +
+							":" +
+							("" + d.getMinutes()).padStart(2, "0")}
+					</Typography>
+					<Typography sx={{ fontWeight: "bold" }}>
+						{postElement.post.postTitle}
+					</Typography>
 					<Typography>{postElement.post.postContent}</Typography>
+
+					{postElement.post.children.length > 0 ? (
+						<IconButton
+							onClick={() =>
+								isShowing ? setIsShowing(false) : setIsShowing(true)
+							}
+						>
+							{isShowing ? (
+								<ChatIcon color="primary" />
+							) : (
+								<ChatIcon color="disabled" />
+							)}
+						</IconButton>
+					) : (
+						""
+					)}
 					<IconButton onClick={(x) => onVote(postElement.post.postID, true)}>
-						<KeyboardArrowUpIcon color="primary" />
+						<KeyboardArrowUpIcon
+							sx={{
+								color: postElement.post.upVoters.includes(
+									postsProp.currentUser.userID
+								)
+									? "orange"
+									: "primary",
+							}}
+						/>
 					</IconButton>
-					{postElement.post.upVoters.length}/{postElement.post.downVoters.length}
+					{postElement.post.upVoters.length -
+						postElement.post.downVoters.length}
 					<IconButton onClick={(x) => onVote(postElement.post.postID, false)}>
-						<KeyboardArrowDownIcon color="primary" />
+						<KeyboardArrowDownIcon
+							sx={{
+								color: postElement.post.downVoters.includes(
+									postsProp.currentUser.userID
+								)
+									? "limegreen"
+									: "primary",
+							}}
+						/>
 					</IconButton>
-					<Button onClick={() => handleClickOpen(false, postElement.post.postID)}>
-						Reply
-					</Button>
+					<IconButton
+						onClick={() => handleClickOpen(false, postElement.post.postID)}
+					>
+						<AddCommentIcon />
+					</IconButton>
 				</Paper>
-				{postElement.post.children.map((newPost) => {
-					return <PostElement post={newPost} key={newPost.postID} />;
-				})}
+				{isShowing
+					? postElement.post.children.map((newPost) => {
+							return <PostElement post={newPost} key={newPost.postID} />;
+					  })
+					: ""}
 			</Box>
 		);
 	}
@@ -219,28 +276,28 @@ export default function Posts(postsProp) {
 						<DialogContentText>Create A New Post</DialogContentText>
 						<TextField
 							autoFocus
-							margin = "dense"
-							id = "title"
-							label = "Title"
-							type = "test"
+							margin="dense"
+							id="title"
+							label="Title"
+							type="test"
 							fullWidth
-							variant = "standard"
-							defaultValue = {newpost.postTitle}
-							onChange = {(x) => {
+							variant="standard"
+							defaultValue={newpost.postTitle}
+							onChange={(x) => {
 								let np = { ...newpost };
 								np.postTitle = x.target.value;
 								updateNewPost(np);
 							}}
 						/>
 						<TextField
-							sx = {{ marginTop: 2 }}
-							id = "content"
-							label = "Content"
+							sx={{ marginTop: 2 }}
+							id="content"
+							label="Content"
 							multiline
 							fullWidth
-							rows = {4}
-							defaultValue = {newpost.postContent}
-							onChange = {(x) => {
+							rows={4}
+							defaultValue={newpost.postContent}
+							onChange={(x) => {
 								let np = { ...newpost };
 								np.postContent = x.target.value;
 								updateNewPost(np);
@@ -254,16 +311,16 @@ export default function Posts(postsProp) {
 				</Dialog>
 				<Grid
 					container
-					spacing = {0}
-					direction = "column"
-					alignItems = "center"
-					justifyContent = "center"
-					height = {"100%"}
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					justifyContent="center"
+					height={"100%"}
 				>
 					<Grid
 						item
-						xs = {4}
-						sx = {{
+						xs={4}
+						sx={{
 							left: "5%",
 							position: "absolute",
 							bottom: 5,
@@ -272,10 +329,10 @@ export default function Posts(postsProp) {
 					>
 						{postsProp.page.userID === postsProp.currentUser.userID ? (
 							<Tooltip
-								title = "Add new post"
-								placement = "top"
-								TransitionComponent = {Fade}
-								TransitionProps = {{ timeout: 600 }}
+								title="Add new post"
+								placement="top"
+								TransitionComponent={Fade}
+								TransitionProps={{ timeout: 600 }}
 							>
 								<IconButton onClick={() => handleClickOpen(true)}>
 									<AddCircleIcon color="primary" fontSize="large" />
@@ -287,8 +344,8 @@ export default function Posts(postsProp) {
 					</Grid>
 					<Grid
 						item
-						xs = {4}
-						sx = {{
+						xs={4}
+						sx={{
 							position: "absolute",
 							bottom: 5,
 							display: "inline-block",

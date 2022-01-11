@@ -1,25 +1,15 @@
-import React, { useState, 
-	useEffect, 
-	useRef, 
-	useCallback 
-} from "react";
-import {
-	Box,
-	IconButton,
-	TextField,
-	Stack,
-	Typography,
-} from "@mui/material";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Box, IconButton, TextField, Stack, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Socket } from "socket.io-client";
 import MicIcon from "@mui/icons-material/Mic";
-import { ChatRoom } from "../typeDef"
+import { ChatRoom } from "../typeDef";
 
 //https://gridfiti.com/aesthetic-color-palettes/
 
 /**
  * ---
- * 
+ *
  * @param {ChatRoom} 	chatProp
  * @param {Socket}		chatProp.socket
  * @param {String}		chatProp.username 	The username of the current user.
@@ -66,7 +56,7 @@ function Chat(chatProp) {
 			setMessageList((list) => [...list, data]);
 		});
 	}, [chatProp.socket]);
-	
+
 	/**
 	 * Clear the chatroom
 	 */
@@ -206,7 +196,7 @@ function Chat(chatProp) {
 	});
 
 	/**
-	 * 
+	 *
 	 */
 	// TODO: React Hook useEffect has a missing dependency: 'chatProp.socket'. Either include it or remove the dependency array
 	useEffect(() => {
@@ -226,9 +216,7 @@ function Chat(chatProp) {
 					width: "100%",
 				}}
 			>
-				<h2>
-					You are in room {chatProp.room}
-				</h2>
+				<h2>You are in room {chatProp.room}</h2>
 			</Typography>
 			<Box
 				ref={scrollRef}
@@ -249,10 +237,13 @@ function Chat(chatProp) {
 							<Typography
 								sx={{
 									width: "100%",
-									textAlign: content.user !== chatProp.username ? "left" : "right",
+									textAlign:
+										content.user !== chatProp.username ? "left" : "right",
 								}}
 							>
-								{content.user !== chatProp.username ? "from " + content.user + ": " : ""}
+								{content.user !== chatProp.username
+									? "from " + content.user + ": "
+									: ""}
 								{content.message}
 							</Typography>
 						);
@@ -277,29 +268,29 @@ function Chat(chatProp) {
 					sx={{ marginLeft: 3, marginTop: 3, marginBottom: 3 }}
 				>
 					<TextField
-						sx = {{ width: "90%" }}
-						id = "standard-basic"
-						label = "Message here..."
-						variant = "standard"
-						value = {message}
-						onChange = {(event) => {
+						sx={{ width: "90%" }}
+						id="standard-basic"
+						label="Message here..."
+						variant="standard"
+						value={message}
+						onChange={(event) => {
 							setMessage(event.target.value);
 							setActive();
 							console.log("made it here");
 						}}
 					/>
 					<IconButton
-						onClick = {() => {
+						onClick={() => {
 							sendMessage();
 							setNotActive();
 						}}
-						aria-label = "Example"
+						aria-label="Example"
 					>
 						<SendIcon />
 					</IconButton>
-					<button id="audiomessage" onClick={sendAudio}>
-						{<MicIcon />}
-					</button>
+					{/* {<button id="audiomessage" onClick={sendAudio}>
+				{<MicIcon />}
+			</button>} */}
 					<button id="clearmessage" onClick={clearMessages}>
 						Clear message
 					</button>
