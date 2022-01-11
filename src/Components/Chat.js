@@ -216,7 +216,7 @@ function Chat(chatProp) {
 					width: "100%",
 				}}
 			>
-				<h2>You are in room {chatProp.room}</h2>
+				<h2>{chatProp.name}</h2>
 			</Typography>
 			<Box
 				ref={scrollRef}

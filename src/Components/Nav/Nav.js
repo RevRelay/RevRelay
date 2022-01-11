@@ -108,7 +108,6 @@ export default function Nav(navProp) {
 					</Typography>
 
 					{navProp.friends.map((f) => {
-						console.log(f);
 						return (
 							<>
 								<ListItemButton onClick={() => navigate("/user/" + f.userID)}>
