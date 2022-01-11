@@ -12,6 +12,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { SearchBar, SetStateActionBool } from "../../typeDef";
 
 // From https://mui.com/components/app-bar/
+/**
+ * ---
+ */
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
 	borderRadius: theme.shape.borderRadius,
@@ -29,6 +32,9 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 // From https://mui.com/components/app-bar/
+/**
+ * ---
+ */
 const SearchIconWrapper = styled('div')(({ theme }) => ({
 	padding: theme.spacing(0, 2),
 	height: '100%',
