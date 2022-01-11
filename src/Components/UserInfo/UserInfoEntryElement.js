@@ -15,11 +15,13 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import {
 	User,
+	UserWithID,
 	UserProp,
 	Toggle,
 	VarEditInfo,
 	EditInfo,
 	SetStateActionUser,
+	SetStateActionUserWithID,
 	SetStateActionTog, 
 	SetStateActionDate
 } from "../../typeDef"
@@ -29,10 +31,10 @@ import {
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
  * @param {EditInfo} 			diplayNameProp 									The Array for Editing user's display name. 
- * @param {User} 				diplayNameProp.mostRecentUserInfo				Array for a state variable holding user field information.
+ * @param {UserWithID} 				diplayNameProp.mostRecentUserInfo				Array for a state variable holding user field information.
  * @param {String}				displayNameProp.mostRecentUserInfo.displayName	The logged in user's display name.
  * @param {SetStateActionUser} 	diplayNameProp.setUserInput						State variable setter for userInput field information.
- * @param {SetStateActionUser} 	diplayNameProp.setMostRecentUserInfo			State variable setter for mostRecentUserInfo field information.
+ * @param {SetStateActionUserWithID} 	diplayNameProp.setMostRecentUserInfo			State variable setter for mostRecentUserInfo field information.
  * @param {Toggle} 				diplayNameProp.toggleEdit						Array of the state variable for determining if a field is toggled to display 
  * 																				(false) or edit (true). 
  * @param {String}				displayNameProp.toggleEdit.displayName			Is the user's display name being edited?
@@ -97,9 +99,9 @@ import {
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
  * @param {EditInfo} 			emailProp 							The Array for Editing user's email. 
- * @param {User} 				emailProp.mostRecentUserInfo		Array for a state variable holding user field information.
+ * @param {UserWithID} 			emailProp.mostRecentUserInfo		Array for a state variable holding user field information.
  * @param {String}				emailProp.mostRecentUserInfo.email	The logged in user's email.
- * @param {SetStateActionUser} 	emailProp.setMostRecentUserInfo		State variable setter for mostRecentUserInfo field information.
+ * @param {SetStateActionUserWithID} 	emailProp.setMostRecentUserInfo		State variable setter for mostRecentUserInfo field information.
  * @param {SetStateActionUser} 	emailProp.setUserInput				State variable setter for userInput field information.
  * @param {Toggle} 				emailProp.toggleEdit				Array of the state variable for determining if a field is toggled to display 
  * 																	(false) or edit (true). 
@@ -162,9 +164,9 @@ export function UserInfoEntryElementEmail (emailProp) {
  * @param {VarEditInfo} 		varElement 
  * @param {string} 				varElement.varname 					The variable name associated with the list element (i.e. username).
  * @param {string} 				varElement.fieldName 				The display name of the list element (i.e. Username).
- * @param {User} 				varElement.mostRecentUserInfo 		Array for a state variable holding user field information.
+ * @param {UserWithID} 				varElement.mostRecentUserInfo 		Array for a state variable holding user field information.
  * @param {SetStateActionUser} 	varElement.setUserInput 			State variable setter for update field information.
- * @param {SetStateActionUser} 	varElement.setMostRecentUserInfo 	State variable setter for user field information.
+ * @param {SetStateActionUserWithID} 	varElement.setMostRecentUserInfo 	State variable setter for user field information.
  * @param {Toggle} 				varElement.toggleEdit 				Array of a state variable for determining if a field is toggled to display 
  * 																	(false) or edit (true). 
  * @param {SetStateActionTog}	varElement.setToggleEdit			State variable setter for toggleEdit field information. 
@@ -348,7 +350,7 @@ export function UserInfoEntryElementBirthDate (birthDateProp) {
 								<IconButton size="small" color="primary" variant="contained"
 									onClick={(x) => {
 										if (userInfoFieldValue) {
-											birthDateProp.setUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
+											birthDateProp.setUserInput({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 											birthDateProp.setMostRecentUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 										}
 										birthDateProp.setToggleEdit({...birthDateProp.toggleEdit, birthDate : false});

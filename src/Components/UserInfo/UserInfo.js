@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	Avatar,
 	Button,
@@ -34,6 +35,7 @@ function UserInfo(infoProp) {
 
 	// used for choosing an image
 	const inputRef = React.useRef();
+	let navigate = useNavigate();
 
 	/**
 	 * ---
@@ -125,8 +127,11 @@ function UserInfo(infoProp) {
 
 	/**
 	 * ---
+	 * @async
+	 * @param {Event} e The event of the submit button being pressed. The user's info, with changes, is captured.
 	 */
-	function submitButton() {
+	async function submitButton(e) {
+		e.preventDefault();
 		let user = {
 			"email": userInput.email,
 			"firstName": userInput.firstName,
@@ -137,7 +142,20 @@ function UserInfo(infoProp) {
 		if(user.email === "" && user.firstName === "" && user.lastName === "" && user.birthDate === "" && user.displayName === "" && !image){
 			alert("You cannot change nothing.");
 		} else {
-			updateUser(user, infoProp.token);
+			e.preventDefault();
+			let response;
+			try {
+				response = await updateUser(user, infoProp.token);
+			} catch (Error) {
+				alert(`Error: ${Error?.response?.data}`);
+			}
+			if(response.data){
+				alert(`Information Successfully changed!`)
+				navigate("/user/profile/userinfo");
+			}
+			else {
+				alert(`Unable to change info`);
+			}			
 		}
 		// need to check if image changed, save to s3 bucket
 		if(image) {
