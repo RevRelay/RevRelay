@@ -313,11 +313,11 @@ function App() {
 	checkJWT();
 
 	/**
-	 * ---
+	 * Validates the stored JWT against the database, discarding if not valid.
 	 * @async
 	 */
 	async function checkJWT() {
-		console.log("Checking JWT");
+		//console.log("Checking JWT");
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + token,
@@ -369,10 +369,16 @@ function App() {
  *
  * Use the token object passed above if you need to find any
  *
+<<<<<<< HEAD
  * @param {Switching} 				switchProp					---
  * @param {String} 					switchProp.token 			JWT token determinig user and log in information.
  * @param {SetStateActionString} 	switchProp.setToken			State variable setter for token field information.
  * @param {Boolean}					switchProp.isSendSearch		Boolean state managing searching status.
+=======
+ * @param {String} 					param.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	param.setToken			State variable setter for token field information.
+ * @param {Boolean}					param.isSendSearch		Boolean state managing searching status.
+>>>>>>> 61f90185c6c7d5f50db4caed039573dd60cce9ca
  * @returns
  */
 function SwitchBoard(switchProp) {
@@ -408,46 +414,6 @@ function SwitchBoard(switchProp) {
 			</Route>
 		</Routes>
 	);
-}
-
-/**
- * ---
- * @returns ---
- */
-function Users() {
-	return <Typography color="textPrimary">Users</Typography>;
-}
-
-/**
- * ---
- * @returns ---
- */
-function User() {
-	return <Typography color="textPrimary">User</Typography>;
-}
-
-/**
- * ---
- * @returns ---
- */
-function UserProfile() {
-	return <Typography color="textPrimary">UserProfile</Typography>;
-}
-
-/**
- * ---
- * @returns ---
- */
-function Groups() {
-	return <Typography color="textPrimary">Groups</Typography>;
-}
-
-/**
- * ---
- * @returns ---
- */
-function GroupProfile() {
-	return <p>GroupProfile</p>;
 }
 
 export default App;
