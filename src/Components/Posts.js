@@ -24,6 +24,8 @@ import { User, Page, Post, Posting, PostSingle } from "../typeDef";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ChatIcon from "@mui/icons-material/Chat";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import { getUser, getUserGroups } from "../API/PageAPI";
+import ContentComponent from "./postsUtils/ContentComponent";
 
 /**
  * Render Posts Tab
@@ -180,11 +182,20 @@ export default function Posts(postsProp) {
 	function PostElement(postElement) {
 		const [isShowing, setIsShowing] = useState(false);
 		let d = new Date(Date.parse(postElement.post.postTime));
+		let auth = "DELETED";
+		if (postElement.post.postAuthor) auth = postElement.post.postAuthor;
+
 		return (
-			<Box sx={{ width: "100%", pt: "2%" }}>
-				<Paper elevation={5} sx={{ mx: "auto", width: "40%", minWidth: 300 }}>
+			<Box
+				sx={{
+					width: "99%",
+					paddingTop: "1%",
+					marginLeft: "1%",
+				}}
+			>
+				<Paper elevation={5} sx={{ marginLeft: "1%", minWidth: "33%", pl: 2 }}>
 					<Typography sx={{ fontSize: 12 }}>
-						{postElement.post.postOwnerID +
+						{auth +
 							" @ " +
 							d.toDateString() +
 							" " +
@@ -192,10 +203,12 @@ export default function Posts(postsProp) {
 							":" +
 							("" + d.getMinutes()).padStart(2, "0")}
 					</Typography>
-					<Typography sx={{ fontWeight: "bold" }}>
+					<Typography sx={{ fontWeight: "bold", pl: 2 }}>
 						{postElement.post.postTitle}
 					</Typography>
-					<Typography>{postElement.post.postContent}</Typography>
+					<Typography sx={{ pl: 2 }}>
+						<ContentComponent content={postElement.post.postContent} />
+					</Typography>
 
 					{postElement.post.children.length > 0 ? (
 						<IconButton

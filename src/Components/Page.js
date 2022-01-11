@@ -91,6 +91,8 @@ export default function Page(pageProp) {
 		backgroundColor: alpha(theme.palette.background.paper, 0.5),
 	}));
 
+	console.log(styled(CardHeader));
+
 	/**
 	 * ---
 	 */
@@ -341,7 +343,6 @@ export default function Page(pageProp) {
 								>
 
 									<Button
-
 										variant="contained" color="success">
 										Add Friend
 									</Button>

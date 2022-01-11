@@ -1,4 +1,5 @@
 import {
+	Box,
 	Button,
 	Dialog,
 	DialogActions,
@@ -62,7 +63,9 @@ export default function CreateGroup(createGroupProp) {
 
 	return (
 		<>
-			<Button onClick={toggleOpen}>Create Group</Button>
+			<Box textAlign={"center"}>
+				<Button variant="contained" onClick={toggleOpen}>Create Group</Button>
+			</Box>
 			<Dialog open={open} onClose={toggleOpen}>
 				<DialogTitle>New Group</DialogTitle>
 				<DialogContent>
@@ -84,9 +87,14 @@ export default function CreateGroup(createGroupProp) {
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button sx={{
-						color: "palette.secondary.dark",
-					}} onClick={toggleOpen}>Cancel</Button>
+					<Button
+						sx={{
+							color: "palette.secondary.dark",
+						}}
+						onClick={toggleOpen}
+					>
+						Cancel
+					</Button>
 					<Button onClick={createGroup}>Create Group!</Button>
 				</DialogActions>
 			</Dialog>

@@ -1,61 +1,71 @@
 import APIQuery from "./APIQuery";
 
-// const urlConnection = "http://localhost:5000/";
-const urlConnection =
-	"http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
-export default async function getCurrentUser(JWT) {
-	let axiosConfig = {
+/**
+ * Axios configuration that all other functions in file uses.
+ *
+ * @param {String} JWT JWT token determining user and log in information.
+ * @returns Axios configuration for the given JWT token.
+ */
+ function axiosConfig(JWT) {
+	return {
 		headers: {
 			Authorization: "Bearer " + JWT,
+			"Content-Type": "application/json",
 		},
 	};
-	return APIQuery.get("users/current", axiosConfig);
 }
 
 /**
  * ---
- *
- * @param {String} JWT 		---
- * @param {String} userID 	---
+ * 
+ * @async
+ * @param {String} JWT JWT token determining user and log in information.
+ * @returns ---
+ */
+export default async function getCurrentUser(JWT) {
+	return APIQuery.get("users/current", axiosConfig(JWT));
+}
+
+/**
+ * ---
+ * 
+ * @async
+ * @param {String} JWT 		JWT token determining user and log in information.
+ * @param {String} userID 	The logged in user's userID.
  * @returns ---
  */
 export async function getUserGroups(JWT, userID) {
+	return APIQuery.get("groups/getgroups/" + userID, axiosConfig(JWT));
+}
+export async function getUser(JWT, userID) {
 	let axiosConfig = {
 		headers: {
 			Authorization: "Bearer " + JWT,
 		},
 	};
-	return APIQuery.get("groups/getgroups/" + userID, axiosConfig);
+	return APIQuery.get("users/" + userID, axiosConfig);
 }
 
 /**
  * ---
- *
- * @param {String} JWT 				---
+ * 
+ * @async
+ * @param {String} JWT 				JWT token determining user and log in information.
  * @param {String} apiRegisterUrl 	---
  * @returns ---
  */
 export async function getPageAxios(JWT, apiRegisterUrl) {
-	let axiosConfig = {
-		headers: {
-			Authorization: "Bearer " + JWT,
-		},
-	};
-	return APIQuery.get(apiRegisterUrl, axiosConfig);
+	return APIQuery.get(apiRegisterUrl, axiosConfig(JWT));
 }
 
 /**
  * ---
- *
- * @param {String} JWT 	---
- * @param {String} ID 	---
+ * 
+ * @async
+ * @param {String} JWT 		JWT token determining user and log in information.
+ * @param {String} userID 	The logged in user's userID.
  * @returns ---
  */
-export async function getGroupsByID(JWT, ID) {
-	let axiosConfig = {
-		headers: {
-			Authorization: "Bearer " + JWT,
-		},
-	};
-	return APIQuery.get("groups/getgroups/" + ID, axiosConfig);
+export async function getGroupsByID(JWT, userID) {
+	return APIQuery.get("groups/getgroups/" + userID, axiosConfig(JWT));
 }

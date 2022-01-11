@@ -84,9 +84,9 @@ export default function PageSetting(pageSetting) {
 			>
 				{!loading ? (
 					<>
-						<Box sx={{width:"100%"}}>
-							<Card sx={{mx:'auto', width: "75%",pl:5,pr:5,pb:2}}>
-								<CardHeader title="Settings"/>
+						<Box sx={{ width: "100%" }}>
+							<Card sx={{ mx: 'auto', width: "75%", pl: 5, pr: 5, pb: 2 }}>
+								<CardHeader title="Settings" />
 								<Stack spacing={2}>
 									<TextField
 										value={description}
@@ -117,14 +117,14 @@ export default function PageSetting(pageSetting) {
 							</Card>
 
 							<center>
-								<Box sx={{pt:'2%'}}>
+								<Box sx={{ pt: '2%' }}>
 									<Button
 										variant="contained"
 										onClick={() => {
 											saveChanges();
 										}}
-										>
-											Save Page Settings
+									>
+										Save Page Settings
 									</Button>
 								</Box>
 							</center>
