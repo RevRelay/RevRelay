@@ -11,10 +11,12 @@ import {
 	IconButton,
 	Pagination,
 	Paper,
+	Stack,
 	TextField,
 	Tooltip,
 	Typography,
 } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import APIQuery from "../API/APIQuery";
@@ -278,25 +280,62 @@ export default function Posts(postsProp) {
 			<br />
 			<br />
 			<Box>
-				<Dialog open={open} onClose={handleClose}>
-					<DialogTitle>New Post</DialogTitle>
+				<Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+					<DialogTitle>
+						New Post
+						<Tooltip
+							sx={{ position: "absolute", right: 10 }}
+							placement="right"
+							title={
+								<>
+									<Typography color="inherit" sx={{ fontWeight: "Bold" }}>
+										Post Options
+									</Typography>
+									<Typography color="inherit">
+										Use the following tags to add content to your post
+									</Typography>
+									<Typography color="inherit">
+										{"<i="}
+										<em>ImageURL</em>
+										{">"}
+									</Typography>
+									<Typography color="inherit">
+										{"<y="}
+										<em>YoutubeURL</em>
+										{">"}
+									</Typography>
+									<Typography color="inherit">
+										{"<v="}
+										<em>videoURL</em>
+										{">"}
+									</Typography>
+								</>
+							}
+						>
+							<IconButton>
+								<InfoOutlinedIcon />
+							</IconButton>
+						</Tooltip>
+					</DialogTitle>
 					<DialogContent>
-						<DialogContentText>Create A New Post</DialogContentText>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="title"
-							label="Title"
-							type="test"
-							fullWidth
-							variant="standard"
-							defaultValue={newpost.postTitle}
-							onChange={(x) => {
-								let np = { ...newpost };
-								np.postTitle = x.target.value;
-								updateNewPost(np);
-							}}
-						/>
+						<DialogContentText>Create A New Post </DialogContentText>
+						<Stack direction="row">
+							<TextField
+								autoFocus
+								margin="dense"
+								id="title"
+								label="Title"
+								type="test"
+								fullWidth
+								variant="standard"
+								defaultValue={newpost.postTitle}
+								onChange={(x) => {
+									let np = { ...newpost };
+									np.postTitle = x.target.value;
+									updateNewPost(np);
+								}}
+							/>
+						</Stack>
 						<TextField
 							sx={{ marginTop: 2 }}
 							id="content"
