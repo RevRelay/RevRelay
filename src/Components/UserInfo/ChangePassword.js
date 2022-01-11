@@ -1,29 +1,24 @@
 import React, { useState } from "react";
-import {
-	Button,
-	Grid,
-	TextField,
-	Paper,
-} from "@mui/material";
-import {PasswordField} from "../Library/FormField";
- import {useNavigate} from "react-router-dom";
+import { Button, Grid, Paper } from "@mui/material";
+import { PasswordField } from "../Library/FormField";
+import { useNavigate } from "react-router-dom";
 import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
-import {
-	PasswordCheck,
-	SetStateActionString 
-} from "../../typeDef"
+import { JWTs, PasswordCheck } from "../../typeDef"
 
 const apiChangePasswordUrl = "/users/password";
+
 /**
- * Helper function to take 2 passwords as a passwordCheck object and return an alert if they dont match or if they arent valid
+ * Helper function to take 2 passwords as a passwordCheck object and checks if strings are a valid length and then if 
+ * they are matching. Returns an alert if they dont match or if they arent valid.
  * 
- * @param {PasswordCheck} PasswordCheck - An object with 2 Strings, Checks if strings are a valid length and then if they are matching
- * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy
+ * @param {PasswordCheck} 	passwordCheck 				An object with 2 Strings.
+ * @param {String} 			passwordCheck.newPassword 	The new password
+ * @param {String} 			passwordCheck.checkPassword	New password repeated. Needs to be the same at the new password.
+ * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy.
  */
 function validPasswordReset(passwordCheck) {
 	let message = "";
-	console.log(message)
 	if (!(passwordCheck.newPassword && passwordCheck.newPassword.length >= passLen)) {
 		message += `Minimum password length ${passLen} \n`;
 	}
@@ -37,29 +32,24 @@ function validPasswordReset(passwordCheck) {
 }
 
 /**
+ * Allows the user to change their password.
  * 
- * @param {object} param
- * @param {string} param.JWT token determinig user and log in information.
+ * @param {JWTs} 	passwordChange 			Prop that just contains the JWT.
+ * @param {String} 	passwordChange.token 	JWT Token determinig user and log in information.
+ * @returns The change password page returned with React
  */
-function ChangePassword({JWT}) {
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
-	const [oldPassword, setOldPassword] = useState();
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
-	const [newPassword, setNewPassword] = useState();
-	/**
-	 * @type {[string, SetStateActionString]}
-	 */
-	const [confirmPassword, setConfirmPassword] = useState();
+function ChangePassword(passwordChange) {
+	
+	const [oldPassword, setOldPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	let navigate = useNavigate();
 
 	/**
-	 * Submit button is pressed password reset request is sent to the backend
+	 * Submit button is pressed password reset request is sent to the backend.
 	 *
-	 * @param {Event} e The even of the login button being pressed, username and password are captured
+	 * @async
+	 * @param {Event} e The event of the login button being pressed. Username and password are captured.
 	 */
 	const submitButton = async (e) => {
 		e.preventDefault();
@@ -76,11 +66,10 @@ function ChangePassword({JWT}) {
 					oldPassword,
 					newPassword,
 					confirmPassword,
-				}, JWT);
+				}, passwordChange.token);
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);
 			}
-			console.log(response.data);
 			if(response.data){
 				alert(`Password Successfully changed!`)
 				navigate("/user/profile/userinfo");
@@ -91,19 +80,16 @@ function ChangePassword({JWT}) {
 		}
 	};
 
-	/**
-	 * The change password page returned with React
-	 */
 	return (
 		<Grid
-			className="form"
-			spacing={2}
-			columns={1}
+			className = "form"
+			spacing = {2}
+			columns = {1}
 			container
-			direction="row"
-			justifyContent="center"
-			alignItems="center"
-			align="flex-start"
+			direction = "row"
+			justifyContent = "center"
+			alignItems = "center"
+			align = "flex-start"
 		>
 			<form onSubmit={submitButton} className="form">
 				<Paper
@@ -121,28 +107,28 @@ function ChangePassword({JWT}) {
 					</Grid>
 					<Grid item xs={1}>
 						<PasswordField
-							id="oldPassword"
-							label="Old Password"
-							password={oldPassword}
-							setter={setOldPassword}
+							id = "oldPassword"
+							label = "Old Password"
+							password = {oldPassword}
+							setter = {setOldPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="newPassword"
-							label="New Password"
-							password={newPassword}
-							setter={setNewPassword}
+							id = "newPassword"
+							label = "New Password"
+							password = {newPassword}
+							setter = {setNewPassword}
 						/>
 					</Grid>
 					<br />
 					<Grid item xs={1}>
 						<PasswordField
-							id="confirmPassword"
-							label="Confirm New Password"
-							password={confirmPassword}
-							setter={setConfirmPassword}
+							id = "confirmPassword"
+							label = "Confirm New Password"
+							password = {confirmPassword}
+							setter = {setConfirmPassword}
 						/>
 					</Grid>
 					<Grid item xs={1}>

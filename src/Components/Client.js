@@ -3,26 +3,15 @@ import { useEffect, useState } from "react";
 import Chat from "./Chat";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MenuItem from "@mui/material/MenuItem";
 import {
 	Box,
-	Container,
-	createTheme,
 	FormControl,
 	InputLabel,
 	Select,
-	SpeedDial,
-	SpeedDialIcon,
-	Stack,
-	ThemeProvider,
-	Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
 
 var socket;
@@ -33,6 +22,9 @@ var socket;
  * @returns html for chat box in bottom left
  */
 function Client() {
+	/**
+	 * ---
+	 */
 	useEffect(() => {
 		socket = io.connect("http://localhost:3001");
 
@@ -53,7 +45,7 @@ function Client() {
 	const [room, setRoom] = useState("");
 
 	/**
-	 *
+	 * ---
 	 */
 	const joinRoom = () => {
 		if (username !== "" && room !== "") {
@@ -66,6 +58,10 @@ function Client() {
 		}
 	};
 
+	/**
+	 * ---
+	 * @param {Event} event ---
+	 */
 	const handleChange = (event) => {
 		setCurrentChat(event.target.value);
 	};
@@ -89,7 +85,6 @@ function Client() {
 						visibility: currentChat === "add" ? "visible" : "hidden",
 						minWidth: "16vw",
 						minHeight: "25vh",
-
 						backgroundColor: "background.paper",
 						border: 1,
 						borderColor: "primary",
@@ -99,18 +94,18 @@ function Client() {
 					<h2 style={{ textAlign: "center", width: "100%" }}>Join A Room</h2>
 					<Box sx={{ textAlign: "center", width: "100%" }}>
 						<TextField
-							id="outlined-basic"
-							label="Enter Room ID"
-							variant="outlined"
-							onChange={(event) => {
+							id = "outlined-basic"
+							label = "Enter Room ID"
+							variant = "outlined"
+							onChange = {(event) => {
 								setRoom(event.target.value);
 							}}
 						/>
 						<TextField
-							id="outlined-basic"
-							label="Enter User Name"
-							variant="outlined"
-							onChange={(event) => {
+							id = "outlined-basic"
+							label = "Enter User Name"
+							variant = "outlined"
+							onChange = {(event) => {
 								setUserName(event.target.value);
 							}}
 						/>
@@ -136,9 +131,9 @@ function Client() {
 							}}
 						>
 							<Chat
-								socket={chat.socket}
-								username={chat.username}
-								room={chat.room}
+								socket = {chat.socket}
+								username = {chat.username}
+								room = {chat.room}
 							/>
 						</Box>
 					);
@@ -147,11 +142,11 @@ function Client() {
 				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">My Chats</InputLabel>
 					<Select
-						labelId="chats-select-label"
-						id="chats-select"
-						label="My Chats"
-						value={currentChat}
-						onChange={handleChange}
+						labelId = "chats-select-label"
+						id = "chats-select"
+						label = "My Chats"
+						value = {currentChat}
+						onChange = {handleChange}
 					>
 						<MenuItem value="none">none</MenuItem>
 						<MenuItem value="add">New Chat</MenuItem>

@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as router from 'react-router-dom';
 
+/**
+ * The living beating heart of the application. 
+ */
 ReactDOM.render(
 	<React.StrictMode>
 		<router.BrowserRouter>
