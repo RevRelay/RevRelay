@@ -97,22 +97,6 @@ export default function Search(searchProp) {
 */
 
 /**
- * Handle click results to redirect to each specific page for groups, passed a 
- * 
- * @param {Object} 				result 		Object corresponding to a search result to designate
- * 
- * Navigates a user to the Group/User ID
- */
-function handleClickSearchResult(result) {
-	if (result.type === "USER") {
-		navigate(`/user/${result.id}`);
-	}
-	if (result.type === "GROUP") {
-		navigate(`/group/${result.id}`);
-	}
-}
-
-/**
  * Provides a mappable page element for search results. At this time of this comment (220105)
  * functions to map DisplayName or GroupName (whichever is appropriate for the result) to a 
  * Card element that redirects the user to the appropriate Page on click. 
@@ -126,12 +110,17 @@ function handleClickSearchResult(result) {
  * 			the appropriate Page on click. 
  */
 function SearchResultUsers(result, index, navigate) {
-	/**
-	 * ---
-	 */
+	function handleClickSearchResult() {
+		if (result.type === "USER") {
+			navigate(`/user/${result.id}`);
+		}
+		if (result.type === "GROUP") {
+			navigate(`/group/${result.id}`);
+		}
+	}
 
 	return (result.type === "USER" ? 
-		<Box key={`resultUser${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult(result)}>
+		<Box key={`resultUser${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<ListItemButton>
 				<Stack direction="row" spacing={2}>
 					<Avatar
@@ -147,12 +136,17 @@ function SearchResultUsers(result, index, navigate) {
 }
 
 function SearchResultGroups(result, index, navigate) {
-	/**
-	 * ---
-	 */
+	function handleClickSearchResult() {
+		if (result.type === "USER") {
+			navigate(`/user/${result.id}`);
+		}
+		if (result.type === "GROUP") {
+			navigate(`/group/${result.id}`);
+		}
+	}
 	
 	return (result.type === "USER" ? "" :
-		<Box key={`resultGroup${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult(result)}>
+		<Box key={`resultGroup${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<ListItemButton>
 				<Stack direction="row" spacing={2}>
 					<Avatar
