@@ -3,9 +3,7 @@ export default function ContentComponent(contentProps) {
 	let st = contentProps.content;
 	let tmp = st.split(/\s+/);
 	comps = tmp.map((word) => {
-		console.log(word);
 		if (word.startsWith("<i=")) {
-			console.log(word.split("<i=")[1].split(">")[0]);
 			return (
 				<img
 					src={word.split("<i=")[1].split(">")[0]}
@@ -13,10 +11,6 @@ export default function ContentComponent(contentProps) {
 				/>
 			);
 		} else if (word.startsWith("<y")) {
-			console.log(
-				"https://www.youtube.com/embed/" +
-					word.split("<yt=")[1].split(">")[0].split("=")[1].split("&")[0]
-			);
 			return (
 				<>
 					<br />
@@ -30,7 +24,7 @@ export default function ContentComponent(contentProps) {
 						}
 						alt={
 							"https://www.youtube.com/embed/" +
-							word.split("<yt=")[1].split(">")[0].split("=")[0].split("&")[0]
+							word.split("<yt=")[1].split(">")[0].split("=")[1].split("&")[0]
 						}
 					/>
 					<br />
