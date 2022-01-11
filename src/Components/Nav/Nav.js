@@ -1,12 +1,16 @@
 import {
 	AppBar,
+	Avatar,
 	Box,
 	Button,
 	Divider,
 	Drawer,
 	IconButton,
+	ListItemButton,
 	MenuItem,
+	Paper,
 	Select,
+	Stack,
 	Toolbar,
 	Typography,
 } from "@mui/material";
@@ -26,6 +30,8 @@ import {
 	SetStateActionBool,
 } from "../../typeDef";
 import { HorizontalRule } from "@mui/icons-material";
+import { getProfilePic } from "../../API/UserAPI.js";
+import { width } from "@mui/system";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
@@ -97,8 +103,28 @@ export default function Nav(navProp) {
 					<br />
 
 					<Divider />
+					<Typography variant="h5" sx={{ ml: 2, mt: 2 }}>
+						Friends
+					</Typography>
+
+					{navProp.friends.map((f) => {
+						console.log(f);
+						return (
+							<>
+								<ListItemButton onClick={() => navigate("/user/" + f.userID)}>
+									<Stack direction="row">
+										<Avatar alt={f.displayName} src={getProfilePic(f.userID)} />
+										<Typography sx={{ my: "auto", pl: 2 }}>
+											{f.displayName}
+										</Typography>
+									</Stack>
+								</ListItemButton>
+							</>
+						);
+					})}
 				</Box>
 			</Drawer>
+
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position="static">
 					<Toolbar>

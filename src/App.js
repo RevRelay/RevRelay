@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Page from "./Components/Page.js";
-import { createTheme, ThemeProvider, } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import ChangePassword from "./Components/UserInfo/ChangePassword.js";
@@ -28,13 +28,13 @@ import getAllFriends from "./API/friendsAPI.js";
  * 			- Primary:			Used to represent primary interface elements for a user. It's the color displayed most frequently across your app's screens and components.
  * 				- Main: 		Navbar
  * 			- Secondary:		Used to represent secondary interface elements for a user. It provides more ways to accent and distinguish your product.
- * 				- Main: 
+ * 				- Main:
  * 			- Backgroud:
  * 				- Paper:		SideBar background, and User Settings background
  * 				- Default:		Overall Page Background
  * 			- Text:
  * 				- Primary:
- * 				- Secondary: 
+ * 				- Secondary:
  * 				- Disabled:
  * 				- Hint:
  */
@@ -289,7 +289,6 @@ function App() {
 
 	useEffect(async () => {
 		await getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
-		console.log(currentUser);
 	}, [token]);
 	useEffect(async () => {
 		if (currentUser) {
