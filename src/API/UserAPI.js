@@ -4,7 +4,7 @@ import { User } from "../typeDef";
 
 // const urlConnection = "http://localhost:5000/";
 const urlConnection =
-  "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
+	"https://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
 const s3Upload =
 	"https://7ujmop2tw0.execute-api.us-west-2.amazonaws.com/dev/image-upload";
 const s3Storage = "https://rev-relay-s3.s3.us-west-2.amazonaws.com";
