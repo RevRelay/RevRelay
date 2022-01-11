@@ -1,11 +1,8 @@
 import { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Page from "./Components/Page.js";
-import {
-	createTheme,
-	ThemeProvider,
-} from "@mui/material";
+import { createTheme, ThemeProvider, } from "@mui/material";
 import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import ChangePassword from "./Components/UserInfo/ChangePassword.js";
@@ -52,12 +49,13 @@ const themes = [
 	},
 	{
 		name: "Dark",
-		theme: createTheme({ palette: { mode: "dark" },
+		theme: createTheme({
+			palette: { mode: "dark" },
 			typography: {
 				allVariants: {
-					color: "lightgrey"
+					color: "lightgrey",
 				},
-			}
+			},
 		}),
 	},
 	{
@@ -108,7 +106,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -141,7 +139,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -174,7 +172,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -207,7 +205,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -240,7 +238,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -275,7 +273,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -308,7 +306,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-					color: "palette.text.secondary"
+					color: "palette.text.secondary",
 				},
 			},
 		}),
@@ -328,6 +326,7 @@ function App() {
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [isSendSearch, setIsSendSearch] = useState(false);
+	let nav = useNavigate();
 
 	localStorage.setItem("token", token);
 
@@ -349,6 +348,7 @@ function App() {
 			.catch((x) => {
 				setToken("");
 				localStorage.setItem("token", "");
+				nav("/");
 			});
 	}
 
@@ -362,13 +362,13 @@ function App() {
 			{/* Renders Chat Box */}
 			{token ? <Client /> : <></>}
 			<Nav
-				themes = {themes}
-				activeTheme = {activeTheme}
-				updateActiveTheme = {updateActiveTheme}
-				token = {token}
-				setToken = {setToken}
-				isSendSearch = {isSendSearch}
-				setIsSendSearch = {setIsSendSearch}
+				themes={themes}
+				activeTheme={activeTheme}
+				updateActiveTheme={updateActiveTheme}
+				token={token}
+				setToken={setToken}
+				isSendSearch={isSendSearch}
+				setIsSendSearch={setIsSendSearch}
 			/>
 			<Box
 				sx={{
@@ -378,7 +378,11 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard token={token} setToken={setToken} isSendSearch={isSendSearch}/>
+				<SwitchBoard
+					token={token}
+					setToken={setToken}
+					isSendSearch={isSendSearch}
+				/>
 			</Box>
 		</ThemeProvider>
 	);
@@ -400,17 +404,34 @@ function SwitchBoard(switchProp) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home token={switchProp.token}/>} />
-				<Route path="login" element={<Login setToken={switchProp.setToken} />} />
-				<Route path="register" element={<Registration setToken={switchProp.setToken} />} />
+				<Route index element={<Home token={switchProp.token} />} />
+				<Route
+					path="login"
+					element={<Login setToken={switchProp.setToken} />}
+				/>
+				<Route
+					path="register"
+					element={<Registration setToken={switchProp.setToken} />}
+				/>
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={switchProp.token} isSendSearch = {switchProp.isSendSearch} />} />
+					<Route
+						path=":searchTerm"
+						element={
+							<Search
+								token={switchProp.token}
+								isSendSearch={switchProp.isSendSearch}
+							/>
+						}
+					/>
 				</Route>
 				<Route path="user">
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":pageParam" element={<Page token={switchProp.token} />} />
+					<Route
+						path=":pageParam"
+						element={<Page token={switchProp.token} />}
+					/>
 					<Route path="profile">
 						<Route index element={<Page token={switchProp.token} />} />
 						<Route path="userInfo">

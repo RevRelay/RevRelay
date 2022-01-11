@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import APIQuery from "../../API/APIQuery";
 import ListItemButton from "@mui/material/ListItemButton";
 import { Box, ListItemText } from "@mui/material";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { FriendsTabs, Friend, SetStateActionFriends } from "../../typeDef";
 
@@ -18,25 +18,31 @@ const FriendsTab = (tabProp) => {
 	/**
 	 * @type {[Friend[], SetStateActionFriends]}
 	 */
-	const [friends, setFriends] = useState('');
-	const [loading, setLoading] = useState(true)
+	const [friends, setFriends] = useState("");
+	const [loading, setLoading] = useState(true);
 	let navigate = useNavigate();
 
 	/**
 	 * ---
-	 * 
+	 *
 	 * @async
 	 * @returns ---
 	 */
 	const getAllFriends = async () => {
-		const response = await APIQuery.get("/pages/friends/" + tabProp.currentUsername, {
-			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token"),
-			},
-		}).then((response) => response.data);
+		let running = true;
+		const response = await APIQuery.get(
+			"/pages/friends/" + tabProp.currentUsername,
+			{
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+			}
+		).then((response) => response.data);
+		if (!running) return;
 		setFriends(response);
 		setLoading(false);
 		return () => {
+			running = false;
 			setFriends({}); // This worked for me
 			setLoading(false);
 		};
@@ -67,21 +73,21 @@ const FriendsTab = (tabProp) => {
 				<>
 					<h3>Loading...</h3>
 				</>
-		) : (
-			""
-		)}
-		{!loading && !friends ? <h3>You have no friends yet!</h3> : ''}
-		{!loading 
-			? friends.map((friend) => {
-				return (
-				<Box key={friend.userID}>
-					<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
-						<ListItemText primary={friend.displayName} />
-					</ListItemButton>
-				</Box>
-				);
-			})
-			: ""}
+			) : (
+				""
+			)}
+			{!loading && !friends ? <h3>You have no friends yet!</h3> : ""}
+			{!loading
+				? friends.map((friend) => {
+						return (
+							<Box key={friend.userID}>
+								<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
+									<ListItemText primary={friend.displayName} />
+								</ListItemButton>
+							</Box>
+						);
+				  })
+				: ""}
 		</>
 	);
 };

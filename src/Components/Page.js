@@ -59,14 +59,14 @@ export default function Page(pageProp) {
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
-		isGroupPage: false,
+		groupPage: false,
 		pageID: 1,
 		posts: [],
-		isPrivate: true,
+		private: true,
 		pageTitle: "Title Not Found",
 	});
 	const [isBusy, setIsBusy] = useState(true);
-	const [groups, setGroups] = useState('');
+	const [groups, setGroups] = useState("");
 	const [userGroups, setUserGroups] = useState({ content: [] });
 	const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
@@ -101,7 +101,9 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	const handleInvite = async () => {
-		console.log("Sending Invite");
+		let currentSelectedGroup = userGroups.content.filter((x) => {
+			return x.groupName == selectedGroup;
+		})[0];
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
 				Authorization: "Bearer " + pageProp.token,
@@ -114,11 +116,11 @@ export default function Page(pageProp) {
 			},
 		}).then((response) => response.data);
 		toast.success("Added User to Group!");
-		let currentSelectedGroup = userGroups.content.filter((x) => {
-			return x.groupName === selectedGroup;
-		})[0];
 
 		GetPage();
+		let tempGroups = [...groups];
+		tempGroups.push(currentSelectedGroup);
+		setGroups(tempGroups);
 		setOpen2(false);
 	};
 
@@ -158,6 +160,7 @@ export default function Page(pageProp) {
 				username: page.username,
 			},
 		}).then((response) => response.data);
+		//toast.success("Friend added!");
 		setAnchorEl(null);
 	};
 
@@ -176,7 +179,6 @@ export default function Page(pageProp) {
 			},
 		}).then((response) => response.data);
 		toast.success("Group Joined!");
-		console.log(response);
 		setAnchorEl(null);
 	};
 
@@ -238,9 +240,8 @@ export default function Page(pageProp) {
 
 					getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
-						console.log(data.data);
+						setIsBusy(false);
 					});
-					setIsBusy(false);
 				}
 			});
 		});
@@ -266,8 +267,15 @@ export default function Page(pageProp) {
 		};
 	}
 	if (isBusy) return <LoadingPage />;
-	if (page.isPrivate && page.userID !== currentUser.userID) {
-		if (!friends.includes(currentUser.userID)) return <Private />;
+	if (page.groupPage) {
+		if (page.private && page.userID != currentUser.userID) {
+			if (!group.members.map((m) => m.userID).includes(currentUser.userID))
+				return <Private />;
+		}
+	} else {
+		if (page.private && page.userID != currentUser.userID) {
+			if (!friends.includes(currentUser.userID)) return <Private />;
+		}
 	}
 
 	return (
@@ -316,9 +324,12 @@ export default function Page(pageProp) {
 										borderRadius: 25,
 									}}
 								>
-									<CardHeader title={page.pageTitle} sx={{
-										color: "palette.text.primary",
-									}}/>
+									<CardHeader
+										title={page.pageTitle}
+										sx={{
+											color: "palette.text.primary",
+										}}
+									/>
 									<Avatar
 										alt="Pidgeon"
 										src={image}
@@ -435,9 +446,7 @@ export default function Page(pageProp) {
 									...userGroups.content
 										.filter((group) => {
 											if (groups.content) {
-												console.log(groups.content);
 												for (let currentGroup of groups.content) {
-													console.log(currentGroup);
 													if (group.groupID === currentGroup.groupID) {
 														return false;
 													}
@@ -451,7 +460,6 @@ export default function Page(pageProp) {
 								]}
 								onChange={(e, val) => {
 									setSelectedGroup(val);
-									console.log(val);
 								}}
 								sx={{ margin: 5, width: 300, height: 200 }}
 								ListboxProps={{ style: { maxHeight: "150px" } }}
@@ -479,7 +487,9 @@ export default function Page(pageProp) {
 	function RenderTab() {
 		switch (tab) {
 			case 0:
-				return <Posts page={page} currentUser={currentUser} JWT={pageProp.token} />;
+				return (
+					<Posts page={page} currentUser={currentUser} JWT={pageProp.token} />
+				);
 			case 1:
 				return <About />;
 			case 2:
@@ -557,12 +567,11 @@ export default function Page(pageProp) {
 
 	/**
 	 * ---
-	 * 
+	 *
 	 * @returns ---
 	 */
 	function Private() {
-		console.log(currentUser);
-		return <></>;
+		return <Typography>This page is private!</Typography>;
 	}
 
 	/**
@@ -625,9 +634,7 @@ export default function Page(pageProp) {
 		 * @param {String} groupID ---
 		 */
 		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {
-				console.log(e);
-			}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
 			tempGroups.content = groups.content.filter((e) => {
@@ -639,8 +646,6 @@ export default function Page(pageProp) {
 		return (
 			<>
 				{groups.content.map((group) => {
-					console.log("SOMETHING HERE");
-					console.log(group);
 					return (
 						<Paper key={group.groupID} sx={{ marginBottom: 3 }} elevation={3}>
 							<Typography>{group.groupName}</Typography>
@@ -666,7 +671,11 @@ export default function Page(pageProp) {
 				<br />
 				<br />
 				{page.userID === currentUser.userID ? (
-					<CreateGroup JWT={pageProp.token} groups={groups} setGroups={setGroups} />
+					<CreateGroup
+						JWT={pageProp.token}
+						groups={groups}
+						setGroups={setGroups}
+					/>
 				) : (
 					""
 				)}
