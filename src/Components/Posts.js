@@ -29,6 +29,7 @@ import APIQuery from "../API/APIQuery";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { User, Page, Post } from "../typeDef";
 
 /**
@@ -72,6 +73,8 @@ export default function Posts({ page, currentUser, JWT }) {
 			let np = { ...newpost };
 			np.parent = { postID: post };
 			np.postType = "REPLY";
+			np.postOwnerID = currentUser.userID;
+			np.postTime = Date.now();
 			updateNewPost(np);
 			//console.log(post);
 			setOpen(true);
@@ -79,6 +82,8 @@ export default function Posts({ page, currentUser, JWT }) {
 			let np = { ...newpost };
 			np.parent = null;
 			np.postType = "ORIGINAL";
+			np.postOwnerID = currentUser.userID;
+			np.postTime = Date.now();
 			updateNewPost(np);
 			//console.log(post);
 			setOpen(true);
@@ -157,6 +162,8 @@ export default function Posts({ page, currentUser, JWT }) {
 	 * @returns posts html
 	 */
 	function PostElement({ post }) {
+		let d = new Date(Date.parse(post.postTime));
+
 		return (
 			<Box
 				sx={{
@@ -167,23 +174,33 @@ export default function Posts({ page, currentUser, JWT }) {
 				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
 					<Typography>{post.postTitle}</Typography>
 					<Typography>{post.postContent}</Typography>
+					<Typography>
+						{post.postOwnerID +
+							" @ " +
+							d.toDateString() +
+							" " +
+							("" + d.getHours()).padStart(2, "0") +
+							":" +
+							("" + d.getMinutes()).padStart(2, "0")}
+					</Typography>
+
 					<IconButton onClick={(x) => onVote(post.postID, true)}>
 						<KeyboardArrowUpIcon
-							color={
-								post.upVoters.includes(currentUser.userID)
-									? "success"
-									: "primary"
-							}
+							sx={{
+								color: post.upVoters.includes(currentUser.userID)
+									? "orange"
+									: "primary",
+							}}
 						/>
 					</IconButton>
-					{post.upVoters.length}/{post.downVoters.length}
+					{post.upVoters.length - post.downVoters.length}
 					<IconButton onClick={(x) => onVote(post.postID, false)}>
 						<KeyboardArrowDownIcon
-							color={
-								post.upVoters.includes(currentUser.userID)
-									? "success"
-									: "secondary"
-							}
+							sx={{
+								color: post.downVoters.includes(currentUser.userID)
+									? "limegreen"
+									: "primary",
+							}}
 						/>
 					</IconButton>
 					<Button onClick={() => handleClickOpen(false, post.postID)}>

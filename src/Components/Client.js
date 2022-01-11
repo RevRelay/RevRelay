@@ -34,7 +34,9 @@ var socket;
  */
 function Client() {
 	useEffect(() => {
-		socket = io.connect("http://localhost:3001");
+		socket = io.connect(
+			"http://revrelaychatbackend-env.eba-d2b6turm.us-east-1.elasticbeanstalk.com/"
+		);
 
 		return;
 	}, []);

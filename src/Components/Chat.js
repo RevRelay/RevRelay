@@ -209,9 +209,7 @@ function Chat({ socket, username, room }) {
 					width: "100%",
 				}}
 			>
-				<h2>
-					You are in room {room}
-				</h2>
+				<h2>You are in room {room}</h2>
 			</Typography>
 			<Box
 				ref={scrollRef}
