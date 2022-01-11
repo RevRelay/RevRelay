@@ -15,7 +15,7 @@ import MailIcon from "@mui/icons-material/Mail";
 
 /**
  * ---
- * 
+ *
  * @returns ---
  */
 export default function SidebarList() {
@@ -24,7 +24,10 @@ export default function SidebarList() {
 	return (
 		<React.Fragment>
 			<List>
-				<ListItemButton key="buttonUserProfile" onClick={(x) => navigate("/user/profile")}>
+				<ListItemButton
+					key="buttonUserProfile"
+					onClick={(x) => navigate("/user/profile")}
+				>
 					<ListItemIcon>
 						<HomeIcon />
 					</ListItemIcon>
@@ -33,32 +36,16 @@ export default function SidebarList() {
 			</List>
 			<Divider />
 			<List>
-				<ListItemButton key="buttonUserProfileSettings" onClick={(x) => navigate("/user/profile/userInfo")}>
+				<ListItemButton
+					key="buttonUserProfileSettings"
+					onClick={(x) => navigate("/user/profile/userInfo")}
+				>
 					<ListItemIcon>
 						<SettingsIcon />
 					</ListItemIcon>
-					Settings
+					Profile Settings
 				</ListItemButton>
 			</List>
 		</React.Fragment>
-	);
-}
-
-/**
- * ---
- * @returns ---
- */
-export function SidebarList2() {
-	return (
-		<List>
-			{["All mail", "Trash", "Spam"].map((text, index) => (
-				<ListItem button key={text}>
-					<ListItemIcon>
-						{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-					</ListItemIcon>
-					<ListItemText primary={text} />
-				</ListItem>
-			))}
-		</List>
 	);
 }

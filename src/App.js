@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Page from "./Components/Page.js";
@@ -13,7 +13,8 @@ import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
-
+import getCurrentUser from "./API/PageAPI.js";
+import getAllFriends from "./API/friendsAPI.js";
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
@@ -304,6 +305,22 @@ function App() {
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [sendSearch, setSendSearch] = useState(false);
+	const [friends, setFriends] = useState([]);
+	const [currentUser, setCurrentUser] = useState([]);
+
+	useEffect(async () => {
+		await getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
+		console.log(currentUser);
+	}, [token]);
+	useEffect(async () => {
+		if (currentUser) {
+			console.log(currentUser);
+			await getAllFriends(currentUser.username, token).then((resp) =>
+				setFriends(resp.data)
+			);
+		}
+	}, [currentUser]);
+
 	let nav = useNavigate();
 
 	localStorage.setItem("token", token);
@@ -346,6 +363,7 @@ function App() {
 				setToken={setToken}
 				sendSearch={sendSearch}
 				setSendSearch={setSendSearch}
+				friends={friends}
 			/>
 			<Box
 				sx={{

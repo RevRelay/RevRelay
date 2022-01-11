@@ -2,6 +2,7 @@ import {
 	AppBar,
 	Box,
 	Button,
+	Divider,
 	Drawer,
 	IconButton,
 	MenuItem,
@@ -12,35 +13,37 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import SidebarList from "./SidebarList.js";
 import NavSearchBar from "./NavSearchBar.js";
+
 import {
 	NavBar,
 	SetStateActionNumber,
 	SetStateActionString,
-	SetStateActionBool
+	SetStateActionBool,
 } from "../../typeDef";
+import { HorizontalRule } from "@mui/icons-material";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
- * 
+ *
  * Token change login/register to logout, and also logout the user.
  * Themes import load all of the themes
- * 
+ *
  * @param {NavBar} 					navProp						An Array for the Nav to determine the theme and update the theme.
  * @param {any[]}	 				navProp.themes 				Load all of the List of Themes.
  * @param {Number} 					navProp.activeTheme 		Integer referencing the current theme
  * @param {SetStateActionNumber}	navProp.updateActiveTheme	State variable setter of activeTheme.
  * @param {SetStateActionString} 	navProp.setToken			State variable setter of token.
- * @param {Boolean}					navProp.sendSearch		Boolean state managing searching status.
+ * @param {Boolean}					navProp.sendSearch			Boolean state managing searching status.
  * @param {SetStateActionBool}		navProp.setSendSearch		State variable setter of sendSearch.
+ * @param {friends}					navProp.friends				State variable current user friends
  * @returns Returns a react page for the navbar
  */
 export default function Nav(navProp) {
-	
 	const [sidebar, updateSidebar] = useState(false);
 
 	/**
@@ -58,80 +61,108 @@ export default function Nav(navProp) {
 		updateSidebar(open);
 	};
 	let navigate = useNavigate();
-	
+
 	return (
 		<>
 			<Drawer open={sidebar} onClose={toggleDrawer(false)}>
 				<Box
-					sx = {{ width: 250, height: "100%" }}
-					role = "presentation"
-					onClick = {toggleDrawer(false)}
-					onKeyDown = {toggleDrawer(false)}
+					sx={{ width: 250, height: "100%" }}
+					role="presentation"
+					onClick={toggleDrawer(false)}
+					onKeyDown={toggleDrawer(false)}
 				>
 					{SidebarList()}
 					<Select
-						labelId = "demo-simple-select-label"
-						id = "demo-simple-select"
-						defaultValue = {0}
-						value = {navProp.activeTheme}
-						onChange = {(x) => {
+						labelId="demo-simple-select-label"
+						id="demo-simple-select"
+						defaultValue={0}
+						value={navProp.activeTheme}
+						onChange={(x) => {
 							navProp.updateActiveTheme(x.target.value);
 						}}
-						style = {{ marginLeft: "5%", width: "90%" }}
+						style={{ marginLeft: "5%", width: "90%" }}
 					>
 						{navProp.themes.map((x) => {
 							return (
-								<MenuItem key={navProp.themes.indexOf(x)} value={navProp.themes.indexOf(x)}>
+								<MenuItem
+									key={navProp.themes.indexOf(x)}
+									value={navProp.themes.indexOf(x)}
+								>
 									{x.name}
 								</MenuItem>
 							);
 						})}
 					</Select>
+					<br />
+					<br />
+
+					<Divider />
 				</Box>
 			</Drawer>
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position="static">
 					<Toolbar>
 						<IconButton
-							size = "large"
-							edge = "start"
-							color = "inherit"
-							aria-label = "menu"
-							sx = {{ mr: 2 }}
-							onClick = {toggleDrawer(true)}
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-label="menu"
+							sx={{ mr: 2 }}
+							onClick={toggleDrawer(true)}
 						>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+						<Typography
+							variant="h6"
+							component="div"
+							sx={{ display: { xs: "none", sm: "block" } }}
+						>
 							RevRelay
 						</Typography>
 						<Box sx={{ flexGrow: 1 }}>
-							<NavSearchBar sendSearch = {navProp.sendSearch} setSendSearch = {navProp.setSendSearch} />
+							<NavSearchBar
+								sendSearch={navProp.sendSearch}
+								setSendSearch={navProp.setSendSearch}
+							/>
 						</Box>
 						<Box>
 							{navProp.token ? (
 								<Button
-									color = "inherit"
+									color="inherit"
 									onClick={() => {
 										navProp.setToken("");
 										navigate("/login");
 									}}
 									startIcon={<LogoutIcon />}
 								>
-									<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+									<Typography
+										sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+									>
 										Logout
 									</Typography>
 								</Button>
 							) : (
 								<React.Fragment>
-									<Button color="inherit" onClick={(x) => navigate("/register")} startIcon={<LoginIcon />}>
-										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
+									<Button
+										color="inherit"
+										onClick={(x) => navigate("/register")}
+										startIcon={<LoginIcon />}
+									>
+										<Typography
+											sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+										>
 											Register
 										</Typography>
 									</Button>
-									<Button color="inherit" onClick={(x) => navigate("/login")} startIcon={<HowToRegIcon />}>
-										<Typography sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
-											Login 
+									<Button
+										color="inherit"
+										onClick={(x) => navigate("/login")}
+										startIcon={<HowToRegIcon />}
+									>
+										<Typography
+											sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+										>
+											Login
 										</Typography>
 									</Button>
 								</React.Fragment>
