@@ -22,8 +22,8 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Object}	Friend		---
- * @property {String}	userID		---
+ * @typedef {Object}	Friend		Object corresponding to backend FriendDTO, used for populating friends lists.
+ * @property {String}	userID		The userID of the friend.
  * @property {String}	displayName	The display name of the friend.
  */
 
@@ -70,7 +70,7 @@ import { Socket } from "socket.io-client";
 
 /**
  * @typedef {Object}	GroupSolo	An Array for a prop object that just contain a group.
- * @property {Group}	group		---
+ * @property {Group}	group		A single group, populated by a backend Group object.
  */
 
 /**
@@ -107,21 +107,21 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Object} 	ChatRoom	---
- * @property {Socket}	socket		---
+ * @typedef {Object} 	ChatRoom	Chatroom object containing information required for a socket connection. 
+ * @property {Socket}	socket		Socket object created via io.connect())
  * @property {String}	username 	The username of the current user.
  * @property {String}	room		The name of the room you are currently in.
  */
 
 /**
- * @typedef {Object} 	Page		---
- * @property {String} 	bannerURL	---
- * @property {String} 	description	---
- * @property {Boolean} 	groupPage	---
- * @property {Number} 	pageID		---
- * @property {String} 	pageTitle	---
- * @property {any[]}	posts		---
- * @property {Boolean} 	private		---
+ * @typedef {Object} 	Page		Page object as defined by the Page backend object. 
+ * @property {String} 	bannerURL	URL to the banner (imgur supported). 
+ * @property {String} 	description	Page description, rendered on the About tab. 
+ * @property {Boolean} 	groupPage	True if page belongs to a group, false if page belongs to a user. 
+ * @property {Number} 	pageID		Unique page ID, used for API call to populate the object. 
+ * @property {String} 	pageTitle	--- pages don't seem to have titles, unless they're being generated on the frontend
+ * @property {any[]}	posts		Array of Post objects.
+ * @property {Boolean} 	private		True if page if private, otherwise false. 
  */
 
 /**
@@ -130,11 +130,11 @@ import { Socket } from "socket.io-client";
  */
 
 /**
- * @typedef {Object}	Post 		---
- * @property {postPage} postPage	---
- * @property {String} 	postType	---
- * @property {String} 	postTitle	---
- * @property {String} 	postContent	---
+ * @typedef {Object}	Post 		Post object as defined by the Post backend object. 
+ * @property {postPage} postPage	Page to which the post belongs. 
+ * @property {String} 	postType	Backend enum, ORIGINAL if top post REPLY otherwise. 
+ * @property {String} 	postTitle	Post title string. 
+ * @property {String} 	postContent	Post text content. 
  * @property {Number} 	postLikes	---
  * @property {Number} 	postTime	---
  * @property {Number} 	postOwnerID	---
