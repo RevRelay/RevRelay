@@ -348,7 +348,7 @@ export function UserInfoEntryElementBirthDate (birthDateProp) {
 								<IconButton size="small" color="primary" variant="contained"
 									onClick={(x) => {
 										if (userInfoFieldValue) {
-											birthDateProp.setUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
+											birthDateProp.setUserInput({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 											birthDateProp.setMostRecentUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 										}
 										birthDateProp.setToggleEdit({...birthDateProp.toggleEdit, birthDate : false});
