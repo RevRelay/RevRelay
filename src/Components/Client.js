@@ -6,12 +6,7 @@ import Button from "@mui/material/Button";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import MenuItem from "@mui/material/MenuItem";
-import {
-	Box,
-	FormControl,
-	InputLabel,
-	Select,
-} from "@mui/material";
+import { Box, FormControl, InputLabel, Select } from "@mui/material";
 import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
 
 var socket;
@@ -27,7 +22,7 @@ function Client() {
 	 */
 	useEffect(() => {
 		socket = io.connect(
-			"https://revrelaychatbackend-env.eba-d2b6turm.us-east-1.elasticbeanstalk.com/"
+			"http://revrelaychatbackend-env.eba-d2b6turm.us-east-1.elasticbeanstalk.com/"
 		);
 
 		return;
@@ -96,18 +91,18 @@ function Client() {
 					<h2 style={{ textAlign: "center", width: "100%" }}>Join A Room</h2>
 					<Box sx={{ textAlign: "center", width: "100%" }}>
 						<TextField
-							id = "outlined-basic"
-							label = "Enter Room ID"
-							variant = "outlined"
-							onChange = {(event) => {
+							id="outlined-basic"
+							label="Enter Room ID"
+							variant="outlined"
+							onChange={(event) => {
 								setRoom(event.target.value);
 							}}
 						/>
 						<TextField
-							id = "outlined-basic"
-							label = "Enter User Name"
-							variant = "outlined"
-							onChange = {(event) => {
+							id="outlined-basic"
+							label="Enter User Name"
+							variant="outlined"
+							onChange={(event) => {
 								setUserName(event.target.value);
 							}}
 						/>
@@ -133,9 +128,9 @@ function Client() {
 							}}
 						>
 							<Chat
-								socket = {chat.socket}
-								username = {chat.username}
-								room = {chat.room}
+								socket={chat.socket}
+								username={chat.username}
+								room={chat.room}
 							/>
 						</Box>
 					);
@@ -144,11 +139,11 @@ function Client() {
 				<FormControl fullWidth>
 					<InputLabel id="demo-simple-select-label">My Chats</InputLabel>
 					<Select
-						labelId = "chats-select-label"
-						id = "chats-select"
-						label = "My Chats"
-						value = {currentChat}
-						onChange = {handleChange}
+						labelId="chats-select-label"
+						id="chats-select"
+						label="My Chats"
+						value={currentChat}
+						onChange={handleChange}
 					>
 						<MenuItem value="none">none</MenuItem>
 						<MenuItem value="add">New Chat</MenuItem>

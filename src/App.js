@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Page from "./Components/Page.js";
 import { createTheme, ThemeProvider, Typography } from "@mui/material";
 import { Box, Theme } from "@mui/system";
@@ -304,6 +304,7 @@ function App() {
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [isSendSearch, setIsSendSearch] = useState(false);
+	let nav = useNavigate();
 
 	localStorage.setItem("token", token);
 
@@ -325,6 +326,7 @@ function App() {
 			.catch((x) => {
 				setToken("");
 				localStorage.setItem("token", "");
+				nav("/");
 			});
 	}
 

@@ -2,7 +2,7 @@ import APIQuery from "./APIQuery";
 
 // const urlConnection = "http://localhost:5000/";
 const urlConnection =
-	"https://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
+	"http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
 export default async function getCurrentUser(JWT) {
 	let axiosConfig = {
 		headers: {

@@ -288,9 +288,9 @@ function Chat(chatProp) {
 					>
 						<SendIcon />
 					</IconButton>
-					<button id="audiomessage" onClick={sendAudio}>
-						{<MicIcon />}
-					</button>
+					{/* {<button id="audiomessage" onClick={sendAudio}>
+				{<MicIcon />}
+			</button>} */}
 					<button id="clearmessage" onClick={clearMessages}>
 						Clear message
 					</button>
