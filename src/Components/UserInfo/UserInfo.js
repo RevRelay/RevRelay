@@ -208,7 +208,7 @@ function UserInfo(infoProp) {
 							</Typography>
 							<br/>
 							<Box>
-								<UserInfoElementUsername key = {"usernameElement"} user = {mostRecentUserInfo}/>
+								<UserInfoElementUsername key = {"usernameElement"} mostRecentUserInfo = {mostRecentUserInfo}/>
 								<UserInfoEntryElementPassword key = {"passwordElement"} />
 								{userInfoFields.map((x) => {
 									return (
