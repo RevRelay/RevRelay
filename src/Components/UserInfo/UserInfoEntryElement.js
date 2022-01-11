@@ -201,7 +201,7 @@ export default function UserInfoEntryElement (varElement) {
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												varElement.setUserInfo({...varElement.mostRecentUserInfo, [varElement.varname] : userInfoFieldValue});
+												varElement.setUserInput({...varElement.mostRecentUserInfo, [varElement.varname] : userInfoFieldValue});
 												varElement.setMostRecentUserInfo({...varElement.mostRecentUserInfo, [varElement.varname]: userInfoFieldValue});
 											}
 											varElement.setToggleEdit({...varElement.toggleEdit, [varElement.varname] : false});
