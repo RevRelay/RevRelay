@@ -16,6 +16,7 @@ import { PageSingle } from "../../typeDef";
  * Renders the page settings tabs. Can set three attributes: private, description, and banner
  * @param {PageSingle} 	pageSetting			The Array for a prop object that just contains a page.
  * @param {Page}		pageSetting.page 	The Page that the users is currently on
+ * @param {setIsReload}	pageSetting.setIsReload 	Set true to reload current page
  * @returns page html ---
  */
 export default function PageSetting(pageSetting) {
@@ -60,7 +61,7 @@ export default function PageSetting(pageSetting) {
 		const response = await APIQuery.put("/pages", form, {
 			headers: { Authorization: "Bearer " + localStorage.getItem("token") },
 		}).then((data) => {
-			setReload(true);
+			pageSetting.setIsReload(true);
 			toast.success("Successfully updated group!");
 			return data;
 		});
