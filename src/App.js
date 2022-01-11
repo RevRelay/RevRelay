@@ -389,7 +389,7 @@ function SwitchBoard(switchProp) {
 				</Route>
 				<Route path="user">
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":pageParam" element={<Page JWT={switchProp.token} />} />
+					<Route path=":pageParam" element={<Page token={switchProp.token} />} />
 					<Route path="profile">
 						<Route index element={<Page token={switchProp.token} />} />
 						<Route path="userInfo">
@@ -404,7 +404,7 @@ function SwitchBoard(switchProp) {
 			</Route>
 			<Route path="group">
 				<Route index element={<Navigate to={-1} />} />
-				<Route path=":pageParam" element={<Page JWT={switchProp.token} />} />
+				<Route path=":pageParam" element={<Page token={switchProp.token} />} />
 			</Route>
 		</Routes>
 	);
