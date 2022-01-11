@@ -26,9 +26,11 @@ const Item = styled(Paper)(({ theme }) => ({
  */
 export default function Home(homeProp){
 	let navigate = useNavigate();
-	
+
 	return homeProp.token ? (
-		navigate("/user/profile")
+		<>
+			{navigate("/user/profile")}
+		</>
 	) : (
 		<>
 			<Stack direction="row" spacing={15} justifyContent="center"></Stack>
