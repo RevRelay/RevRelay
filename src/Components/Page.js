@@ -280,7 +280,7 @@ export default function Page(pageProp) {
 			if (!friends.includes(currentUser.userID)) return <Private />;
 		}
 	}
-	console.log(page.isGroupPage);
+	//console.log(page.isGroupPage);
 	return (
 		<>
 			{isBusy ? (
