@@ -1,8 +1,4 @@
-import {
-	Button,
-	Typography,
-	Stack,
-} from "@mui/material";
+import { Button, Typography, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import HowToRegIcon from "@mui/icons-material/HowToReg";

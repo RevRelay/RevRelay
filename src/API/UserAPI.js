@@ -2,8 +2,7 @@ import axios from "axios";
 import { User, PasswordsToBackend } from "../typeDef";
 
 const urlConnection = "http://localhost:5000/";
-// const urlConnection =
-//   "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
+// const urlConnection = "http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
 const s3Upload = "https://7ujmop2tw0.execute-api.us-west-2.amazonaws.com/dev/image-upload";
 const s3Storage = "https://rev-relay-s3.s3.us-west-2.amazonaws.com";
 
@@ -41,7 +40,7 @@ function updatePassword(passwords, JWT) {
  * Updates the User's information including first name, last name, email, display name, and birth date using a put request.
  *
  * @param {User} 	user 	Array of the user information including first name, last name, email, display name, and birth date.
- * @param {String}  JWT 	token determinig user and log in information.
+ * @param {String}	JWT 	token determinig user and log in information.
  * @returns a Put request to the correct place to change the user information for the current user.
  */
 function updateUser(user, JWT) {
@@ -60,7 +59,6 @@ function uploadImage(image, userID) {
 	const parts = image.split(";");
 	const mime = parts[0].split(":")[1];
 	const data = parts[1];
-
 	return axios.post(s3Upload, { mime, userID, image: data });
 }
 

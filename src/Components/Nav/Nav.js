@@ -55,7 +55,6 @@ export default function Nav(navProp) {
 		) {
 			return;
 		}
-
 		updateSidebar(open);
 	};
 	let navigate = useNavigate();

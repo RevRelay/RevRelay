@@ -95,6 +95,7 @@ function UserInfo(infoProp) {
 	/**
 	 * ---
 	 */
+	// TODO:  React Hook useEffect has a missing dependency: 'FetchUserInfo'. Either include it or remove the dependency array
 	useEffect(()=>{ FetchUserInfo(); },[])
 
 	/**

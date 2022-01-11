@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Page from "./Components/Page.js";
 import {
 	createTheme,
@@ -21,12 +21,12 @@ import { Switching } from "./typeDef.js";
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
-//Primary Main - Navbar
-//Background Default - Background
-//Background Paper - Nav pop-out bar
 
 /**
  * Array of all possible themes.
+ * 		Primary Main - Navbar
+ * 		Background Default - Background
+ * 		Background Paper - Nav pop-out bar
  * @param {string} 	name 	name to call the theme.
  * @param {Theme}	theme	the palate for the theme.
  */

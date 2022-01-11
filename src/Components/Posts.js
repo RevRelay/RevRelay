@@ -110,7 +110,6 @@ export default function Posts(postsProp) {
 			if (running) updatePosts(data.data);
 		});
 		return () => (running = false);
-		//console.log(posts);
 	}
 
 	/**
@@ -151,7 +150,6 @@ export default function Posts(postsProp) {
 				upvote: up,
 			},
 		};
-		console.log(axiosConfig);
 		await APIQuery.put("posts/" + postID + "/vote", null, axiosConfig).then(
 			(data) => {
 				GetPosts();

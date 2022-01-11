@@ -46,6 +46,7 @@ export default function Search(searchProp) {
 	/**
 	 * ---
 	 */
+	// TODO: React Hook useEffect has a missing dependency: 'FetchSearchResults'. Either include it or remove the dependency array
 	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
 	return (
 		<Box>

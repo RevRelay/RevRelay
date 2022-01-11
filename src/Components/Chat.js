@@ -151,11 +151,10 @@ function Chat(chatProp) {
 	};
 
 	/**
-	 * Send audio to server, records 5 seconds after --- button is pressed
+	 * Send audio to server, records 5 seconds after audio button is pressed
 	 */
 	const sendAudio = () => {
 		const constraints = { audio: true };
-		console.log("audio button pressed");
 
 		//Check if browser has audio device they are willing to use
 		navigator.mediaDevices

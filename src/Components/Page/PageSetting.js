@@ -26,11 +26,6 @@ export default function PageSetting(pageSetting) {
 	const { description, bannerURL, isPrivate } = form;
 	// stretch goal: page title (custom name of page)
 
-	// privacy
-	// name of the page (default name of page)
-	// description
-	// banner
-
 	/**
 	 * ---
 	 * @param {Event} e ---
