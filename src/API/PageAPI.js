@@ -37,6 +37,14 @@ export default async function getCurrentUser(JWT) {
 export async function getUserGroups(JWT, userID) {
 	return APIQuery.get("groups/getgroups/" + userID, axiosConfig(JWT));
 }
+export async function getUser(JWT, userID) {
+	let axiosConfig = {
+		headers: {
+			Authorization: "Bearer " + JWT,
+		},
+	};
+	return APIQuery.get("users/" + userID, axiosConfig);
+}
 
 /**
  * ---
