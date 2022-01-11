@@ -282,7 +282,7 @@ function App() {
 	 * Setting the JWT string token
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
-	const [isSendSearch, setIsSendSearch] = useState(false);
+	const [sendSearch, setSendSearch] = useState(false);
 	let nav = useNavigate();
 
 	localStorage.setItem("token", token);
@@ -323,8 +323,8 @@ function App() {
 				updateActiveTheme={updateActiveTheme}
 				token={token}
 				setToken={setToken}
-				isSendSearch={isSendSearch}
-				setIsSendSearch={setIsSendSearch}
+				sendSearch={sendSearch}
+				setSendSearch={setSendSearch}
 			/>
 			<Box
 				sx={{
@@ -337,7 +337,7 @@ function App() {
 				<SwitchBoard
 					token={token}
 					setToken={setToken}
-					isSendSearch={isSendSearch}
+					sendSearch={sendSearch}
 				/>
 			</Box>
 		</ThemeProvider>

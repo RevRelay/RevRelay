@@ -373,12 +373,12 @@ export default function Page(pageProp) {
 									>
 										<Tab label="Posts" />
 										<Tab label="About" />
-										{page.isGroupPage ? (
+										{page.groupPage ? (
 											<Tab label="Members" />
 										) : (
 											<Tab label="Friends" />
 										)}
-										{!page.isGroupPage && <Tab label="Groups" />}
+										{!page.groupPage && <Tab label="Groups" />}
 										{currentUser.userID === page.userID ? (
 											<Tab label="Settings" />
 										) : (
@@ -407,7 +407,7 @@ export default function Page(pageProp) {
 														"aria-labelledby": "basic-button",
 													}}
 												>
-													{page.isGroupPage ? (
+													{page.groupPage ? (
 														<MenuItem onClick={handleCloseJoinGroup}>
 															Join Group
 														</MenuItem>
@@ -416,7 +416,7 @@ export default function Page(pageProp) {
 															Add Friend
 														</MenuItem>
 													)}
-													{page.isGroupPage ? (
+													{page.groupPage ? (
 														""
 													) : (
 														<MenuItem onClick={handleCloseInviteToGroup}>
@@ -495,7 +495,7 @@ export default function Page(pageProp) {
 			case 2:
 				return (
 					<>
-						{page.isGroupPage ? (
+						{page.groupPage ? (
 							<Members />
 						) : (
 							<FriendsTab currentUsername={page.username} />
@@ -505,7 +505,7 @@ export default function Page(pageProp) {
 			case 3:
 				return (
 					<>
-						{page.isGroupPage ? (
+						{page.groupPage ? (
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
@@ -519,7 +519,7 @@ export default function Page(pageProp) {
 			case 4:
 				return (
 					<>
-						{page.isGroupPage ? (
+						{page.groupPage ? (
 							<></>
 						) : (
 							<PageSetting
@@ -585,6 +585,7 @@ export default function Page(pageProp) {
 			<>
 				{group.members.map((member) => (
 					<Button
+						key={"member"+member.userID}
 						onKeyUp={member.userID}
 						onClick={() => {
 							nav("/user/" + member.userID);
