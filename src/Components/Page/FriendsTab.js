@@ -43,8 +43,6 @@ const FriendsTab = (tabProp) => {
 		setLoading(false);
 		return () => {
 			running = false;
-			setFriends({}); // This worked for me
-			setLoading(false);
 		};
 	};
 

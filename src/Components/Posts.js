@@ -181,16 +181,20 @@ export default function Posts(postsProp) {
 	function PostElement(postElement) {
 		const [isShowing, setIsShowing] = useState(false);
 		let d = new Date(Date.parse(postElement.post.postTime));
+		let auth = "DELETED";
+		if (postElement.post.postAuthor) auth = postElement.post.postAuthor;
+
 		return (
 			<Box
 				sx={{
+					width: "99%",
 					paddingTop: "1%",
 					marginLeft: "1%",
 				}}
 			>
-				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
+				<Paper elevation={5} sx={{ marginLeft: "1%", minWidth: "33%" }}>
 					<Typography sx={{ fontSize: 12 }}>
-						{PostElement.post.author +
+						{auth +
 							" @ " +
 							d.toDateString() +
 							" " +

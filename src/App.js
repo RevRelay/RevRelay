@@ -326,7 +326,6 @@ function App() {
 			.catch((x) => {
 				setToken("");
 				localStorage.setItem("token", "");
-				nav("/");
 			});
 	}
 
