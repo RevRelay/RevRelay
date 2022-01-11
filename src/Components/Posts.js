@@ -181,13 +181,8 @@ export default function Posts(postsProp) {
 		const [isShowing, setIsShowing] = useState(false);
 		let d = new Date(Date.parse(postElement.post.postTime));
 		return (
-			<Box
-				sx={{
-					paddingTop: "1%",
-					marginLeft: "1%",
-				}}
-			>
-				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
+			<Box sx={{ width: "100%", pt: "2%" }}>
+				<Paper elevation={5} sx={{ mx: "auto", width: "40%", minWidth: 300 }}>
 					<Typography sx={{ fontSize: 12 }}>
 						{postElement.post.postOwnerID +
 							" @ " +
@@ -249,8 +244,8 @@ export default function Posts(postsProp) {
 				</Paper>
 				{isShowing
 					? postElement.post.children.map((newPost) => {
-							return <PostElement post={newPost} key={newPost.postID} />;
-					  })
+						return <PostElement post={newPost} key={newPost.postID} />;
+					})
 					: ""}
 			</Box>
 		);
