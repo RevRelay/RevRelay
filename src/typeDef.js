@@ -127,10 +127,9 @@ import { Socket } from "socket.io-client";
  */
 
 /**
-<<<<<<< HEAD
- * @typedef {Object} 	Page		---
- * @property {Number} 	pageID		The ID for the page.
- * @property {String} 	bannerURL	The URL for the banner image.
+ * @typedef {Object} 	Page		Page object as defined by the Page backend object. 
+ * @property {Number} 	pageID		Unique page ID, used for API call to populate the object.
+ * @property {String} 	bannerURL	URL to the banner (imgur supported). 
  * @property {String} 	description	The description for the page.
  * @property {Boolean} 	isGroupPage	Is the page for a group (true) or for a person (false).
  * @property {Post[]}	posts		List of all the Posts for the page
@@ -139,16 +138,6 @@ import { Socket } from "socket.io-client";
  * @property {Number}	pageOwnerID	The user or group ID of the page.
  * @property {String}	username	The username of the owner of the page if its a user's page.
  * @property {String}	groupName	The group name of the group that owns the page if its a group's page.
-=======
- * @typedef {Object} 	Page		Page object as defined by the Page backend object. 
- * @property {String} 	bannerURL	URL to the banner (imgur supported). 
- * @property {String} 	description	Page description, rendered on the About tab. 
- * @property {Boolean} 	groupPage	True if page belongs to a group, false if page belongs to a user. 
- * @property {Number} 	pageID		Unique page ID, used for API call to populate the object. 
- * @property {String} 	pageTitle	--- pages don't seem to have titles, unless they're being generated on the frontend
- * @property {any[]}	posts		Array of Post objects.
- * @property {Boolean} 	private		True if page if private, otherwise false. 
->>>>>>> 61f90185c6c7d5f50db4caed039573dd60cce9ca
  */
 
 /**
@@ -162,20 +151,12 @@ import { Socket } from "socket.io-client";
  */
 
 /**
-<<<<<<< HEAD
- * @typedef {Object}	Post 		---
+ * @typedef {Object}	Post 		Post object as defined by the Post backend object. 
  * @property {Number}	postID		The ID for the Post.
  * @property {PostPage} postPage	The page info (PageID) that the post is posted on.
- * @property {String} 	postType	---
+ * @property {String} 	postType	Backend enum, ORIGINAL if top post REPLY otherwise. 
  * @property {String} 	postTitle	The title for the Post.
  * @property {String} 	postContent	The content contained in the Post.
-=======
- * @typedef {Object}	Post 		Post object as defined by the Post backend object. 
- * @property {postPage} postPage	Page to which the post belongs. 
- * @property {String} 	postType	Backend enum, ORIGINAL if top post REPLY otherwise. 
- * @property {String} 	postTitle	Post title string. 
- * @property {String} 	postContent	Post text content. 
->>>>>>> 61f90185c6c7d5f50db4caed039573dd60cce9ca
  * @property {Number} 	postLikes	---
  * @property {Date} 	postTime	The time the Post was posted.
  * @property {Number} 	postOwnerID	The UserID of the poster.
