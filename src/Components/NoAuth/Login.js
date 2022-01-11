@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
 import APIQuery from "../../API/APIQuery";
 import {useNavigate} from 'react-router-dom'
@@ -52,10 +52,15 @@ export default function Login(loginProp) {
 	 */
 	const submitButton = async e => {
 		e.preventDefault();
-		const JWT = await loginUser({
-			username,
-			password
-		});
+		let JWT;
+		try{ 
+			JWT= await loginUser({
+				username,
+				password
+			});
+
+		} catch (error){
+		}
 		loginProp.setToken(JWT);
 		JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
@@ -71,35 +76,46 @@ export default function Login(loginProp) {
 			alignItems = "center"
 			align = "flex-start"
 		>
-			<form onSubmit={submitButton}>
-				<Grid item xs={1}>
-					<h2>Login here</h2>
-				</Grid>
-				<Grid item xs={1}>
-					<LoginRegisterField 
-						id = "username"
-						label = "Username"
-						value = {username} 
-						setter = {setUsername}
-						required = {true}
-					/>
-				</Grid>
-				<br/>
-				<Grid item xs={1}>
-					<PasswordField
-						id = "password"
-						label = "Password"
-						password = {password}
-						setter = {setPassword}
-					/>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" type="submit" variant="h5">Login</Button>
-				</Grid>
-				<Grid item xs={1}>
-					<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
-				</Grid>
-			</form>
+			<Paper
+					elevation={10}
+					sx={{
+						paddingLeft: 7,
+						paddingRight: 7,
+						paddingTop: 5,
+						paddingBottom: 5,
+						borderRadius: 10,
+					}}
+				>
+				<form onSubmit={submitButton}>
+					<Grid item xs={1}>
+						<h2>Login here</h2>
+					</Grid>
+					<Grid item xs={1}>
+						<LoginRegisterField 
+							id = "username"
+							label = "Username"
+							value = {username} 
+							setter = {setUsername}
+							required = {true}
+						/>
+					</Grid>
+					<br/>
+					<Grid item xs={1}>
+						<PasswordField
+							id = "password"
+							label = "Password"
+							password = {password}
+							setter = {setPassword}
+						/>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" type="submit" variant="h5">Login</Button>
+					</Grid>
+					<Grid item xs={1}>
+						<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+					</Grid>
+				</form>
+			</Paper>
 		</Grid>
 	)
 }
