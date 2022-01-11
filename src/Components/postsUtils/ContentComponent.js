@@ -1,5 +1,5 @@
 /**
- * Fillters content and returns html
+ * Filters content and returns html
  * @param {contentProps} contentProps whats sent to contentComponets
  * @param {content} contentProps.content string to be parsed
  * @returns html with vids and youtube
