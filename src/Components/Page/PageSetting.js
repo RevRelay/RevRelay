@@ -4,7 +4,9 @@ import {
 	FormGroup,
 	TextField,
 	Switch,
-	Grid,
+	Card,
+	CardHeader,
+	Stack,
 } from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
@@ -74,49 +76,61 @@ export default function PageSetting(pageSetting) {
 			<ToastContainer />
 			<Box
 				sx={{
-					marginTop: "5%",
+					marginTop: "3%",
 					marginLeft: "5%",
 					marginRight: "5%",
 					maxWidth: "100%",
 				}}
 			>
 				{!loading ? (
-					<Grid container spacing={2}>
-						<Grid item xs={4}>
-							<FormGroup>
-								<FormControlLabel
-									control={
-										<Switch onChange={togglePrivacy} checked={form.private} />
-									}
-									label="Private Page"
-								/>
-							</FormGroup>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								value={description}
-								label="Description"
-								onChange={(e) => changeDescription(e)}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								value={bannerURL}
-								label="URL of Banner"
-								onChange={(e) => changeURL(e)}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								variant="contained"
-								onClick={() => {
-									saveChanges();
-								}}
-							>
-								Save Page Settings
-							</Button>
-						</Grid>
-					</Grid>
+					<>
+						<Box sx={{width:"100%"}}>
+							<Card sx={{mx:'auto', width: "75%",pl:5,pr:5,pb:2}}>
+								<CardHeader title="Settings"/>
+								<Stack spacing={2}>
+									<TextField
+										value={description}
+										label="Description"
+										fullWidth
+										multiline
+										rows={4}
+										onChange={(e) => changeDescription(e)}
+									/>
+
+									<TextField
+										value={bannerURL}
+										label="URL of Banner"
+										onChange={(e) => changeURL(e)}
+									/>
+
+									<FormGroup>
+										<FormControlLabel
+											control={
+												<Switch onChange={togglePrivacy} checked={form.private} />
+											}
+											label="Private Page"
+										/>
+									</FormGroup>
+
+								</Stack>
+
+							</Card>
+
+							<center>
+								<Box sx={{pt:'2%'}}>
+									<Button
+										variant="contained"
+										onClick={() => {
+											saveChanges();
+										}}
+										>
+											Save Page Settings
+									</Button>
+								</Box>
+							</center>
+
+						</Box>
+					</>
 				) : (
 					<h3>Loading...</h3>
 				)}
