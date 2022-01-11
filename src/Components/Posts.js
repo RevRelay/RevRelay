@@ -25,6 +25,7 @@ import AddCommentIcon from "@mui/icons-material/AddComment";
 import ChatIcon from "@mui/icons-material/Chat";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import { getUser, getUserGroups } from "../API/PageAPI";
+import ContentComponent from "./postsUtils/ContentComponent";
 
 /**
  * Render Posts Tab
@@ -192,7 +193,7 @@ export default function Posts(postsProp) {
 					marginLeft: "1%",
 				}}
 			>
-				<Paper elevation={5} sx={{ marginLeft: "1%", minWidth: "33%" }}>
+				<Paper elevation={5} sx={{ marginLeft: "1%", minWidth: "33%", pl: 2 }}>
 					<Typography sx={{ fontSize: 12 }}>
 						{auth +
 							" @ " +
@@ -202,10 +203,12 @@ export default function Posts(postsProp) {
 							":" +
 							("" + d.getMinutes()).padStart(2, "0")}
 					</Typography>
-					<Typography sx={{ fontWeight: "bold" }}>
+					<Typography sx={{ fontWeight: "bold", pl: 2 }}>
 						{postElement.post.postTitle}
 					</Typography>
-					<Typography>{postElement.post.postContent}</Typography>
+					<Typography sx={{ pl: 2 }}>
+						<ContentComponent content={postElement.post.postContent} />
+					</Typography>
 
 					{postElement.post.children.length > 0 ? (
 						<IconButton
