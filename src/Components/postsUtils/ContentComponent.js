@@ -11,10 +11,27 @@ export default function ContentComponent(contentProps) {
 	comps = tmp.map((word) => {
 		if (word.startsWith("<i=")) {
 			return (
-				<img
-					src={word.split("<i=")[1].split(">")[0]}
-					alt={word.split("<i=")[1].split(">")[0]}
-				/>
+				<>
+					<br />
+					<img
+						width="420"
+						src={word.split("<i=")[1].split(">")[0]}
+						alt={word.split("<i=")[1].split(">")[0]}
+					/>
+					<br />
+				</>
+			);
+		} else if (word.startsWith("<v=")) {
+			return (
+				<>
+					<br />
+					<video
+						controls
+						src={word.split("<v=")[1].split(">")[0]}
+						alt={word.split("<v=")[1].split(">")[0]}
+					/>
+					<br />
+				</>
 			);
 		} else if (word.startsWith("<y")) {
 			return (
@@ -22,7 +39,7 @@ export default function ContentComponent(contentProps) {
 					<br />
 
 					<iframe
-						width="420"
+						allow="fullscreen;"
 						height="315"
 						src={
 							"https://www.youtube.com/embed/" +
