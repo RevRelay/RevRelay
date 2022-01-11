@@ -21,6 +21,9 @@ import APIQuery from "../API/APIQuery";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { User, Page, Post, Posting, PostSingle } from "../typeDef";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import ChatIcon from "@mui/icons-material/Chat";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 
 /**
  * Render Posts Tab
@@ -175,6 +178,7 @@ export default function Posts(postsProp) {
 	 * @returns ---
 	 */
 	function PostElement(postElement) {
+		const [isShowing, setIsShowing] = useState(false);
 		let d = new Date(Date.parse(postElement.post.postTime));
 		return (
 			<Box
@@ -184,9 +188,7 @@ export default function Posts(postsProp) {
 				}}
 			>
 				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
-					<Typography>{postElement.post.postTitle}</Typography>
-					<Typography>{postElement.post.postContent}</Typography>
-					<Typography>
+					<Typography sx={{ fontSize: 12 }}>
 						{postElement.post.postOwnerID +
 							" @ " +
 							d.toDateString() +
@@ -195,7 +197,26 @@ export default function Posts(postsProp) {
 							":" +
 							("" + d.getMinutes()).padStart(2, "0")}
 					</Typography>
+					<Typography sx={{ fontWeight: "bold" }}>
+						{postElement.post.postTitle}
+					</Typography>
+					<Typography>{postElement.post.postContent}</Typography>
 
+					{postElement.post.children.length > 0 ? (
+						<IconButton
+							onClick={() =>
+								isShowing ? setIsShowing(false) : setIsShowing(true)
+							}
+						>
+							{isShowing ? (
+								<ChatIcon color="primary" />
+							) : (
+								<ChatIcon color="disabled" />
+							)}
+						</IconButton>
+					) : (
+						""
+					)}
 					<IconButton onClick={(x) => onVote(postElement.post.postID, true)}>
 						<KeyboardArrowUpIcon
 							sx={{
@@ -220,15 +241,17 @@ export default function Posts(postsProp) {
 							}}
 						/>
 					</IconButton>
-					<Button
+					<IconButton
 						onClick={() => handleClickOpen(false, postElement.post.postID)}
 					>
-						Reply
-					</Button>
+						<AddCommentIcon />
+					</IconButton>
 				</Paper>
-				{postElement.post.children.map((newPost) => {
-					return <PostElement post={newPost} key={newPost.postID} />;
-				})}
+				{isShowing
+					? postElement.post.children.map((newPost) => {
+							return <PostElement post={newPost} key={newPost.postID} />;
+					  })
+					: ""}
 			</Box>
 		);
 	}
