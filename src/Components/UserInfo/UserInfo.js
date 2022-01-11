@@ -253,7 +253,7 @@ function UserInfo(infoProp) {
 							</Box>
 						</CardContent>
 						<CardActions sx={{paddingLeft:"30%"}}>
-							<Button  variant="contained" endIcon={<SaveIcon />} onClick={(userInput) => {submitButton(userInput)}} sx={{bgcolor:"primary" }} >
+							<Button  variant="contained" endIcon={<SaveIcon />} onClick={(userInput) => {submitButton(userInput)}} >
 								Save
 							</Button>
 						</CardActions>

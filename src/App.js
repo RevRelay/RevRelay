@@ -24,15 +24,10 @@ import { Switching } from "./typeDef.js";
  * @param {Theme}	theme	The palate for the theme.
  * 		- Palate:
  * 			- Mode: 			Dark - Sets theme to the dark mode color palate (https://mui.com/customization/dark-mode/)
- * 			- Primary:
- * 				- Light:
+ * 			- Primary:			Used to represent primary interface elements for a user. It's the color displayed most frequently across your app's screens and components.
  * 				- Main: 		Navbar
- * 				- Dark: 
- * 				- ContrastText:	
- * 			- Secondary:
- * 				- Light:
+ * 			- Secondary:		 Used to represent secondary interface elements for a user. It provides more ways to accent and distinguish your product.
  * 				- Main: 
- * 				- Dark: 
  * 			- Backgroud:
  * 				- Paper:		SideBar background, and User Settings background
  * 				- Default:		Overall Page Background
@@ -63,13 +58,9 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#FFFFF", // white
-					main: "#F26925",
-					dark: "#474C55",
-					// contrastText: will be calculated to contrast with palette.primary.main
+					main: "#E55C18",
 				},
 				secondary: {
-					light: "#B9B9BA",
 					main: "#72A4C2",
 				},
 				background: {
@@ -84,18 +75,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#4cc9f0",
 					main: "#E93479",
-					dark: "#560bad",
-					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
-					light: "#4895ef",
 					main: "#b5179e",
 				},
 				background: {
-					paper: "#7a04eb",
-					default: "#300350",
+					paper: "#65B8BF",
+					default: "#4A1D6A",
 				},
 				text: {
 					primary: "#FFFFFF",
@@ -116,19 +103,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#ff68a8",
 					main: "#A6206A",
-					dark: "#3968cb",
-					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
-					light: "#64cff7",
 					main: "#EC1C4B",
-					dark: "#3968cb",
 				},
 				background: {
 					paper: "#F16A43",
-					default: "#2F9395",
+					default: "#379B9D",
 				},
 				text: {
 					primary: "#FFFFFF",
@@ -144,24 +126,20 @@ const themes = [
 			},
 		}),
 	},
+	// Hex Codes: #F08D7E | #EFA18A | #E2BAB1 | #DDA6B9 | #ACAEC5.
 	{
 		name: "Cloud",
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#f08d7e",
-					main: "#FD5E53",
-					dark: "#f08d7e",
-					// contrastText: will be calculated to contrast with palette.primary.main
+					main: "#FEC7BC",
 				},
 				secondary: {
-					light: "#f08d7e",
-					main: "#efa18a",
-					dark: "#f08d7e",
+					main: "#7b7ea3",
 				},
 				background: {
-					paper: "#FC9C54",
-					default: "#4B3D60",
+					paper: "#C5AFC1",
+					default: "#84A6D6",
 				},
 				text: {
 					primary: "#FFFFFF",
@@ -182,19 +160,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#defffa",
-					main: "#9FE4AD",
-					dark: "#b0e1ff",
-					// contrastText: will be calculated to contrast with palette.primary.main
+					main: "#E6C6FF",
 				},
 				secondary: {
-					light: "#b0e1ff",
-					main: "#befcff",
-					dark: "#c997c9",
+					main: "#97C8E6",
 				},
 				background: {
-					paper: "#ffc1cc",
-					default: "#F9A8F5",
+					paper: "#DEFFFA",
+					default: "#B0E1FF",
 				},
 				text: {
 					primary: "#000000",
@@ -215,19 +188,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#e68e36",
-					main: "#defe47",
-					dark: "#556dc8",
-					// contrastText: will be calculated to contrast with palette.primary.main
+					main: "#E68E36",
 				},
 				secondary: {
-					light: "#556dc8",
-					main: "#0016ee",
-					dark: "#e68e36",
+					main: "#556DC8",
 				},
 				background: {
-					paper: "#dd517f",
-					default: "#461e52",
+					paper: "#DD517F",
+					default: "#461E52",
 				},
 				text: {
 					primary: "#D3D3D3",
@@ -249,20 +217,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#cea2d7",
-					main: "#9075D8",
-					dark: "#674ab3",
-					contrastText: "#000000",
+					main: "#DD9999",
 				},
 				secondary: {
-					light: "#674ab3",
-					main: "#9075d8",
-					dark: "#cea2d7",
-					contrastText: "#000000",
+					main: "#cea2d7",
 				},
 				background: {
-					paper: "#A348A6",
-					default: "#674AB3",
+					paper: "#556696",
+					default: "#332244",
 				},
 				text: {
 					primary: "#FFFFFF",
@@ -283,19 +245,14 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#7998ee",
-					main: "#ff0052",
-					dark: "#712275",
-					// contrastText: will be calculated to contrast with palette.primary.main
+					main: "#EA6789",
 				},
 				secondary: {
-					light: "#712275",
 					main: "#362fbb",
-					dark: "#7998ee",
 				},
 				background: {
-					paper: "#ffef00",
-					default: "#00f3ff",
+					paper: "#FFB845",
+					default: "#453ECA",
 				},
 				text: {
 					primary: "#000000",
@@ -348,7 +305,6 @@ function App() {
 			.catch((x) => {
 				setToken("");
 				localStorage.setItem("token", "");
-				nav("/");
 			});
 	}
 

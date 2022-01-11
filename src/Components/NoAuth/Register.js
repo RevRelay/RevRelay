@@ -187,7 +187,8 @@ export default function Register(registerProp) {
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color="inherit" type="submit">
+						<br/>
+						<Button variant="contained" sx={{bgcolor:"primary"}} type="submit">
 							Submit
 						</Button>
 					</Grid>

@@ -107,7 +107,7 @@ function ChangePassword(passwordChange) {
 					}}
 				>
 					<Grid item xs={1}>
-						<h2>Login here</h2>
+						<h2>Change Password</h2>
 					</Grid>
 					<Grid item xs={1}>
 						<PasswordField
@@ -136,7 +136,8 @@ function ChangePassword(passwordChange) {
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color="inherit" type="submit" variant="h5">
+						<br/>
+						<Button variant="contained" sx={{bgcolor:"primary"}} color="inherit" type="submit" >
 							Submit Change
 						</Button>
 					</Grid>

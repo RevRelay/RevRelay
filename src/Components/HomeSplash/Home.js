@@ -40,6 +40,7 @@ export default function Home(homeProp){
 					<Typography> Returning User</Typography>
 					<br></br>
 					<Button
+						color = "secondary"
 						onClick={(x) => navigate("/login")}
 						primary="login"
 						startIcon={<LoginIcon />}

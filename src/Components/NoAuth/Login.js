@@ -109,7 +109,8 @@ export default function Login(loginProp) {
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color="inherit" type="submit" variant="h5">Login</Button>
+						<br/>
+						<Button variant="contained" sx={{bgcolor:"primary"}} type="submit">Login</Button>
 					</Grid>
 					<Grid item xs={1}>
 						<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
