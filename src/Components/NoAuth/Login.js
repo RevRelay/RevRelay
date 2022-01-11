@@ -77,15 +77,15 @@ export default function Login(loginProp) {
 			align = "flex-start"
 		>
 			<Paper
-					elevation={10}
-					sx={{
-						paddingLeft: 7,
-						paddingRight: 7,
-						paddingTop: 5,
-						paddingBottom: 5,
-						borderRadius: 10,
-					}}
-				>
+				elevation={10}
+				sx={{
+					paddingLeft: 7,
+					paddingRight: 7,
+					paddingTop: 5,
+					paddingBottom: 5,
+					borderRadius: 10,
+				}}
+			>
 				<form onSubmit={submitButton}>
 					<Grid item xs={1}>
 						<h2>Login here</h2>
@@ -109,7 +109,8 @@ export default function Login(loginProp) {
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color="inherit" type="submit" variant="h5">Login</Button>
+						<br/>
+						<Button variant="contained" sx={{bgcolor:"primary"}} type="submit">Login</Button>
 					</Grid>
 					<Grid item xs={1}>
 						<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>

@@ -1,4 +1,4 @@
-import { Button, Typography, Stack } from "@mui/material";
+import { Button, Typography, Stack, CardHeader } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -19,18 +19,16 @@ const Item = styled(Paper)(({ theme }) => ({
 
 /**
  * ---
- * 
+ *
  * @param {JWTs} 	homeProp		The Array for an object that just contains a JWT.
  * @param {String} 	homeProp.token 	JWT Token determinig user and log in information.
  * @returns ---
  */
-export default function Home(homeProp){
+export default function Home(homeProp) {
 	let navigate = useNavigate();
 
 	return homeProp.token ? (
-		<>
-			{navigate("/user/profile")}
-		</>
+		<>{navigate("/user/profile")}</>
 	) : (
 		<>
 			<Stack direction="row" spacing={15} justifyContent="center"></Stack>

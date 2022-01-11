@@ -6,8 +6,6 @@ import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
 import { JWTs, PasswordCheck } from "../../typeDef"
 
-const apiChangePasswordUrl = "/users/password";
-
 /**
  * Helper function to take 2 passwords as a passwordCheck object and checks if strings are a valid length and then if 
  * they are matching. Returns an alert if they dont match or if they arent valid.
@@ -15,7 +13,7 @@ const apiChangePasswordUrl = "/users/password";
  * @param {PasswordCheck} 	passwordCheck 				An object with 2 Strings.
  * @param {String} 			passwordCheck.newPassword 	The new password
  * @param {String} 			passwordCheck.checkPassword	New password repeated. Needs to be the same at the new password.
- * @returns returns the negation of message's truthy/falsy value. Also sends an alert if message is truthy.
+ * @returns The negation of message's truthy/falsy value. Also sends an alert if message is truthy.
  */
 function validPasswordReset(passwordCheck) {
 	let message = "";
@@ -46,7 +44,13 @@ function ChangePassword(passwordChange) {
 	let navigate = useNavigate();
 
 	/**
-	 * Submit button is pressed password reset request is sent to the backend.
+	 * When the Submit button is pressed the password reset request is sent to the backend.
+	 * Lets the user know if there are any problems with their inputs using validatePasswordReset.
+	 * Awaits a response from the backend.
+	 * 		- If their is an error, that error is displayed.
+	 * 		- If there is response information then it lets the user know that that information has 
+	 * 			been changed and redirects the user to their information page.
+	 * 		- Else it says that something has gone wrong and was unable to change their password.
 	 *
 	 * @async
 	 * @param {Event} e The event of the login button being pressed. Username and password are captured.
@@ -103,7 +107,7 @@ function ChangePassword(passwordChange) {
 					}}
 				>
 					<Grid item xs={1}>
-						<h2>Login here</h2>
+						<h2>Change Password</h2>
 					</Grid>
 					<Grid item xs={1}>
 						<PasswordField
@@ -132,7 +136,8 @@ function ChangePassword(passwordChange) {
 						/>
 					</Grid>
 					<Grid item xs={1}>
-						<Button color="inherit" type="submit" variant="h5">
+						<br/>
+						<Button variant="contained" sx={{bgcolor:"primary"}} color="inherit" type="submit" >
 							Submit Change
 						</Button>
 					</Grid>
