@@ -82,7 +82,7 @@ function Chat(chatProp) {
 		console.log(usersTyping);
 		let userActive = false;
 		for (var i = 0; i < usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == chatProp.username) {
+			if (usersTyping[i]["username"] === chatProp.username) {
 				userActive = true;
 				//If current typing countdown is 4, don't start a new countdown timer
 				if (usersTyping[i]["countdown"] < 4) {
@@ -106,7 +106,7 @@ function Chat(chatProp) {
 	 */
 	const setNotActive = () => {
 		for (var i = 0; i < usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == chatProp.username) {
+			if (usersTyping[i]["username"] === chatProp.username) {
 				chatProp.socket.emit("not active", {
 					user: chatProp.username,
 					room: chatProp.room,
@@ -124,11 +124,11 @@ function Chat(chatProp) {
 		let userActive = false;
 		let newList = [...usersTyping];
 		for (var i = 0; i < usersTyping.length; i++) {
-			if (usersTyping[i]["username"] == data["user"]) {
+			if (usersTyping[i]["username"] === data["user"]) {
 				userActive = true;
 				if (
-					(data["countdown"] == 0 && usersTyping[i]["countdown"] == 1) ||
-					data["countdown"] == -1
+					(data["countdown"] === 0 && usersTyping[i]["countdown"] === 1) ||
+					data["countdown"] === -1
 				) {
 					newList.splice(i, 1);
 				} else {
@@ -137,7 +137,7 @@ function Chat(chatProp) {
 			}
 		}
 
-		if (!userActive && data["countdown"] == 4) {
+		if (!userActive && data["countdown"] === 4) {
 			newList.push({
 				username: data["user"],
 				countdown: data["countdown"],
@@ -195,6 +195,7 @@ function Chat(chatProp) {
 	/**
 	 * Playback audio received from server
 	 */
+	// TODO: React Hook useCallback does nothing when called with only one argument. Did you forget to pass an array of dependencies?
 	const playAudio = useCallback((arrayBuffer) => {
 		console.log("playing audio!");
 		let blob = new Blob([arrayBuffer], {
@@ -208,6 +209,7 @@ function Chat(chatProp) {
 	/**
 	 * 
 	 */
+	// TODO: React Hook useEffect has a missing dependency: 'chatProp.socket'. Either include it or remove the dependency array
 	useEffect(() => {
 		chatProp.socket.on("typing countdown", setCountdown);
 		chatProp.socket.on("voice", playAudio);

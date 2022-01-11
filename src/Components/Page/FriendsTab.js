@@ -45,6 +45,7 @@ const FriendsTab = (tabProp) => {
 	/**
 	 * ---
 	 */
+	// TODO: React Hook useEffect has a missing dependency: 'getAllFriends'. Either include it or remove the dependency array
 	useEffect(() => {
 		getAllFriends();
 	}, []);

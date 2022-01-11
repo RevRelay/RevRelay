@@ -38,6 +38,19 @@ import { Socket } from "socket.io-client";
  */
 
 /**
+ * 
+ * @typedef {Object}	UserDTO		The Array for a UserDTO. Does not include the password.
+ * @property {String} 	username	The logged in user's username.
+ * @property {String} 	email		The logged in user's email.
+ * @property {String} 	firstName	The logged in user's first name.
+ * @property {String} 	lastName	The logged in user's last name.
+ * @property {Date} 	birthDate	The logged in user's birth date.
+ * @property {String} 	displayName	The logged in user's display name.
+ * @property {Page} 	userPage	The logged in user's personal page.
+ * @property {Number} 	userID		The logged in user's user ID.
+ */
+
+/**
  * @typedef {Object} 	RegisterUser	The Array for a User when registering. Does not include userID, names, or birth date.
  * @property {String} 	username		The registering user's username.
  * @property {String}	password		The registering user's password.
@@ -115,30 +128,54 @@ import { Socket } from "socket.io-client";
 
 /**
  * @typedef {Object} 	Page		---
- * @property {String} 	bannerURL	---
- * @property {String} 	description	---
- * @property {Boolean} 	groupPage	---
- * @property {Number} 	pageID		---
- * @property {String} 	pageTitle	---
- * @property {any[]}	posts		---
- * @property {Boolean} 	private		---
+ * @property {Number} 	pageID		The ID for the page.
+ * @property {String} 	bannerURL	The URL for the banner image.
+ * @property {String} 	description	The description for the page.
+ * @property {Boolean} 	isGroupPage	Is the page for a group (true) or for a person (false).
+ * @property {Post[]}	posts		List of all the Posts for the page
+ * @property {Boolean} 	isPrivate	Is the page private (true) or not (false).
+ * @property {String}	pageTitle	The title for the page.
+ * @property {Number}	pageOwnerID	The user or group ID of the page.
+ * @property {String}	username	The username of the owner of the page if its a user's page.
+ * @property {String}	groupName	The group name of the group that owns the page if its a group's page.
  */
 
 /**
- * @typedef {Object} 	postPage	---
- * @property {Number}	pageID		---
+ * @typedef {Object} 	PostPage	The Array for a prop object that just contains a pageID.
+ * @property {Number}	pageID		The PageID of the page that the post is posted on.
+ */
+
+/**
+ * @typedef {Object}	PageSingle	The Array for a prop object that just contains a page.
+ * @property {Page}		page		---
  */
 
 /**
  * @typedef {Object}	Post 		---
- * @property {postPage} postPage	---
+ * @property {Number}	postID		The ID for the Post.
+ * @property {PostPage} postPage	The page info (PageID) that the post is posted on.
  * @property {String} 	postType	---
- * @property {String} 	postTitle	---
- * @property {String} 	postContent	---
+ * @property {String} 	postTitle	The title for the Post.
+ * @property {String} 	postContent	The content contained in the Post.
  * @property {Number} 	postLikes	---
- * @property {Number} 	postTime	---
- * @property {Number} 	postOwnerID	---
- * @property {Object}	children	---
+ * @property {Date} 	postTime	The time the Post was posted.
+ * @property {Number} 	postOwnerID	The UserID of the poster.
+ * @property {Post[]}	children	The list of the children Posts.
+ * @property {Post}		parent		The parent post for the current Post.
+ * @property {Number}	upVoters	The number of up votes for the Post
+ * @property {Number}	downVoters	The number of down votes for the Post.
+ */
+
+/**
+ * @typedef {Object}	PostSingle	The Array for a prop object that just contains a post.
+ * @property {Post}		post		---
+ */
+
+/**
+ * @typedef {Object}	Posting		---
+ * @property {Page}		page 		The information of the Page being posted on.
+ * @property {User} 	currentUser	The current User's info.
+ * @property {String}	JWT			JWT Token determinig user and log in information.
  */
 
 /**
@@ -186,6 +223,13 @@ import { Socket } from "socket.io-client";
  * @typedef {Object}					SearchBar		---
  * @property {Boolean}					sendSearch		State variable managing searching status. true is being sent, false for not.
  * @property {SetStateActionBool}		setSendSearch	Setter function for the sendSearch.
+ */
+
+/**
+ * @typedef {Object}				Switching		--
+ * @property {String}				token			JWT Token determinig user and log in information.
+ * @property {SetStateActionString}	setToken		State variable setter for JWT token field information.
+ * @property {Boolean}				isSendSearch 	Boolean state managing searching status.
  */
 
 /**
@@ -243,7 +287,8 @@ import { Socket } from "socket.io-client";
  * 		pageID: 		Number;
  * 		pageTitle: 		String;
  * 		posts: 			any[];
- * 		private: 		Boolean;
+ * 		isPrivate: 		Boolean;
+ * 		pageOwnerID		Number;
  * }>>} SetStateActionPage State Setter Function for a Page
  */
 

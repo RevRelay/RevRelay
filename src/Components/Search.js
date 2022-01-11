@@ -82,10 +82,10 @@ function SearchResultCard(result, index, navigate) {
 	 * ---
 	 */
 	function handleClickSearchResult() {
-		if (result.type == "USER") {
+		if (result.type === "USER") {
 			navigate(`/user/${result.id}`);
 		}
-		if (result.type == "GROUP") {
+		if (result.type === "GROUP") {
 			navigate(`/group/${result.id}`);
 		}
 	}

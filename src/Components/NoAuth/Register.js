@@ -53,7 +53,7 @@ function validInputRegister(user) {
 	if (!(user.displayName && user.displayName.length >= displayNameLen)) {
 		message += `Minimum display name length ${displayNameLen} \n`;
 	}
-	if(user.password != user.confirmPassword){
+	if(user.password !== user.confirmPassword){
 		message += `Your passwords do not match \n`;
 	}
 	if (message) {

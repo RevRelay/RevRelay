@@ -1,12 +1,9 @@
-import react, { useState } from "react";
+import { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
 import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
 import Page from "./Components/Page.js";
 import {
-	Container,
 	createTheme,
-	SpeedDial,
-	SpeedDialIcon,
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
@@ -19,7 +16,7 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
-import { SetStateActionBool } from "./typeDef.js";
+import { Switching } from "./typeDef.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -372,34 +369,34 @@ function App() {
  *
  * Use the token object passed above if you need to find any
  *
- * @param {object} 					param					---
- * @param {String} 					param.token 			JWT token determinig user and log in information.
- * @param {SetStateActionString} 	param.setToken			State variable setter for token field information.
- * @param {Boolean}					param.isSendSearch		Boolean state managing searching status.
+ * @param {Switching} 				switchProp					---
+ * @param {String} 					switchProp.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	switchProp.setToken			State variable setter for token field information.
+ * @param {Boolean}					switchProp.isSendSearch		Boolean state managing searching status.
  * @returns
  */
-function SwitchBoard({ token, setToken, isSendSearch}) {
+function SwitchBoard(switchProp) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home token={token}/>} />
-				<Route path="login" element={<Login setToken={setToken} />} />
-				<Route path="register" element={<Registration setToken={setToken} />} />
+				<Route index element={<Home token={switchProp.token}/>} />
+				<Route path="login" element={<Login setToken={switchProp.setToken} />} />
+				<Route path="register" element={<Registration setToken={switchProp.setToken} />} />
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} isSendSearch = {isSendSearch} />} />
+					<Route path=":searchTerm" element={<Search token={switchProp.token} isSendSearch = {switchProp.isSendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Users />} />
-					<Route path=":pageParam" element={<Page token={token} />} />
+					<Route path=":pageParam" element={<Page token={switchProp.token} />} />
 					<Route path="profile">
-						<Route index element={<Page token={token} />} />
+						<Route index element={<Page token={switchProp.token} />} />
 						<Route path="userInfo">
-							<Route index element={<UserInfo token={token} />} />
+							<Route index element={<UserInfo token={switchProp.token} />} />
 							<Route
 								path="changePassword"
-								element={<ChangePassword token={token} />}
+								element={<ChangePassword token={switchProp.token} />}
 							/>
 						</Route>
 					</Route>
@@ -407,7 +404,7 @@ function SwitchBoard({ token, setToken, isSendSearch}) {
 			</Route>
 			<Route path="group">
 				<Route index element={<Groups />} />
-				<Route path=":pageParam" element={<Page token={token} />} />
+				<Route path=":pageParam" element={<Page token={switchProp.token} />} />
 			</Route>
 		</Routes>
 	);

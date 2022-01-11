@@ -47,6 +47,10 @@ import { JWTs } from "../typeDef";
  * @returns The default page for a user or group returned with React.
  */
 export default function Page(pageProp) {
+	/**
+	 * ---
+	 */
+	// TODO: React Hook useEffect has a missing dependency: 'page.username'. Either include it or remove the dependency array
 	useEffect(getAllFriends, []);
 
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -55,10 +59,10 @@ export default function Page(pageProp) {
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
-		groupPage: false,
+		isGroupPage: false,
 		pageID: 1,
 		posts: [],
-		private: true,
+		isPrivate: true,
 		pageTitle: "Title Not Found",
 	});
 	const [isBusy, setIsBusy] = useState(true);
@@ -73,10 +77,12 @@ export default function Page(pageProp) {
 	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
 
+	const path = useLocation();
+
 	/**
 	 * ---
 	 */
-	const path = useLocation();
+	// TODO: React Hook useEffect has a missing dependency: 'GetPage'. Either include it or remove the dependency array
 	useEffect(() => {
 		setIsReload(false);
 		GetPage();
@@ -102,14 +108,14 @@ export default function Page(pageProp) {
 			},
 			params: {
 				GroupID: userGroups.content.filter((x) => {
-					return x.groupName == selectedGroup;
+					return x.groupName === selectedGroup;
 				})[0].groupID,
 				UserID: page.userID,
 			},
 		}).then((response) => response.data);
 		toast.success("Added User to Group!");
 		let currentSelectedGroup = userGroups.content.filter((x) => {
-			return x.groupName == selectedGroup;
+			return x.groupName === selectedGroup;
 		})[0];
 
 		GetPage();
@@ -245,6 +251,7 @@ export default function Page(pageProp) {
 	 * @async
 	 * @returns ---
 	 */
+	// TODO: Effect callbacks are synchronous to prevent race conditions. Put the async function inside:
 	async function getAllFriends() {
 		if (!page.username) return;
 		const response = await APIQuery.get("/pages/friends/" + page.username, {
@@ -259,7 +266,7 @@ export default function Page(pageProp) {
 		};
 	}
 	if (isBusy) return <LoadingPage />;
-	if (page.private && page.userID != currentUser.userID) {
+	if (page.isPrivate && page.userID !== currentUser.userID) {
 		if (!friends.includes(currentUser.userID)) return <Private />;
 	}
 
@@ -355,12 +362,12 @@ export default function Page(pageProp) {
 									>
 										<Tab label="Posts" />
 										<Tab label="About" />
-										{page.groupPage ? (
+										{page.isGroupPage ? (
 											<Tab label="Members" />
 										) : (
 											<Tab label="Friends" />
 										)}
-										{!page.groupPage && <Tab label="Groups" />}
+										{!page.isGroupPage && <Tab label="Groups" />}
 										{currentUser.userID === page.userID ? (
 											<Tab label="Settings" />
 										) : (
@@ -389,7 +396,7 @@ export default function Page(pageProp) {
 														"aria-labelledby": "basic-button",
 													}}
 												>
-													{page.groupPage ? (
+													{page.isGroupPage ? (
 														<MenuItem onClick={handleCloseJoinGroup}>
 															Join Group
 														</MenuItem>
@@ -398,14 +405,13 @@ export default function Page(pageProp) {
 															Add Friend
 														</MenuItem>
 													)}
-													{page.groupPage ? (
+													{page.isGroupPage ? (
 														""
 													) : (
 														<MenuItem onClick={handleCloseInviteToGroup}>
 															Invite to group
 														</MenuItem>
 													)}
-
 													<MenuItem onClick={handleClose}>Chat</MenuItem>
 												</Menu>
 											</>
@@ -474,25 +480,22 @@ export default function Page(pageProp) {
 		switch (tab) {
 			case 0:
 				return <Posts page={page} currentUser={currentUser} JWT={pageProp.token} />;
-				break;
 			case 1:
 				return <About />;
-				break;
 			case 2:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<Members />
 						) : (
 							<FriendsTab currentUsername={page.username} />
 						)}{" "}
 					</>
 				);
-				break;
 			case 3:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
@@ -503,11 +506,10 @@ export default function Page(pageProp) {
 						)}{" "}
 					</>
 				);
-				break;
 			case 4:
 				return (
 					<>
-						{page.groupPage ? (
+						{page.isGroupPage ? (
 							<></>
 						) : (
 							<PageSetting
@@ -518,7 +520,6 @@ export default function Page(pageProp) {
 						)}{" "}
 					</>
 				);
-				break;
 			default:
 				break;
 		}

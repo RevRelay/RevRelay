@@ -9,15 +9,17 @@ import {
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";
+import { PageSingle } from "../../typeDef";
 
 /**
  * Renders the page settings tabs. Can set three attributes: private, description, and banner
- * @param {*} param0 page that the users is currently on, update state on updatePage, setReload reloads the page on true
- * @returns page html
+ * @param {PageSingle} 	pageSetting			The Array for a prop object that just contains a page.
+ * @param {Page}		pageSetting.page 	The Page that the users is currently on
+ * @returns page html ---
  */
-export default function PageSetting({ page, updatePage, setReload }) {
+export default function PageSetting(pageSetting) {
 	const [loading, setLoading] = useState(false);
-	let tempPage = { ...page };
+	let tempPage = { ...pageSetting.page };
 	tempPage.posts = null;
 	const [form, updateForm] = useState({...tempPage,});
 
