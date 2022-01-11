@@ -1,12 +1,9 @@
-import react, { useState } from "react";
+import { useState } from "react";
 import Nav from "./Components/Nav/Nav.js";
-import { Routes, Route, useNavigate, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Page from "./Components/Page.js";
 import {
-	Container,
 	createTheme,
-	SpeedDial,
-	SpeedDialIcon,
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
@@ -19,17 +16,17 @@ import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./API/APIQuery";
 import Home from "./Components/HomeSplash/Home.js";
-import { SetStateActionString } from "./typeDef.js";
+import { Switching } from "./typeDef.js";
 
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
-//Primary Main - Navbar
-//Background Default - Background
-//Background Paper - Nav pop-out bar
 
 /**
  * Array of all possible themes.
+ * 		Primary Main - Navbar
+ * 		Background Default - Background
+ * 		Background Paper - Nav pop-out bar
  * @param {string} 	name 	name to call the theme.
  * @param {Theme}	theme	the palate for the theme.
  */
@@ -309,17 +306,18 @@ function App() {
 	 * Setting the JWT string token
 	 */
 	const [token, setToken] = useState(localStorage.getItem("token"));
-	localStorage.setItem("token", token);
+	const [isSendSearch, setIsSendSearch] = useState(false);
 
-	/**
-	 * @type {[boolean, SetStateActionString]}
-	 */
-	const [sendSearch, setSendSearch] = useState(false);
+	localStorage.setItem("token", token);
 
 	checkJWT();
 
+	/**
+	 * Validates the stored JWT against the database, discarding if not valid.
+	 * @async
+	 */
 	async function checkJWT() {
-		console.log("Checking JWT");
+		//console.log("Checking JWT");
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + token,
@@ -343,13 +341,13 @@ function App() {
 			{/* Renders Chat Box */}
 			{token ? <Client /> : <></>}
 			<Nav
-				themes={themes}
-				activeTheme={activeTheme}
-				updateActiveTheme={updateActiveTheme}
-				token={token}
-				setToken={setToken}
-				sendSearch = {sendSearch}
-				setSendSearch = {setSendSearch}
+				themes = {themes}
+				activeTheme = {activeTheme}
+				updateActiveTheme = {updateActiveTheme}
+				token = {token}
+				setToken = {setToken}
+				isSendSearch = {isSendSearch}
+				setIsSendSearch = {setIsSendSearch}
 			/>
 			<Box
 				sx={{
@@ -359,7 +357,7 @@ function App() {
 					backgroundColor: "background.default",
 				}}
 			>
-				<SwitchBoard token={token} setToken={setToken} sendSearch={sendSearch} setSendSearch={setSendSearch}/>
+				<SwitchBoard token={token} setToken={setToken} isSendSearch={isSendSearch}/>
 			</Box>
 		</ThemeProvider>
 	);
@@ -371,35 +369,34 @@ function App() {
  *
  * Use the token object passed above if you need to find any
  *
- * @param {object} 					param
- * @param {string} 					param.token 			JWT token determinig user and log in information.
- * @param {SetStateActionString} 	param.setToken			state variable setter for token field information.
- * @param {boolean}					param.sendSearch		boolean state managing searching status
- * @param {SetStateActionBool}		param.setSendSearch		setter for the above
+ * @param {Switching} 				switchProp					---
+ * @param {String} 					switchProp.token 			JWT token determinig user and log in information.
+ * @param {SetStateActionString} 	switchProp.setToken			State variable setter for token field information.
+ * @param {Boolean}					switchProp.isSendSearch		Boolean state managing searching status.
  * @returns
  */
-function SwitchBoard({ token, setToken, sendSearch}) {
+function SwitchBoard(switchProp) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home />} />
-				<Route path="login" element={<Login setToken={setToken} />} />
-				<Route path="register" element={<Registration setToken={setToken} />} />
+				<Route index element={<Home token={switchProp.token}/>} />
+				<Route path="login" element={<Login setToken={switchProp.setToken} />} />
+				<Route path="register" element={<Registration setToken={switchProp.setToken} />} />
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
+					<Route path=":searchTerm" element={<Search token={switchProp.token} isSendSearch = {switchProp.isSendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Navigate to={-1} />} />
-					<Route path=":pageParam" element={<Page JWT={token} />} />
+					<Route path=":pageParam" element={<Page JWT={switchProp.token} />} />
 					<Route path="profile">
-						<Route index element={<Page JWT={token} />} />
+						<Route index element={<Page token={switchProp.token} />} />
 						<Route path="userInfo">
-							<Route index element={<UserInfo JWT={token} />} />
+							<Route index element={<UserInfo token={switchProp.token} />} />
 							<Route
 								path="changePassword"
-								element={<ChangePassword JWT={token} />}
+								element={<ChangePassword token={switchProp.token} />}
 							/>
 						</Route>
 					</Route>
@@ -407,61 +404,10 @@ function SwitchBoard({ token, setToken, sendSearch}) {
 			</Route>
 			<Route path="group">
 				<Route index element={<Navigate to={-1} />} />
-				<Route path=":pageParam" element={<Page JWT={token} />} />
+				<Route path=":pageParam" element={<Page JWT={switchProp.token} />} />
 			</Route>
 		</Routes>
 	);
-}
-
-// function Home() {
-// 	return <Typography color="textPrimary">HOME</Typography>;
-// }
-
-// function Login() {
-// 	return <p>Login</p>;
-// // }
-// function Registration() {
-// 	return <p>Registration</p>;
-// }
-
-/**
- *
- * @returns
- */
-function Users() {
-	return <Typography color="textPrimary">Users</Typography>;
-}
-
-/**
- *
- * @returns
- */
-function User() {
-	return <Typography color="textPrimary">User</Typography>;
-}
-
-/**
- *
- * @returns
- */
-function UserProfile() {
-	return <Typography color="textPrimary">UserProfile</Typography>;
-}
-
-/**
- *
- * @returns
- */
-function Groups() {
-	return <Typography color="textPrimary">Groups</Typography>;
-}
-
-/**
- *
- * @returns
- */
-function GroupProfile() {
-	return <p>GroupProfile</p>;
 }
 
 export default App;
