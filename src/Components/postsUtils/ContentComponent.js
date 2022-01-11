@@ -1,3 +1,9 @@
+/**
+ * Fillters content and returns html
+ * @param {contentProps} contentProps whats sent to contentComponets
+ * @param {content} contentProps.content string to be parsed
+ * @returns html with vids and youtube
+ */
 export default function ContentComponent(contentProps) {
 	let comps = [];
 	let st = contentProps.content;
