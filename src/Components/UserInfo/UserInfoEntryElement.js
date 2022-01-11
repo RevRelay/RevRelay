@@ -23,6 +23,7 @@ import {
 	SetStateActionTog, 
 	SetStateActionDate
 } from "../../typeDef"
+import ChangePassword from "./ChangePassword";
 
 /**
  * Function for defining user info elements on UserInfo pretaining to their display name.
@@ -201,7 +202,7 @@ export default function UserInfoEntryElement (varElement) {
 										onClick={(x) => {
 											//this if statement is a very weak check for good input value, needs reinforcing - NL
 											if (userInfoFieldValue) {
-												varElement.setUserInput({...varElement.mostRecentUserInfo, [varElement.varname] : userInfoFieldValue});
+												varElement.setUserInfo({...varElement.mostRecentUserInfo, [varElement.varname] : userInfoFieldValue});
 												varElement.setMostRecentUserInfo({...varElement.mostRecentUserInfo, [varElement.varname]: userInfoFieldValue});
 											}
 											varElement.setToggleEdit({...varElement.toggleEdit, [varElement.varname] : false});
@@ -216,7 +217,7 @@ export default function UserInfoEntryElement (varElement) {
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{varElement.mostRecentUserInfo[varElement.varname]}
+								{varElement.user[varElement.varname]}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
@@ -240,6 +241,12 @@ export default function UserInfoEntryElement (varElement) {
 export function UserInfoEntryElementPassword () {
 	let bulletString = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
 	let navigate = useNavigate();
+	const [toggleModal, setToggleModal] = useState(false);
+
+
+	const togglePop = () => {
+		setToggleModal(!toggleModal);
+	};
 
 	return (
 		<React.Fragment>
@@ -255,15 +262,16 @@ export function UserInfoEntryElementPassword () {
 					</Typography>
 				</Box>
 				<Box sx={{width:"40%", height:"2em"}}>
-					<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/user/profile/userInfo/changePassword")}>
+					<IconButton size="small" color="primary" variant="contained" onClick={togglePop}>
 						<EditIcon  fontSize="inherit"/>
 					</IconButton>
 				</Box>
+				{this.toggleModal ? <ChangePassword toggle={this.togglePop} />: null}
 			</Stack>
 		</React.Fragment>
 	)
 };
-
+//<IconButton size="small" color="primary" variant="contained" onClick={(x) => navigate("/user/profile/userInfo/changePassword")}>
 /**
  * Function for defining user info elements on UserInfo pretaining to their username. This is not editable.
  * 
@@ -348,7 +356,7 @@ export function UserInfoEntryElementBirthDate (birthDateProp) {
 								<IconButton size="small" color="primary" variant="contained"
 									onClick={(x) => {
 										if (userInfoFieldValue) {
-											birthDateProp.setUserInput({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
+											birthDateProp.setUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 											birthDateProp.setMostRecentUserInfo({...birthDateProp.mostRecentUserInfo, birthDate : userInfoFieldValue});
 										}
 										birthDateProp.setToggleEdit({...birthDateProp.toggleEdit, birthDate : false});

@@ -4,10 +4,16 @@ import {
 	Card,
 	CardContent,
 	Typography,
+	ListItemButton,
+	ListItemText,
+	Stack,
+	Avatar,
+	Divider, 
 } from "@mui/material";
 import APIQuery from "../API/APIQuery";
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { SearchBar } from "../typeDef";
+import { getProfilePic } from "../API/UserAPI";
 
 /**
  * Component for rendering search results. 
@@ -48,12 +54,39 @@ export default function Search(searchProp) {
 	 */
 	// TODO: React Hook useEffect has a missing dependency: 'FetchSearchResults'. Either include it or remove the dependency array
 	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
+	if(!(searchResults && searchResults[0])) {
+		return (
+			searchComplete ? (
+				<div>No Results Found</div>
+			) : (
+				<div>Loading Results</div>
+			)
+		)
+	}
+	let resultUsers = searchResults.filter(res => res.type === "USER")
+	let resultGroups = searchResults.filter(res => res.type === "GROUP")
 	return (
-		<Box>
-			{(searchResults && searchResults[0]) ? (
-				searchResults.map((x, index) => {
-					return (SearchResultCard(x, index, navigate))
-				})
+		<Box sx={{
+			maxHeight: '100%',
+			overflow: 'auto'
+		}}>
+			<Box sx={{
+			}} >
+				{resultUsers.map((x,index) => {
+					return SearchResultUsers(x, index, navigate)
+				})}
+				<Divider />
+				{resultGroups.map((x,index) => {
+					return SearchResultGroups(x, index, navigate)
+				})}
+			</Box>
+		</Box>
+	)
+}
+
+/*
+					
+			{(searchResults && searchResults[0]) ? ( 
 			) : (
 				searchComplete ? (
 					<div>No Results Found</div>
@@ -61,9 +94,8 @@ export default function Search(searchProp) {
 					<div>Loading Results</div>
 				)
 			)}
-		</Box>
-	)
-}
+*/
+
 
 /**
  * Provides a mappable page element for search results. At this time of this comment (220105)
@@ -78,7 +110,7 @@ export default function Search(searchProp) {
  * @returns A Card element labeled with the SearchResultItem name that redirects the user to 
  * 			the appropriate Page on click. 
  */
-function SearchResultCard(result, index, navigate) {
+function SearchResultUsers(result, index, navigate) {
 	/**
 	 * ---
 	 */
@@ -91,13 +123,47 @@ function SearchResultCard(result, index, navigate) {
 		}
 	}
 	
-	return (
-		<Card key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
-			<CardContent>
-				<Typography variant="h5">
-					{result.name}
-				</Typography>
-			</CardContent>
-		</Card>
+	return (result.type === "USER" ? 
+		<Box key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
+			<ListItemButton>
+				<Stack direction="row" spacing={2}>
+					<Avatar
+						alt={result.name}
+						src={getProfilePic(result.id)}
+						sx={{ width: 40, height: 40 }}
+					/>
+					<ListItemText primary={result.name} secondary={result.type} />	
+				</Stack>
+			</ListItemButton>
+		</Box> : ""
+	)
+}
+
+function SearchResultGroups(result, index, navigate) {
+	/**
+	 * ---
+	 */
+	function handleClickSearchResult() {
+		if (result.type === "USER") {
+			navigate(`/user/${result.id}`);
+		}
+		if (result.type === "GROUP") {
+			navigate(`/group/${result.id}`);
+		}
+	}
+	
+	return (result.type === "USER" ? "" :
+		<Box key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
+			<ListItemButton>
+				<Stack direction="row" spacing={2}>
+					<Avatar
+						alt={result.name}
+						src={getProfilePic(-1)}
+						sx={{ width: 40, height: 40 }}
+					/>
+					<ListItemText primary={result.name} secondary={result.type} />
+				</Stack>
+			</ListItemButton>
+		</Box> 
 	)
 }

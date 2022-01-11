@@ -350,7 +350,6 @@ function App() {
 			/>
 			<Box
 				sx={{
-					paddingTop: 8.5,
 					width: "100vw",
 					height: "100vh",
 					backgroundColor: "background.default",
