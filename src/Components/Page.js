@@ -13,6 +13,7 @@ import {
 	DialogTitle,
 	Divider,
 	Grid,
+	IconButton,
 	Menu,
 	MenuItem,
 	Paper,
@@ -31,6 +32,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
+import ChatIcon from "@mui/icons-material/Chat";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,
@@ -38,6 +40,7 @@ import getCurrentUser, {
 	getUserGroups,
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
+import { addUserToChat, saveUserChat } from "../API/ChatAPI";
 
 /**
  * Renders a generic page with condintional rendering.
@@ -195,6 +198,19 @@ export default function Page(pageProp) {
 	 */
 	async function getCurrentGroup() {}
 
+	async function startChat() {
+		let croom = {
+			members: [],
+			private: false,
+			roomName: page.displayName,
+		};
+		saveUserChat(pageProp.token, croom).then((resp) => {
+			console.log(resp.data);
+			addUserToChat(pageProp.token, resp.data.chatID, currentUser.userID);
+			addUserToChat(pageProp.token, resp.data.chatID, page.userID);
+		});
+	}
+
 	/**
 	 * Gets Page from back server
 	 * @async
@@ -329,7 +345,10 @@ export default function Page(pageProp) {
 										sx={{
 											color: "palette.text.primary",
 										}}
-									/>
+									>
+										{" "}
+									</CardHeader>
+
 									<Avatar
 										alt="Pidgeon"
 										src={image}
@@ -430,6 +449,9 @@ export default function Page(pageProp) {
 											""
 										)}
 									</div>
+									<IconButton onClick={() => startChat()}>
+										<ChatIcon />
+									</IconButton>
 								</Stack>
 								<Divider sx={{ width: "100%" }} />
 								<RenderTab />
@@ -585,7 +607,7 @@ export default function Page(pageProp) {
 			<>
 				{group.members.map((member) => (
 					<Button
-						key={"member"+member.userID}
+						key={"member" + member.userID}
 						onKeyUp={member.userID}
 						onClick={() => {
 							nav("/user/" + member.userID);
