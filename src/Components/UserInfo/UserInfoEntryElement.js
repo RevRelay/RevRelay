@@ -216,7 +216,7 @@ export default function UserInfoEntryElement (varElement) {
 					<React.Fragment>
 						<Box sx={{width:"40%"}}>
 							<Typography>
-								{varElement.user[varElement.varname]}
+								{varElement.mostRecentUserInfo[varElement.varname]}
 							</Typography>
 						</Box>
 						<Box sx={{width:"40%", height:"2em"}}>
@@ -269,7 +269,7 @@ export function UserInfoEntryElementPassword () {
  * 
  * @param {UserProp}	usernameProp								The Array for an object that just contains a User.
  * @param {User} 		usernameProp.mostRecentUserInfo 			Array for a state variable holding user field information.
- * @param {string} 		usernameProp.mostRecentUserInfo.username	The logged in user's username.
+ * @param {String} 		usernameProp.mostRecentUserInfo.username	The logged in user's username.
  * @returns ReactFragment containing UserInfo data about their username with toggles editing ability formatted for 
  * 			insertion into a grid.
  */

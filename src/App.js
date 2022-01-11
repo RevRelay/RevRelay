@@ -5,7 +5,6 @@ import Page from "./Components/Page.js";
 import {
 	createTheme,
 	ThemeProvider,
-	Typography,
 } from "@mui/material";
 import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
@@ -24,11 +23,27 @@ import { Switching } from "./typeDef.js";
 
 /**
  * Array of all possible themes.
- * 		Primary Main - Navbar
- * 		Background Default - Background
- * 		Background Paper - Nav pop-out bar
- * @param {string} 	name 	name to call the theme.
- * @param {Theme}	theme	the palate for the theme.
+ * @param {String} 	name 	Name to call the theme.
+ * @param {Theme}	theme	The palate for the theme.
+ * 		- Palate:
+ * 			- Mode: 			Dark - Sets theme to the dark mode color palate (https://mui.com/customization/dark-mode/)
+ * 			- Primary:
+ * 				- Light:
+ * 				- Main: 		Navbar
+ * 				- Dark: 
+ * 				- ContrastText:	
+ * 			- Secondary:
+ * 				- Light:
+ * 				- Main: 
+ * 				- Dark: 
+ * 			- Backgroud:
+ * 				- Paper:		Nav pop-out bar
+ * 				- Default:		Background
+ * 			- Text:
+ * 				- Primary:
+ * 				- Secondary: 
+ * 				- Disabled:
+ * 				- Hint:
  */
 const themes = [
 	{
@@ -38,11 +53,11 @@ const themes = [
 	{
 		name: "Dark",
 		theme: createTheme({ palette: { mode: "dark" },
-							typography: {
-								allVariants: {
-								color: "lightgrey"
-								},
-							}
+			typography: {
+				allVariants: {
+					color: "lightgrey"
+				},
+			}
 		}),
 	},
 	{
@@ -53,6 +68,7 @@ const themes = [
 					light: "#FFFFF",
 					main: "#F26925",
 					dark: "#474C55",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#B9B9BA",
@@ -73,6 +89,7 @@ const themes = [
 					light: "#4cc9f0",
 					main: "#E93479",
 					dark: "#560bad",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#4895ef",
@@ -104,6 +121,7 @@ const themes = [
 					light: "#ff68a8",
 					main: "#A6206A",
 					dark: "#3968cb",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#64cff7",
@@ -123,7 +141,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -136,6 +154,7 @@ const themes = [
 					light: "#f08d7e",
 					main: "#FD5E53",
 					dark: "#f08d7e",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#f08d7e",
@@ -155,12 +174,11 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
 	},
-
 	{
 		name: "Kawaii",
 		theme: createTheme({
@@ -169,6 +187,7 @@ const themes = [
 					light: "#defffa",
 					main: "#9FE4AD",
 					dark: "#b0e1ff",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#b0e1ff",
@@ -188,7 +207,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -201,6 +220,7 @@ const themes = [
 					light: "#e68e36",
 					main: "#defe47",
 					dark: "#556dc8",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#556dc8",
@@ -220,7 +240,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -255,7 +275,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
@@ -268,6 +288,7 @@ const themes = [
 					light: "#7998ee",
 					main: "#ff0052",
 					dark: "#712275",
+					// contrastText: will be calculated to contrast with palette.primary.main
 				},
 				secondary: {
 					light: "#712275",
@@ -287,7 +308,7 @@ const themes = [
 			},
 			typography: {
 				allVariants: {
-				color: "palette.text.secondary"
+					color: "palette.text.secondary"
 				},
 			},
 		}),
