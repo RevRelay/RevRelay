@@ -391,7 +391,7 @@ function SwitchBoard({ token, setToken, sendSearch}) {
 					<Route path=":searchTerm" element={<Search token={token} sendSearch = {sendSearch} />} />
 				</Route>
 				<Route path="user">
-					<Route index element={<Users />} />
+					<Route index element={<Navigate to={-1} />} />
 					<Route path=":pageParam" element={<Page JWT={token} />} />
 					<Route path="profile">
 						<Route index element={<Page JWT={token} />} />
@@ -406,7 +406,7 @@ function SwitchBoard({ token, setToken, sendSearch}) {
 				</Route>
 			</Route>
 			<Route path="group">
-				<Route index element={<Groups />} />
+				<Route index element={<Navigate to={-1} />} />
 				<Route path=":pageParam" element={<Page JWT={token} />} />
 			</Route>
 		</Routes>
