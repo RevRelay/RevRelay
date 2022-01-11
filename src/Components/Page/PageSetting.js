@@ -4,13 +4,16 @@ import {
 	FormGroup,
 	TextField,
 	Switch,
-	Grid,
+	Card,
+	CardHeader,
+	Stack,
 } from "@mui/material";
 import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { ToastContainer, toast } from "react-toastify";
 import { PageSingle } from "../../typeDef";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Renders the page settings tabs. Can set three attributes: private, description, and banner
@@ -24,6 +27,16 @@ export default function PageSetting(pageSetting) {
 	let tempPage = { ...pageSetting.page };
 	tempPage.posts = null;
 	const [form, updateForm] = useState({ ...tempPage });
+	const navigate = useNavigate();
+
+	console.log(pageSetting.token);
+	let axiosConfig = {
+		headers: {
+			Authorization: "Bearer " + pageSetting.token,
+		},
+	};
+
+	console.log(pageSetting.token);
 
 	const { description, bannerURL, isPrivate } = form;
 	// stretch goal: page title (custom name of page)
@@ -69,63 +82,89 @@ export default function PageSetting(pageSetting) {
 		setLoading(false);
 	};
 
+	/**
+ * ---
+ * @async
+ * @param {String} groupID ---
+ */
+	const deleteGroup = async () => {
+		await APIQuery.delete("/groups/" + pageSetting.page.groupID, axiosConfig).catch((e) => { }); //since this is attached to a group component, we're guaranteed that it exists to delete it
+		//update front end
+		navigate("/user/profile");
+	};
+
+
 	return (
 		<>
 			<ToastContainer />
 			<Box
 				sx={{
-					marginTop: "5%",
+					marginTop: "3%",
 					marginLeft: "5%",
 					marginRight: "5%",
 					maxWidth: "100%",
 				}}
 			>
 				{!loading ? (
-					<Grid container spacing={2}>
-						<Grid item xs={4}>
-							<FormGroup>
-								<FormControlLabel
-									control={
-										<Switch onChange={togglePrivacy} checked={form.private} />
-									}
-									sx={{
-										color: "text.secondary"
-									}}
-									label="Private Page"
-								/>
-							</FormGroup>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								value={description}
-								label="Description"
-								onChange={(e) => changeDescription(e)}
-								sx={{
-									color: "text.secondary"
-								}}
-							/>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								value={bannerURL}
-								label="URL of Banner"
-								onChange={(e) => changeURL(e)}
-								sx={{
-									color: "text.secondary"
-								}}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								variant="contained"
-								onClick={() => {
-									saveChanges();
-								}}
-							>
-								Save Page Settings
-							</Button>
-						</Grid>
-					</Grid>
+					<>
+						<Box sx={{ width: "100%" }}>
+							<Card sx={{ mx: 'auto', width: "75%", pl: 5, pr: 5, pb: 2 }}>
+								<CardHeader title="Settings" />
+								<Stack spacing={2}>
+									<TextField
+										value={description}
+										label="Description"
+										fullWidth
+										multiline
+										rows={4}
+										onChange={(e) => changeDescription(e)}
+									/>
+
+									<TextField
+										value={bannerURL}
+										label="URL of Banner"
+										onChange={(e) => changeURL(e)}
+									/>
+
+									<FormGroup>
+										<FormControlLabel
+											control={
+												<Switch onChange={togglePrivacy} checked={form.private} />
+											}
+											label="Private Page"
+										/>
+									</FormGroup>
+
+								</Stack>
+
+							</Card>
+
+							<center>
+								<Box sx={{ pt: '2%' }}>
+									<Button
+										variant="contained"
+										onClick={() => {
+											saveChanges();
+										}}
+									>
+										Save Page Settings
+									</Button>
+									{pageSetting.page.isGroupPage ? (
+										<Button
+											variant="contained"
+											color="error"
+											onClick={() => {
+												deleteGroup();
+											}}
+										>
+											Delete Group
+										</Button>
+									) : (<></>)}
+								</Box>
+							</center>
+
+						</Box>
+					</>
 				) : (
 					<h3>Loading...</h3>
 				)}

@@ -12,7 +12,7 @@ import APIQuery from "../../API/APIQuery";
 import { useState } from "react";
 import {
 	CreateGroups,
-	Group, 
+	Group,
 	SetStateActionGroups,
 } from "../../typeDef";
 
@@ -33,7 +33,7 @@ export default function CreateGroup(createGroupProp) {
 		isPrivate: false,
 		members: null
 	});
-	
+
 	/**
 	 * ---
 	 */
@@ -46,6 +46,8 @@ export default function CreateGroup(createGroupProp) {
 	 * @async
 	 */
 	const createGroup = async () => {
+		toggleOpen();
+
 		let axiosConfig = {
 			headers: {
 				Authorization: "Bearer " + createGroupProp.JWT,
@@ -58,7 +60,7 @@ export default function CreateGroup(createGroupProp) {
 		}).catch((e) => {
 		});
 	}
-	
+
 	return (
 		<>
 			<Box textAlign={"center"}>
@@ -70,14 +72,14 @@ export default function CreateGroup(createGroupProp) {
 					<DialogContentText>Create A New Group</DialogContentText>
 					<TextField
 						autoFocus
-						margin = "dense"
-						id = "title"
-						label = "Title"
-						type = "test"
+						margin="dense"
+						id="title"
+						label="Title"
+						type="test"
 						fullWidth
-						variant = "standard"
-						defaultValue = "New Group"
-						onChange = {(e) => {
+						variant="standard"
+						defaultValue="New Group"
+						onChange={(e) => {
 							let tempGroup = { ...newGroup };
 							tempGroup.groupName = e.target.value;
 							updateNewGroup(tempGroup);
@@ -85,15 +87,15 @@ export default function CreateGroup(createGroupProp) {
 					/>
 				</DialogContent>
 				<DialogActions>
-				<Button 
-					sx={{
-						color: "palette.secondary.dark",
-					}} 
-					onClick={toggleOpen}
-				>
-					Cancel
-				</Button>
-				<Button onClick={createGroup}>Create Group!</Button>
+					<Button
+						sx={{
+							color: "palette.secondary.dark",
+						}}
+						onClick={toggleOpen}
+					>
+						Cancel
+					</Button>
+					<Button onClick={createGroup}>Create Group!</Button>
 				</DialogActions>
 			</Dialog>
 		</>
