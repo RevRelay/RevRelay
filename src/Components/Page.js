@@ -63,7 +63,7 @@ export default function Page(pageProp) {
 
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
-	const [open2, setOpen2] = useState(false);
+	const [openInviteUser, setOpenInviteUser] = useState(false);
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
@@ -104,8 +104,8 @@ export default function Page(pageProp) {
 	/**
 	 * ---
 	 */
-	const handleClose2 = () => {
-		setOpen2(false);
+	const handleOpenInviteUser = () => {
+		setOpenInviteUser(!openInviteUser);
 	};
 
 	/**
@@ -113,6 +113,7 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	const handleInvite = async () => {
+		handleOpenInviteUser()
 		let currentSelectedGroup = userGroups.content.filter((x) => {
 			return x.groupName == selectedGroup;
 		})[0];
@@ -133,7 +134,6 @@ export default function Page(pageProp) {
 		let tempGroups = [...groups];
 		tempGroups.push(currentSelectedGroup);
 		setGroups(tempGroups);
-		setOpen2(false);
 	};
 
 	/**
@@ -149,14 +149,6 @@ export default function Page(pageProp) {
 	 */
 	const handleClose = () => {
 		setAnchorEl(null);
-	};
-
-	/**
-	 * ---
-	 * @async
-	 */
-	const handleCloseInviteToGroup = async () => {
-		setOpen2(true);
 	};
 
 	/**
@@ -298,13 +290,8 @@ export default function Page(pageProp) {
 				<Box >
 					<Stack
 						direction="column"
-
 						sx={{
-
-
-
 							maxHeight: "100vh",
-
 							maxWidth: "100%",
 							minWidth: 500,
 						}}
@@ -341,7 +328,24 @@ export default function Page(pageProp) {
 										sx={{ width: 190, height: 190 }}
 									/>
 
+
 								</Box >
+
+
+								<Box
+									style={{
+										display: "flex", float: "right",
+										marginTop: 10,
+										minWidth: 100,
+									}}
+								>
+
+									<Button
+
+										variant="contained" color="success">
+										Add Friend
+									</Button>
+								</Box>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
 									component="img"
@@ -419,7 +423,7 @@ export default function Page(pageProp) {
 												{page.isGroupPage ? (
 													""
 												) : (
-													<MenuItem onClick={handleCloseInviteToGroup}>
+													<MenuItem onClick={handleOpenInviteUser}>
 														Invite to group
 													</MenuItem>
 												)}
@@ -434,14 +438,14 @@ export default function Page(pageProp) {
 
 						</Box >
 						<Box sx={{
-							backgroundColor: "hsl(0, 0%, 97%)", minHeight: "100vh",
+							backgroundColor: "primary", minHeight: "100vh",
 						}} >
 							<Divider sx={{ width: "100%" }} />
 							<RenderTab />
 						</Box>
 					</Stack >
 
-					<Dialog open={open2} onClose={handleClose2}>
+					<Dialog open={openInviteUser}>
 						<DialogTitle>Send a Group Invite</DialogTitle>
 						<DialogContent>
 							<Autocomplete
@@ -474,7 +478,7 @@ export default function Page(pageProp) {
 							/>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={handleClose2}>Cancel</Button>
+							<Button onClick={handleOpenInviteUser}>Cancel</Button>
 							<Button onClick={handleInvite}>Send</Button>
 						</DialogActions>
 					</Dialog>
@@ -702,7 +706,7 @@ export default function Page(pageProp) {
 						{groups.content.map((group) => {
 							return (
 								<Box  >
-									<Button sx={{ mt: 1, mb: 1 }} variant="outlined" onClick={() => goToGroup(group.groupID)} endIcon={<SendIcon />}>
+									<Button sx={{ mt: 1, mb: 1, width: "50%", minWidth: 200 }} variant="outlined" onClick={() => goToGroup(group.groupID)} endIcon={<SendIcon />}>
 										<Typography>
 											{group.groupName}
 										</Typography>
