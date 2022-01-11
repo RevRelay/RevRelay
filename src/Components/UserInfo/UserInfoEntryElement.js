@@ -30,15 +30,15 @@ import {
  * Function for defining user info elements on UserInfo pretaining to their display name.
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {EditInfo} 			diplayNameProp 									The Array for Editing user's display name. 
- * @param {UserWithID} 				diplayNameProp.mostRecentUserInfo				Array for a state variable holding user field information.
- * @param {String}				displayNameProp.mostRecentUserInfo.displayName	The logged in user's display name.
- * @param {SetStateActionUser} 	diplayNameProp.setUserInput						State variable setter for userInput field information.
+ * @param {EditInfo} 					diplayNameProp 									The Array for Editing user's display name. 
+ * @param {UserWithID} 					diplayNameProp.mostRecentUserInfo				Array for a state variable holding user field information.
+ * @param {String}						displayNameProp.mostRecentUserInfo.displayName	The logged in user's display name.
+ * @param {SetStateActionUser} 			diplayNameProp.setUserInput						State variable setter for userInput field information.
  * @param {SetStateActionUserWithID} 	diplayNameProp.setMostRecentUserInfo			State variable setter for mostRecentUserInfo field information.
- * @param {Toggle} 				diplayNameProp.toggleEdit						Array of the state variable for determining if a field is toggled to display 
- * 																				(false) or edit (true). 
- * @param {String}				displayNameProp.toggleEdit.displayName			Is the user's display name being edited?
- * @param {SetStateActionTog} 	diplayNameProp.setToggleEdit					State variable setter for toggelEdit field information.
+ * @param {Toggle} 						diplayNameProp.toggleEdit						Array of the state variable for determining if a field is toggled to display 
+ * 																						(false) or edit (true). 
+ * @param {String}						displayNameProp.toggleEdit.displayName			Is the user's display name being edited?
+ * @param {SetStateActionTog} 			diplayNameProp.setToggleEdit					State variable setter for toggelEdit field information.
  * @returns ReactFragment containing UserInfo data about their display name with toggles editing ability formatted for 
  * 			insertion into a grid.
  */
@@ -98,15 +98,15 @@ import {
  * Function for defining user info elements on UserInfo pretaining to their email
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {EditInfo} 			emailProp 							The Array for Editing user's email. 
- * @param {UserWithID} 			emailProp.mostRecentUserInfo		Array for a state variable holding user field information.
- * @param {String}				emailProp.mostRecentUserInfo.email	The logged in user's email.
+ * @param {EditInfo} 					emailProp 							The Array for Editing user's email. 
+ * @param {UserWithID} 					emailProp.mostRecentUserInfo		Array for a state variable holding user field information.
+ * @param {String}						emailProp.mostRecentUserInfo.email	The logged in user's email.
  * @param {SetStateActionUserWithID} 	emailProp.setMostRecentUserInfo		State variable setter for mostRecentUserInfo field information.
- * @param {SetStateActionUser} 	emailProp.setUserInput				State variable setter for userInput field information.
- * @param {Toggle} 				emailProp.toggleEdit				Array of the state variable for determining if a field is toggled to display 
- * 																	(false) or edit (true). 
- * @param {String}				emailProp.toggleEdit.email			Is the user's email being edited?
- * @param {SetStateActionTog} 	emailProp.setToggleEdit				State variable setter for toggelEdit field information.
+ * @param {SetStateActionUser} 			emailProp.setUserInput				State variable setter for userInput field information.
+ * @param {Toggle} 						emailProp.toggleEdit				Array of the state variable for determining if a field is toggled to display 
+ * 																		(false) or edit (true). 
+ * @param {String}						emailProp.toggleEdit.email			Is the user's email being edited?
+ * @param {SetStateActionTog} 			emailProp.setToggleEdit				State variable setter for toggelEdit field information.
  * @returns ReactFragment containing UserInfo about their email data with toggles editing ability formatted for insertion 
  * 			into a grid.
  */
@@ -161,15 +161,15 @@ export function UserInfoEntryElementEmail (emailProp) {
  * (currently firstName and lastName).
  * The edit button allows the user to edit these fields and select if they want to keep that info or not.
  * 
- * @param {VarEditInfo} 		varElement 
- * @param {string} 				varElement.varname 					The variable name associated with the list element (i.e. username).
- * @param {string} 				varElement.fieldName 				The display name of the list element (i.e. Username).
- * @param {UserWithID} 				varElement.mostRecentUserInfo 		Array for a state variable holding user field information.
- * @param {SetStateActionUser} 	varElement.setUserInput 			State variable setter for update field information.
+ * @param {VarEditInfo} 				varElement 
+ * @param {string} 						varElement.varname 					The variable name associated with the list element (i.e. username).
+ * @param {string} 						varElement.fieldName 				The display name of the list element (i.e. Username).
+ * @param {UserWithID} 					varElement.mostRecentUserInfo 		Array for a state variable holding user field information.
+ * @param {SetStateActionUser} 			varElement.setUserInput 			State variable setter for update field information.
  * @param {SetStateActionUserWithID} 	varElement.setMostRecentUserInfo 	State variable setter for user field information.
- * @param {Toggle} 				varElement.toggleEdit 				Array of a state variable for determining if a field is toggled to display 
- * 																	(false) or edit (true). 
- * @param {SetStateActionTog}	varElement.setToggleEdit			State variable setter for toggleEdit field information. 
+ * @param {Toggle} 						varElement.toggleEdit 				Array of a state variable for determining if a field is toggled to display 
+ * 																			(false) or edit (true). 
+ * @param {SetStateActionTog}			varElement.setToggleEdit			State variable setter for toggleEdit field information. 
  * @returns ReactFragment containing UserInfo data with toggles editing ability formatted for insertion into a grid. 
  */
 export default function UserInfoEntryElement (varElement) {
@@ -270,7 +270,7 @@ export function UserInfoEntryElementPassword () {
  * Function for defining user info elements on UserInfo pretaining to their username. This is not editable.
  * 
  * @param {UserProp}	usernameProp								The Array for an object that just contains a User.
- * @param {User} 		usernameProp.mostRecentUserInfo 			Array for a state variable holding user field information.
+ * @param {UserWithID} 	usernameProp.mostRecentUserInfo 			Array for a state variable holding user field information.
  * @param {String} 		usernameProp.mostRecentUserInfo.username	The logged in user's username.
  * @returns ReactFragment containing UserInfo data about their username with toggles editing ability formatted for 
  * 			insertion into a grid.
@@ -299,14 +299,14 @@ export function UserInfoElementUsername (usernameProp) {
  * Function for defining user info elements on UserInfo pretaining to their birth date
  * The calendar button allows the user to select a date from a calendar.
  * 
- * @param {EditInfo} 			birthDateProp 
- * @param {User} 				birthDateProp.mostRecentUserInfo			Array for a state variable holding user field information.
- * @param {String}				birthDateProp.mostRecentUserInfo.birthDate	The logged in user's birth date.
- * @param {SetStateActionUser} 	birthDateProp.setUserInput					State variable setter for userInput field information.
- * @param {SetStateActionUser} 	birthDateProp.setMostRecentUserInfo			State variable setter for mostRecentUserInfo field information.
- * @param {Toggle} 				birthDateProp.toggleEdit 					Array for a state variable for determining if a field is toggled to display(false) or edit (true). 
- * @param {String}				birthDateProp.toggle.birthDate				Is the user's birth date being edited?
- * @param {SetStateActionTog} 	birthDateProp.setToggleEdit					State variable setter for toggleEdit field information. 
+ * @param {EditInfo} 					birthDateProp 
+ * @param {UserWithID} 					birthDateProp.mostRecentUserInfo			Array for a state variable holding user field information.
+ * @param {String}						birthDateProp.mostRecentUserInfo.birthDate	The logged in user's birth date.
+ * @param {SetStateActionUser} 			birthDateProp.setUserInput					State variable setter for userInput field information.
+ * @param {SetStateActionUserWithID} 	birthDateProp.setMostRecentUserInfo			State variable setter for mostRecentUserInfo field information.
+ * @param {Toggle} 						birthDateProp.toggleEdit 					Array for a state variable for determining if a field is toggled to display(false) or edit (true). 
+ * @param {String}						birthDateProp.toggle.birthDate				Is the user's birth date being edited?
+ * @param {SetStateActionTog} 			birthDateProp.setToggleEdit					State variable setter for toggleEdit field information. 
  * @returns ReactFragment containing UserInfo data about their birth date with toggles editing ability formatted for 
  * 			insertion into a grid.
  */

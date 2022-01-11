@@ -26,7 +26,7 @@ import { Switching } from "./typeDef.js";
  * 			- Mode: 			Dark - Sets theme to the dark mode color palate (https://mui.com/customization/dark-mode/)
  * 			- Primary:			Used to represent primary interface elements for a user. It's the color displayed most frequently across your app's screens and components.
  * 				- Main: 		Navbar
- * 			- Secondary:		 Used to represent secondary interface elements for a user. It provides more ways to accent and distinguish your product.
+ * 			- Secondary:		Used to represent secondary interface elements for a user. It provides more ways to accent and distinguish your product.
  * 				- Main: 
  * 			- Backgroud:
  * 				- Paper:		SideBar background, and User Settings background
