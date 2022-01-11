@@ -21,8 +21,7 @@ import {
 	Tab,
 	Tabs,
 	TextField,
-	Typography
-
+	Typography,
 } from "@mui/material";
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
@@ -33,9 +32,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
-import PublicIcon from '@mui/icons-material/Public';
-import PublicOffIcon from '@mui/icons-material/PublicOff';
-import SendIcon from '@mui/icons-material/Send';
+import PublicIcon from "@mui/icons-material/Public";
+import PublicOffIcon from "@mui/icons-material/PublicOff";
+import SendIcon from "@mui/icons-material/Send";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,
@@ -45,7 +44,6 @@ import getCurrentUser, {
 import { JWTs } from "../typeDef";
 import { alpha } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-
 
 /**
  * Renders a generic page with condintional rendering.
@@ -67,7 +65,7 @@ export default function Page(pageProp) {
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
-		groupPage: false,
+		isGroupPage: false,
 		pageID: 1,
 		posts: [],
 		private: true,
@@ -88,11 +86,9 @@ export default function Page(pageProp) {
 
 	const path = useLocation();
 
-	const Title = styled(CardHeader)(({ theme }) => (
-		{
-			backgroundColor: alpha(theme.palette.background.paper, 0.5),
-		}));
-
+	const Title = styled(CardHeader)(({ theme }) => ({
+		backgroundColor: alpha(theme.palette.background.paper, 0.5),
+	}));
 
 	/**
 	 * ---
@@ -116,7 +112,7 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	const handleInvite = async () => {
-		handleOpenInviteUser()
+		handleOpenInviteUser();
 		let currentSelectedGroup = userGroups.content.filter((x) => {
 			return x.groupName == selectedGroup;
 		})[0];
@@ -200,7 +196,7 @@ export default function Page(pageProp) {
 	 * ---
 	 * @async
 	 */
-	async function getCurrentGroup() { }
+	async function getCurrentGroup() {}
 
 	/**
 	 * Gets Page from back server
@@ -274,7 +270,7 @@ export default function Page(pageProp) {
 		};
 	}
 	if (isBusy) return <LoadingPage />;
-	if (page.groupPage) {
+	if (page.isGroupPage) {
 		if (page.private && page.userID != currentUser.userID) {
 			if (!group.members.map((m) => m.userID).includes(currentUser.userID))
 				return <Private />;
@@ -290,7 +286,7 @@ export default function Page(pageProp) {
 			{isBusy ? (
 				<LoadingPage />
 			) : (
-				<Box >
+				<Box>
 					<Stack
 						direction="column"
 						sx={{
@@ -299,9 +295,7 @@ export default function Page(pageProp) {
 							minWidth: 500,
 						}}
 					>
-						<Box
-
-						>
+						<Box>
 							<Card
 								sx={{
 									marginLeft: "15%",
@@ -330,19 +324,16 @@ export default function Page(pageProp) {
 										src={image}
 										sx={{ width: 190, height: 190 }}
 									/>
-
-
-								</Box >
-
+								</Box>
 
 								<Box
 									style={{
-										display: "flex", float: "right",
+										display: "flex",
+										float: "right",
 										marginTop: 10,
 										minWidth: 100,
 									}}
 								>
-
 									{/* <Button
 										variant="contained" color="success">
 										Add Friend
@@ -354,10 +345,9 @@ export default function Page(pageProp) {
 									image={page.bannerURL}
 									alt="green iguana"
 								/>
-							</Card >
+							</Card>
 
-							<Box >
-
+							<Box>
 								<Stack
 									direction="row"
 									sx={{
@@ -390,7 +380,6 @@ export default function Page(pageProp) {
 										) : (
 											""
 										)}
-
 									</Tabs>
 
 									{currentUser.userID !== page.userID ? (
@@ -437,25 +426,29 @@ export default function Page(pageProp) {
 									)}
 								</Stack>
 							</Box>
-
-						</Box >
+						</Box>
 						{theme.palette.mode === "light" ? (
-							<Box sx={{
-								backgroundColor: "hsl(0, 0%, 97%)", minHeight: "100vh",
-							}} >
+							<Box
+								sx={{
+									backgroundColor: "hsl(0, 0%, 97%)",
+									minHeight: "100vh",
+								}}
+							>
 								<Divider sx={{ width: "100%" }} />
 								<RenderTab />
 							</Box>
 						) : (
-							<Box sx={{
-								backgroundColor: "primary", minHeight: "100vh",
-							}} >
+							<Box
+								sx={{
+									backgroundColor: "primary",
+									minHeight: "100vh",
+								}}
+							>
 								<Divider sx={{ width: "100%" }} />
 								<RenderTab />
 							</Box>
 						)}
-
-					</Stack >
+					</Stack>
 
 					<Dialog open={openInviteUser}>
 						<DialogTitle>Send a Group Invite</DialogTitle>
@@ -495,9 +488,8 @@ export default function Page(pageProp) {
 						</DialogActions>
 					</Dialog>
 					<ToastContainer />
-				</Box >
-			)
-			}
+				</Box>
+			)}
 		</>
 	);
 
@@ -513,16 +505,10 @@ export default function Page(pageProp) {
 					<Posts page={page} currentUser={currentUser} JWT={pageProp.token} />
 				);
 			case 1:
-				return <About />
+				return <About />;
 			case 2:
 				return (
-					<>
-						{page.isGroupPage ? (
-							<Members />
-						) : (
-							<FriendsTab page={page} />
-						)}{" "}
-					</>
+					<>{page.isGroupPage ? <Members /> : <FriendsTab page={page} />} </>
 				);
 			case 3:
 				return (
@@ -589,19 +575,14 @@ export default function Page(pageProp) {
 			<Box sx={{ width: "100%", pt: "2%" }}>
 				<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
 					{page.isGroupPage ? (
-						<CardHeader
-							title="About this group"
-						/>
+						<CardHeader title="About this group" />
 					) : (
-						<CardHeader
-							title={"About " + page.displayName}
-						/>
+						<CardHeader title={"About " + page.displayName} />
 					)}
 
 					<Divider sx={{ mx: "auto", width: "95%" }} />
 
 					<CardContent>
-
 						<Typography>
 							{page.description}
 							{page.private}
@@ -625,7 +606,7 @@ export default function Page(pageProp) {
 					</CardContent>
 				</Card>
 			</Box>
-		)
+		);
 	}
 
 	/**
@@ -688,37 +669,35 @@ export default function Page(pageProp) {
 		return (
 			<Box sx={{ width: "100%", pt: "2%" }}>
 				<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
-					<CardHeader
-						title={page.displayName + "'s Groups"}
-					/>
+					<CardHeader title={page.displayName + "'s Groups"} />
 					<Divider sx={{ mx: "auto", width: "95%" }} />
 
 					<CardContent>
 						{groups.content.map((group) => {
 							return (
-								<Box  >
-									<Button sx={{ mt: 1, mb: 1, width: "50%", minWidth: 200 }} variant="outlined" onClick={() => goToGroup(group.groupID)} endIcon={<SendIcon />}>
-										<Typography>
-											{group.groupName}
-										</Typography>
+								<Box>
+									<Button
+										sx={{ mt: 1, mb: 1, width: "50%", minWidth: 200 }}
+										variant="outlined"
+										onClick={() => goToGroup(group.groupID)}
+										endIcon={<SendIcon />}
+									>
+										<Typography>{group.groupName}</Typography>
 									</Button>
 								</Box>
 							);
-						})
-						}
+						})}
 						<br />
 						<br />
-						{
-							page.userID === currentUser.userID ? (
-								<CreateGroup
-									JWT={pageProp.token}
-									groups={groups}
-									setGroups={setGroups}
-								/>
-							) : (
-								""
-							)
-						}
+						{page.userID === currentUser.userID ? (
+							<CreateGroup
+								JWT={pageProp.token}
+								groups={groups}
+								setGroups={setGroups}
+							/>
+						) : (
+							""
+						)}
 					</CardContent>
 				</Card>
 			</Box>
