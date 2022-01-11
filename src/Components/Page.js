@@ -434,11 +434,17 @@ export default function Page(pageProp) {
 														Invite to group
 													</MenuItem>
 												)}
-												<MenuItem onClick={handleClose}>Chat</MenuItem>
 											</Menu>
 										</>
 									) : (
 										""
+									)}
+									{page.isGroupPage || page.userID === currentUser.userID ? (
+										""
+									) : (
+										<IconButton onClick={() => startChat()}>
+											<ChatIcon />
+										</IconButton>
 									)}
 								</Stack>
 							</Box>
