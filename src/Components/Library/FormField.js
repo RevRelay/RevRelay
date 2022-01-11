@@ -74,7 +74,7 @@ export function PasswordField(passwordProp) {
  * @param {String} 		loginProp.label 	TextField label.
  * @param {String} 		loginProp.value 	State variable holding the value.
  * @param {Function}	loginProp.setter 	Setter function for the state variable holding the text field value. 
- * @param {boolean} 	loginProp.required 	True if required, false otherwise.
+ * @param {Boolean} 	loginProp.required 	True if required, false otherwise.
  * @returns 
  */
 export function LoginRegisterField(loginProp) {

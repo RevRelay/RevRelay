@@ -88,9 +88,9 @@ export default function PageSetting(pageSetting) {
 									control={
 										<Switch onChange={togglePrivacy} checked={form.private} />
 									}
-                  sx={{
-                    color: "text.secondary"
-                  }}
+									sx={{
+										color: "text.secondary"
+									}}
 									label="Private Page"
 								/>
 							</FormGroup>
@@ -100,9 +100,9 @@ export default function PageSetting(pageSetting) {
 								value={description}
 								label="Description"
 								onChange={(e) => changeDescription(e)}
-                sx={{
-                  color: "text.secondary"
-                }}
+								sx={{
+									color: "text.secondary"
+								}}
 							/>
 						</Grid>
 						<Grid item xs={4}>
@@ -110,9 +110,9 @@ export default function PageSetting(pageSetting) {
 								value={bannerURL}
 								label="URL of Banner"
 								onChange={(e) => changeURL(e)}
-                sx={{
-                  color: "text.secondary"
-                }}
+								sx={{
+									color: "text.secondary"
+								}}
 							/>
 						</Grid>
 						<Grid item xs={12}>
