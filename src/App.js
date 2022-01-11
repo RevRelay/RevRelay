@@ -37,8 +37,8 @@ import { Switching } from "./typeDef.js";
  * 				- Main: 
  * 				- Dark: 
  * 			- Backgroud:
- * 				- Paper:		Nav pop-out bar
- * 				- Default:		Background
+ * 				- Paper:		SideBar background, and User Settings background
+ * 				- Default:		Overall Page Background
  * 			- Text:
  * 				- Primary:
  * 				- Secondary: 
@@ -65,7 +65,7 @@ const themes = [
 		theme: createTheme({
 			palette: {
 				primary: {
-					light: "#FFFFF",
+					light: "#FFFFF", // white
 					main: "#F26925",
 					dark: "#474C55",
 					// contrastText: will be calculated to contrast with palette.primary.main

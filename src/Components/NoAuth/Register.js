@@ -126,15 +126,15 @@ export default function Register(registerProp) {
 			align = "flex-start"
 		>
 			<Paper
-					elevation={10}
-					sx={{
-						paddingLeft: 7,
-						paddingRight: 7,
-						paddingTop: 5,
-						paddingBottom: 5,
-						borderRadius: 10,
-					}}
-				>
+				elevation={10}
+				sx={{
+					paddingLeft: 7,
+					paddingRight: 7,
+					paddingTop: 5,
+					paddingBottom: 5,
+					borderRadius: 10,
+				}}
+			>
 				<form onSubmit={submitButton}>
 					<Grid item xs={1}>
 						<h2>Welcome to the Future of Social Media</h2>
