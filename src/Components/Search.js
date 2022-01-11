@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import {
 	Box,
-	Card,
-	CardContent,
-	Typography,
 	ListItemButton,
 	ListItemText,
 	Stack,
