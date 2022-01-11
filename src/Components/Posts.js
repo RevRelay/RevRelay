@@ -24,6 +24,7 @@ import { User, Page, Post, Posting, PostSingle } from "../typeDef";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ChatIcon from "@mui/icons-material/Chat";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import { getUser, getUserGroups } from "../API/PageAPI";
 
 /**
  * Render Posts Tab
@@ -189,7 +190,7 @@ export default function Posts(postsProp) {
 			>
 				<Paper elevation={5} sx={{ marginLeft: "1%" }}>
 					<Typography sx={{ fontSize: 12 }}>
-						{postElement.post.postOwnerID +
+						{PostElement.post.author +
 							" @ " +
 							d.toDateString() +
 							" " +

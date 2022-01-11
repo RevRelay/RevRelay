@@ -1,8 +1,5 @@
 import APIQuery from "./APIQuery";
 
-// const urlConnection = "http://localhost:5000/";
-const urlConnection =
-	"http://revrelayeb-env.eba-ze4dgmbu.us-west-2.elasticbeanstalk.com/";
 export default async function getCurrentUser(JWT) {
 	let axiosConfig = {
 		headers: {
@@ -26,6 +23,14 @@ export async function getUserGroups(JWT, userID) {
 		},
 	};
 	return APIQuery.get("groups/getgroups/" + userID, axiosConfig);
+}
+export async function getUser(JWT, userID) {
+	let axiosConfig = {
+		headers: {
+			Authorization: "Bearer " + JWT,
+		},
+	};
+	return APIQuery.get("users/" + userID, axiosConfig);
 }
 
 /**
