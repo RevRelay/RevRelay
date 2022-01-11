@@ -124,7 +124,7 @@ function SearchResultUsers(result, index, navigate) {
 	}
 	
 	return (result.type === "USER" ? 
-		<Box key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
+		<Box key={`resultUser${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<ListItemButton>
 				<Stack direction="row" spacing={2}>
 					<Avatar
@@ -153,7 +153,7 @@ function SearchResultGroups(result, index, navigate) {
 	}
 	
 	return (result.type === "USER" ? "" :
-		<Box key={`result${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
+		<Box key={`resultGroup${index}`} sx={{ minWidth: 275 }} onClick={handleClickSearchResult}>
 			<ListItemButton>
 				<Stack direction="row" spacing={2}>
 					<Avatar
