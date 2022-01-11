@@ -317,9 +317,6 @@ export default function Posts(postsProp) {
 						xs={4}
 						sx={{
 							left: "5%",
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
 						}}
 					>
 						{postsProp.page.userID === postsProp.currentUser.userID ? (
@@ -341,9 +338,6 @@ export default function Posts(postsProp) {
 						item
 						xs={4}
 						sx={{
-							position: "absolute",
-							bottom: 5,
-							display: "inline-block",
 						}}
 					>
 						<Pagination count={posts.totalPages} color="primary" size="large" />

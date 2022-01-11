@@ -9,7 +9,7 @@ import { FriendsTabs, Friend, SetStateActionFriends } from "../../typeDef";
 /**
  * renders all the friends of a user and provides links to their pages
  * @param {FriendsTabs}	tabProp						The Array for a prop object that just conatins the username for a user.
- * @param {String}		tabProp.currentUsername		The current username of a user.
+ * @param {String}		tabProp.page.currentUsername		The current username of a user.
  * @returns html friend
  */
 const FriendsTab = (tabProp) => {
@@ -31,7 +31,7 @@ const FriendsTab = (tabProp) => {
 	const getAllFriends = async () => {
 		let running = true;
 		const response = await APIQuery.get(
-			"/pages/friends/" + tabProp.currentUsername,
+			"/pages/friends/" + tabProp.page.currentUsername,
 			{
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token"),
@@ -68,27 +68,51 @@ const FriendsTab = (tabProp) => {
 	};
 
 	return (
-		<>
-			{loading ? (
-				<>
-					<h3>Loading...</h3>
-				</>
-			) : (
-				""
-			)}
-			{!loading && !friends ? <h3>You have no friends yet!</h3> : ""}
-			{!loading
-				? friends.map((friend) => {
-						return (
-							<Box key={friend.userID}>
-								<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
-									<ListItemText primary={friend.displayName} />
-								</ListItemButton>
-							</Box>
-						);
-				  })
-				: ""}
-		</>
+
+		<Box sx={{ width: "100%", pt: "2%" }}>
+			<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
+				<CardHeader
+					title={tabProp.page.displayName + "'s Friends"}
+				/>
+				<Divider sx={{ mx: "auto", width: "95%" }} />
+
+				<CardContent>
+					{loading ? (
+						<>
+							<h3>Loading...</h3>
+						</>
+					) : (
+						""
+					)}
+					{!loading && !friends ? <h3>You have no friends yet!</h3> : ""}
+					{!loading
+						? friends.map((friend) => {
+							return (
+								<Box key={friend.userID}>
+									<ListItemButton onClick={() => goToFriendsPage(friend.userID)}>
+										<ListItemText primary={friend.displayName} />
+									</ListItemButton>
+								</Box>
+							);
+						})
+						: ""}
+
+					<br />
+					<br />
+					{
+						page.userID === currentUser.userID ? (
+							<CreateGroup
+								JWT={pageProp.token}
+								groups={groups}
+								setGroups={setGroups}
+							/>
+						) : (
+							""
+						)
+					}
+				</CardContent>
+			</Card>
+		</Box>
 	);
 };
 
