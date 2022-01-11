@@ -28,7 +28,7 @@ function axiosConfig(JWT) {
  * @returns A Put request to the correct place (ending with "users/password") to change the password for the current user.
  */
 function updatePassword(passwords, JWT) {
-	return APIQuery.put("users/passord", passwords, axiosConfig(JWT));
+	return APIQuery.put("users/password", passwords, axiosConfig(JWT));
 }
 
 /**
