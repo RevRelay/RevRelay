@@ -8,6 +8,7 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import MenuItem from "@mui/material/MenuItem";
 import { Box, FormControl, InputLabel, Select } from "@mui/material";
 import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
+import getUserChats from "../API/ChatAPI";
 
 var socket;
 
@@ -16,7 +17,7 @@ var socket;
  *
  * @returns html for chat box in bottom left
  */
-function Client() {
+function Client(props) {
 	/**
 	 * ---
 	 */
@@ -38,20 +39,39 @@ function Client() {
 	 */
 	const [chatrooms, updateChatrooms] = useState([]);
 	const [currentChat, setCurrentChat] = useState("");
-	const [username, setUserName] = useState("");
-	const [room, setRoom] = useState("");
+	const [javaRooms, setJavaRooms] = useState([]);
+
+	useEffect(() => {
+		let temprs = [...chatrooms];
+		javaRooms.map((jr) => {
+			let username = props.currentUser.displayName;
+			let room = jr.chatID;
+			let roomName = jr.roomName;
+			socket.emit("join_room", { username, room });
+			temprs = [
+				...temprs,
+				{ socket: socket, username: username, room: room, name: roomName },
+			];
+			setCurrentChat(roomName);
+		});
+		updateChatrooms([...temprs]);
+	}, [javaRooms]);
+	useEffect(async () => {
+		try {
+			await getUserChats(props.token, props.currentUser.userID).then((resp) => {
+				setJavaRooms(resp.data.content);
+				console.log(resp.data.content);
+			});
+		} catch (e) {
+			setJavaRooms([]);
+		}
+	}, []);
 
 	/**
 	 * ---
 	 */
-	const joinRoom = () => {
+	const joinRoom = (username, room, roomName) => {
 		if (username !== "" && room !== "") {
-			socket.emit("join_room", { username, room });
-			updateChatrooms([
-				...chatrooms,
-				{ socket: socket, username: username, room: room },
-			]);
-			setCurrentChat(room);
 		}
 	};
 
@@ -74,43 +94,6 @@ function Client() {
 					zIndex: 1000,
 				}}
 			>
-				<Box
-					sx={{
-						position: "absolute",
-						bottom: 70,
-						right: 1,
-						visibility: currentChat === "add" ? "visible" : "hidden",
-						minWidth: "16vw",
-						minHeight: "25vh",
-						backgroundColor: "background.paper",
-						border: 1,
-						borderColor: "primary",
-						borderRadius: 5,
-					}}
-				>
-					<h2 style={{ textAlign: "center", width: "100%" }}>Join A Room</h2>
-					<Box sx={{ textAlign: "center", width: "100%" }}>
-						<TextField
-							id="outlined-basic"
-							label="Enter Room ID"
-							variant="outlined"
-							onChange={(event) => {
-								setRoom(event.target.value);
-							}}
-						/>
-						<TextField
-							id="outlined-basic"
-							label="Enter User Name"
-							variant="outlined"
-							onChange={(event) => {
-								setUserName(event.target.value);
-							}}
-						/>
-						<Button onClick={joinRoom} variant="outlined" size="large">
-							Join Room
-						</Button>
-					</Box>
-				</Box>
 				{chatrooms.map((chat) => {
 					return (
 						<Box
@@ -118,7 +101,7 @@ function Client() {
 								position: "absolute",
 								bottom: 70,
 								right: 1,
-								visibility: chat.room === currentChat ? "visible" : "hidden",
+								visibility: chat.name === currentChat ? "visible" : "hidden",
 								minWidth: "16vw",
 								minHeight: "25vh",
 								backgroundColor: "background.paper",
@@ -131,6 +114,7 @@ function Client() {
 								socket={chat.socket}
 								username={chat.username}
 								room={chat.room}
+								name={chat.name}
 							/>
 						</Box>
 					);
@@ -146,9 +130,8 @@ function Client() {
 						onChange={handleChange}
 					>
 						<MenuItem value="none">none</MenuItem>
-						<MenuItem value="add">New Chat</MenuItem>
 						{chatrooms.map((chat) => {
-							return <MenuItem value={chat.room}>{chat.room}</MenuItem>;
+							return <MenuItem value={chat.name}>{chat.name}</MenuItem>;
 						})}
 					</Select>
 				</FormControl>

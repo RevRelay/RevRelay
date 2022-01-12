@@ -288,11 +288,10 @@ function App() {
 	const [currentUser, setCurrentUser] = useState([]);
 
 	useEffect(async () => {
-		await getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
+		getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
 	}, [token]);
 	useEffect(async () => {
 		if (currentUser) {
-			console.log(currentUser);
 			await getAllFriends(currentUser.username, token).then((resp) =>
 				setFriends(resp.data)
 			);
@@ -332,7 +331,11 @@ function App() {
 	return (
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			{/* Renders Chat Box */}
-			{token ? <Client /> : <></>}
+			{currentUser.userID ? (
+				<Client token={token} currentUser={currentUser} />
+			) : (
+				<></>
+			)}
 			<Nav
 				themes={themes}
 				activeTheme={activeTheme}

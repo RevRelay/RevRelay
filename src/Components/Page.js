@@ -14,6 +14,7 @@ import {
 	DialogTitle,
 	Divider,
 	Grid,
+	IconButton,
 	Menu,
 	MenuItem,
 	Paper,
@@ -33,6 +34,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
+import ChatIcon from "@mui/icons-material/Chat";
 import PublicIcon from "@mui/icons-material/Public";
 import PublicOffIcon from "@mui/icons-material/PublicOff";
 import SendIcon from "@mui/icons-material/Send";
@@ -43,6 +45,7 @@ import getCurrentUser, {
 	getUserGroups,
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
+import { addUserToChat, saveUserChat } from "../API/ChatAPI";
 import { alpha } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 
@@ -198,6 +201,19 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	async function getCurrentGroup() { }
+
+	async function startChat() {
+		let croom = {
+			members: [],
+			private: false,
+			roomName: page.displayName,
+		};
+		saveUserChat(pageProp.token, croom).then((resp) => {
+			console.log(resp.data);
+			addUserToChat(pageProp.token, resp.data.chatID, currentUser.userID);
+			addUserToChat(pageProp.token, resp.data.chatID, page.userID);
+		});
+	}
 
 	/**
 	 * Gets Page from back server
@@ -409,11 +425,17 @@ export default function Page(pageProp) {
 														Invite to group
 													</MenuItem>
 												)}
-												<MenuItem onClick={handleClose}>Chat</MenuItem>
 											</Menu>
 										</>
 									) : (
 										""
+									)}
+									{page.isGroupPage || page.userID === currentUser.userID ? (
+										""
+									) : (
+										<IconButton onClick={() => startChat()}>
+											<ChatIcon />
+										</IconButton>
 									)}
 								</Stack>
 							</Box>
@@ -606,6 +628,7 @@ export default function Page(pageProp) {
 			<>
 				{group.members.map((member) => (
 					<Button
+						key={"member" + member.userID}
 						onKeyUp={member.userID}
 						onClick={() => {
 							nav("/user/" + member.userID);
