@@ -99,7 +99,6 @@ export default function PageSetting(pageSetting) {
 			<ToastContainer />
 			<Box
 				sx={{
-					marginTop: "3%",
 					marginLeft: "5%",
 					marginRight: "5%",
 					maxWidth: "100%",
@@ -107,7 +106,7 @@ export default function PageSetting(pageSetting) {
 			>
 				{!loading ? (
 					<>
-						<Box sx={{ width: "100%" }}>
+						<Box sx={{ width: "100%", mt: 2 }}>
 							<Card sx={{ mx: 'auto', width: "75%", pl: 5, pr: 5, pb: 2 }}>
 								<CardHeader title="Settings" />
 								<Stack spacing={2}>

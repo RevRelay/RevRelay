@@ -93,8 +93,8 @@ const FriendsTab = (tabProp) => {
 
 	return (
 
-		<Box sx={{ width: "100%", pt: "2%" }}>
-			<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
+		<Box sx={{ width: "100%", mt: 2 }}>
+			<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
 				<CardHeader
 					title={tabProp.page.displayName + "'s Friends · " + friends.length}
 				/>
