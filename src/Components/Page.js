@@ -414,7 +414,10 @@ export default function Page(pageProp) {
 													</MenuItem>
 												) : (
 													<MenuItem onClick={handleCloseToggleFriend}>
-														Add Friend
+														{friends.includes(currentUser.userID)
+															? "Remove "
+															: "Add "}
+														Friend
 													</MenuItem>
 												)}
 												{page.isGroupPage ? (
