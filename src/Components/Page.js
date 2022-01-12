@@ -633,7 +633,6 @@ export default function Page(pageProp) {
 		let nav = useNavigate();
 		return (
 			<>
-
 				<Box sx={{ width: "100%", mt: 2 }}>
 					<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
 						<CardHeader
@@ -643,8 +642,11 @@ export default function Page(pageProp) {
 
 						<CardContent>
 							{group.members.map((member) => (
-
-								<ListItemButton onClick={() => { nav("/user/" + member.userID) }}>
+								<ListItemButton
+									onClick={() => {
+										nav("/user/" + member.userID);
+									}}
+								>
 									<Typography sx={{ fontSize: 18 }}>
 										{member.displayName + ""}
 									</Typography>
@@ -653,7 +655,6 @@ export default function Page(pageProp) {
 						</CardContent>
 					</Card>
 				</Box>
-
 			</>
 		);
 	}
