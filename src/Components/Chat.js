@@ -69,7 +69,6 @@ function Chat(chatProp) {
 	 * Shows if someone is typing.
 	 */
 	const setActive = () => {
-		console.log(usersTyping);
 		let userActive = false;
 		for (var i = 0; i < usersTyping.length; i++) {
 			if (usersTyping[i]["username"] === chatProp.username) {
@@ -110,7 +109,6 @@ function Chat(chatProp) {
 	 * @param {---} data ---
 	 */
 	const setCountdown = (data) => {
-		console.log(data);
 		let userActive = false;
 		let newList = [...usersTyping];
 		for (var i = 0; i < usersTyping.length; i++) {
@@ -132,12 +130,10 @@ function Chat(chatProp) {
 				username: data["user"],
 				countdown: data["countdown"],
 			});
-			console.log(newList);
 		}
 		//Manipulate state
-		console.log(newList);
+
 		setUsersTyping([...newList]);
-		console.log(usersTyping);
 	};
 
 	/**
@@ -150,7 +146,6 @@ function Chat(chatProp) {
 		navigator.mediaDevices
 			.getUserMedia(constraints)
 			.then(function (mediaStream) {
-				console.log("received access to microphone");
 				let mediaRecorder = new MediaRecorder(mediaStream);
 
 				//Start audio data as empty
@@ -167,7 +162,7 @@ function Chat(chatProp) {
 					var blob = new Blob(this.chunks, {
 						type: "audio/ogg; codecs=opus",
 					});
-					console.log("sending audio");
+
 					chatProp.socket.emit("radio", blob, chatProp.room);
 				};
 
@@ -186,7 +181,6 @@ function Chat(chatProp) {
 	 */
 	// TODO: React Hook useCallback does nothing when called with only one argument. Did you forget to pass an array of dependencies?
 	const playAudio = useCallback((arrayBuffer) => {
-		console.log("playing audio!");
 		let blob = new Blob([arrayBuffer], {
 			type: "audio/ogg; codecs=opus",
 		});
@@ -273,10 +267,15 @@ function Chat(chatProp) {
 						label="Message here..."
 						variant="standard"
 						value={message}
+						onKeyDown={(e) => {
+							if (e.code === "Enter") {
+								sendMessage();
+								setNotActive();
+							}
+						}}
 						onChange={(event) => {
 							setMessage(event.target.value);
 							setActive();
-							console.log("made it here");
 						}}
 					/>
 					<IconButton

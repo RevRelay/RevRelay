@@ -60,7 +60,6 @@ function Client(props) {
 		try {
 			await getUserChats(props.token, props.currentUser.userID).then((resp) => {
 				setJavaRooms(resp.data.content);
-				console.log(resp.data.content);
 			});
 		} catch (e) {
 			setJavaRooms([]);
