@@ -633,17 +633,27 @@ export default function Page(pageProp) {
 		let nav = useNavigate();
 		return (
 			<>
-				{group.members.map((member) => (
-					<Button
-						key={"member" + member.userID}
-						onKeyUp={member.userID}
-						onClick={() => {
-							nav("/user/" + member.userID);
-						}}
-					>
-						{member.displayName}
-					</Button>
-				))}
+
+				<Box sx={{ width: "100%", mt: 2 }}>
+					<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
+						<CardHeader
+							title={group.groupName + "'s Members · " + group.members.length}
+						/>
+						<Divider sx={{ mx: "auto", width: "95%" }} />
+
+						<CardContent>
+							{group.members.map((member) => (
+
+								<ListItemButton onClick={() => { nav("/user/" + member.userID) }}>
+									<Typography sx={{ fontSize: 18 }}>
+										{member.displayName + ""}
+									</Typography>
+								</ListItemButton>
+							))}
+						</CardContent>
+					</Card>
+				</Box>
+
 			</>
 		);
 	}
