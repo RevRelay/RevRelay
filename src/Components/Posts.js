@@ -182,7 +182,7 @@ export default function Posts(postsProp) {
 	 * @returns ---
 	 */
 	function PostElement(postElement) {
-		const [isShowing, setIsShowing] = useState(false);
+		const [isShowing, setIsShowing] = useState(true);
 		let d = new Date(Date.parse(postElement.post.postTime));
 		let auth = "DELETED";
 		if (postElement.post.postAuthor) auth = postElement.post.postAuthor;
@@ -195,6 +195,7 @@ export default function Posts(postsProp) {
 					marginLeft: "1%",
 				}}
 			>
+
 				<Paper elevation={5} sx={{ marginLeft: "1%", minWidth: "33%", pl: 2 }}>
 					<Typography sx={{ fontSize: 12 }}>
 						{auth +
@@ -385,14 +386,6 @@ export default function Posts(postsProp) {
 						) : (
 							<></>
 						)}
-					</Grid>
-					<Grid
-						item
-						xs={4}
-						sx={{
-						}}
-					>
-						<Pagination count={posts.totalPages} color="primary" size="large" />
 					</Grid>
 				</Grid>
 			</Box>
