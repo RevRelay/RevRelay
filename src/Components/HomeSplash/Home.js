@@ -31,10 +31,15 @@ export default function Home(homeProp) {
 		<>{navigate("/user/profile")}</>
 	) : (
 		<>
-			<h1>Welcome to RevRelay</h1>
-			<Stack direction="row" spacing={15} justifyContent="center"></Stack>
+
+			<Stack direction="row" spacing={15} justifyContent="center">
+				<Typography variant="h1"> Welcome to RevRelay</Typography>
+			</Stack>
+
 			<br></br>
 			<Stack direction="row" spacing={15} justifyContent="center">
+
+
 				<Item key="Login">
 					<Typography> Returning User</Typography>
 					<br></br>
