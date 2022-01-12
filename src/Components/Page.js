@@ -200,18 +200,19 @@ export default function Page(pageProp) {
 	 * ---
 	 * @async
 	 */
-	async function getCurrentGroup() { }
+	async function getCurrentGroup() {}
 
 	async function startChat() {
 		let croom = {
 			members: [],
 			private: false,
-			roomName: page.displayName,
+			roomName: page.displayName + " & " + currentUser.displayName,
 		};
 		saveUserChat(pageProp.token, croom).then((resp) => {
 			console.log(resp.data);
 			addUserToChat(pageProp.token, resp.data.chatID, currentUser.userID);
 			addUserToChat(pageProp.token, resp.data.chatID, page.userID);
+			window.location.reload(false);
 		});
 	}
 
@@ -342,9 +343,7 @@ export default function Page(pageProp) {
 										title={page.pageTitle}
 										sx={{ borderRadius: 2, mt: 2 }}
 									/>
-
 								</Box>
-
 
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
@@ -442,7 +441,12 @@ export default function Page(pageProp) {
 						</Box>
 
 						<Box
-							sx={{ width: "100%", maxHeight: "100%", overflow: "auto", background: "primary" }}
+							sx={{
+								width: "100%",
+								maxHeight: "100%",
+								overflow: "auto",
+								background: "primary",
+							}}
 						>
 							<Divider sx={{ width: "100%" }} />
 							<RenderTab />
@@ -676,13 +680,11 @@ export default function Page(pageProp) {
 						{groups.content.map((group) => {
 							return (
 								<Box>
-
 									<ListItemButton onClick={() => goToGroup(group.groupID)}>
 										<Typography sx={{ fontSize: 18 }}>
 											{group.groupName + ""}
 										</Typography>
 									</ListItemButton>
-
 								</Box>
 							);
 						})}
