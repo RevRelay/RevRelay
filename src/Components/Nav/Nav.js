@@ -157,6 +157,7 @@ export default function Nav(navProp) {
 									onClick={() => {
 										navProp.setToken("");
 										navigate("/login");
+										window.location.reload(false);
 									}}
 									startIcon={<LogoutIcon />}
 								>

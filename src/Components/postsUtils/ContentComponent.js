@@ -43,11 +43,11 @@ export default function ContentComponent(contentProps) {
 						height="315"
 						src={
 							"https://www.youtube.com/embed/" +
-							word.split("<yt=")[1].split(">")[0].split("=")[1].split("&")[0]
+							word.split("<y=")[1].split(">")[0].split("=")[1].split("&")[0]
 						}
 						alt={
 							"https://www.youtube.com/embed/" +
-							word.split("<yt=")[1].split(">")[0].split("=")[1].split("&")[0]
+							word.split("<y=")[1].split(">")[0].split("=")[1].split("&")[0]
 						}
 					/>
 					<br />

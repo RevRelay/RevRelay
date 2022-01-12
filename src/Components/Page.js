@@ -23,6 +23,7 @@ import {
 	Tabs,
 	TextField,
 	Typography,
+	ListItemButton,
 } from "@mui/material";
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
@@ -199,7 +200,7 @@ export default function Page(pageProp) {
 	 * ---
 	 * @async
 	 */
-	async function getCurrentGroup() {}
+	async function getCurrentGroup() { }
 
 	async function startChat() {
 		let croom = {
@@ -302,11 +303,20 @@ export default function Page(pageProp) {
 			{isBusy ? (
 				<LoadingPage />
 			) : (
-				<Box>
+				<Box sx={{ height: "80%" }}>
 					<Stack
 						direction="column"
 						sx={{
-							maxHeight: "100vh",
+							border: 1,
+							borderColor: "primary.main",
+							borderRadius: 2,
+							borderWidth: 2,
+							marginLeft: "15%",
+							marginRight: "15%",
+							display: "flex",
+							minHeight: "75vh",
+							maxHeight: "80vh",
+
 							maxWidth: "100%",
 							minWidth: 500,
 						}}
@@ -314,8 +324,6 @@ export default function Page(pageProp) {
 						<Box>
 							<Card
 								sx={{
-									marginLeft: "15%",
-									marginRight: "15%",
 									minHeight: "10vh",
 									maxHeight: "25vh",
 									maxWidth: "100%",
@@ -325,7 +333,6 @@ export default function Page(pageProp) {
 									style={{
 										position: "absolute",
 										marginLeft: 10,
-										marginTop: 10,
 										minWidth: 100,
 										borderRadius: 25,
 									}}
@@ -333,28 +340,12 @@ export default function Page(pageProp) {
 									<Title
 										titleTypographyProps={{ variant: "h4" }}
 										title={page.pageTitle}
-										sx={{ borderRadius: 2 }}
+										sx={{ borderRadius: 2, mt: 2 }}
 									/>
-									<Avatar
-										alt="Pidgeon"
-										src={image}
-										sx={{ width: 190, height: 190 }}
-									/>
+
 								</Box>
 
-								<Box
-									style={{
-										display: "flex",
-										float: "right",
-										marginTop: 10,
-										minWidth: 100,
-									}}
-								>
-									{/* <Button
-										variant="contained" color="success">
-										Add Friend
-									</Button> */}
-								</Box>
+
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
 									component="img"
@@ -449,27 +440,13 @@ export default function Page(pageProp) {
 								</Stack>
 							</Box>
 						</Box>
-						{theme.palette.mode === "light" ? (
-							<Box
-								sx={{
-									backgroundColor: "hsl(0, 0%, 97%)",
-									minHeight: "100vh",
-								}}
-							>
-								<Divider sx={{ width: "100%" }} />
-								<RenderTab />
-							</Box>
-						) : (
-							<Box
-								sx={{
-									backgroundColor: "primary",
-									minHeight: "100vh",
-								}}
-							>
-								<Divider sx={{ width: "100%" }} />
-								<RenderTab />
-							</Box>
-						)}
+
+						<Box
+							sx={{ width: "100%", maxHeight: "100%", overflow: "auto", background: "primary" }}
+						>
+							<Divider sx={{ width: "100%" }} />
+							<RenderTab />
+						</Box>
 					</Stack>
 
 					<Dialog open={openInviteUser}>
@@ -594,8 +571,8 @@ export default function Page(pageProp) {
 	 */
 	function About() {
 		return (
-			<Box sx={{ width: "100%", pt: "2%" }}>
-				<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
+			<Box sx={{ width: "100%", mt: 2 }}>
+				<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
 					{page.isGroupPage ? (
 						<CardHeader title="About this group" />
 					) : (
@@ -690,8 +667,8 @@ export default function Page(pageProp) {
 		};
 
 		return (
-			<Box sx={{ width: "100%", pt: "2%" }}>
-				<Card sx={{ mx: "auto", width: "30%", minWidth: 300 }}>
+			<Box sx={{ width: "100%", mt: 2 }}>
+				<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
 					<CardHeader title={page.displayName + "'s Groups"} />
 					<Divider sx={{ mx: "auto", width: "95%" }} />
 
@@ -699,14 +676,13 @@ export default function Page(pageProp) {
 						{groups.content.map((group) => {
 							return (
 								<Box>
-									<Button
-										sx={{ mt: 1, mb: 1, width: "50%", minWidth: 200 }}
-										variant="outlined"
-										onClick={() => goToGroup(group.groupID)}
-										endIcon={<SendIcon />}
-									>
-										<Typography>{group.groupName}</Typography>
-									</Button>
+
+									<ListItemButton onClick={() => goToGroup(group.groupID)}>
+										<Typography sx={{ fontSize: 18 }}>
+											{group.groupName + ""}
+										</Typography>
+									</ListItemButton>
+
 								</Box>
 							);
 						})}

@@ -348,6 +348,7 @@ function App() {
 			/>
 			<Box
 				sx={{
+					pt: 8.5,
 					width: "100vw",
 					height: "100vh",
 					backgroundColor: "background.default",
@@ -376,6 +377,26 @@ function App() {
  * @returns
  */
 function SwitchBoard(switchProp) {
+
+	if (!switchProp.token) {
+		return (
+			<Routes>
+				<Route path="/">
+					<Route index element={<Home token={switchProp.token} />} />
+					<Route
+						path="login"
+						element={<Login setToken={switchProp.setToken} />}
+					/>
+					<Route
+						path="register"
+						element={<Registration setToken={switchProp.setToken} />}
+					/>
+				</Route>
+				<Route path="*" element={<Navigate to="/" />} />
+			</Routes>
+		)
+	}
+
 	return (
 		<Routes>
 			<Route path="/">
