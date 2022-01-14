@@ -1,0 +1,113 @@
+import { useEffect, useState } from "react";
+import {
+	Button,
+	Grid,
+	TextField
+} from "@mui/material";
+import APIQuery from "../../API/APIQuery";
+import { useNavigate } from 'react-router-dom'
+import { LoginSharp } from "@mui/icons-material";
+import PropTypes from 'prop-types';
+import './Auth.css';
+import { User, SetStateActionString } from "../../typeDef";
+import { setJWT } from "./JwtSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+/**
+ * The url of the appended login url
+ */
+const apiLoginUrl = '/public/users/login'
+
+/**
+ * Axios query to login a user
+ * 
+ * @async
+ * @param {User} user The user to be logged in
+ * @returns The JWT of the user in the form data{jwt{*KEY*}}
+ */
+async function loginUser(user) {
+	return await APIQuery.post(apiLoginUrl,
+		JSON.stringify(user))
+		.then(data => data.data.jwt)
+}
+
+/**
+ * Login a user
+ * 
+ * @param {object} 					param 
+ * @param {SetStateActionString} 	param.setToken state variable setter for token field information.
+ * @returns Returns the login page with React
+ */
+export default function Login({ setToken }) {
+
+	const dispatch = useDispatch();
+
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
+	const [username, setUsername] = useState();
+	/**
+	 * @type {[string, SetStateActionString]}
+	 */
+	const [password, setPassword] = useState();
+	const navigate = useNavigate();
+
+
+	const [attemptLogin, setAttemptLogin] = useState(false);
+
+	/**
+	 * Submit button is pressed login request is sent
+	 * 
+	 * @async
+	 * @param {event} e The event of the login button being pressed, username and password are captured
+	 */
+	const SubmitButton = async e => {
+		e.preventDefault();
+		const jwt = await loginUser({
+			username,
+			password
+		});
+		setToken(jwt);
+		dispatch(setJWT(jwt));
+		//dispatch(setJWT(jwt));
+		jwt ? navigate("/user/profile") : alert("Unable to log in.");
+	}
+
+	//useEffect( () => {
+	//	if (attemptLogin === true) {
+	//		dispatch(login({username, password}))
+	//		setAttemptLogin(false);
+	//	}
+	//}, [attemptLogin, dispatch])
+
+	/**
+	 * The login page returned with React
+	 */
+	return (
+		<Grid className="form" spacing={2} columns={1} container direction="row" justifyContent="center" alignItems="center" align="flex-start">
+			<form onSubmit={SubmitButton}>
+				<Grid item xs={1}>
+					<h2>Login here</h2>
+				</Grid>
+				<Grid item xs={1}>
+					<TextField id="username" label="Username" variant="outlined" maxRows={1} onChange={e => setUsername(e.target.value)} />
+				</Grid>
+				<br />
+				<Grid item xs={1}>
+					<TextField id="password" type="password" label="Password" variant="outlined" maxRows={1} onChange={e => setPassword(e.target.value)} />
+				</Grid>
+				<Grid item xs={1}>
+					<Button color="inherit" type="submit" variant="h5">Login</Button>
+				</Grid>
+				<Grid item xs={1}>
+					<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+				</Grid>
+			</form>
+		</Grid>
+	)
+	//<LoginSplash /> Used for background for login page
+}
+
+Login.propTypes = {
+	setToken: PropTypes.func.isRequired
+}
