@@ -4,7 +4,6 @@ import {
 	Box,
 	Button,
 	Card,
-	CardContent,
 	CardHeader,
 	CardMedia,
 	CircularProgress,
@@ -14,7 +13,6 @@ import {
 	DialogTitle,
 	Divider,
 	Grid,
-	IconButton,
 	Menu,
 	MenuItem,
 	Paper,
@@ -23,7 +21,6 @@ import {
 	Tabs,
 	TextField,
 	Typography,
-	ListItemButton,
 } from "@mui/material";
 import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
@@ -34,10 +31,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
 import { getProfilePic } from "../API/UserAPI";
-import ChatIcon from "@mui/icons-material/Chat";
-import PublicIcon from "@mui/icons-material/Public";
-import PublicOffIcon from "@mui/icons-material/PublicOff";
-import SendIcon from "@mui/icons-material/Send";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,
@@ -45,9 +38,6 @@ import getCurrentUser, {
 	getUserGroups,
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
-import { addUserToChat, saveUserChat } from "../API/ChatAPI";
-import { alpha } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
 
 /**
  * Renders a generic page with condintional rendering.
@@ -65,11 +55,11 @@ export default function Page(pageProp) {
 
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
-	const [openInviteUser, setOpenInviteUser] = useState(false);
+	const [open2, setOpen2] = useState(false);
 	const [page, updatePage] = useState({
 		bannerURL: "https://i.imgur.com/0EtPsQK.jpeg",
 		description: "You description here",
-		isGroupPage: false,
+		groupPage: false,
 		pageID: 1,
 		posts: [],
 		private: true,
@@ -86,13 +76,8 @@ export default function Page(pageProp) {
 	const [group, setGroup] = useState(null);
 	const { pageParam } = useParams();
 	const [image, setImage] = useState(null);
-	const theme = useTheme();
 
 	const path = useLocation();
-
-	const Title = styled(CardHeader)(({ theme }) => ({
-		backgroundColor: alpha(theme.palette.background.paper, 0.5),
-	}));
 
 	/**
 	 * ---
@@ -107,8 +92,8 @@ export default function Page(pageProp) {
 	/**
 	 * ---
 	 */
-	const handleOpenInviteUser = () => {
-		setOpenInviteUser(!openInviteUser);
+	const handleClose2 = () => {
+		setOpen2(false);
 	};
 
 	/**
@@ -116,7 +101,6 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	const handleInvite = async () => {
-		handleOpenInviteUser();
 		let currentSelectedGroup = userGroups.content.filter((x) => {
 			return x.groupName == selectedGroup;
 		})[0];
@@ -137,6 +121,7 @@ export default function Page(pageProp) {
 		let tempGroups = [...groups];
 		tempGroups.push(currentSelectedGroup);
 		setGroups(tempGroups);
+		setOpen2(false);
 	};
 
 	/**
@@ -152,6 +137,14 @@ export default function Page(pageProp) {
 	 */
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	/**
+	 * ---
+	 * @async
+	 */
+	const handleCloseInviteToGroup = async () => {
+		setOpen2(true);
 	};
 
 	/**
@@ -202,20 +195,6 @@ export default function Page(pageProp) {
 	 */
 	async function getCurrentGroup() {}
 
-	async function startChat() {
-		let croom = {
-			members: [],
-			private: false,
-			roomName: page.displayName + " & " + currentUser.displayName,
-		};
-		saveUserChat(pageProp.token, croom).then((resp) => {
-			//console.log(resp.data);
-			addUserToChat(pageProp.token, resp.data.chatID, currentUser.userID);
-			addUserToChat(pageProp.token, resp.data.chatID, page.userID);
-			window.location.reload(false);
-		});
-	}
-
 	/**
 	 * Gets Page from back server
 	 * @async
@@ -251,10 +230,10 @@ export default function Page(pageProp) {
 					});
 				} else {
 					id = data.data.userOwnerID;
-					data.data.groupPage.pageTitle = data.data.groupName;
+					data.data.groupPage.pageTitle =
+						data.data.groupName + " is almost certianly a group page!";
 					data.data.groupPage.userID = data.data.userOwnerID;
 					data.data.groupPage.groupID = data.data.groupID;
-					data.data.groupPage.isGroupPage = true;
 					updatePage(data.data.groupPage);
 
 					apiRegisterUrl = "/groups/" + pageParam;
@@ -288,7 +267,7 @@ export default function Page(pageProp) {
 		};
 	}
 	if (isBusy) return <LoadingPage />;
-	if (page.isGroupPage) {
+	if (page.groupPage) {
 		if (page.private && page.userID != currentUser.userID) {
 			if (!group.members.map((m) => m.userID).includes(currentUser.userID))
 				return <Private />;
@@ -298,15 +277,14 @@ export default function Page(pageProp) {
 			if (!friends.includes(currentUser.userID)) return <Private />;
 		}
 	}
-	//console.log(page.isGroupPage);
+
 	return (
 		<>
 			{isBusy ? (
 				<LoadingPage />
 			) : (
 				<Box sx={{ height: "80%" }}>
-					<Stack
-						direction="column"
+					<Box
 						sx={{
 							border: 1,
 							borderColor: "primary.main",
@@ -322,7 +300,14 @@ export default function Page(pageProp) {
 							minWidth: 500,
 						}}
 					>
-						<Box>
+						<div
+							style={{
+								minHeight: "100%",
+								flexGrow: 1,
+								display: "flex",
+								flexFlow: "column",
+							}}
+						>
 							<Card
 								sx={{
 									minHeight: "10vh",
@@ -330,21 +315,27 @@ export default function Page(pageProp) {
 									maxWidth: "100%",
 								}}
 							>
-								<Box
+								<div
 									style={{
 										position: "absolute",
 										marginLeft: 10,
+										marginTop: 10,
 										minWidth: 100,
 										borderRadius: 25,
 									}}
 								>
-									<Title
-										titleTypographyProps={{ variant: "h4" }}
+									<CardHeader
 										title={page.pageTitle}
-										sx={{ borderRadius: 2, mt: 2 }}
+										sx={{
+											color: "palette.text.primary",
+										}}
 									/>
-								</Box>
-
+									<Avatar
+										alt="Pidgeon"
+										src={image}
+										sx={{ width: 190, height: 190 }}
+									/>
+								</div>
 								<CardMedia
 									style={{ objectPosition: "0 0", zIndex: 0 }}
 									component="img"
@@ -352,8 +343,16 @@ export default function Page(pageProp) {
 									alt="green iguana"
 								/>
 							</Card>
-
-							<Box>
+							<div
+								style={{
+									flexGrow: 1,
+									position: "relative",
+									width: "100%",
+									alignItems: "center",
+									justifyContent: "center",
+									overflow: "hidden",
+								}}
+							>
 								<Stack
 									direction="row"
 									sx={{
@@ -374,13 +373,12 @@ export default function Page(pageProp) {
 									>
 										<Tab label="Posts" />
 										<Tab label="About" />
-										{page.isGroupPage ? (
+										{page.groupPage ? (
 											<Tab label="Members" />
 										) : (
 											<Tab label="Friends" />
 										)}
-										{!page.isGroupPage && <Tab label="Groups" />}
-
+										{!page.groupPage && <Tab label="Groups" />}
 										{currentUser.userID === page.userID ? (
 											<Tab label="Settings" />
 										) : (
@@ -388,75 +386,57 @@ export default function Page(pageProp) {
 										)}
 									</Tabs>
 
-									{currentUser.userID !== page.userID ? (
-										<>
-											<Button
-												id="basic-button"
-												aria-controls={open ? "basic-menu" : undefined}
-												aria-haspopup="true"
-												aria-expanded={open ? "true" : undefined}
-												onClick={handleClick}
-											>
-												Options
-											</Button>
-											<Menu
-												id="basic-menu"
-												anchorEl={anchorEl}
-												open={open}
-												onClose={handleClose}
-												MenuListProps={{
-													"aria-labelledby": "basic-button",
-												}}
-											>
-												{page.isGroupPage ? (
-													<MenuItem onClick={handleCloseJoinGroup}>
-														Join Group
-													</MenuItem>
-												) : (
-													<MenuItem onClick={handleCloseToggleFriend}>
-														{friends.includes(currentUser.userID)
-															? "Remove "
-															: "Add "}
-														Friend
-													</MenuItem>
-												)}
-												{page.isGroupPage ? (
-													""
-												) : (
-													<MenuItem onClick={handleOpenInviteUser}>
-														Invite to group
-													</MenuItem>
-												)}
-											</Menu>
-										</>
-									) : (
-										""
-									)}
-									{page.isGroupPage || page.userID === currentUser.userID ? (
-										""
-									) : (
-										<IconButton onClick={() => startChat()}>
-											<ChatIcon />
-										</IconButton>
-									)}
+									<div>
+										{currentUser.userID !== page.userID ? (
+											<>
+												<Button
+													id="basic-button"
+													aria-controls={open ? "basic-menu" : undefined}
+													aria-haspopup="true"
+													aria-expanded={open ? "true" : undefined}
+													onClick={handleClick}
+												>
+													Options
+												</Button>
+												<Menu
+													id="basic-menu"
+													anchorEl={anchorEl}
+													open={open}
+													onClose={handleClose}
+													MenuListProps={{
+														"aria-labelledby": "basic-button",
+													}}
+												>
+													{page.groupPage ? (
+														<MenuItem onClick={handleCloseJoinGroup}>
+															Join Group
+														</MenuItem>
+													) : (
+														<MenuItem onClick={handleCloseToggleFriend}>
+															Add Friend
+														</MenuItem>
+													)}
+													{page.groupPage ? (
+														""
+													) : (
+														<MenuItem onClick={handleCloseInviteToGroup}>
+															Invite to group
+														</MenuItem>
+													)}
+													<MenuItem onClick={handleClose}>Chat</MenuItem>
+												</Menu>
+											</>
+										) : (
+											""
+										)}
+									</div>
 								</Stack>
-							</Box>
-						</Box>
-
-						<Box
-							sx={{
-								width: "100%",
-								maxHeight: "100%",
-								overflow: "auto",
-								background: "primary",
-							}}
-						>
-							<Divider sx={{ width: "100%" }} />
-							<RenderTab />
-						</Box>
-					</Stack>
-
-					<Dialog open={openInviteUser}>
+								<Divider sx={{ width: "100%" }} />
+								<RenderTab />
+							</div>
+						</div>
+					</Box>
+					<Dialog open={open2} onClose={handleClose2}>
 						<DialogTitle>Send a Group Invite</DialogTitle>
 						<DialogContent>
 							<Autocomplete
@@ -489,7 +469,7 @@ export default function Page(pageProp) {
 							/>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={handleOpenInviteUser}>Cancel</Button>
+							<Button onClick={handleClose2}>Cancel</Button>
 							<Button onClick={handleInvite}>Send</Button>
 						</DialogActions>
 					</Dialog>
@@ -514,17 +494,22 @@ export default function Page(pageProp) {
 				return <About />;
 			case 2:
 				return (
-					<>{page.isGroupPage ? <Members /> : <FriendsTab page={page} />} </>
+					<>
+						{page.groupPage ? (
+							<Members />
+						) : (
+							<FriendsTab currentUsername={page.username} />
+						)}{" "}
+					</>
 				);
 			case 3:
 				return (
 					<>
-						{page.isGroupPage ? (
+						{page.groupPage ? (
 							<PageSetting
 								page={page}
 								updatePage={updatePage}
 								setIsReload={setIsReload}
-								token={pageProp.token}
 							/>
 						) : (
 							<Groups />
@@ -534,7 +519,7 @@ export default function Page(pageProp) {
 			case 4:
 				return (
 					<>
-						{page.isGroupPage ? (
+						{page.groupPage ? (
 							<></>
 						) : (
 							<PageSetting
@@ -577,42 +562,7 @@ export default function Page(pageProp) {
 	 * @returns ---
 	 */
 	function About() {
-		return (
-			<Box sx={{ width: "100%", mt: 2 }}>
-				<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
-					{page.isGroupPage ? (
-						<CardHeader title="About this group" />
-					) : (
-						<CardHeader title={"About " + page.displayName} />
-					)}
-
-					<Divider sx={{ mx: "auto", width: "95%" }} />
-
-					<CardContent>
-						<Typography>
-							{page.description}
-							{page.private}
-						</Typography>
-						<br />
-						{page.private ? (
-							<Stack direction="row">
-								<PublicOffIcon sx={{ mt: "3px", mr: "8px" }} />
-								<Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-									Private
-								</Typography>
-							</Stack>
-						) : (
-							<Stack direction="row">
-								<PublicIcon sx={{ mt: "3px", mr: "8px" }} />
-								<Typography sx={{ fontWeight: "bold", fontSize: 22 }}>
-									Public
-								</Typography>
-							</Stack>
-						)}
-					</CardContent>
-				</Card>
-			</Box>
-		);
+		return <Typography>{page.description}</Typography>;
 	}
 
 	/**
@@ -633,28 +583,17 @@ export default function Page(pageProp) {
 		let nav = useNavigate();
 		return (
 			<>
-				<Box sx={{ width: "100%", mt: 2 }}>
-					<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
-						<CardHeader
-							title={group.groupName + "'s Members · " + group.members.length}
-						/>
-						<Divider sx={{ mx: "auto", width: "95%" }} />
-
-						<CardContent>
-							{group.members.map((member) => (
-								<ListItemButton
-									onClick={() => {
-										nav("/user/" + member.userID);
-									}}
-								>
-									<Typography sx={{ fontSize: 18 }}>
-										{member.displayName + ""}
-									</Typography>
-								</ListItemButton>
-							))}
-						</CardContent>
-					</Card>
-				</Box>
+				{group.members.map((member) => (
+					<Button
+						key={"member"+member.userID}
+						onKeyUp={member.userID}
+						onClick={() => {
+							nav("/user/" + member.userID);
+						}}
+					>
+						{member.displayName}
+					</Button>
+				))}
 			</>
 		);
 	}
@@ -665,7 +604,7 @@ export default function Page(pageProp) {
 	 * @returns ---
 	 */
 	function Settings() {
-		return <Box></Box>;
+		return <div></div>;
 	}
 
 	/**
@@ -676,6 +615,12 @@ export default function Page(pageProp) {
 	function Groups() {
 		let navigate = useNavigate();
 
+		let axiosConfig = {
+			headers: {
+				Authorization: "Bearer " + pageProp.token,
+			},
+		};
+
 		/**
 		 * ---
 		 * @param {String} groupID ---
@@ -684,38 +629,58 @@ export default function Page(pageProp) {
 			navigate("/group/" + groupID);
 		};
 
-		return (
-			<Box sx={{ width: "100%", mt: 2 }}>
-				<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
-					<CardHeader title={page.displayName + "'s Groups"} />
-					<Divider sx={{ mx: "auto", width: "95%" }} />
+		/**
+		 * ---
+		 * @async
+		 * @param {String} groupID ---
+		 */
+		const deleteGroup = async (groupID) => {
+			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			//update front end
+			let tempGroups = groups;
+			tempGroups.content = groups.content.filter((e) => {
+				return e.groupID !== groupID;
+			});
+			setGroups({ ...tempGroups });
+		};
 
-					<CardContent>
-						{groups.content.map((group) => {
-							return (
-								<Box>
-									<ListItemButton onClick={() => goToGroup(group.groupID)}>
-										<Typography sx={{ fontSize: 18 }}>
-											{group.groupName + ""}
-										</Typography>
-									</ListItemButton>
-								</Box>
-							);
-						})}
-						<br />
-						<br />
-						{page.userID === currentUser.userID ? (
-							<CreateGroup
-								JWT={pageProp.token}
-								groups={groups}
-								setGroups={setGroups}
-							/>
-						) : (
-							""
-						)}
-					</CardContent>
-				</Card>
-			</Box>
+		return (
+			<>
+				{groups.content.map((group) => {
+					return (
+						<Paper key={group.groupID} sx={{ marginBottom: 3 }} elevation={3}>
+							<Typography>{group.groupName}</Typography>
+							<Button
+								onClick={() => goToGroup(group.groupID)}
+								variant="outlined"
+							>
+								Go to Group
+							</Button>
+							{group.userOwnerID === currentUser.userID ? (
+								<Button
+									onClick={() => deleteGroup(group.groupID)}
+									variant="outlined"
+								>
+									Delete Group
+								</Button>
+							) : (
+								""
+							)}
+						</Paper>
+					);
+				})}
+				<br />
+				<br />
+				{page.userID === currentUser.userID ? (
+					<CreateGroup
+						JWT={pageProp.token}
+						groups={groups}
+						setGroups={setGroups}
+					/>
+				) : (
+					""
+				)}
+			</>
 		);
 	}
 }

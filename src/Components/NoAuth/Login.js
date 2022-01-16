@@ -10,6 +10,7 @@ import {
 	LoginUser,
 	SetStateActionString 
 } from "../../typeDef";
+import { setJWT, clearJWT } from "./jwtSlice";
 
 /**
  * The url of the appended login url
@@ -62,6 +63,7 @@ export default function Login(loginProp) {
 		} catch (error){
 		}
 		loginProp.setToken(JWT);
+		setJWT(JWT);
 		JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
 
