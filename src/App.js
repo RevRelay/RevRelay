@@ -15,6 +15,8 @@ import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
 import getCurrentUser from "./API/PageAPI.js";
 import getAllFriends from "./API/friendsAPI.js";
+import { selectJWT, setJWT, clearJWT, login } from "./Components/NoAuth/jwtSlice";
+import { useSelector, useDispatch } from "react-redux"
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
 //https://mui.com/components/autocomplete/
@@ -279,10 +281,15 @@ const themes = [
  * @returns Single Page of our application.
  */
 function App() {
+
+	const dispatch = useDispatch();
 	/**
 	 * Setting the JWT string token
 	 */
-	const [token, setToken] = useState(localStorage.getItem("token"));
+	//const [token, setToken] = useState(localStorage.getItem("token"));
+	const token = useSelector(selectJWT);
+	//const setToken = useDispatch(setJWT);
+	const setToken = null;
 	const [sendSearch, setSendSearch] = useState(false);
 	const [friends, setFriends] = useState([]);
 	const [currentUser, setCurrentUser] = useState([]);
@@ -318,7 +325,8 @@ function App() {
 		await APIQuery.get("/validate", axiosConfig)
 			.then()
 			.catch((x) => {
-				setToken("");
+				dispatch(clearJWT);
+				//setToken("");
 				localStorage.setItem("token", "");
 			});
 	}
@@ -341,7 +349,7 @@ function App() {
 				activeTheme={activeTheme}
 				updateActiveTheme={updateActiveTheme}
 				token={token}
-				setToken={setToken}
+				//setToken={setToken}
 				sendSearch={sendSearch}
 				setSendSearch={setSendSearch}
 				friends={friends}
@@ -356,7 +364,7 @@ function App() {
 			>
 				<SwitchBoard
 					token={token}
-					setToken={setToken}
+					//setToken={setToken}
 					sendSearch={sendSearch}
 				/>
 			</Box>

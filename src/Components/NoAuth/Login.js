@@ -1,4 +1,5 @@
 import { useState } from "react";
+//import { Navigate } from "react-router-dom";
 import { Button, Grid, Paper } from "@mui/material";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
 import APIQuery from "../../API/APIQuery";
@@ -10,7 +11,8 @@ import {
 	LoginUser,
 	SetStateActionString 
 } from "../../typeDef";
-import { setJWT, clearJWT } from "./jwtSlice";
+import { selectJWT, setJWT, clearJWT, login } from "./jwtSlice";
+import { useSelector, useDispatch } from "react-redux"
 
 /**
  * The url of the appended login url
@@ -41,6 +43,10 @@ async function loginUser(user) {
  */
 export default function Login(loginProp) {
 
+	const JWT = useSelector(selectJWT);
+
+	const dispatch = useDispatch();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	let navigate = useNavigate();
@@ -51,76 +57,82 @@ export default function Login(loginProp) {
 	 * @async
 	 * @param {Event} e The event of the login button being pressed, username and password are captured.
 	 */
+	//
 	const submitButton = async e => {
 		e.preventDefault();
-		let JWT;
-		try{ 
-			JWT= await loginUser({
-				username,
-				password
-			});
-
-		} catch (error){
-		}
-		loginProp.setToken(JWT);
-		setJWT(JWT);
-		JWT ? navigate("/user/profile") : alert("Unable to log in.");
+		//let JWT;
+		//try{ 
+		//	JWT= await loginUser({
+		//		username,
+		//		password
+		//	});
+		//} catch (error){
+		//}
+		//loginProp.setToken(JWT);
+		dispatch(login({username,password}));
+		//let JWT = dispatch(selectJWT());
+		////dispatch(setJWT(JWT));
+		//JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
-
 	return (
-		<Grid 
-			className = "form"
-			spacing = {2}
-			columns = {1}
-			container
-			direction = "row"
-			justifyContent = "center"
-			alignItems = "center"
-			align = "flex-start"
-		>
-			<Paper
-				elevation={10}
-				sx={{
-					paddingLeft: 7,
-					paddingRight: 7,
-					paddingTop: 5,
-					paddingBottom: 5,
-					borderRadius: 10,
-				}}
+		<>
+	{(JWT) ? (<>{navigate("/user/profile")}</>
+		) : (
+			<Grid 
+				className = "form"
+				spacing = {2}
+				columns = {1}
+				container
+				direction = "row"
+				justifyContent = "center"
+				alignItems = "center"
+				align = "flex-start"
 			>
-				<form onSubmit={submitButton}>
-					<Grid item xs={1}>
-						<h2>Login here</h2>
-					</Grid>
-					<Grid item xs={1}>
-						<LoginRegisterField 
-							id = "username"
-							label = "Username"
-							value = {username} 
-							setter = {setUsername}
-							required = {true}
-						/>
-					</Grid>
-					<br/>
-					<Grid item xs={1}>
-						<PasswordField
-							id = "password"
-							label = "Password"
-							password = {password}
-							setter = {setPassword}
-						/>
-					</Grid>
-					<Grid item xs={1}>
+				<Paper
+					elevation={10}
+					sx={{
+						paddingLeft: 7,
+						paddingRight: 7,
+						paddingTop: 5,
+						paddingBottom: 5,
+						borderRadius: 10,
+					}}
+				>
+					<form onSubmit={submitButton}>
+						<Grid item xs={1}>
+							<h2>Login here</h2>
+						</Grid>
+						<Grid item xs={1}>
+							<LoginRegisterField 
+								id = "username"
+								label = "Username"
+								value = {username} 
+								setter = {setUsername}
+								required = {true}
+							/>
+						</Grid>
 						<br/>
-						<Button variant="contained" sx={{bgcolor:"primary"}} type="submit">Login</Button>
-					</Grid>
-					<Grid item xs={1}>
-						<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
-					</Grid>
-				</form>
-			</Paper>
-		</Grid>
-	)
+						<Grid item xs={1}>
+							<PasswordField
+								id = "password"
+								label = "Password"
+								password = {password}
+								setter = {setPassword}
+							/>
+						</Grid>
+						<Grid item xs={1}>
+							<br/>
+							<Button variant="contained" sx={{bgcolor:"primary"}} type="submit">Login</Button>
+						</Grid>
+						<Grid item xs={1}>
+							<Button color="inherit" onClick={(x) => navigate("/register")}>No account? Click here!</Button>
+						</Grid>
+					</form>
+				</Paper>
+			</Grid>
+			)
+			}
+			</>)
 }
 
 Login.propTypes = {

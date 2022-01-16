@@ -32,6 +32,8 @@ import {
 import { HorizontalRule } from "@mui/icons-material";
 import { getProfilePic } from "../../API/UserAPI.js";
 import { width } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { clearJWT, selectJWT } from "../NoAuth/jwtSlice.js";
 
 /**
  * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
@@ -50,6 +52,10 @@ import { width } from "@mui/system";
  * @returns Returns a react page for the navbar
  */
 export default function Nav(navProp) {
+
+	const dispatch = useDispatch();
+	const JWT = useSelector(selectJWT);
+
 	const [sidebar, updateSidebar] = useState(false);
 
 	/**
@@ -106,7 +112,7 @@ export default function Nav(navProp) {
 					<Typography variant="h5" sx={{ ml: 2, mt: 2 }}>
 						Friends
 					</Typography>
-
+					
 					{navProp.friends.map((f) => {
 						return (
 							<>
@@ -155,9 +161,8 @@ export default function Nav(navProp) {
 								<Button
 									color="inherit"
 									onClick={() => {
-										navProp.setToken("");
+										dispatch(clearJWT());
 										navigate("/login");
-										window.location.reload(false);
 									}}
 									startIcon={<LogoutIcon />}
 								>
