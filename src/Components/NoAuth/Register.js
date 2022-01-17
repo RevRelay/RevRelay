@@ -12,7 +12,7 @@ import {
 } from "../../typeDef";
 import { PasswordField, LoginRegisterField } from "../Library/FormField";
 import { useSelector, useDispatch } from "react-redux"
-import { setJWT } from "../NoAuth/jwtSlice.js";
+import { setToken } from '../../app/userSlice';
 
 /**
  * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message.
@@ -88,7 +88,7 @@ export default function Register(registerProp) {
 					email,
 					displayName,
 				});
-				dispatch(setJWT(response.data));
+				dispatch(setToken(response.data));
 				navigate("/user/profile");
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);

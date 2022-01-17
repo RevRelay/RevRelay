@@ -6,7 +6,7 @@ import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
 import { JWTs, PasswordCheck } from "../../typeDef"
 import { useSelector } from "react-redux";
-import { selectJWT } from "../NoAuth/jwtSlice";
+import { selectToken } from "../../app/userSlice";
 
 /**
  * Helper function to take 2 passwords as a passwordCheck object and checks if strings are a valid length and then if 
@@ -42,7 +42,7 @@ function ChangePassword() {
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	let navigate = useNavigate();
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 
 	/**
 	 * When the Submit button is pressed the password reset request is sent to the backend.

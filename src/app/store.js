@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import jwtReducer from '../Components/NoAuth/jwtSlice'
+import userReducer from './userSlice'
 
 export default configureStore({
   reducer: {
-	  jwt: jwtReducer,
+	  user: userReducer,
   },
 })

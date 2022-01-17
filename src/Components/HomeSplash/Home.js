@@ -7,7 +7,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { JWTs } from "../../typeDef";
 import { useSelector } from "react-redux";
-import { selectJWT } from "../NoAuth/jwtSlice";
+import { selectToken } from "../../app/userSlice";
 
 /**
  * ---
@@ -26,7 +26,7 @@ const Item = styled(Paper)(({ theme }) => ({
  */
 export default function Home() {
 	let navigate = useNavigate();
-	const token = useSelector(selectJWT)
+	const token = useSelector(selectToken)
 
 	return token ? (
 		<>{navigate("/user/profile")}</>

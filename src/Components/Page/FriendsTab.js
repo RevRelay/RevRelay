@@ -30,14 +30,20 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { useNavigate } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import { FriendsTabs, Friend, SetStateActionFriends } from "../../typeDef";
+import { useSelector, useDispatch } from "react-redux"
+import { selectUserInfo } from "../../app/userSlice";
 
 /**
  * renders all the friends of a user and provides links to their pages
  * @param {FriendsTabs}	tabProp						The Array for a prop object that just conatins the username for a user.
- * @param {String}		tabProp.page.username		The current username of a user.
+ * @param {String}		tabProp.username		The current username of a user.
+ * @param {String}		tabProp.displayName
  * @returns html friend
  */
 const FriendsTab = (tabProp) => {
+
+	//const currentUser = useSelector(selectUserInfo);
+
 	let history = createBrowserHistory();
 
 	/**
@@ -56,7 +62,7 @@ const FriendsTab = (tabProp) => {
 	const getAllFriends = async () => {
 		let running = true;
 		const response = await APIQuery.get(
-			"/pages/friends/" + tabProp.page.username,
+			"/pages/friends/" + tabProp.username,
 			{
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token"),
@@ -94,7 +100,7 @@ const FriendsTab = (tabProp) => {
 		<Box sx={{ width: "100%", mt: 2 }}>
 			<Card sx={{ mx: "auto", width: "50%", minWidth: 300 }}>
 				<CardHeader
-					title={tabProp.page.displayName + "'s Friends · " + friends.length}
+					title={tabProp.displayName + "'s Friends · " + friends.length}
 				/>
 				<Divider sx={{ mx: "auto", width: "95%" }} />
 

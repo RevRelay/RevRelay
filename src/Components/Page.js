@@ -39,7 +39,8 @@ import getCurrentUser, {
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
 import { useSelector } from "react-redux";
-import { selectJWT } from "./NoAuth/jwtSlice";
+import { selectToken, selectUserInfo } from "../app/userSlice";
+import * as api from '../app/api';
 
 /**
  * Renders a generic page with condintional rendering.
@@ -53,7 +54,9 @@ export default function Page() {
 	// TODO: React Hook useEffect has a missing dependency: 'page.username'. Either include it or remove the dependency array
 	useEffect(getAllFriends, []);
 
-	const token = useSelector(selectJWT);
+	const currentUser = useSelector(selectUserInfo);
+
+	const token = useSelector(selectToken);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
@@ -69,7 +72,7 @@ export default function Page() {
 	const [isBusy, setIsBusy] = useState(true);
 	const [groups, setGroups] = useState("");
 	const [userGroups, setUserGroups] = useState({ content: [] });
-	const [currentUser, setCurrentUser] = useState(null);
+	//const [currentUser, setCurrentUser] = useState(null);
 	const [selectedGroup, setSelectedGroup] = useState(null);
 	const [isReload, setIsReload] = useState(false);
 	const [tab, updateTab] = useState("");
@@ -105,17 +108,25 @@ export default function Page() {
 		let currentSelectedGroup = userGroups.content.filter((x) => {
 			return x.groupName == selectedGroup;
 		})[0];
-		const response = await APIQuery.post("/groups/addmember", null, {
-			headers: {
-				Authorization: "Bearer " + token,
-			},
-			params: {
-				GroupID: userGroups.content.filter((x) => {
-					return x.groupName === selectedGroup;
-				})[0].groupID,
-				UserID: page.userID,
-			},
-		}).then((response) => response.data);
+		let params = 
+		{
+			GroupID: userGroups.content.filter((x) => {
+				return x.groupName === selectedGroup;
+			})[0].groupID,
+			UserID: page.userID,
+		}
+		await api.groupAddMember(params);
+		//const response = await APIQuery.post("/groups/addmember", null, {
+		//	headers: {
+		//		Authorization: "Bearer " + token,
+		//	},
+		//	params: {
+		//		GroupID: userGroups.content.filter((x) => {
+		//			return x.groupName === selectedGroup;
+		//		})[0].groupID,
+		//		UserID: page.userID,
+		//	},
+		//}).then((response) => response.data);
 		toast.success("Added User to Group!");
 
 		GetPage();
@@ -153,14 +164,15 @@ export default function Page() {
 	 * @async
 	 */
 	const handleCloseToggleFriend = async () => {
-		const response = await APIQuery.post("/users/friend", null, {
-			headers: {
-				Authorization: "Bearer " + token,
-			},
-			params: {
-				username: page.username,
-			},
-		}).then((response) => response.data);
+		await api.friendToggle({params: {username: page.username}});
+		//const response = await APIQuery.post("/users/friend", null, {
+		//	headers: {
+		//		Authorization: "Bearer " + token,
+		//	},
+		//	params: {
+		//		username: page.username,
+		//	},
+		//}).then((response) => response.data);
 		//toast.success("Friend added!");
 		setAnchorEl(null);
 	};
@@ -170,15 +182,16 @@ export default function Page() {
 	 * @async
 	 */
 	const handleCloseJoinGroup = async () => {
-		const response = await APIQuery.post("/groups/addmember", null, {
-			headers: {
-				Authorization: "Bearer " + token,
-			},
-			params: {
-				GroupID: page.groupID,
-				UserID: currentUser.userID,
-			},
-		}).then((response) => response.data);
+		await api.groupJoin({params: {GroupID: page.groupID, UserID: currentUser.userID}});
+		//const response = await APIQuery.post("/groups/addmember", null, {
+		//	headers: {
+		//		Authorization: "Bearer " + token,
+		//	},
+		//	params: {
+		//		GroupID: page.groupID,
+		//		UserID: currentUser.userID,
+		//	},
+		//}).then((response) => response.data);
 		toast.success("Group Joined!");
 		setAnchorEl(null);
 	};
@@ -201,51 +214,47 @@ export default function Page() {
 	 * @async
 	 */
 	async function GetPage() {
-		getCurrentUser(token).then(async (data) => {
-			let user = data.data;
-			setCurrentUser(user);
-			setImage(getProfilePic(user.userID));
-			let apiRegisterUrl = "";
-			if (path.pathname.includes("user/profile"))
-				apiRegisterUrl = "/users/current";
-			else if (path.pathname.includes("user"))
-				apiRegisterUrl = "/users/" + pageParam;
-			else apiRegisterUrl = "/groups/" + pageParam;
+		setImage(getProfilePic(currentUser.userID));
+		let apiPageUrl = "";
+		if (path.pathname.includes("user/profile"))
+			apiPageUrl = "/users/current";
+		else if (path.pathname.includes("user"))
+			apiPageUrl = "/users/" + pageParam;
+		else apiPageUrl = "/groups/" + pageParam;
 
-			getUserGroups(token, data.data.userID).then((data) => {
-				setUserGroups(data.data);
-			});
-
-			getPageAxios(token, apiRegisterUrl).then(async (data) => {
-				let id = -1;
-				if (path.pathname.includes("user")) {
-					id = data.data.userID;
-					data.data.userPage.pageTitle = data.data.displayName + "'s Page!";
-					data.data.userPage.userID = data.data.userID;
-					data.data.userPage.username = data.data.username;
-					data.data.userPage.displayName = data.data.displayName;
-					updatePage(data.data.userPage);
-					getGroupsByID(token, id).then((data) => {
-						setGroups(data.data);
-						setIsBusy(false);
-					});
-				} else {
-					id = data.data.userOwnerID;
-					data.data.groupPage.pageTitle =
-						data.data.groupName + " is almost certianly a group page!";
-					data.data.groupPage.userID = data.data.userOwnerID;
-					data.data.groupPage.groupID = data.data.groupID;
-					updatePage(data.data.groupPage);
-
-					apiRegisterUrl = "/groups/" + pageParam;
-
-					getPageAxios(token, apiRegisterUrl).then(async (data) => {
-						setGroup(data.data);
-						setIsBusy(false);
-					});
-				}
-			});
+		getUserGroups(token, currentUser.userID).then((response) => {
+			setUserGroups(response.data);
 		});
+		api.getPage(apiPageUrl).then(async (response) => {
+			let id = -1;
+			if (path.pathname.includes("user")) {
+				id = response.data.userID;
+				response.data.userPage.pageTitle = response.data.displayName + "'s Page!";
+				response.data.userPage.userID = response.data.userID;
+				response.data.userPage.username = response.data.username;
+				response.data.userPage.displayName = response.data.displayName;
+				updatePage(response.data.userPage);
+				getGroupsByID(token, id).then((data) => {
+					setGroups(data.data);
+					setIsBusy(false);
+				});
+			} else {
+				id = response.data.userOwnerID;
+				response.data.groupPage.pageTitle =
+				response.data.groupName + " is almost certainly a group page!";
+				response.data.groupPage.userID = response.data.userOwnerID;
+				response.data.groupPage.groupID = response.data.groupID;
+				updatePage(response.data.groupPage);
+
+				apiPageUrl = "/groups/" + pageParam;
+
+				getPageAxios(token, apiPageUrl).then(async (data) => {
+					setGroup(data.data);
+					setIsBusy(false);
+				});
+			}
+		});
+		;
 	}
 
 	/**
@@ -256,12 +265,8 @@ export default function Page() {
 	// TODO: Effect callbacks are synchronous to prevent race conditions. Put the async function inside:
 	async function getAllFriends() {
 		if (!page.username) return;
-		const response = await APIQuery.get("/pages/friends/" + page.username, {
-			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token"),
-			},
-		}).then((response) => response.data);
-		let arr = response.map((f) => f.userID);
+		const response = await api.friendGetAllByUsername(page.username);
+		let arr = response.data.map((f) => f.userID);
 		setFriends(arr);
 		return () => {
 			setFriends({}); // This worked for me
@@ -499,7 +504,7 @@ export default function Page() {
 						{page.groupPage ? (
 							<Members />
 						) : (
-							<FriendsTab currentUsername={page.username} />
+							<FriendsTab username={page.username} displayName={page.displayName} />
 						)}{" "}
 					</>
 				);

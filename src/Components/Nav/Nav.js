@@ -14,7 +14,7 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -33,7 +33,7 @@ import { HorizontalRule } from "@mui/icons-material";
 import { getProfilePic } from "../../API/UserAPI.js";
 import { width } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
-import { clearJWT, selectJWT } from "../NoAuth/jwtSlice.js";
+import { clearToken, selectToken } from "../../app/userSlice.js";
 
 /**
  * Creation of a Navbar
@@ -50,7 +50,7 @@ import { clearJWT, selectJWT } from "../NoAuth/jwtSlice.js";
 export default function Nav(navProp) {
 
 	const dispatch = useDispatch();
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 
 	const [sidebar, updateSidebar] = useState(false);
 
@@ -69,6 +69,12 @@ export default function Nav(navProp) {
 		updateSidebar(open);
 	};
 	let navigate = useNavigate();
+
+	useEffect(() => {
+		if (token === undefined || token === '') {
+			navigate('/');
+		}
+	}, [token]);
 
 	return (
 		<>
@@ -157,8 +163,7 @@ export default function Nav(navProp) {
 								<Button
 									color="inherit"
 									onClick={() => {
-										dispatch(clearJWT());
-										navigate("/login");
+										dispatch(clearToken());
 									}}
 									startIcon={<LogoutIcon />}
 								>

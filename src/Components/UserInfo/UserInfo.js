@@ -24,7 +24,7 @@ import UserInfoEntryElement, {
 } from "./UserInfoEntryElement";
 import { JWTs } from "../../typeDef"
 import { useSelector } from "react-redux";
-import { selectJWT } from "../NoAuth/jwtSlice";
+import { selectToken } from "../../app/userSlice";
 
 /**
  * Shows the user their user info and allows them to change their information on the page.
@@ -37,7 +37,7 @@ function UserInfo() {
 	// used for choosing an image
 	const inputRef = React.useRef();
 	let navigate = useNavigate();
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 
 	/**
 	 * ---

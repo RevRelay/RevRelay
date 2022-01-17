@@ -14,9 +14,7 @@ import APIQuery from "./app/api";
 import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
 import { getCurrentUser, getAllFriends } from './app/api'
-//import getCurrentUser from "./API/PageAPI.js";
-//import getAllFriends from "./API/friendsAPI.js";
-import { selectJWT, verify } from "./Components/NoAuth/jwtSlice";
+import { selectToken, verify, getCurrentUserInfo } from "./app/userSlice.js";
 import { useSelector, useDispatch } from "react-redux"
 import themes from "./Components/Library/themes.js";
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
@@ -33,14 +31,15 @@ import themes from "./Components/Library/themes.js";
 function App() {
 
 	const dispatch = useDispatch();
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 	const [sendSearch, setSendSearch] = useState(false);
 	const [friends, setFriends] = useState([]);
 	const [currentUser, setCurrentUser] = useState([]);
 
+	// TODO is the verify dispatch necessary here, or should that logic be in getCurrentUserInfo?
 	useEffect(async () => {
 		getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
-		dispatch(verify(token));
+		dispatch(verify(token)).then(dispatch(getCurrentUserInfo()));
 	}, [token]);
 	useEffect(async () => {
 		if (currentUser) {
@@ -98,7 +97,7 @@ function App() {
  * @returns
  */
 function SwitchBoard(switchProp) {
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 	if (!token) {
 		return (
 			<Routes>

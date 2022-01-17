@@ -11,7 +11,7 @@ import {
 	LoginUser,
 	SetStateActionString 
 } from "../../typeDef";
-import { selectJWT, setJWT, clearJWT, login } from "./jwtSlice";
+import { selectToken, login, getCurrentUserInfo } from '../../app/userSlice'
 import { useSelector, useDispatch } from "react-redux"
 
 /**
@@ -21,7 +21,7 @@ import { useSelector, useDispatch } from "react-redux"
  */
 export default function Login() {
 
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 
 	const dispatch = useDispatch();
 
@@ -38,7 +38,7 @@ export default function Login() {
 	//
 	const submitButton = async e => {
 		e.preventDefault();
-		dispatch(login({username,password}));
+		dispatch(login({username,password})).then(() => dispatch(getCurrentUserInfo()));
 	}
 	return (
 		<>

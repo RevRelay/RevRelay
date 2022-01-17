@@ -24,7 +24,8 @@ const s3Storage = '';
 const baseHeaders = { 'Content-Type': 'application/json' };
 
 const state = store.getState();
-let authToken = state.jwt.token;
+let authToken = state.user.token.token;
+let userInfo = state.user.userInfo;
 let authHeader = { headers: {Authorization: 'Bearer ' + authToken}};
 
 /**
@@ -74,8 +75,14 @@ export function addUserToChat(chatId, userID) {
 /**
  * @returns Promise containing a current user DTO
  */
- export function getCurrentUser() {
-	return APIQuery.get(apiCurrentUserGetUrl, authHeader);
+ export function getCurrentUser(token) {
+	let axiosConfig;
+	if (token === undefined || token === '') {
+		axiosConfig = authHeader;
+	} else {
+		axiosConfig = { headers: {Authorization: 'Bearer ' + authToken}};
+	}
+	return APIQuery.get(apiCurrentUserGetUrl, axiosConfig);
 }
 
 /**
@@ -94,8 +101,8 @@ export function getUser(userID) {
  * @param {String} apiRegisterUrl 	--- TODO: what is this
  * @returns ---
  */
-export function getPageAxios(apiRegisterUrl) {
-	return APIQuery.get(apiRegisterUrl, authHeader);
+export function getPage(apiPageUrl) {
+	return APIQuery.get(apiPageUrl, authHeader);
 }
 
 /**
@@ -165,17 +172,11 @@ export function updateUser(user) {
  * @deprecated
  */
  async function checkJWT() {
-	//console.log("Checking JWT");
-	//let axiosConfig = {
-	//	headers: {
-	//		Authorization: "Bearer " + token,
-	//	},
-	//};
 	let axiosConfig = authHeader;
-	await APIQuery.get("/validate", axiosConfig)
+	await APIQuery.get("validate", axiosConfig)
 		.then()
 		.catch((x) => {
-			//dispatch(clearJWT);
+			//dispatch(clearToken);
 			//setToken("");
 			localStorage.setItem("token", "");
 		});
@@ -186,12 +187,15 @@ export function updateUser(user) {
  */
 
 export async function verifyToken(tokenToVerify) {
+	let axiosConfig;
 	let isTokenValid = true;
-	await APIQuery.get("/validate", { headers: {Authorization: 'Bearer ' + tokenToVerify}})
-		.then()
-		.catch(() => {
-			isTokenValid = false;
-		});
+	if (tokenToVerify === undefined) {
+		axiosConfig = authHeader;
+	} else {
+		axiosConfig = { headers: {Authorization: 'Bearer ' + tokenToVerify}};
+	}
+	await APIQuery.get("validate", axiosConfig)
+		.then().catch(() => {isTokenValid = false});
 	return isTokenValid;
 }
 
@@ -218,7 +222,6 @@ export async function verifyToken(tokenToVerify) {
 /**
  * Axios query to create a user
  *
- * @deprecated
  * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
  * @returns The JWT of the created user in the form data{jwt{*KEY*}}
  */
@@ -234,7 +237,27 @@ export async function registerUser(user) {
  */
  export async function fetchSearchResults(searchTerm, setSearchComplete, setSearchResults) {
 	setSearchComplete(false);
-	const response = await APIQuery.get(`/search/name/${searchTerm}`,authHeader);
+	const response = await APIQuery.get(`search/name/${searchTerm}`,authHeader);
 	setSearchResults(response.data);
 	setSearchComplete(true);
+}
+
+//--------Page.js
+
+export async function groupAddMember(params) {
+	return await APIQuery.post('groups/addmember', null, {...authHeader, ...params})
+}
+
+export async function friendToggle(params) {
+	return await APIQuery.post('users/friend', null, {...authHeader, ...params});
+}
+
+// TODO change self-join to use auth token
+export async function groupJoin(params) {
+	return await APIQuery.post("/groups/addmember", null, {...authHeader, ...params});
+}
+
+// TODO make username a param instead of a path variable, because I hate path variables.
+export async function friendGetAllByUsername(username) {
+	return await APIQuery.get("/pages/friends/" + username, authHeader);
 }

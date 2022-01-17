@@ -10,7 +10,7 @@ import { Box, FormControl, InputLabel, Select } from "@mui/material";
 import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
 import getUserChats from "../API/ChatAPI";
 import { useSelector } from "react-redux";
-import { selectJWT } from "./NoAuth/jwtSlice";
+import { selectToken } from "../app/userSlice";
 
 var socket;
 
@@ -21,7 +21,7 @@ var socket;
  */
 function Client(props) {
 
-	const token = useSelector(selectJWT);
+	const token = useSelector(selectToken);
 	/**
 	 * ---
 	 */
