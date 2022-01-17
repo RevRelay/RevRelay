@@ -254,10 +254,14 @@ export async function friendToggle(params) {
 
 // TODO change self-join to use auth token
 export async function groupJoin(params) {
-	return await APIQuery.post("/groups/addmember", null, {...authHeader, ...params});
+	return await APIQuery.post("groups/addmember", null, {...authHeader, ...params});
 }
 
 // TODO make username a param instead of a path variable, because I hate path variables.
 export async function friendGetAllByUsername(username) {
-	return await APIQuery.get("/pages/friends/" + username, authHeader);
+	return await APIQuery.get("pages/friends/" + username, authHeader);
+}
+
+export async function deleteGroup(groupID) {
+	await APIQuery.delete("groups/" + groupID, authHeader);
 }

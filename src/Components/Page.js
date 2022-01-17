@@ -221,8 +221,7 @@ export default function Page() {
 		else if (path.pathname.includes("user"))
 			apiPageUrl = "/users/" + pageParam;
 		else apiPageUrl = "/groups/" + pageParam;
-
-		getUserGroups(token, currentUser.userID).then((response) => {
+		api.getUserGroups(currentUser.userID).then((response) => {
 			setUserGroups(response.data);
 		});
 		api.getPage(apiPageUrl).then(async (response) => {
@@ -234,7 +233,7 @@ export default function Page() {
 				response.data.userPage.username = response.data.username;
 				response.data.userPage.displayName = response.data.displayName;
 				updatePage(response.data.userPage);
-				getGroupsByID(token, id).then((data) => {
+				api.getGroupsByID(id).then((data) => {
 					setGroups(data.data);
 					setIsBusy(false);
 				});
@@ -247,8 +246,8 @@ export default function Page() {
 				updatePage(response.data.groupPage);
 
 				apiPageUrl = "/groups/" + pageParam;
-
-				getPageAxios(token, apiPageUrl).then(async (data) => {
+				
+				api.getPage(apiPageUrl).then(async (data) => {
 					setGroup(data.data);
 					setIsBusy(false);
 				});
@@ -621,12 +620,6 @@ export default function Page() {
 	function Groups() {
 		let navigate = useNavigate();
 
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + token,
-			},
-		};
-
 		/**
 		 * ---
 		 * @param {String} groupID ---
@@ -641,7 +634,7 @@ export default function Page() {
 		 * @param {String} groupID ---
 		 */
 		const deleteGroup = async (groupID) => {
-			await APIQuery.delete("/groups/" + groupID, axiosConfig).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			await api.deleteGroup(groupID).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
 			tempGroups.content = groups.content.filter((e) => {
