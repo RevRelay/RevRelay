@@ -60,19 +60,7 @@ export default function Login(loginProp) {
 	//
 	const submitButton = async e => {
 		e.preventDefault();
-		//let JWT;
-		//try{ 
-		//	JWT= await loginUser({
-		//		username,
-		//		password
-		//	});
-		//} catch (error){
-		//}
-		//loginProp.setToken(JWT);
 		dispatch(login({username,password}));
-		//let JWT = dispatch(selectJWT());
-		////dispatch(setJWT(JWT));
-		//JWT ? navigate("/user/profile") : alert("Unable to log in.");
 	}
 	return (
 		<>

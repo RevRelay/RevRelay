@@ -13,9 +13,10 @@ import Client from "./Components/Client";
 import APIQuery from "./app/api";
 import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
-import getCurrentUser from "./API/PageAPI.js";
-import getAllFriends from "./API/friendsAPI.js";
-import { selectJWT, setJWT, clearJWT, login } from "./Components/NoAuth/jwtSlice";
+import { getCurrentUser, getAllFriends, verifyToken } from './app/api'
+//import getCurrentUser from "./API/PageAPI.js";
+//import getAllFriends from "./API/friendsAPI.js";
+import { selectJWT, verify } from "./Components/NoAuth/jwtSlice";
 import { useSelector, useDispatch } from "react-redux"
 //#461E52 | #DD517F | #E68E36 | #556DC8 | #7998EE.
 
@@ -296,6 +297,7 @@ function App() {
 
 	useEffect(async () => {
 		getCurrentUser(token).then((resp) => setCurrentUser(resp.data));
+		dispatch(verify(token));
 	}, [token]);
 	useEffect(async () => {
 		if (currentUser) {
@@ -308,28 +310,6 @@ function App() {
 	let nav = useNavigate();
 
 	localStorage.setItem("token", token);
-
-	checkJWT();
-
-	/**
-	 * Validates the stored JWT against the database, discarding if not valid.
-	 * @async
-	 */
-	async function checkJWT() {
-		//console.log("Checking JWT");
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + token,
-			},
-		};
-		await APIQuery.get("/validate", axiosConfig)
-			.then()
-			.catch((x) => {
-				dispatch(clearJWT);
-				//setToken("");
-				localStorage.setItem("token", "");
-			});
-	}
 
 	/**
 	 * Setting the active theme but changing the int of activeTheme. Corresponding to the theme array

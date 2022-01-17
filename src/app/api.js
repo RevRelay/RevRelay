@@ -155,3 +155,41 @@ export function updateUser(user) {
 	 * Axios.get(s3Retrieve, { key });
 	 */
 }
+
+//--------App.js
+
+/**
+ * Validates the stored JWT against the database, discarding if not valid.
+ * @async
+ * @deprecated
+ */
+ async function checkJWT() {
+	//console.log("Checking JWT");
+	//let axiosConfig = {
+	//	headers: {
+	//		Authorization: "Bearer " + token,
+	//	},
+	//};
+	let axiosConfig = authHeader;
+	await APIQuery.get("/validate", axiosConfig)
+		.then()
+		.catch((x) => {
+			//dispatch(clearJWT);
+			//setToken("");
+			localStorage.setItem("token", "");
+		});
+}
+
+/**
+ * Validate function rewritten to work as a part of an async thunk TODO: find a way to remove.
+ */
+
+export async function verifyToken(tokenToVerify) {
+	let isTokenValid = true;
+	await APIQuery.get("/validate", { headers: {Authorization: 'Bearer ' + tokenToVerify}})
+		.then()
+		.catch(() => {
+			isTokenValid = false;
+		});
+	return isTokenValid;
+}

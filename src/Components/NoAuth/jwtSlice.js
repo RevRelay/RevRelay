@@ -18,6 +18,14 @@ export const login = createAsyncThunk(
 	}
 )
 
+export const verify = createAsyncThunk(
+	'user/verify',
+	async (tokenToVerify) => {
+		const isTokenValid = await api.verifyToken(tokenToVerify);
+		return isTokenValid;
+	}
+)
+
 export const jwtSlice = createSlice({
 	name: 'jwt',
 	initialState: {
@@ -48,11 +56,17 @@ export const jwtSlice = createSlice({
 				}
 			})
 			.addCase(login.rejected, (state, action) => {
-				console.log(action);
 				if (action.payload) {
 					state.error = action.payload.errorMessage
 				  } else {
 					state.error = action.error.message
+				  }
+			})
+			.addCase(verify.fulfilled, (state, action) => {
+				if (action.payload) {
+					return
+				  } else {
+					state.token = '';
 				  }
 			})
 		},
