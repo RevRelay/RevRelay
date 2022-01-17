@@ -19,7 +19,7 @@ import {
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from "../app/api";
+import APIQuery, { postPost, votePost } from "../app/api";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { User, Page, Post, Posting, PostSingle } from "../typeDef";
@@ -28,6 +28,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import { getUser, getUserGroups } from "../app/api";
 import ContentComponent from "./postsUtils/ContentComponent";
+import { getPosts } from "../app/api";
 
 /**
  * Render Posts Tab
@@ -37,7 +38,6 @@ import ContentComponent from "./postsUtils/ContentComponent";
  * @param {Number}	postsProp.page.pageID			The ID for the Page.
  * @param {User}	postsProp.currentUser			The current User's info.
  * @param {Number}	postsProp.currentUser.userID	The curren't User's userID.
- * @param {String}	postsProp.JWT					JWT token determinig user and log in information.
  * @returns ---
  */
 export default function Posts(postsProp) {
@@ -111,13 +111,7 @@ export default function Posts(postsProp) {
 	 */
 	async function GetPosts() {
 		var running = true;
-		var apiRegisterUrl = "posts/page/" + postsProp.page.pageID;
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + postsProp.JWT,
-			},
-		};
-		await APIQuery.get(apiRegisterUrl, axiosConfig).then((data) => {
+		await getPosts(postsProp.page.pageID).then((data) => {
 			if (running) updatePosts(data.data);
 		});
 		return () => (running = false);
@@ -128,15 +122,7 @@ export default function Posts(postsProp) {
 	 * @async
 	 */
 	async function PostPosts() {
-		var apiRegisterUrl = "posts";
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + postsProp.JWT,
-			},
-		};
-		await APIQuery.post(apiRegisterUrl, newpost, axiosConfig).then((data) => {
-			GetPosts();
-		});
+		await postPost(newpost).then(() => {GetPosts()});
 	}
 
 	/**
@@ -153,15 +139,7 @@ export default function Posts(postsProp) {
 	 * @param {---} 	up 		---
 	 */
 	async function onVote(postID, up) {
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + postsProp.JWT,
-			},
-			params: {
-				upvote: up,
-			},
-		};
-		await APIQuery.put("posts/" + postID + "/vote", null, axiosConfig).then(
+		await votePost(postID, {params: {upvote: up}}).then(
 			(data) => {
 				GetPosts();
 			}

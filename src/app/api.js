@@ -262,6 +262,26 @@ export async function friendGetAllByUsername(username) {
 	return await APIQuery.get("pages/friends/" + username, authHeader);
 }
 
-export async function deleteGroup(groupID) {
+export async function groupDelete(groupID) {
 	await APIQuery.delete("groups/" + groupID, authHeader);
+}
+
+//--------Posts.js
+
+export async function getPosts(pageID) {
+	return await APIQuery.get('posts/page/' + pageID, authHeader)
+}
+
+export async function postPost(post) {
+	return await APIQuery.post('posts', post, authHeader)
+}
+
+export async function votePost(postID, params) {
+	return await APIQuery.put("posts/" + postID + "/vote", null, {...authHeader, ...params})
+}
+
+//--------Posts.js
+
+export async function groupCreate(group) {
+	return await APIQuery.post('groups', group, authHeader)
 }

@@ -493,7 +493,7 @@ export default function Page() {
 		switch (tab) {
 			case 0:
 				return (
-					<Posts page={page} currentUser={currentUser} JWT={token} />
+					<Posts page={page} currentUser={currentUser} />
 				);
 			case 1:
 				return <About />;
@@ -634,7 +634,7 @@ export default function Page() {
 		 * @param {String} groupID ---
 		 */
 		const deleteGroup = async (groupID) => {
-			await api.deleteGroup(groupID).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
+			await api.groupDelete(groupID).catch((e) => {}); //since this is attached to a group component, we're guaranteed that it exists to delete it
 			//update front end
 			let tempGroups = groups;
 			tempGroups.content = groups.content.filter((e) => {

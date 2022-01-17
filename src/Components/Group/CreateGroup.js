@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 	TextField,
 } from "@mui/material";
-import APIQuery from "../../app/api";
+import APIQuery, { groupCreate } from "../../app/api";
 import { useState } from "react";
 import {
 	CreateGroups,
@@ -20,7 +20,6 @@ import {
  * Creates a group owned by the creating user.
  * 
  * @param {CreateGroups}			createGroupProp				---
- * @param {String}					createGroupProp.JWT			JWT Token determinig user and log in information.
  * @param {Group[]}					createGroupProp.groups		The list of groups the user you are looking at is in.
  * @param {SetStateActionGroups}	createGroupProp.setGroups	Setter function for the state variable groups.
  * @returns adds a group to the list the user owns and reflect the change by adding it a visual list
@@ -48,14 +47,9 @@ export default function CreateGroup(createGroupProp) {
 	const createGroup = async () => {
 		toggleOpen();
 
-		let axiosConfig = {
-			headers: {
-				Authorization: "Bearer " + createGroupProp.JWT,
-			}
-		};
-		await APIQuery.post("/groups", newGroup, axiosConfig).then(async (data) => {
+		await groupCreate(newGroup).then(async (response) => {
 			let tempGroups = createGroupProp.groups;
-			tempGroups.content.push(data.data);
+			tempGroups.content.push(response.data);
 			createGroupProp.setGroups({ ...tempGroups });
 		}).catch((e) => {
 		});
