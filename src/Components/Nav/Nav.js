@@ -36,16 +36,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearJWT, selectJWT } from "../NoAuth/jwtSlice.js";
 
 /**
- * Creation of a Navbar using 5 hooks, 2 for user and 3 for themes.
- *
- * Token change login/register to logout, and also logout the user.
- * Themes import load all of the themes
+ * Creation of a Navbar
  *
  * @param {NavBar} 					navProp						An Array for the Nav to determine the theme and update the theme.
  * @param {any[]}	 				navProp.themes 				Load all of the List of Themes.
  * @param {Number} 					navProp.activeTheme 		Integer referencing the current theme
  * @param {SetStateActionNumber}	navProp.updateActiveTheme	State variable setter of activeTheme.
- * @param {SetStateActionString} 	navProp.setToken			State variable setter of token.
  * @param {Boolean}					navProp.sendSearch			Boolean state managing searching status.
  * @param {SetStateActionBool}		navProp.setSendSearch		State variable setter of sendSearch.
  * @param {friends}					navProp.friends				State variable current user friends
@@ -54,7 +50,7 @@ import { clearJWT, selectJWT } from "../NoAuth/jwtSlice.js";
 export default function Nav(navProp) {
 
 	const dispatch = useDispatch();
-	const JWT = useSelector(selectJWT);
+	const token = useSelector(selectJWT);
 
 	const [sidebar, updateSidebar] = useState(false);
 
@@ -157,7 +153,7 @@ export default function Nav(navProp) {
 							/>
 						</Box>
 						<Box>
-							{navProp.token ? (
+							{token ? (
 								<Button
 									color="inherit"
 									onClick={() => {

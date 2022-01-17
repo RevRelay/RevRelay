@@ -53,6 +53,7 @@ export const jwtSlice = createSlice({
 				if (state.status === 'pending') {
 					state.status = 'idle'
 					state.token = action.payload.jwt
+					localStorage.setItem("token", action.payload.jwt);
 				}
 			})
 			.addCase(login.rejected, (state, action) => {

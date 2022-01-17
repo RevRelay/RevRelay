@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, FormControl, InputLabel, Select } from "@mui/material";
 import { ChatRoom, SetStateActionChatRoom } from "../typeDef";
 import getUserChats from "../API/ChatAPI";
+import { useSelector } from "react-redux";
+import { selectJWT } from "./NoAuth/jwtSlice";
 
 var socket;
 
@@ -18,6 +20,8 @@ var socket;
  * @returns html for chat box in bottom left
  */
 function Client(props) {
+
+	const token = useSelector(selectJWT);
 	/**
 	 * ---
 	 */
@@ -58,7 +62,7 @@ function Client(props) {
 	}, [javaRooms]);
 	useEffect(async () => {
 		try {
-			await getUserChats(props.token, props.currentUser.userID).then((resp) => {
+			await getUserChats(token, props.currentUser.userID).then((resp) => {
 				setJavaRooms(resp.data.content);
 			});
 		} catch (e) {

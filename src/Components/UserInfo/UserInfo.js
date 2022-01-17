@@ -23,20 +23,21 @@ import UserInfoEntryElement, {
 	UserInfoEntryElementEmail
 } from "./UserInfoEntryElement";
 import { JWTs } from "../../typeDef"
+import { useSelector } from "react-redux";
+import { selectJWT } from "../NoAuth/jwtSlice";
 
 /**
  * Shows the user their user info and allows them to change their information on the page.
  * If they want to change their password it redirects them to the Change Password page.
  * 
- * @param {JWTs} 	infoProp		The Array for an object that just contains a JWT.
- * @param {String}	infoProp.token 	JWT Token determinig user and log in information.
  * @returns The user info page returned with React.
  */
-function UserInfo(infoProp) {
+function UserInfo() {
 
 	// used for choosing an image
 	const inputRef = React.useRef();
 	let navigate = useNavigate();
+	const token = useSelector(selectJWT);
 
 	/**
 	 * ---
@@ -108,7 +109,7 @@ function UserInfo(infoProp) {
 	 * @param {Event} e ---
 	 */
 	const FetchUserInfo = async (e) => {
-		const response = await APIQuery.get("/users/current", { headers: { "Authorization": "Bearer " + infoProp.token } }).then(resp => resp);
+		const response = await APIQuery.get("/users/current", { headers: { "Authorization": "Bearer " + token } }).then(resp => resp);
 		setMostRecentUserInfo({
 			username: response.data.username,
 			firstName: response.data.firstName,
@@ -146,7 +147,7 @@ function UserInfo(infoProp) {
 			e.preventDefault();
 			let response;
 			try {
-				response = await updateUser(user, infoProp.token);
+				response = await updateUser(user, token);
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);
 			}

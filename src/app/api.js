@@ -11,6 +11,7 @@ const apiUserBaseUrl = 'users'
 const apiCurrentUserGetUrl = apiUserBaseUrl + '/current';
 const apiUserPasswordUrl = apiUserBaseUrl + '/password';
 const apiUserUpdateUrl = apiUserBaseUrl + '/update'; //TODO fix on backend
+const apiRegisterUrl = "/public/users/register";
 const apiGroupBaseUrl = 'groups';
 const apiCurrentUserGroupsGetUrl = apiGroupBaseUrl + '/getgroups';
 
@@ -192,4 +193,48 @@ export async function verifyToken(tokenToVerify) {
 			isTokenValid = false;
 		});
 	return isTokenValid;
+}
+
+//--------Login.js
+
+/**
+ * Axios query to login a user.
+ * 
+ * @deprecated
+ * @async
+ * @param {LoginUser}	user			The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
+ * @param {String} 		user.username	The logging in user's username.
+ * @param {String}		user.password	The logging in user's password.
+ * @returns The JWT of the user in the form data{jwt{*KEY*}}.
+ */
+ async function loginUser(user) {
+	return await APIQuery.post(apiLoginUrl,
+		JSON.stringify(user))
+		.then(data => data.data.jwt)
+}
+
+//--------Register.js
+
+/**
+ * Axios query to create a user
+ *
+ * @deprecated
+ * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
+ * @returns The JWT of the created user in the form data{jwt{*KEY*}}
+ */
+export async function registerUser(user) {
+	return await APIQuery.post(apiRegisterUrl, JSON.stringify(user)).then((data) => data);
+}
+
+//--------Search.js
+
+/**
+ * Submits an API call searching user and group names for the search term. 
+ * @async
+ */
+ export async function fetchSearchResults(searchTerm, setSearchComplete, setSearchResults) {
+	setSearchComplete(false);
+	const response = await APIQuery.get(`/search/name/${searchTerm}`,authHeader);
+	setSearchResults(response.data);
+	setSearchComplete(true);
 }

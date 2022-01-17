@@ -6,6 +6,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { JWTs } from "../../typeDef";
+import { useSelector } from "react-redux";
+import { selectJWT } from "../NoAuth/jwtSlice";
 
 /**
  * ---
@@ -20,14 +22,13 @@ const Item = styled(Paper)(({ theme }) => ({
 /**
  * ---
  *
- * @param {JWTs} 	homeProp		The Array for an object that just contains a JWT.
- * @param {String} 	homeProp.token 	JWT Token determinig user and log in information.
  * @returns ---
  */
-export default function Home(homeProp) {
+export default function Home() {
 	let navigate = useNavigate();
+	const token = useSelector(selectJWT)
 
-	return homeProp.token ? (
+	return token ? (
 		<>{navigate("/user/profile")}</>
 	) : (
 		<>

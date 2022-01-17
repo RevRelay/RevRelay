@@ -38,21 +38,22 @@ import getCurrentUser, {
 	getUserGroups,
 } from "../API/PageAPI";
 import { JWTs } from "../typeDef";
+import { useSelector } from "react-redux";
+import { selectJWT } from "./NoAuth/jwtSlice";
 
 /**
  * Renders a generic page with condintional rendering.
  *
- * @param {JWTs} 	pageProp		The Array for an object that just contains a JWT
- * @param {string} 	pageProp.token 	Token determining user and log in information.
  * @returns The default page for a user or group returned with React.
  */
-export default function Page(pageProp) {
+export default function Page() {
 	/**
 	 * ---
 	 */
 	// TODO: React Hook useEffect has a missing dependency: 'page.username'. Either include it or remove the dependency array
 	useEffect(getAllFriends, []);
 
+	const token = useSelector(selectJWT);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
 	const [open2, setOpen2] = useState(false);
@@ -106,7 +107,7 @@ export default function Page(pageProp) {
 		})[0];
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + pageProp.token,
+				Authorization: "Bearer " + token,
 			},
 			params: {
 				GroupID: userGroups.content.filter((x) => {
@@ -154,7 +155,7 @@ export default function Page(pageProp) {
 	const handleCloseToggleFriend = async () => {
 		const response = await APIQuery.post("/users/friend", null, {
 			headers: {
-				Authorization: "Bearer " + pageProp.token,
+				Authorization: "Bearer " + token,
 			},
 			params: {
 				username: page.username,
@@ -171,7 +172,7 @@ export default function Page(pageProp) {
 	const handleCloseJoinGroup = async () => {
 		const response = await APIQuery.post("/groups/addmember", null, {
 			headers: {
-				Authorization: "Bearer " + pageProp.token,
+				Authorization: "Bearer " + token,
 			},
 			params: {
 				GroupID: page.groupID,
@@ -200,7 +201,7 @@ export default function Page(pageProp) {
 	 * @async
 	 */
 	async function GetPage() {
-		getCurrentUser(pageProp.token).then(async (data) => {
+		getCurrentUser(token).then(async (data) => {
 			let user = data.data;
 			setCurrentUser(user);
 			setImage(getProfilePic(user.userID));
@@ -211,11 +212,11 @@ export default function Page(pageProp) {
 				apiRegisterUrl = "/users/" + pageParam;
 			else apiRegisterUrl = "/groups/" + pageParam;
 
-			getUserGroups(pageProp.token, data.data.userID).then((data) => {
+			getUserGroups(token, data.data.userID).then((data) => {
 				setUserGroups(data.data);
 			});
 
-			getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
+			getPageAxios(token, apiRegisterUrl).then(async (data) => {
 				let id = -1;
 				if (path.pathname.includes("user")) {
 					id = data.data.userID;
@@ -224,7 +225,7 @@ export default function Page(pageProp) {
 					data.data.userPage.username = data.data.username;
 					data.data.userPage.displayName = data.data.displayName;
 					updatePage(data.data.userPage);
-					getGroupsByID(pageProp.token, id).then((data) => {
+					getGroupsByID(token, id).then((data) => {
 						setGroups(data.data);
 						setIsBusy(false);
 					});
@@ -238,7 +239,7 @@ export default function Page(pageProp) {
 
 					apiRegisterUrl = "/groups/" + pageParam;
 
-					getPageAxios(pageProp.token, apiRegisterUrl).then(async (data) => {
+					getPageAxios(token, apiRegisterUrl).then(async (data) => {
 						setGroup(data.data);
 						setIsBusy(false);
 					});
@@ -488,7 +489,7 @@ export default function Page(pageProp) {
 		switch (tab) {
 			case 0:
 				return (
-					<Posts page={page} currentUser={currentUser} JWT={pageProp.token} />
+					<Posts page={page} currentUser={currentUser} JWT={token} />
 				);
 			case 1:
 				return <About />;
@@ -617,7 +618,7 @@ export default function Page(pageProp) {
 
 		let axiosConfig = {
 			headers: {
-				Authorization: "Bearer " + pageProp.token,
+				Authorization: "Bearer " + token,
 			},
 		};
 
@@ -673,7 +674,7 @@ export default function Page(pageProp) {
 				<br />
 				{page.userID === currentUser.userID ? (
 					<CreateGroup
-						JWT={pageProp.token}
+						JWT={token}
 						groups={groups}
 						setGroups={setGroups}
 					/>

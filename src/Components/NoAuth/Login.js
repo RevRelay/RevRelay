@@ -15,35 +15,13 @@ import { selectJWT, setJWT, clearJWT, login } from "./jwtSlice";
 import { useSelector, useDispatch } from "react-redux"
 
 /**
- * The url of the appended login url
- */
-const apiLoginUrl = '/public/users/login'
-
-/**
- * Axios query to login a user.
- * 
- * @async
- * @param {LoginUser}	user			The Array for a User when logging in. Does not include userID, email, display, names, or birth date.
- * @param {String} 		user.username	The logging in user's username.
- * @param {String}		user.password	The logging in user's password.
- * @returns The JWT of the user in the form data{jwt{*KEY*}}.
- */
-async function loginUser(user) {
-	return await APIQuery.post(apiLoginUrl,
-		JSON.stringify(user))
-		.then(data => data.data.jwt)
-}
-
-/**
  * Login a user
  * 
- * @param {SetJWTs} 				loginProp 			The Array for an object that just contains the setter for the JWT.
- * @param {SetStateActionString} 	loginProp.setToken 	State variable setter for token field information.
  * @returns Returns the login page with React
  */
-export default function Login(loginProp) {
+export default function Login() {
 
-	const JWT = useSelector(selectJWT);
+	const token = useSelector(selectJWT);
 
 	const dispatch = useDispatch();
 
@@ -64,7 +42,7 @@ export default function Login(loginProp) {
 	}
 	return (
 		<>
-	{(JWT) ? (<>{navigate("/user/profile")}</>
+	{(token) ? (<>{navigate("/user/profile")}</>
 		) : (
 			<Grid 
 				className = "form"
@@ -124,5 +102,4 @@ export default function Login(loginProp) {
 }
 
 Login.propTypes = {
-	setToken: PropTypes.func.isRequired
 }

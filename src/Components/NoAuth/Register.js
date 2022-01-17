@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import APIQuery from "../../app/api";
+import APIQuery, { registerUser } from "../../app/api";
 import { Button, Grid, Paper } from "@mui/material";
 import { userLen, passLen, displayNameLen } from "./RegisterConfig";
 import "./Auth.css";
@@ -11,23 +11,8 @@ import {
 	SetStateActionString
 } from "../../typeDef";
 import { PasswordField, LoginRegisterField } from "../Library/FormField";
-
-/**
- * The url of the appended register url
- */
-const apiRegisterUrl = "/public/users/register";
-
-/**
- * Axios query to create a user
- *
- * @param {RegisterUser} 	user 				The Array for a User when registering. Does not include userID, names, or birth date.
- * @returns The JWT of the created user in the form data{jwt{*KEY*}}
- */
-async function registerUser(user) {
-	return await APIQuery.post(apiRegisterUrl, JSON.stringify(user)).then(
-		(data) => data
-	);
-}
+import { useSelector, useDispatch } from "react-redux"
+import { setJWT } from "../NoAuth/jwtSlice.js";
 
 /**
  * Takes a user and checks if the user is valid, then returns negation of truthy or falsy of the message.
@@ -65,8 +50,6 @@ function validInputRegister(user) {
 /**
  * Registering a user
  *
- * @param {SetJWTs} 				registerProp			The Array for an object that just contains the setter for the JWT.
- * @param {SetStateActionString} 	registerProp.setToken 	State variable setter for token field information.
  * @returns returns the React webpage for registering a user.
  */
 export default function Register(registerProp) {
@@ -76,6 +59,7 @@ export default function Register(registerProp) {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const [displayName, setDisplayName] = useState('');
+	const dispatch = useDispatch();	
 	let navigate = useNavigate();
 
 	/**
@@ -104,7 +88,7 @@ export default function Register(registerProp) {
 					email,
 					displayName,
 				});
-				registerProp.setToken(response.data.jwt);
+				dispatch(setJWT(response.data));
 				navigate("/user/profile");
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);
@@ -205,5 +189,4 @@ export default function Register(registerProp) {
 }
 
 Register.propTypes = {
-	setToken: PropTypes.func.isRequired,
 };

@@ -7,16 +7,15 @@ import {
 	Avatar,
 	Divider, 
 } from "@mui/material";
-import APIQuery from "../app/api";
+import APIQuery, {fetchSearchResults} from "../../app/api";
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
-import { SearchBar } from "../typeDef";
-import { getProfilePic } from "../API/UserAPI";
+import { SearchBar } from "../../typeDef";
+import { getProfilePic } from "../../API/UserAPI";
 
 /**
  * Component for rendering search results. 
  * 
  * @param {SearchBar} 	searchProp 				---
- * @param {String} 		searchProp.token 		JWT token determinig user and log in information.
  * @param {Boolean}		searchProp.isSendSearch	Boolean state managing searching status.
  * @returns Component containing search results in Card format, as well as a message
  * 			displaying "Loading" or "No Results Found". 
@@ -29,28 +28,14 @@ export default function Search(searchProp) {
 	 * Boolean for whether the search request to the API has completed. Used for
 	 * rendering a loading message versus a "no results found" message. 
 	 */
-	const [searchComplete, setSearchComplete] = useState('');
+	const [searchComplete, setSearchComplete] = useState(false);
 	const [searchResults, setSearchResults] = useState();
-
-	/**
-	 * Submits an API call searching user and group names for the search term. 
-	 * @async
-	 */
-	const FetchSearchResults = async () => {
-		setSearchComplete('');
-		const response = await APIQuery.get(
-			`/search/name/${searchTerm}`,
-			{ headers: { "Authorization": "Bearer " + searchProp.token } }
-		).then(resp => resp);
-		setSearchResults(response.data);
-		setSearchComplete('true');
-	}
 
 	/**
 	 * ---
 	 */
 	// TODO: React Hook useEffect has a missing dependency: 'FetchSearchResults'. Either include it or remove the dependency array
-	useEffect(() => { FetchSearchResults(); }, [searchProp.isSendSearch]);
+	useEffect(() => { fetchSearchResults(searchTerm, setSearchComplete, setSearchResults); }, [searchProp.isSendSearch]);
 	if(!(searchResults && searchResults[0])) {
 		return (
 			searchComplete ? (

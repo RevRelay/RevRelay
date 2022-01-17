@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { updatePassword } from "../../API/UserAPI";
 import { passLen } from "../NoAuth/RegisterConfig.js"
 import { JWTs, PasswordCheck } from "../../typeDef"
+import { useSelector } from "react-redux";
+import { selectJWT } from "../NoAuth/jwtSlice";
 
 /**
  * Helper function to take 2 passwords as a passwordCheck object and checks if strings are a valid length and then if 
@@ -32,16 +34,15 @@ function validPasswordReset(passwordCheck) {
 /**
  * Allows the user to change their password.
  * 
- * @param {JWTs} 	passwordChange 			Prop that just contains the JWT.
- * @param {String} 	passwordChange.token 	JWT Token determinig user and log in information.
  * @returns The change password page returned with React
  */
-function ChangePassword(passwordChange) {
+function ChangePassword() {
 	
 	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	let navigate = useNavigate();
+	const token = useSelector(selectJWT);
 
 	/**
 	 * When the Submit button is pressed the password reset request is sent to the backend.
@@ -70,7 +71,7 @@ function ChangePassword(passwordChange) {
 					oldPassword,
 					newPassword,
 					confirmPassword,
-				}, passwordChange.token);
+				}, token);
 			} catch (Error) {
 				alert(`Error: ${Error?.response?.data}`);
 			}

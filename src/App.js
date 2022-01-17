@@ -7,13 +7,13 @@ import { Box, Theme } from "@mui/system";
 import UserInfo from "./Components/UserInfo/UserInfo.js";
 import ChangePassword from "./Components/UserInfo/ChangePassword.js";
 import Login from "./Components/NoAuth/Login.js";
-import Search from "./Components/Search.js";
+import Search from "./Components/Search/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
 import APIQuery from "./app/api";
 import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
-import { getCurrentUser, getAllFriends, verifyToken } from './app/api'
+import { getCurrentUser, getAllFriends } from './app/api'
 //import getCurrentUser from "./API/PageAPI.js";
 //import getAllFriends from "./API/friendsAPI.js";
 import { selectJWT, verify } from "./Components/NoAuth/jwtSlice";
@@ -33,13 +33,7 @@ import themes from "./Components/Library/themes.js";
 function App() {
 
 	const dispatch = useDispatch();
-	/**
-	 * Setting the JWT string token
-	 */
-	//const [token, setToken] = useState(localStorage.getItem("token"));
 	const token = useSelector(selectJWT);
-	//const setToken = useDispatch(setJWT);
-	const setToken = null;
 	const [sendSearch, setSendSearch] = useState(false);
 	const [friends, setFriends] = useState([]);
 	const [currentUser, setCurrentUser] = useState([]);
@@ -58,8 +52,6 @@ function App() {
 
 	let nav = useNavigate();
 
-	localStorage.setItem("token", token);
-
 	/**
 	 * Setting the active theme but changing the int of activeTheme. Corresponding to the theme array
 	 */
@@ -69,7 +61,7 @@ function App() {
 		<ThemeProvider theme={themes[activeTheme].theme}>
 			{/* Renders Chat Box */}
 			{currentUser.userID ? (
-				<Client token={token} currentUser={currentUser} />
+				<Client currentUser={currentUser} />
 			) : (
 				<></>
 			)}
@@ -77,8 +69,6 @@ function App() {
 				themes={themes}
 				activeTheme={activeTheme}
 				updateActiveTheme={updateActiveTheme}
-				token={token}
-				//setToken={setToken}
 				sendSearch={sendSearch}
 				setSendSearch={setSendSearch}
 				friends={friends}
@@ -92,8 +82,6 @@ function App() {
 				}}
 			>
 				<SwitchBoard
-					token={token}
-					//setToken={setToken}
 					sendSearch={sendSearch}
 				/>
 			</Box>
@@ -105,28 +93,19 @@ function App() {
  * Use the token object to find if a user is logged in or not, it will be null if there is no user present currently
  * and will hold a JWT if there is currently a user logged in.
  *
- * Use the token object passed above if you need to find any
- *
  * @param {Switching} 				switchProp					---
- * @param {String} 					switchProp.token 			JWT token determinig user and log in information.
- * @param {SetStateActionString} 	switchProp.setToken			State variable setter for token field information.
  * @param {Boolean}					switchProp.isSendSearch		Boolean state managing searching status.
  * @returns
  */
 function SwitchBoard(switchProp) {
-	if (!switchProp.token) {
+	const token = useSelector(selectJWT);
+	if (!token) {
 		return (
 			<Routes>
 				<Route path="/">
-					<Route index element={<Home token={switchProp.token} />} />
-					<Route
-						path="login"
-						element={<Login setToken={switchProp.setToken} />}
-					/>
-					<Route
-						path="register"
-						element={<Registration setToken={switchProp.setToken} />}
-					/>
+					<Route index element={<Home/>} />
+					<Route path="login" element={<Login/>} />
+					<Route path="register" element={<Registration />} />
 				</Route>
 				<Route path="*" element={<Navigate to="/" />} />
 			</Routes>
@@ -136,49 +115,29 @@ function SwitchBoard(switchProp) {
 	return (
 		<Routes>
 			<Route path="/">
-				<Route index element={<Home token={switchProp.token} />} />
-				<Route
-					path="login"
-					element={<Login setToken={switchProp.setToken} />}
-				/>
-				<Route
-					path="register"
-					element={<Registration setToken={switchProp.setToken} />}
-				/>
+				<Route index element={<Home />} />
+				<Route path="login" element={<Login />} />
+				<Route path="register" element={<Registration />} />
 				<Route path="search">
 					{/* TODO splash page for the search page w/o a search term, currently just sends you back to where you came from.*/}
 					<Route index element={<Navigate to={-1} />} />
-					<Route
-						path=":searchTerm"
-						element={
-							<Search
-								token={switchProp.token}
-								isSendSearch={switchProp.isSendSearch}
-							/>
-						}
-					/>
+					<Route path=":searchTerm" element={<Search isSendSearch={switchProp.isSendSearch} />} />
 				</Route>
 				<Route path="user">
 					<Route index element={<Navigate to={-1} />} />
-					<Route
-						path=":pageParam"
-						element={<Page token={switchProp.token} />}
-					/>
+					<Route path=":pageParam" element={<Page />} />
 					<Route path="profile">
-						<Route index element={<Page token={switchProp.token} />} />
+						<Route index element={<Page />} />
 						<Route path="userInfo">
-							<Route index element={<UserInfo token={switchProp.token} />} />
-							<Route
-								path="changePassword"
-								element={<ChangePassword token={switchProp.token} />}
-							/>
+							<Route index element={<UserInfo />} />
+							<Route path="changePassword" element={<ChangePassword />} />
 						</Route>
 					</Route>
 				</Route>
 			</Route>
 			<Route path="group">
 				<Route index element={<Navigate to={-1} />} />
-				<Route path=":pageParam" element={<Page token={switchProp.token} />} />
+				<Route path=":pageParam" element={<Page />} />
 			</Route>
 		</Routes>
 	);
