@@ -29,7 +29,7 @@ export const verify = createAsyncThunk(
 export const jwtSlice = createSlice({
 	name: 'jwt',
 	initialState: {
-		token: '',
+		token: localStorage.getItem("token"),
 		status: 'idle',
 		error: null,
 	},
