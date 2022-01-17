@@ -7,7 +7,7 @@ import {
 	Avatar,
 	Divider, 
 } from "@mui/material";
-import APIQuery from "../API/APIQuery";
+import APIQuery from "../app/api";
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import { SearchBar } from "../typeDef";
 import { getProfilePic } from "../API/UserAPI";

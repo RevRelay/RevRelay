@@ -1,4 +1,4 @@
-import APIQuery from "./APIQuery";
+import APIQuery from "../app/api";
 
 export default async function getUserChats(JWT, userID) {
 	let axiosConfig = {

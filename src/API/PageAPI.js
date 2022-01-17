@@ -1,4 +1,4 @@
-import APIQuery from "./APIQuery";
+import APIQuery from "../app/api";
 
 /**
  * Axios configuration that all other functions in file uses.

@@ -26,11 +26,11 @@ import PageSetting from "./Page/PageSetting";
 import Posts from "./Posts";
 import CreateGroup from "./Group/CreateGroup";
 import { useEffect, useState } from "react";
-import APIQuery from "../API/APIQuery";
+import APIQuery from "../app/api";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FriendsTab from "./Page/FriendsTab";
 import { ToastContainer, toast } from "react-toastify";
-import { getProfilePic } from "../API/UserAPI";
+import { getProfilePic } from "../app/api";
 import "react-toastify/dist/ReactToastify.css";
 import getCurrentUser, {
 	getGroupsByID,

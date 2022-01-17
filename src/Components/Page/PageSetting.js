@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	Stack,
 } from "@mui/material";
-import APIQuery from "../../API/APIQuery";
+import APIQuery from "../../app/api";
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { ToastContainer, toast } from "react-toastify";

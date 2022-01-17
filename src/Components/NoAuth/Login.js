@@ -2,7 +2,7 @@ import { useState } from "react";
 //import { Navigate } from "react-router-dom";
 import { Button, Grid, Paper } from "@mui/material";
 import {PasswordField, LoginRegisterField} from "../Library/FormField";
-import APIQuery from "../../API/APIQuery";
+import APIQuery from "../../app/api";
 import {useNavigate} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import './Auth.css';

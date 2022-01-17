@@ -1,6 +1,6 @@
 import axios from "axios";
 import { User, PasswordsToBackend } from "../typeDef";
-import APIQuery from "./APIQuery";
+import APIQuery from "../app/api";
 
 const s3Upload = "https://7ujmop2tw0.execute-api.us-west-2.amazonaws.com/dev/image-upload";
 const s3Storage = "https://rev-relay-s3.s3.us-west-2.amazonaws.com";

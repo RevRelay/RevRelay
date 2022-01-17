@@ -1,4 +1,4 @@
-import APIQuery from "./APIQuery";
+import APIQuery from "../app/api";
 
 /**
  * Gets all friends for a user

@@ -19,14 +19,14 @@ import {
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useEffect, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import APIQuery from "../API/APIQuery";
+import APIQuery from "../app/api";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { User, Page, Post, Posting, PostSingle } from "../typeDef";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ChatIcon from "@mui/icons-material/Chat";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { getUser, getUserGroups } from "../API/PageAPI";
+import { getUser, getUserGroups } from "../app/api";
 import ContentComponent from "./postsUtils/ContentComponent";
 
 /**

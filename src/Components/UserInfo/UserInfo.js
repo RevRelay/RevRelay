@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import SaveIcon from '@mui/icons-material/Save';
-import APIQuery from "../../API/APIQuery";
+import APIQuery from "../../app/api";
 import { updateUser, uploadImage, getProfilePic } from "../../API/UserAPI";
 import UserInfoEntryElement, {
 	UserInfoElementUsername,

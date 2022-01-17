@@ -10,7 +10,7 @@ import Login from "./Components/NoAuth/Login.js";
 import Search from "./Components/Search.js";
 import { default as Registration } from "./Components/NoAuth/Register.js";
 import Client from "./Components/Client";
-import APIQuery from "./API/APIQuery";
+import APIQuery from "./app/api";
 import Home from "./Components/HomeSplash/Home.js";
 import { Switching } from "./typeDef.js";
 import getCurrentUser from "./API/PageAPI.js";

@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 	TextField,
 } from "@mui/material";
-import APIQuery from "../../API/APIQuery";
+import APIQuery from "../../app/api";
 import { useState } from "react";
 import {
 	CreateGroups,

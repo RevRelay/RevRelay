@@ -25,7 +25,7 @@ import {
 	ListItemText,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import APIQuery from "../../API/APIQuery";
+import APIQuery from "../../app/api";
 import ListItemButton from "@mui/material/ListItemButton";
 import { useNavigate } from "react-router-dom";
 import { createBrowserHistory } from "history";
